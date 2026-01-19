@@ -6,11 +6,13 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState({ type: '', text: '' });
     const navigate = useNavigate();
 
     async function handleLogin(e) {
         e.preventDefault();
         setLoading(true);
+        setMessage({ type: '', text: '' });
 
         const { error } = await supabase.auth.signInWithPassword({
             email,
@@ -18,47 +20,110 @@ export default function Login() {
         });
 
         if (error) {
-            alert(error.message);
+            setMessage({ type: 'error', text: error.message });
         } else {
             navigate('/admin');
         }
         setLoading(false);
     }
 
+    async function handleForgotPassword() {
+        if (!email) {
+            setMessage({ type: 'error', text: 'Please enter your email address first.' });
+            return;
+        }
+
+        setLoading(true);
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/admin',
+        });
+
+        if (error) {
+            setMessage({ type: 'error', text: error.message });
+        } else {
+            setMessage({ type: 'success', text: 'Password reset email sent! Please check your inbox.' });
+        }
+        setLoading(false);
+    }
+
     return (
-        <div className="section ai-neutral" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Admin Login</h2>
-                <form onSubmit={handleLogin}>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Email</label>
+        <div className="section ai-neutral" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="card no-hover-effect" style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <h2 style={{ marginBottom: '0.5rem' }}>Admin Portal</h2>
+                    <p style={{ color: 'var(--text-muted)' }}>Enter your credentials to manage CogniVectra</p>
+                </div>
+
+                {message.text && (
+                    <div style={{
+                        padding: '1rem',
+                        borderRadius: '8px',
+                        marginBottom: '1.5rem',
+                        backgroundColor: message.type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)',
+                        color: message.type === 'error' ? '#ef4444' : '#22c55e',
+                        border: `1px solid ${message.type === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(34, 197, 94, 0.2)'}`,
+                        fontSize: '0.9rem'
+                    }}>
+                        {message.text}
+                    </div>
+                )}
+
+                <form onSubmit={handleLogin} className="form" style={{ marginTop: 0 }}>
+                    <label>
+                        <span>Email Address</span>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                            placeholder="admin@cognivectra.com"
                         />
-                    </div>
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
+                    </label>
+                    <label style={{ marginBottom: '0.5rem' }}>
+                        <span>Password</span>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                            placeholder="••••••••"
                         />
+                    </label>
+
+                    <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                        <button
+                            type="button"
+                            onClick={handleForgotPassword}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                color: 'var(--accent-primary)',
+                                padding: 0,
+                                fontSize: '0.85rem',
+                                cursor: 'pointer',
+                                width: 'auto',
+                                textTransform: 'none',
+                                boxShadow: 'none',
+                                minHeight: 'auto'
+                            }}
+                        >
+                            Forgot password?
+                        </button>
                     </div>
+
                     <button
                         type="submit"
                         disabled={loading}
-                        className="button-primary"
+                        className="btn"
                         style={{ width: '100%' }}
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? 'Authenticating...' : 'Sign In'}
                     </button>
                 </form>
+
+                <div style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    <p>Secured by Supabase Infrastructure</p>
+                </div>
             </div>
         </div>
     );

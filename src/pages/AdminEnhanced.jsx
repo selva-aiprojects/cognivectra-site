@@ -168,7 +168,7 @@ export default function AdminEnhanced() {
                         <h1>📊 Admin Dashboard</h1>
                         <p>Manage, review, and publish AI-generated content to blog and social media</p>
                     </div>
-                    <button onClick={handleSignOut} style={{ background: 'transparent', border: `1px solid var(--border-light)`, padding: '0.5rem 1rem' }}>
+                    <button onClick={handleSignOut} className="btn-outline" style={{ padding: '0.5rem 1rem' }}>
                         🚪 Sign Out
                     </button>
                 </div>
@@ -221,7 +221,7 @@ export default function AdminEnhanced() {
 
                 {/* Edit Post Form */}
                 {editingPost ? (
-                    <div className="card" style={{ marginBottom: '2rem' }}>
+                    <div className="card no-hover-effect" style={{ marginBottom: '2rem' }}>
                         <h2>Edit Post</h2>
                         <form onSubmit={handleSave}>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -230,7 +230,6 @@ export default function AdminEnhanced() {
                                     type="text"
                                     value={editingPost.title}
                                     onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
-                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -239,7 +238,6 @@ export default function AdminEnhanced() {
                                     value={editingPost.excerpt}
                                     onChange={e => setEditingPost({ ...editingPost, excerpt: e.target.value })}
                                     rows={3}
-                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -248,7 +246,7 @@ export default function AdminEnhanced() {
                                     value={editingPost.body}
                                     onChange={e => setEditingPost({ ...editingPost, body: e.target.value })}
                                     rows={15}
-                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-light)', fontFamily: 'monospace', fontSize: '0.9rem' }}
+                                    style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -257,7 +255,6 @@ export default function AdminEnhanced() {
                                     type="text"
                                     value={editingPost.tags?.join(', ') || ''}
                                     onChange={e => setEditingPost({ ...editingPost, tags: e.target.value.split(',').map(t => t.trim()) })}
-                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}
                                 />
                             </div>
                             <div style={{ display: 'flex', gap: '1rem' }}>
@@ -279,12 +276,12 @@ export default function AdminEnhanced() {
                 {/* Posts List */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     {filteredPosts.length === 0 ? (
-                        <div className="card" style={{ textAlign: 'center', padding: '2rem' }}>
+                        <div className="card no-hover-effect" style={{ textAlign: 'center', padding: '2rem' }}>
                             <p style={{ color: 'var(--text-muted-dark)' }}>No posts in this category yet.</p>
                         </div>
                     ) : (
                         filteredPosts.map(post => (
-                            <div key={post.id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem' }}>
+                            <div key={post.id} className="card no-hover-effect" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem' }}>
                                 <div style={{ flex: 1 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
                                         <span style={{

@@ -337,11 +337,19 @@ p {
   color: var(--bg-primary);
 }
 
-.card:hover p,
-.card:hover li,
-.card:hover h3,
-.card:hover h4 {
-  color: var(--bg-primary) !important;
+.card.no-hover-effect:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-light);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.card.no-hover-effect:hover p,
+.card.no-hover-effect:hover li,
+.card.no-hover-effect:hover h3,
+.card.no-hover-effect:hover h4 {
+  color: var(--text-primary) !important;
 }
 
 .grid2 {
