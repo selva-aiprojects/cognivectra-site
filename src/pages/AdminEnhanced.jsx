@@ -110,14 +110,14 @@ export default function AdminEnhanced() {
         try {
             // For LinkedIn and other social platforms, we need to call a backend script
             // Since we don't have a backend, we'll log the instruction and record it
-            
+
             if (platform === 'linkedin') {
                 console.log(`\n📤 LinkedIn Publishing Required:`);
                 console.log(`   Post ID: ${post.id}`);
                 console.log(`   Content: ${post.social_media_data[platform]?.substring(0, 100)}...`);
                 console.log(`\n   To publish, run in terminal:`);
                 console.log(`   npm run publish:linkedin ${post.id}`);
-                
+
                 // Show alert to user
                 alert(`✅ Post approved!\n\nTo publish to LinkedIn, run in terminal:\nnpm run publish:linkedin ${post.id}`);
             }

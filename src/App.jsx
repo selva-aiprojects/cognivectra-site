@@ -12,7 +12,7 @@ import Engagements from "./pages/Engagements.jsx";
 import Results from "./pages/Results.jsx";
 import Industries from "./pages/Industries.jsx";
 import Login from "./pages/Login.jsx";
-import Admin from "./pages/Admin.jsx";
+import AdminEnhanced from "./pages/AdminEnhanced.jsx";
 import "./index.css";
 
 export default function App() {
@@ -36,7 +36,7 @@ export default function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin" element={<AdminEnhanced />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>

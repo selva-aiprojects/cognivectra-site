@@ -8,7 +8,7 @@ create table public.posts (
   excerpt text,
   body text,
   image_url text,
-  status text default 'draft' check (status in ('draft', 'published', 'archived')),
+  status text default 'draft' check (status in ('draft', 'pending_review', 'scheduled', 'published', 'archived')),
   published_at timestamp with time zone
 );
 
