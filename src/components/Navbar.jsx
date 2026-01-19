@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/Logo.png";
 
-export default function Navbar() {
+export default function Navbar({ setIsChatOpen }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -61,6 +61,13 @@ export default function Navbar() {
           <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
             Contact
           </NavLink>
+          <button
+            onClick={() => setIsChatOpen(true)}
+            className="btn-outline"
+            style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', marginBottom: 0, marginLeft: '1rem' }}
+          >
+            Chat with AI
+          </button>
         </nav>
 
         {/* Mobile Hamburger */}
@@ -101,6 +108,16 @@ export default function Navbar() {
           <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
             Contact
           </NavLink>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setIsChatOpen(true);
+            }}
+            className="btn"
+            style={{ marginTop: '1rem' }}
+          >
+            Chat with AI
+          </button>
         </nav>
       </div>
     </header>

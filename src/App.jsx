@@ -14,13 +14,21 @@ import Industries from "./pages/Industries.jsx";
 import Login from "./pages/Login.jsx";
 import AdminEnhanced from "./pages/AdminEnhanced.jsx";
 import Footer from "./components/Footer.jsx";
+import Chatbot from "./components/Chatbot.jsx";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./index.css";
 
 export default function App() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const location = useLocation();
+
+  const showChatbot = location.pathname === "/" || location.pathname === "/contact";
+
   return (
     <div className="appShell">
       <div className="ambient-glow" />
-      <Navbar />
+      <Navbar setIsChatOpen={setIsChatOpen} />
 
       {/* Main Content */}
       <main style={{ minHeight: "80vh" }}>
@@ -44,6 +52,7 @@ export default function App() {
       </main>
 
       <Footer />
+      {showChatbot && <Chatbot isOpen={isChatOpen} setIsOpen={setIsChatOpen} />}
     </div>
   );
 }
