@@ -10,17 +10,17 @@ export default function About() {
             backdropFilter: "blur(16px)",
             maxWidth: "900px",
             margin: "0 auto 4rem",
-            color: "#0f172a !important",
+            color: "var(--text-primary) !important",
             padding: "2.5rem",
           }}
         >
           <h2>About CogniVectra</h2>
-          <p style={{ color: "#041742ff", lineHeight: "1.75" }}>
+          <p style={{ color: "var(--text-primary)", lineHeight: "1.75" }}>
             CogniVectra is a technology innovation and consulting partner focused
             on helping startups and enterprises design, build, and scale
             intelligent, automated digital platforms. [web:58]
           </p>
-          <p style={{ color: "#0f172a", lineHeight: "1.75" }}>
+          <p style={{ color: "var(--text-primary)", lineHeight: "1.75" }}>
             We specialize in{" "}
             <strong>
               cloud platforms, automation, AI, data engineering, and GenAI‑powered
@@ -29,7 +29,7 @@ export default function About() {
             , enabling teams to modernize legacy systems, streamline operations,
             and unlock data‑driven decision‑making. [web:55]
           </p>
-          <p style={{ color: "#0f172a", lineHeight: "1.75" }}>
+          <p style={{ color: "var(--text-primary)", lineHeight: "1.75" }}>
             With 25+ years of enterprise IT delivery experience across regulated
             industries, CogniVectra brings{" "}
             <strong>secure, scalable, and future‑ready</strong> foundations to
@@ -44,11 +44,11 @@ export default function About() {
             className="card"
             style={{
               background: "rgba(255, 255, 255, 0.97) !important",
-              color: "#0f172a !important",
+              color: "var(--text-primary) !important",
             }}
           >
             <h3>Our Expertise</h3>
-            <p style={{ color: "#0c2c76ff" }}>
+            <p style={{ color: "var(--text-secondary)" }}>
               Our work bridges strategy and execution—from platform architecture
               and implementation to optimization and go‑to‑market enablement—so
               technology directly supports measurable business outcomes. [web:59]
@@ -56,11 +56,11 @@ export default function About() {
 
             <div style={{ marginTop: "1.5rem" }}>
               <h4
-                style={{ color: "#1e40af", marginBottom: "1rem" }}
+                style={{ color: "var(--accent-primary)", marginBottom: "1rem" }}
               >
                 What we do best:
               </h4>
-              <ul style={{ color: "#0f172a" }}>
+              <ul style={{ color: "var(--text-primary)" }}>
                 <li>Design and implement startup‑ready cloud and data platforms.</li>
                 <li>Build GenAI, automation, and AI‑assisted workflows into products and ops.</li>
                 <li>Modernize legacy and monolithic systems into modular architectures.</li>
@@ -74,18 +74,18 @@ export default function About() {
             className="card"
             style={{
               background: "rgba(255, 255, 255, 0.97) !important",
-              color: "#0f172a !important",
+              color: "var(--text-primary) !important",
             }}
           >
             <h3>Who We Help</h3>
-            <p style={{ color: "#0f172a" }}>
+            <p style={{ color: "var(--text-primary)" }}>
               CogniVectra partners with{" "}
               <strong>SaaS, AI‑native, and data‑driven startups</strong> as well
               as enterprises in{" "}
               <strong>Healthcare, BFSI, Insurance, and other complex domains</strong>{" "}
               where reliability, compliance, and scalability are critical. [web:56]
             </p>
-            <ul style={{ color: "#0f172a", marginTop: "1rem" }}>
+            <ul style={{ color: "var(--text-primary)", marginTop: "1rem" }}>
               <li>Early‑stage startups (Pre‑Seed to Series B) needing solid foundations.</li>
               <li>Non‑tech founders looking for a trusted platform and automation partner.</li>
               <li>
