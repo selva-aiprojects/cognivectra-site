@@ -70,9 +70,9 @@ Return ONLY valid JSON (no markdown, no extra text) with this structure:
   "excerpt": "Compelling 2-sentence summary for preview (under 150 chars)",
   "body": "Full blog post with markdown formatting (2000+ words, include ## headers, ** bold **, and lists)",
   "slug": "url-friendly-slug-like-this",
-  "linkedin_post": "LinkedIn version (150-200 chars, professional tone, include relevant hashtags)",
-  "instagram_caption": "Instagram version (max 150 chars, engaging, include relevant hashtags and emojis)",
-  "facebook_post": "Facebook version (200-300 chars, conversational, include link to blog)",
+  "linkedin_post": "Engaging LinkedIn version (approx 1000-1500 chars). Start with a hook, use bullet points for readability, include internal insights, and end with a call to action plus hashtags.",
+  "instagram_caption": "Engaging Instagram version (under 1000 chars, use emojis, hashtags, and a clear call to action).",
+  "facebook_post": "Engaging Facebook version (approx 500-1000 chars, conversational tone, include a summary of the post and a clear call to action).",
   "tags": ["tag1", "tag2", "tag3", "tag4"]
 }
 
@@ -150,7 +150,7 @@ async function publishToLinkedIn(postId, postData) {
 
     try {
         const linkedinPersonURN = process.env.LINKEDIN_PERSON_URN || 'urn:li:person:8305641';
-        
+
         const response = await axios.post('https://api.linkedin.com/v2/ugcPosts', {
             actor: linkedinPersonURN,
             contentLanguage: 'en',

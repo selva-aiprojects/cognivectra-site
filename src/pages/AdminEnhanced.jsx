@@ -56,7 +56,8 @@ export default function AdminEnhanced() {
                 title: editingPost.title,
                 excerpt: editingPost.excerpt,
                 body: editingPost.body,
-                tags: editingPost.tags || []
+                tags: editingPost.tags || [],
+                social_media_data: editingPost.social_media_data || {}
             })
             .eq('id', editingPost.id);
 
@@ -84,15 +85,10 @@ export default function AdminEnhanced() {
 
             if (updateError) throw updateError;
 
-            // Publish to social platforms if requested
-            if (platforms.includes('linkedin') && post.social_media_data?.linkedin) {
-                await publishToSocialMedia(post, 'linkedin');
-            }
-            if (platforms.includes('instagram') && post.social_media_data?.instagram) {
-                await publishToSocialMedia(post, 'instagram');
-            }
-            if (platforms.includes('facebook') && post.social_media_data?.facebook) {
-                await publishToSocialMedia(post, 'facebook');
+            // Collect social platforms (everything except 'blog')
+            const socialPlatforms = platforms.filter(p => p !== 'blog');
+            if (socialPlatforms.length > 0) {
+                await publishToSocialMedia(post, socialPlatforms);
             }
 
             alert('Post published successfully!');
@@ -104,40 +100,37 @@ export default function AdminEnhanced() {
         }
     }
 
-    async function publishToSocialMedia(post, platform) {
-        console.log(`Publishing to ${platform}:`, post.social_media_data[platform]);
+    async function publishToSocialMedia(post, platforms) {
+        console.log(`🚀 Triggering automated publishing for:`, platforms);
 
         try {
-            // For LinkedIn and other social platforms, we need to call a backend script
-            // Since we don't have a backend, we'll log the instruction and record it
+            const { data, error } = await supabase.functions.invoke('publish-social', {
+                body: {
+                    postId: post.id,
+                    platforms: platforms
+                }
+            });
 
-            if (platform === 'linkedin') {
-                console.log(`\n📤 LinkedIn Publishing Required:`);
-                console.log(`   Post ID: ${post.id}`);
-                console.log(`   Content: ${post.social_media_data[platform]?.substring(0, 100)}...`);
-                console.log(`\n   To publish, run in terminal:`);
-                console.log(`   npm run publish:linkedin ${post.id}`);
+            if (error) throw error;
 
-                // Show alert to user
-                alert(`✅ Post approved for LinkedIn Page!\n\nTo publish to your Company Page, run this in your terminal:\n\nnpm run publish:linkedin ${post.id}`);
+            console.log('✅ Edge Function Response:', data);
+
+            const results = data.results || [];
+            const successList = results.filter(r => r.success).map(r => r.platform);
+            const failList = results.filter(r => !r.success);
+
+            if (successList.length > 0) {
+                alert(`✅ Successfully published to: ${successList.join(', ')}`);
             }
 
-            // Record in social_media_posts table
-            const { error: insertError } = await supabase
-                .from('social_media_posts')
-                .insert({
-                    post_id: post.id,
-                    platform: platform,
-                    published_at: new Date().toISOString()
-                });
-
-            if (insertError) {
-                console.warn(`Warning logging ${platform} post:`, insertError.message);
-            } else {
-                console.log(`✅ Recorded ${platform} post in database`);
+            if (failList.length > 0) {
+                const details = failList.map(f => `${f.platform}: ${f.error || 'Check logs'}`).join('\n');
+                alert(`⚠️ Issues publishing to some platforms:\n${details}`);
             }
+
         } catch (error) {
-            console.error(`Error publishing to ${platform}:`, error);
+            console.error(`❌ Automation Error:`, error);
+            alert(`❌ automation failed: ${error.message || 'Check Supabase Edge Function logs'}`);
         }
     }
 
@@ -261,6 +254,43 @@ export default function AdminEnhanced() {
                                     value={editingPost.tags?.join(', ') || ''}
                                     onChange={e => setEditingPost({ ...editingPost, tags: e.target.value.split(',').map(t => t.trim()) })}
                                 />
+                            </div>
+
+                            <div style={{ padding: '1.5rem', background: 'var(--bg-secondary)', borderRadius: '12px', marginBottom: '1.5rem' }}>
+                                <h3 style={{ marginBottom: '1rem' }}>📱 Social Media Versions</h3>
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <label style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>LinkedIn Post (max 3000 chars)</label>
+                                    <textarea
+                                        value={editingPost.social_media_data?.linkedin || ''}
+                                        onChange={e => setEditingPost({
+                                            ...editingPost,
+                                            social_media_data: { ...(editingPost.social_media_data || {}), linkedin: e.target.value }
+                                        })}
+                                        rows={5}
+                                    />
+                                </div>
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <label style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>Instagram Caption</label>
+                                    <textarea
+                                        value={editingPost.social_media_data?.instagram || ''}
+                                        onChange={e => setEditingPost({
+                                            ...editingPost,
+                                            social_media_data: { ...(editingPost.social_media_data || {}), instagram: e.target.value }
+                                        })}
+                                        rows={3}
+                                    />
+                                </div>
+                                <div style={{ marginBottom: '0' }}>
+                                    <label style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>Facebook Post</label>
+                                    <textarea
+                                        value={editingPost.social_media_data?.facebook || ''}
+                                        onChange={e => setEditingPost({
+                                            ...editingPost,
+                                            social_media_data: { ...(editingPost.social_media_data || {}), facebook: e.target.value }
+                                        })}
+                                        rows={4}
+                                    />
+                                </div>
                             </div>
                             <div style={{ display: 'flex', gap: '1rem' }}>
                                 <button type="submit" className="btn" style={{ marginBottom: 0 }}>
