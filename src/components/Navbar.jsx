@@ -64,9 +64,17 @@ export default function Navbar({ setIsChatOpen }) {
           <button
             onClick={() => setIsChatOpen(true)}
             className="btn-outline"
-            style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', marginBottom: 0, marginLeft: '1rem' }}
+            style={{
+              padding: '0.4rem 0.8rem',
+              fontSize: '0.85rem',
+              marginBottom: 0,
+              marginLeft: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
           >
-            Chat with AI
+            <span>💬</span> Chat with AI
           </button>
         </nav>
 
