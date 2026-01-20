@@ -26,7 +26,7 @@ serve(async (req) => {
             .eq('id', postId)
             .single()
 
-        if (fetchError || !post) throw new Error('Post not found')
+        if (fetchError || !post) throw new Error(`Post not found: ${fetchError?.message || 'Unknown error'}`)
 
         const results = []
         const socialData = post.social_media_data || {}
@@ -37,10 +37,16 @@ serve(async (req) => {
             console.log('Publishing to LinkedIn...')
             try {
                 const author = Deno.env.get('LINKEDIN_COMPANY_URN') || Deno.env.get('LINKEDIN_PERSON_URN')
+                const token = Deno.env.get('LINKEDIN_ACCESS_TOKEN')
+
+                if (!token || !author) {
+                    throw new Error('LinkedIn configuration missing (token or URN)')
+                }
+
                 const response = await fetch('https://api.linkedin.com/v2/ugcPosts', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${Deno.env.get('LINKEDIN_ACCESS_TOKEN')}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'X-Restli-Protocol-Version': '2.0.0'
                     },
@@ -56,8 +62,14 @@ serve(async (req) => {
                         }
                     })
                 })
+
                 const data = await response.json()
-                results.push({ platform: 'linkedin', success: response.ok, data })
+                if (!response.ok) {
+                    console.error('LinkedIn Error:', data)
+                    results.push({ platform: 'linkedin', success: false, error: data.message || JSON.stringify(data) })
+                } else {
+                    results.push({ platform: 'linkedin', success: true, data })
+                }
             } catch (err) {
                 results.push({ platform: 'linkedin', success: false, error: err.message })
             }
@@ -68,23 +80,83 @@ serve(async (req) => {
             console.log('Publishing to Facebook...')
             try {
                 const pageId = Deno.env.get('FACEBOOK_PAGE_ID')
+                const token = Deno.env.get('FACEBOOK_ACCESS_TOKEN')
+
+                if (!token || !pageId) {
+                    throw new Error('Facebook configuration missing (token or pageId)')
+                }
+
                 const response = await fetch(`https://graph.facebook.com/v18.0/${pageId}/feed`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: socialData.facebook,
-                        link: blogUrl,
-                        access_token: Deno.env.get('FACEBOOK_ACCESS_TOKEN')
+                        message: socialData.facebook + `\n\nRead more: ${blogUrl}`,
+                        access_token: token
                     })
                 })
                 const data = await response.json()
-                results.push({ platform: 'facebook', success: response.ok, data })
+                if (!response.ok) {
+                    results.push({ platform: 'facebook', success: false, error: data.error?.message || JSON.stringify(data) })
+                } else {
+                    results.push({ platform: 'facebook', success: true, data })
+                }
             } catch (err) {
                 results.push({ platform: 'facebook', success: false, error: err.message })
             }
         }
 
-        // 4. Update tracking table
+        // 4. Publish to Instagram
+        if (platforms.includes('instagram') && socialData.instagram) {
+            console.log('Publishing to Instagram...')
+            try {
+                const igId = Deno.env.get('INSTAGRAM_BUSINESS_ACCOUNT_ID')
+                const token = Deno.env.get('INSTAGRAM_ACCESS_TOKEN')
+
+                if (!token || !igId) {
+                    throw new Error('Instagram configuration missing (token or IG ID)')
+                }
+
+                // For Instagram, we need an image. We'll use a default one or the post image if available
+                const imageUrl = post.image_url || 'https://cogni-vectra.vercel.app/og-image.jpg'
+
+                // Step A: Create Media container
+                const containerRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image_url: imageUrl,
+                        caption: socialData.instagram,
+                        access_token: token
+                    })
+                })
+                const containerData = await containerRes.json()
+
+                if (!containerRes.ok) {
+                    throw new Error(containerData.error?.message || 'Failed to create IG container')
+                }
+
+                // Step B: Publish Media
+                const publishRes = await fetch(`https://graph.facebook.com/v18.0/${igId}/media_publish`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        creation_id: containerData.id,
+                        access_token: token
+                    })
+                })
+                const publishData = await publishRes.json()
+
+                if (!publishRes.ok) {
+                    results.push({ platform: 'instagram', success: false, error: publishData.error?.message || 'Failed to publish IG post' })
+                } else {
+                    results.push({ platform: 'instagram', success: true, data: publishData })
+                }
+            } catch (err) {
+                results.push({ platform: 'instagram', success: false, error: err.message })
+            }
+        }
+
+        // 5. Update tracking table
         for (const res of results) {
             if (res.success) {
                 await supabase.from('social_media_posts').insert({
