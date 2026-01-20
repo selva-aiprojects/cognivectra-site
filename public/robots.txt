@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cognivectra.com/sitemap.xml

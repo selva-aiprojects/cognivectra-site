@@ -149,29 +149,30 @@ export default function Home() {
             maxWidth: "1000px",
             marginInline: "auto",
             background: "linear-gradient(to right, #ffffff, #f8fafc)",
+            color: "#0B0E14", // Explicit dark text for light background
           }}
         >
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
             <div>
-              <h3>Enterprise Excellence. Startup Agility.</h3>
-              <p className="stack">
+              <h3 style={{ color: "var(--accent-primary)" }}>Enterprise Excellence. Startup Agility.</h3>
+              <p className="stack" style={{ color: "#475569" }}>
                 Experience the perfect balance of proven enterprise methodologies delivered with startup velocity.
               </p>
-              <p className="stack">
+              <p className="stack" style={{ color: "#475569" }}>
                 We bring <strong>25+ years of expertise</strong> architecting mission-critical platforms for global enterprises, now refined into agile, high-impact solutions for startups.
               </p>
               <div style={{ marginTop: "1.5rem" }}>
-                <Link to="/about" style={{ fontWeight: "600" }}>
+                <Link to="/about" style={{ fontWeight: "600", color: "var(--accent-primary)" }}>
                   Learn about our expertise →
                 </Link>
               </div>
             </div>
 
-            <ul className="stack" style={{ background: "white", padding: "1.5rem", borderRadius: "12px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
-              <li>🚀 <strong>Fractional CTO & Strategic Advisory</strong></li>
-              <li>⚙️ <strong>DevOps & Cloud Automation</strong></li>
-              <li>🤖 <strong>AI & Workflow Orchestration</strong></li>
-              <li>🏗️ <strong>SaaS Product Foundations</strong></li>
+            <ul className="stack" style={{ background: "white", padding: "1.5rem", borderRadius: "12px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", color: "#0B0E14" }}>
+              <li style={{ color: "#0B0E14" }}>🚀 <strong>Fractional CTO & Strategic Advisory</strong></li>
+              <li style={{ color: "#0B0E14" }}>⚙️ <strong>DevOps & Cloud Automation</strong></li>
+              <li style={{ color: "#0B0E14" }}>🤖 <strong>AI & Workflow Orchestration</strong></li>
+              <li style={{ color: "#0B0E14" }}>🏗️ <strong>SaaS Product Foundations</strong></li>
             </ul>
           </div>
         </div>

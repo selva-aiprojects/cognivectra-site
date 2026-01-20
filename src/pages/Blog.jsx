@@ -35,7 +35,7 @@ export default function Blog() {
             color: "var(--text-primary)",
           }}
         >
-          <h2>Latest Insights</h2>
+          <h1>Latest Insights</h1>
           <p style={{ color: "var(--text-secondary)" }}>
             Practical articles on cloud setup, process automation, SaaS building
             blocks, and applied AI—written for founders and teams building
@@ -76,7 +76,7 @@ export default function Blog() {
                   </small>
                 </div>
 
-                <h3>{post.title}</h3>
+                <h2>{post.title}</h2>
 
                 <p
                   style={{

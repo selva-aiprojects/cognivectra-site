@@ -7,7 +7,8 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-    // Handle CORS preflight
+    console.log("🚀 LinkedIn Ultimate Debug Strategy Started");
+
     if (req.method === 'OPTIONS') {
         return new Response('ok', { headers: corsHeaders })
     }
@@ -16,52 +17,50 @@ serve(async (req) => {
         const payload = await req.json()
         const { postId, platforms } = payload
 
-        console.log(`🤖 Function Triggered: Post ${postId} to platforms: ${platforms.join(', ')}`)
-
         const supabase = createClient(
             Deno.env.get('SUPABASE_URL') ?? '',
             Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
         )
 
-        // 1. Fetch Post Data
+        // Fetch Post Data
         const { data: post, error: fetchError } = await supabase
             .from('posts')
             .select('*')
             .eq('id', postId)
             .single()
 
-        if (fetchError) {
-            console.error('Fetch Error:', fetchError)
-            return new Response(JSON.stringify({ error: `Database fetch failed: ${fetchError.message}` }), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                status: 400,
-            })
-        }
-
-        if (!post) {
-            return new Response(JSON.stringify({ error: `Post ID ${postId} not found` }), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                status: 404,
-            })
-        }
+        if (fetchError || !post) throw new Error(`Post not found`)
 
         const results = []
         const socialData = post.social_media_data || {}
         const blogUrl = `https://cogni-vectra.vercel.app/blog/${post.slug}`
+        const shareText = socialData.linkedin + `\n\nRead more: ${blogUrl}`;
 
-        // 2. Publish to LinkedIn
         if (platforms.includes('linkedin')) {
-            if (!socialData.linkedin) {
-                results.push({ platform: 'linkedin', success: false, error: 'LinkedIn content missing in post' })
-            } else {
-                console.log('Publishing to LinkedIn...')
+            try {
+                const token = Deno.env.get('LINKEDIN_ACCESS_TOKEN')?.replace(/["'`]/g, "").trim()
+                const rawCompanyUrn = Deno.env.get('LINKEDIN_COMPANY_URN')?.replace(/["'`]/g, "").trim()
+                const rawPersonUrn = Deno.env.get('LINKEDIN_PERSON_URN')?.replace(/["'`]/g, "").trim()
+
+                if (!token) throw new Error("LINKEDIN_ACCESS_TOKEN is missing")
+
+                // Strategy A: Identify Token Owner
+                let tokenMemberId = null;
                 try {
-                    const author = Deno.env.get('LINKEDIN_COMPANY_URN') || Deno.env.get('LINKEDIN_PERSON_URN')
-                    const token = Deno.env.get('LINKEDIN_ACCESS_TOKEN')
+                    const meRes = await fetch('https://api.linkedin.com/v2/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                    if (meRes.ok) {
+                        const meData = await meRes.json();
+                        tokenMemberId = meData.id;
+                        console.log(`✅ Token identity confirmed: urn:li:member:${tokenMemberId}`);
+                    }
+                } catch (e) {
+                    console.warn("⚠️ Could not verify token identity (likely missing profile scope)");
+                }
 
-                    if (!token) throw new Error('LINKEDIN_ACCESS_TOKEN not set in Supabase Secrets')
-                    if (!author) throw new Error('LinkedIn URN (Company or Person) not set in Supabase Secrets')
-
+                async function tryPost(urn: string) {
+                    console.log(`📡 Testing LinkedIn URN: [${urn}]`);
                     const response = await fetch('https://api.linkedin.com/v2/ugcPosts', {
                         method: 'POST',
                         headers: {
@@ -70,42 +69,83 @@ serve(async (req) => {
                             'X-Restli-Protocol-Version': '2.0.0'
                         },
                         body: JSON.stringify({
-                            author: author,
+                            author: urn,
                             lifecycleState: 'PUBLISHED',
                             visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
                             specificContent: {
                                 'com.linkedin.ugc.ShareContent': {
-                                    shareCommentary: { text: socialData.linkedin + `\n\nRead more: ${blogUrl}` },
+                                    shareCommentary: { text: shareText },
                                     shareMediaCategory: 'NONE'
                                 }
                             }
                         })
-                    })
-
-                    const data = await response.json()
-                    if (!response.ok) {
-                        console.error('LinkedIn API Error:', data)
-                        results.push({ platform: 'linkedin', success: false, error: data.message || JSON.stringify(data) })
-                    } else {
-                        results.push({ platform: 'linkedin', success: true, data })
-                    }
-                } catch (err) {
-                    console.error('LinkedIn Execution Error:', err.message)
-                    results.push({ platform: 'linkedin', success: false, error: err.message })
+                    });
+                    const body = await response.json();
+                    return { ok: response.ok, status: response.status, data: body, urnUsed: urn };
                 }
+
+                // Generate trial list
+                const trials: string[] = [];
+
+                // 1. Company Trials
+                if (rawCompanyUrn) {
+                    trials.push(rawCompanyUrn.replace("organization", "company"));
+                    trials.push(rawCompanyUrn.replace("company", "organization"));
+                }
+
+                // 2. Person Trials
+                if (tokenMemberId) trials.push(`urn:li:member:${tokenMemberId}`);
+                if (rawPersonUrn) {
+                    trials.push(rawPersonUrn.replace("person", "member"));
+                    trials.push(rawPersonUrn.replace("member", "person"));
+                }
+
+                // Deduplicate and filter empty
+                const uniqueTrials = [...new Set(trials)].filter(t => t && t.startsWith("urn:li:"));
+
+                let successResult = null;
+                const failureLogs = [];
+
+                for (const urn of uniqueTrials) {
+                    const res = await tryPost(urn);
+                    if (res.ok) {
+                        successResult = res;
+                        break;
+                    } else {
+                        failureLogs.push(`${urn}: ${res.data.message || 'Error'}`);
+                    }
+                }
+
+                if (successResult) {
+                    results.push({
+                        platform: 'linkedin',
+                        success: true,
+                        data: successResult.data,
+                        target: successResult.urnUsed
+                    });
+                } else {
+                    const combinedError = failureLogs.join('\n\n');
+                    results.push({
+                        platform: 'linkedin',
+                        success: false,
+                        error: `LinkedIn rejected all attempts. \n\nLog:\n${combinedError}\n\nTIP: Ensure you have 'w_member_social' or 'w_organization_social' scopes.`
+                    });
+                }
+
+            } catch (err: any) {
+                results.push({ platform: 'linkedin', success: false, error: err.message });
             }
         }
 
-        // 3. Update tracking table for successful posts
+        // Update tracking
         for (const res of results) {
             if (res.success) {
-                const { error: trackError } = await supabase.from('social_media_posts').insert({
-                    post_id: postId,
+                await supabase.from('social_media_posts').insert({
+                    post_id: parseInt(postId),
                     platform: res.platform,
                     platform_post_id: res.data?.id || 'unknown',
                     published_at: new Date().toISOString()
                 })
-                if (trackError) console.error(`Failed to track ${res.platform}:`, trackError.message)
             }
         }
 
@@ -114,8 +154,7 @@ serve(async (req) => {
             status: 200,
         })
 
-    } catch (error) {
-        console.error('Global Function Error:', error.message)
+    } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             status: 400,

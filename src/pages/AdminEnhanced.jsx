@@ -279,37 +279,73 @@ export default function AdminEnhanced() {
                             <div style={{ padding: '1.5rem', background: 'var(--bg-secondary)', borderRadius: '12px', marginBottom: '1.5rem' }}>
                                 <h3 style={{ marginBottom: '1rem' }}>📱 Social Media Versions</h3>
                                 <div style={{ marginBottom: '1rem' }}>
-                                    <label style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>LinkedIn Post (max 3000 chars)</label>
-                                    <textarea
-                                        value={editingPost.social_media_data?.linkedin || ''}
-                                        onChange={e => setEditingPost({
-                                            ...editingPost,
-                                            social_media_data: { ...(editingPost.social_media_data || {}), linkedin: e.target.value }
-                                        })}
-                                        rows={5}
-                                    />
+                                    <div className="social-platform-card">
+                                        <div className="platform-header">
+                                            <label>LinkedIn Summary</label>
+                                            <button
+                                                className="copy-btn"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(editingPost.social_media_data?.linkedin || '');
+                                                    alert('LinkedIn content copied!');
+                                                }}
+                                            >📋 Copy</button>
+                                        </div>
+                                        <textarea
+                                            value={editingPost.social_media_data?.linkedin || ''}
+                                            onChange={(e) => setEditingPost({
+                                                ...editingPost,
+                                                social_media_data: { ...(editingPost.social_media_data || {}), linkedin: e.target.value }
+                                            })}
+                                            placeholder="Professional summary for LinkedIn..."
+                                            rows={5}
+                                        />
+                                    </div>
                                 </div>
                                 <div style={{ marginBottom: '1rem' }}>
-                                    <label style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>Instagram Caption</label>
-                                    <textarea
-                                        value={editingPost.social_media_data?.instagram || ''}
-                                        onChange={e => setEditingPost({
-                                            ...editingPost,
-                                            social_media_data: { ...(editingPost.social_media_data || {}), instagram: e.target.value }
-                                        })}
-                                        rows={3}
-                                    />
+                                    <div className="social-platform-card">
+                                        <div className="platform-header">
+                                            <label>Instagram Caption</label>
+                                            <button
+                                                className="copy-btn"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(editingPost.social_media_data?.instagram || '');
+                                                    alert('Instagram content copied!');
+                                                }}
+                                            >📋 Copy</button>
+                                        </div>
+                                        <textarea
+                                            value={editingPost.social_media_data?.instagram || ''}
+                                            onChange={(e) => setEditingPost({
+                                                ...editingPost,
+                                                social_media_data: { ...(editingPost.social_media_data || {}), instagram: e.target.value }
+                                            })}
+                                            placeholder="Emoji-rich caption for Instagram..."
+                                            rows={3}
+                                        />
+                                    </div>
                                 </div>
                                 <div style={{ marginBottom: '0' }}>
-                                    <label style={{ fontWeight: '600', marginBottom: '0.5rem', display: 'block' }}>Facebook Post</label>
-                                    <textarea
-                                        value={editingPost.social_media_data?.facebook || ''}
-                                        onChange={e => setEditingPost({
-                                            ...editingPost,
-                                            social_media_data: { ...(editingPost.social_media_data || {}), facebook: e.target.value }
-                                        })}
-                                        rows={4}
-                                    />
+                                    <div className="social-platform-card">
+                                        <div className="platform-header">
+                                            <label>Facebook Post</label>
+                                            <button
+                                                className="copy-btn"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(editingPost.social_media_data?.facebook || '');
+                                                    alert('Facebook content copied!');
+                                                }}
+                                            >📋 Copy</button>
+                                        </div>
+                                        <textarea
+                                            value={editingPost.social_media_data?.facebook || ''}
+                                            onChange={(e) => setEditingPost({
+                                                ...editingPost,
+                                                social_media_data: { ...(editingPost.social_media_data || {}), facebook: e.target.value }
+                                            })}
+                                            placeholder="Conversational update for Facebook..."
+                                            rows={4}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '1rem' }}>

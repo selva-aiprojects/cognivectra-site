@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import ReactMarkdown from 'react-markdown';
+import { Helmet } from 'react-helmet-async';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -35,6 +36,16 @@ export default function BlogPost() {
 
   return (
     <section className="section">
+      <Helmet>
+        <title>{post.title} | CogniVectra Insights</title>
+        <meta name="description" content={post.excerpt} />
+        <meta property="og:title" content={`${post.title} | CogniVectra`} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content={post.image_url || 'https://cognivectra.com/og-image.png'} />
+        <meta property="twitter:title" content={`${post.title} | CogniVectra`} />
+        <meta property="twitter:description" content={post.excerpt} />
+        <meta property="twitter:image" content={post.image_url || 'https://cognivectra.com/og-image.png'} />
+      </Helmet>
       <div className="container" style={{ maxWidth: '800px' }}>
         <Link to="/blog" style={{ textDecoration: 'none', color: "var(--text-secondary)" }}>← Back</Link>
         <h1 style={{ marginTop: '1rem' }}>{post.title}</h1>
@@ -45,18 +56,18 @@ export default function BlogPost() {
         )}
 
         <div style={{ marginTop: '2rem', lineHeight: '1.8' }}>
-          <ReactMarkdown 
+          <ReactMarkdown
             components={{
-              h1: ({node, ...props}) => <h2 style={{ marginTop: '2rem', marginBottom: '1rem' }} {...props} />,
-              h2: ({node, ...props}) => <h3 style={{ marginTop: '1.5rem', marginBottom: '0.8rem' }} {...props} />,
-              p: ({node, ...props}) => <p style={{ marginBottom: '1rem' }} {...props} />,
-              ul: ({node, ...props}) => <ul style={{ marginBottom: '1rem', marginLeft: '1.5rem' }} {...props} />,
-              ol: ({node, ...props}) => <ol style={{ marginBottom: '1rem', marginLeft: '1.5rem' }} {...props} />,
-              li: ({node, ...props}) => <li style={{ marginBottom: '0.5rem' }} {...props} />,
-              code: ({node, inline, ...props}) => inline ? 
+              h1: ({ node, ...props }) => <h2 style={{ marginTop: '2rem', marginBottom: '1rem' }} {...props} />,
+              h2: ({ node, ...props }) => <h3 style={{ marginTop: '1.5rem', marginBottom: '0.8rem' }} {...props} />,
+              p: ({ node, ...props }) => <p style={{ marginBottom: '1rem' }} {...props} />,
+              ul: ({ node, ...props }) => <ul style={{ marginBottom: '1rem', marginLeft: '1.5rem' }} {...props} />,
+              ol: ({ node, ...props }) => <ol style={{ marginBottom: '1rem', marginLeft: '1.5rem' }} {...props} />,
+              li: ({ node, ...props }) => <li style={{ marginBottom: '0.5rem' }} {...props} />,
+              code: ({ node, inline, ...props }) => inline ?
                 <code style={{ background: 'var(--bg-secondary)', padding: '0.2rem 0.4rem', borderRadius: '4px', fontFamily: 'monospace' }} {...props} /> :
                 <code style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '6px', display: 'block', overflow: 'auto', marginBottom: '1rem' }} {...props} />,
-              blockquote: ({node, ...props}) => <blockquote style={{ borderLeft: '4px solid var(--accent-primary)', paddingLeft: '1rem', marginLeft: 0, marginBottom: '1rem', fontStyle: 'italic' }} {...props} />
+              blockquote: ({ node, ...props }) => <blockquote style={{ borderLeft: '4px solid var(--accent-primary)', paddingLeft: '1rem', marginLeft: 0, marginBottom: '1rem', fontStyle: 'italic' }} {...props} />
             }}
           >
             {post.body}
