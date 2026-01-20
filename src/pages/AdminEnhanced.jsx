@@ -131,13 +131,26 @@ export default function AdminEnhanced() {
         } catch (error) {
             console.error(`❌ Automation Error:`, error);
 
-            // Try to extract a specific message if available
-            let errorMsg = error.message || 'Unknown error';
-            if (error.context?.json) {
-                errorMsg = error.context.json.error || errorMsg;
+            let message = error.message || 'Unknown error';
+
+            // Try to extract the real error message from the response body if it's a 4xx/5xx
+            if (error.context && typeof error.context.json === 'function') {
+                try {
+                    const body = await error.context.json();
+                    if (body.error) message = body.error;
+                    else if (body.message) message = body.message;
+                    else message = JSON.stringify(body);
+                } catch (e) {
+                    console.error('Failed to parse error body:', e);
+                }
+            } else if (error.context && error.context.text) {
+                try {
+                    const text = await error.context.text();
+                    message = text || message;
+                } catch (e) { }
             }
 
-            alert(`❌ automation failed: ${errorMsg}\n\nCheck your browser console (F12) or Supabase Dashboard for full logs.`);
+            alert(`❌ Automation Failed: ${message}\n\nCheck the browser console or Supabase logs for more details.`);
         }
     }
 
