@@ -13,6 +13,7 @@ import Results from "./pages/Results.jsx";
 import Industries from "./pages/Industries.jsx";
 import Login from "./pages/Login.jsx";
 import AdminEnhanced from "./pages/AdminEnhanced.jsx";
+import AdminReports from "./pages/AdminReports.jsx";
 import Footer from "./components/Footer.jsx";
 import Chatbot from "./components/Chatbot.jsx";
 import { useState } from "react";
@@ -46,6 +47,7 @@ export default function App() {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<AdminEnhanced />} />
+            <Route path="/admin/reports" element={<AdminReports />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>

@@ -168,9 +168,14 @@ export default function AdminEnhanced() {
                         <h1>📊 Admin Dashboard</h1>
                         <p>Manage, review, and publish AI-generated content to blog and social media</p>
                     </div>
-                    <button onClick={handleSignOut} className="btn-outline" style={{ padding: '0.5rem 1rem' }}>
-                        🚪 Sign Out
-                    </button>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <Link to="/admin/reports" className="btn-outline" style={{ padding: '0.5rem 1rem', textDecoration: 'none' }}>
+                            📈 View Reports
+                        </Link>
+                        <button onClick={handleSignOut} className="btn-outline" style={{ padding: '0.5rem 1rem' }}>
+                            🚪 Sign Out
+                        </button>
+                    </div>
                 </div>
 
                 {/* Tabs */}
