@@ -119,7 +119,7 @@ export default function AdminEnhanced() {
                 console.log(`   npm run publish:linkedin ${post.id}`);
 
                 // Show alert to user
-                alert(`✅ Post approved!\n\nTo publish to LinkedIn, run in terminal:\nnpm run publish:linkedin ${post.id}`);
+                alert(`✅ Post approved for LinkedIn Page!\n\nTo publish to your Company Page, run this in your terminal:\n\nnpm run publish:linkedin ${post.id}`);
             }
 
             // Record in social_media_posts table

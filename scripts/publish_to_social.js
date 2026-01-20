@@ -10,8 +10,10 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 const linkedinAccessToken = process.env.LINKEDIN_ACCESS_TOKEN;
+const linkedinPersonUrn = process.env.LINKEDIN_PERSON_URN;
+const linkedinCompanyUrn = process.env.LINKEDIN_COMPANY_URN;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -26,12 +28,20 @@ async function publishToLinkedIn(post) {
         const linkedinContent = post.social_media_data?.linkedin || post.title;
         const blogUrl = `https://cogni-vectra.vercel.app/blog/${post.slug}`;
 
-        console.log(`📤 Posting to LinkedIn Personal Profile...`);
-        console.log(`   Content: ${linkedinContent.substring(0, 80)}...`);
-        console.log(`   Blog Link: ${blogUrl}`);
+        // Use Company URN for "Page" posts as requested, fallback to Person URN
+        const authorUrn = linkedinCompanyUrn || linkedinPersonUrn;
 
-        // Simple text post for personal profile
+        if (!authorUrn) {
+            console.error("❌ LinkedIn Author URN (Person or Company) not configured in .env");
+            return { success: false, reason: "No author URN" };
+        }
+
+        console.log(`📤 Posting to LinkedIn ${linkedinCompanyUrn ? 'Organization Page' : 'Personal Profile'}...`);
+        console.log(`   Author: ${authorUrn}`);
+        console.log(`   Content: ${linkedinContent.substring(0, 80)}...`);
+
         const requestBody = {
+            author: authorUrn,
             lifecycleState: 'PUBLISHED',
             visibility: {
                 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'
@@ -46,19 +56,18 @@ async function publishToLinkedIn(post) {
             }
         };
 
-        console.log(`   Sending to ugcPosts endpoint...`);
-
         const response = await axios.post('https://api.linkedin.com/v2/ugcPosts', requestBody, {
             headers: {
                 'Authorization': `Bearer ${linkedinAccessToken}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Restli-Protocol-Version': '2.0.0'
             }
         });
 
         console.log("✅ Posted to LinkedIn");
         console.log(`   Post ID: ${response.data.id}`);
         console.log(`   Check your LinkedIn feed in 30 seconds`);
-        
+
         // Record in database
         await supabase
             .from('social_media_posts')
