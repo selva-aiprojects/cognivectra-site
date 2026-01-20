@@ -88,11 +88,12 @@ Ensure JSON is valid and properly escaped.`
     try {
         const content = JSON.parse(completion.choices[0].message.content);
 
-        // Sanitize slug
+        // Sanitize slug and add unique suffix
+        const uniqueSuffix = Math.random().toString(36).substring(2, 7);
         content.slug = content.slug
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '');
+            .replace(/^-+|-+$/g, '') + '-' + uniqueSuffix;
 
         console.log(`✅ Generated: "${content.title}"\n`);
 
