@@ -130,7 +130,14 @@ export default function AdminEnhanced() {
 
         } catch (error) {
             console.error(`❌ Automation Error:`, error);
-            alert(`❌ automation failed: ${error.message || 'Check Supabase Edge Function logs'}`);
+
+            // Try to extract a specific message if available
+            let errorMsg = error.message || 'Unknown error';
+            if (error.context?.json) {
+                errorMsg = error.context.json.error || errorMsg;
+            }
+
+            alert(`❌ automation failed: ${errorMsg}\n\nCheck your browser console (F12) or Supabase Dashboard for full logs.`);
         }
     }
 
