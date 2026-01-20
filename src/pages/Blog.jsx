@@ -26,78 +26,36 @@ export default function Blog() {
     <section className="section ai-neutral">
       <div className="container">
         {/* Hero Section */}
-        <div
-          className="card"
-          style={{
-            maxWidth: "800px",
-            margin: "0 auto 4rem auto",
-            background: "rgba(255, 255, 255, 0.97)",
-            color: "var(--text-primary)",
-          }}
-        >
+        <div className="card blog-hero">
           <h1>Latest Insights</h1>
-          <p style={{ color: "var(--text-secondary)" }}>
+          <p>
             Practical articles on cloud setup, process automation, SaaS building
             blocks, and applied AI—written for founders and teams building
             scalable startups.
           </p>
-          <p
-            style={{
-              color: "var(--text-muted-dark)",
-              fontSize: "0.95rem",
-            }}
-          >
+          <p>
             Explore how to design lean, reliable platforms and automate what
             slows you down, from day zero through Series B.
           </p>
         </div>
 
         {/* Loading State */}
-        {loading && <div style={{ textAlign: 'center' }}>Loading insights...</div>}
+        {loading && <div className="blog-loading">Loading insights...</div>}
 
         {/* Blog Posts Grid */}
         {!loading && (
-          <div className="grid2">
+          <div className="blog-grid">
             {posts.map((post) => (
-              <article
-                key={post.slug}
-                className="card"
-                style={{
-                  background: "rgba(255, 255, 255, 0.97)",
-                  color: "var(--text-primary)",
-                  transition: "all 0.3s ease",
-                }}
-              >
-                <div style={{ marginBottom: "1.5rem" }}>
-                  <small
-                    style={{ color: "var(--text-muted-dark)", fontWeight: "500" }}
-                  >
-                    {new Date(post.published_at || post.created_at).toLocaleDateString()}
-                  </small>
-                </div>
+              <article key={post.slug} className="card blog-post">
+                <small className="blog-post-date">
+                  {new Date(post.published_at || post.created_at).toLocaleDateString()}
+                </small>
 
-                <h2>{post.title}</h2>
+                <h2 class="blog-hero">{post.title}</h2>
 
-                <p
-                  style={{
-                    color: "var(--text-secondary)",
-                    lineHeight: "1.7",
-                    margin: "1rem 0 1.5rem",
-                  }}
-                >
-                  {post.excerpt}
-                </p>
+                <p className="blog-post-excerpt">{post.excerpt}</p>
 
-                <Link
-                  to={`/blog/${post.slug}`}
-                  style={{
-                    display: "inline-block",
-                    color: "var(--accent-primary)",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                    padding: "0.5rem 0",
-                  }}
-                >
+                <Link to={`/blog/${post.slug}`} className="blog-post-link">
                   Read full article →
                 </Link>
               </article>
@@ -107,18 +65,9 @@ export default function Blog() {
 
         {/* CTA when no posts */}
         {!loading && posts.length === 0 && (
-          <div
-            className="card"
-            style={{
-              maxWidth: "600px",
-              margin: "4rem auto 0",
-              textAlign: "center",
-              background: "rgba(255, 255, 255, 0.97)",
-              color: "var(--text-primary)",
-            }}
-          >
+          <div className="card blog-empty">
             <h3>No posts yet</h3>
-            <p style={{ color: "var(--text-muted-dark)" }}>
+            <p>
               Our blog is coming soon. Check back for founder-friendly insights.
             </p>
           </div>

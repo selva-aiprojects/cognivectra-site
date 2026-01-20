@@ -21,7 +21,7 @@ export default function Home() {
         >
           {/* Left: Text */}
           <div>
-            <h1 style={{ lineHeight: "1.15", marginBottom: "1.5rem" }}>
+            <h1>
               Accelerate your startup growth with enterprise-grade technology infrastructure
             </h1>
 
@@ -73,7 +73,7 @@ export default function Home() {
 
         {/* The Opportunity Section */}
         <div style={{ margin: "0 auto 4rem", maxWidth: "1000px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "2rem", marginBottom: "3rem" }}>Your Technology Foundation Matters</h2>
+          <h2>Your Technology Foundation Matters</h2>
           <div className="grid2" style={{ gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
             <div className="card" style={{ padding: "2rem" }}>
               <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🚀</div>

@@ -12,17 +12,87 @@ import aiIcon from "../assets/icons/icon-ai-data.svg";
 import advisoryIcon from "../assets/icons/icon-advisory.svg";
 
 export default function Services() {
+    const services = [
+        {
+            title: "Cloud Infrastructure for Startups",
+            icon: cloudIcon,
+            description: "Secure, scalable, and cost-aware cloud foundations on AWS, GCP, or Azure tailored for SaaS and AI-native startups.",
+            items: [
+                "Cloud landing zones and multi-account / multi-environment setup.",
+                "Network, security, and identity baselines baked in.",
+                "FinOps-ready design to keep costs predictable."
+            ],
+            image: null // service_cloud_infrastructure.png
+        },
+        {
+            title: "Process Automation & Workflow Enablement",
+            icon: automationIcon,
+            description: "Automate recurring work across operations, finance, HR, and support using no-code, low-code, and API-based orchestration.",
+            items: [
+                "Business process automation across key back-office functions.",
+                "No-code / low-code apps plus event-driven workflows.",
+                "GenAI-assisted workflows and internal or customer-facing chatbots."
+            ],
+            image: null // service_process_automation.png
+        },
+        {
+            title: "SaaS Building Blocks",
+            icon: saasIcon,
+            description: "Plug-and-play components so your team does not reinvent the wheel for every product capability.",
+            items: [
+                "Authentication, authorization, and user management.",
+                "Billing, subscriptions, and usage-based metering.",
+                "Email, SMS, WhatsApp, and in-app notifications.",
+                "Logging, monitoring, and analytics dashboards."
+            ],
+            image: null // service_saas_blocks.png
+        },
+        {
+            title: "DevOps & Platform Engineering",
+            icon: devopsIcon,
+            description: "Production-ready delivery pipelines and platform capabilities designed to support rapid iteration without sacrificing reliability.",
+            items: [
+                "CI/CD pipelines and Infrastructure as Code (Terraform).",
+                "Kubernetes and container platforms where appropriate.",
+                "Observability, alerting, and release automation."
+            ],
+            image: null // service_devops_platform.png
+        },
+        {
+            title: "AI & Data Enablement",
+            icon: aiIcon,
+            description: "Pragmatic AI and data platforms that align with your product roadmap and risk appetite.",
+            items: [
+                "GenAI integrations, assistants, and copilots.",
+                "Data platforms from ingestion pipelines to analytics.",
+                "AI governance and lifecycle patterns suitable for startups."
+            ],
+            image: null // service_ai_data.png
+        },
+        {
+            title: "Fractional CTO & Technology Advisory",
+            icon: advisoryIcon,
+            description: "Senior technology leadership without the overhead of a full-time executive.",
+            items: [
+                "Technology roadmap and architecture reviews.",
+                "Tool selection, cost optimisation, and scaling strategies.",
+                "Advisory support for founders, product leaders, and boards."
+            ],
+            image: null, // service_advisory_cto.png
+            cta: true
+        }
+    ];
+
     return (
         <section className="section ai-neutral">
             <div className="container">
-
                 {/* Services Hero */}
                 <div
-                    className="card"
-                    style={{ maxWidth: "900px", margin: "0 auto 3rem", textAlign: "center" }}
+                    className="card no-hover-effect"
+                    style={{ maxWidth: "1000px", margin: "0 auto 5rem", textAlign: "center", padding: "4rem 2rem" }}
                 >
-                    <h2>Services</h2>
-                    <p className="stack">
+                    <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>Our Capabilities</h1>
+                    <p className="stack" style={{ fontSize: "1.2rem", color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
                         CogniVectra provides modular, pay-as-you-grow services that help startups
                         build reliable cloud foundations, automate workflows, and bring AI into
                         their products and operations.
@@ -30,151 +100,88 @@ export default function Services() {
 
                     <img
                         src={servicesHero}
-                        alt="CogniVectra services overview: cloud, automation, DevOps, SaaS, AI, and advisory"
+                        alt="Services overview"
                         style={{
-                            maxWidth: "700px",
+                            maxWidth: "850px",
                             width: "100%",
                             height: "auto",
-                            margin: "2rem auto 0",
-                            display: "block",
+                            borderRadius: "16px",
+                            boxShadow: "var(--shadow-lg)"
                         }}
                     />
-
-
                 </div>
 
-                {/* Cloud Infrastructure */}
-                <div className="card" style={{ maxWidth: "900px", margin: "0 auto 3rem" }}>
-                    <h3>
-                        <img
-                            src={cloudIcon}
-                            alt=""
-                            style={{ width: "28px", marginRight: "0.5rem", verticalAlign: "middle" }}
-                        />
-                        Cloud Infrastructure for Startups
-                    </h3>
-                    <p className="stack">
-                        Secure, scalable, and cost-aware cloud foundations on AWS, GCP, or Azure
-                        tailored for SaaS and AI-native startups.
-                    </p>
-                    <ul className="stack">
-                        <li>Cloud landing zones and multi-account / multi-environment setup.</li>
-                        <li>Network, security, and identity baselines baked in.</li>
-                        <li>FinOps-ready design to keep costs predictable.</li>
-                    </ul>
+                {/* Service Items */}
+                <div className="stack" style={{ gap: "4rem" }}>
+                    {services.map((s, idx) => (
+                        <div
+                            key={idx}
+                            className="card"
+                            style={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+                                gap: "3rem",
+                                alignItems: "center",
+                                padding: "3rem"
+                            }}
+                        >
+                            <div style={{ order: idx % 2 === 0 ? 0 : 1 }}>
+                                <h2 style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                                    <img src={s.icon} alt="" style={{ width: "32px", height: "32px" }} />
+                                    {s.title}
+                                </h2>
+                                <p className="stack" style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
+                                    {s.description}
+                                </p>
+                                <ul className="stack" style={{ marginTop: "1.5rem" }}>
+                                    {s.items.map((item, i) => (
+                                        <li key={i} style={{ marginBottom: "0.5rem" }}>✓ {item}</li>
+                                    ))}
+                                </ul>
+                                {s.cta && (
+                                    <div style={{ marginTop: "2rem" }}>
+                                        <Link to="/contact" className="btn">Talk to us →</Link>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Image Placeholder / Slot */}
+                            <div
+                                style={{
+                                    background: "rgba(99, 102, 241, 0.03)",
+                                    borderRadius: "12px",
+                                    width: "100%",
+                                    aspectRatio: "16 / 9",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    border: "1px dashed rgba(255, 255, 255, 0.1)",
+                                    position: "relative",
+                                    overflow: "hidden"
+                                }}
+                            >
+                                {s.image ? (
+                                    <img src={s.image} alt={s.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                ) : (
+                                    <div style={{ color: "var(--text-muted)", fontSize: "0.9rem", textAlign: "center", padding: "1rem" }}>
+                                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem", filter: "grayscale(1) opacity(0.5)" }}>✨</div>
+                                        Visual Insight Pending
+                                    </div>
+                                )}
+                                {/* Decorative Gradient Glow */}
+                                <div style={{
+                                    position: "absolute",
+                                    top: "-50%",
+                                    left: "-50%",
+                                    width: "200%",
+                                    height: "200%",
+                                    background: "radial-gradient(circle at center, rgba(6, 182, 212, 0.05) 0%, transparent 50%)",
+                                    pointerEvents: "none"
+                                }} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
-
-                {/* Process Automation */}
-                <div className="card" style={{ maxWidth: "900px", margin: "0 auto 3rem" }}>
-                    <h3>
-                        <img
-                            src={automationIcon}
-                            alt=""
-                            style={{ width: "28px", marginRight: "0.5rem", verticalAlign: "middle" }}
-                        />
-                        Process Automation & Workflow Enablement
-                    </h3>
-                    <p className="stack">
-                        Automate recurring work across operations, finance, HR, and support using
-                        no-code, low-code, and API-based orchestration.
-                    </p>
-                    <ul className="stack">
-                        <li>Business process automation across key back-office functions.</li>
-                        <li>No-code / low-code apps plus event-driven workflows.</li>
-                        <li>GenAI-assisted workflows and internal or customer-facing chatbots.</li>
-                    </ul>
-                </div>
-
-                {/* SaaS Building Blocks */}
-                <div className="card" style={{ maxWidth: "900px", margin: "0 auto 3rem" }}>
-                    <h3>
-                        <img
-                            src={saasIcon}
-                            alt=""
-                            style={{ width: "28px", marginRight: "0.5rem", verticalAlign: "middle" }}
-                        />
-                        SaaS Building Blocks
-                    </h3>
-                    <p className="stack">
-                        Plug-and-play components so your team does not reinvent the wheel for
-                        every product capability.
-                    </p>
-                    <ul className="stack">
-                        <li>Authentication, authorization, and user management.</li>
-                        <li>Billing, subscriptions, and usage-based metering.</li>
-                        <li>Email, SMS, WhatsApp, and in-app notifications.</li>
-                        <li>Logging, monitoring, and analytics dashboards.</li>
-                    </ul>
-                </div>
-
-                {/* DevOps */}
-                <div className="card" style={{ maxWidth: "900px", margin: "0 auto 3rem" }}>
-                    <h3>
-                        <img
-                            src={devopsIcon}
-                            alt=""
-                            style={{ width: "28px", marginRight: "0.5rem", verticalAlign: "middle" }}
-                        />
-                        DevOps & Platform Engineering
-                    </h3>
-                    <p className="stack">
-                        Production-ready delivery pipelines and platform capabilities designed
-                        to support rapid iteration without sacrificing reliability.
-                    </p>
-                    <ul className="stack">
-                        <li>CI/CD pipelines and Infrastructure as Code (Terraform).</li>
-                        <li>Kubernetes and container platforms where appropriate.</li>
-                        <li>Observability, alerting, and release automation.</li>
-                    </ul>
-                </div>
-
-                {/* AI & Data */}
-                <div className="card" style={{ maxWidth: "900px", margin: "0 auto 3rem" }}>
-                    <h3>
-                        <img
-                            src={aiIcon}
-                            alt=""
-                            style={{ width: "28px", marginRight: "0.5rem", verticalAlign: "middle" }}
-                        />
-                        AI & Data Enablement
-                    </h3>
-                    <p className="stack">
-                        Pragmatic AI and data platforms that align with your product roadmap
-                        and risk appetite.
-                    </p>
-                    <ul className="stack">
-                        <li>GenAI integrations, assistants, and copilots.</li>
-                        <li>Data platforms from ingestion pipelines to analytics.</li>
-                        <li>AI governance and lifecycle patterns suitable for startups.</li>
-                    </ul>
-                </div>
-
-                {/* Advisory */}
-                <div className="card" style={{ maxWidth: "900px", margin: "0 auto" }}>
-                    <h3>
-                        <img
-                            src={advisoryIcon}
-                            alt=""
-                            style={{ width: "28px", marginRight: "0.5rem", verticalAlign: "middle" }}
-                        />
-                        Fractional CTO & Technology Advisory
-                    </h3>
-                    <p className="stack">
-                        Senior technology leadership without the overhead of a full-time executive.
-                    </p>
-                    <ul className="stack">
-                        <li>Technology roadmap and architecture reviews.</li>
-                        <li>Tool selection, cost optimisation, and scaling strategies.</li>
-                        <li>Advisory support for founders, product leaders, and boards.</li>
-                    </ul>
-
-                    <div style={{ marginTop: "1.5rem" }}>
-                        <Link to="/contact" className="btn">
-                            Talk to us →
-                        </Link>
-                    </div>
-                </div>
-
             </div>
         </section>
     );

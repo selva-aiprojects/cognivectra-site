@@ -24,7 +24,7 @@ export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const location = useLocation();
 
-  const showChatbot = location.pathname === "/" || location.pathname === "/contact";
+  const showChatbot = true;
 
   return (
     <div className="appShell">
