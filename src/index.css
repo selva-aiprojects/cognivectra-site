@@ -160,7 +160,7 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   /* iOS safe area handling */
-  padding-top: var(--safe-area-top);
+  padding-top: calc(var(--safe-area-top) + clamp(65px, 12vw, 90px));
   padding-bottom: var(--safe-area-bottom);
 }
 
