@@ -105,6 +105,21 @@ export default function Navbar({ setIsChatOpen }) {
             <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
               Contact
             </NavLink>
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="btn-outline"
+              style={{
+                padding: '0.4rem 0.8rem',
+                fontSize: '0.85rem',
+                marginBottom: 0,
+                marginLeft: '1rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+            >
+              <span>💬</span> Chat with AI
+            </button>
           </nav>
 
           {/* Mobile Hamburger */}
@@ -145,7 +160,6 @@ export default function Navbar({ setIsChatOpen }) {
           />
         </div>
 
-<<<<<<< HEAD
         <div className="mobile-menu-content">
           <nav className="mobile-nav" aria-label="Mobile Navigation Links">
             <NavLink
@@ -157,50 +171,6 @@ export default function Navbar({ setIsChatOpen }) {
               <span className="mobile-nav-icon">🏠</span>
               Home
             </NavLink>
-=======
-        {/* Desktop Navigation */}
-        <nav className="links desktop-links">
-          <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
-            Home
-          </NavLink>
-          <NavLink to="/services" className={({ isActive }) => (isActive ? "active" : "")}>
-            Services
-          </NavLink>
-          <NavLink to="/engagements" className={({ isActive }) => (isActive ? "active" : "")}>
-            Engagements
-          </NavLink>
-          <NavLink to="/results" className={({ isActive }) => (isActive ? "active" : "")}>
-            Results
-          </NavLink>
-          <NavLink to="/industries" className={({ isActive }) => (isActive ? "active" : "")}>
-            Industries
-          </NavLink>
-          <NavLink to="/who-we-are" className={({ isActive }) => (isActive ? "active" : "")}>
-            Who We Are
-          </NavLink>
-          <NavLink to="/blog" className={({ isActive }) => (isActive ? "active" : "")}>
-            Blog
-          </NavLink>
-          <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
-            Contact
-          </NavLink>
-          <button
-            onClick={() => setIsChatOpen(true)}
-            className="btn-outline"
-            style={{
-              padding: '0.4rem 0.8rem',
-              fontSize: '0.85rem',
-              marginBottom: 0,
-              marginLeft: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}
-          >
-            <span>💬</span> Chat with AI
-          </button>
-        </nav>
->>>>>>> f6c70cea85948cd3df557deebbce1e754e753201
 
             <NavLink
               to="/services"
