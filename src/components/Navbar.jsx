@@ -284,7 +284,7 @@ export default function Navbar({ setIsChatOpen }) {
           color: white;
           border: none;
           border-radius: 50px;
-          font-weight: 600;
+          font-weight: 500;
           font-size: 0.9rem;
           cursor: pointer;
           transition: all 0.3s ease;
