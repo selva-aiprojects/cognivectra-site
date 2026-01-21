@@ -223,6 +223,7 @@ body.menu-open {
   overflow-y: auto;
   padding-top: clamp(65px, 12vw, 90px);
   position: relative;
+  z-index: 1;
 }
 
 /* =======================
@@ -293,22 +294,26 @@ p {
    PERFECT MOBILE NAVBAR - Enhanced for Touch
    ====================== */
 .nav {
-  position: fixed;
-  top: var(--safe-area-top);
-  left: 0;
-  right: 0;
-  height: clamp(65px, 12vw, 90px);
-  z-index: 1000;
+  position: fixed !important;
+  top: var(--safe-area-top) !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: clamp(65px, 12vw, 90px) !important;
+  z-index: 1000 !important;
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   /* iOS safe area handling */
-  padding-left: var(--safe-area-left);
-  padding-right: var(--safe-area-right);
-  background: transparent;
+  padding-left: var(--safe-area-left) !important;
+  padding-right: var(--safe-area-right) !important;
+  background: transparent !important;
 }
 
 .nav.scrolled {
-  background: rgba(11, 14, 20, 0.75);
-  backdrop-filter: blur(8px);
+  background: rgba(11, 14, 20, 0.75) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  height: clamp(55px, 10vw, 75px) !important;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.15) !important;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1) !important;
   -webkit-backdrop-filter: blur(8px);
   height: clamp(55px, 10vw, 75px);
   border-bottom: 1px solid rgba(99, 102, 241, 0.15);
