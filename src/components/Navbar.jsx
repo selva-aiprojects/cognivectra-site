@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/Logo.png";
 
 export default function SimpleNavbar({ setIsChatOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+
+    return () => {
+      document.body.classList.remove("menu-open");
+    };
+  }, [mobileMenuOpen]);
 
   const toggleMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -11,138 +23,135 @@ export default function SimpleNavbar({ setIsChatOpen }) {
 
   return (
     <>
-      <header style={{ 
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        right: 0, 
-        zIndex: 1000, 
-        background: 'rgba(99, 102, 241, 0.1)', 
-        padding: '10px',
-        borderBottom: '2px solid var(--accent-primary)'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px' }}>
+      <header className="nav">
+        <div className="navInner container">
           {/* Logo */}
-          <NavLink to="/" style={{ textDecoration: 'none', color: 'white', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src={logo} alt="CogniVectra Logo" style={{ height: '40px' }} />
-            <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>enterprise automation for startups</span>
+          <NavLink
+            to="/"
+            className="brand"
+            aria-label="CogniVectra Home"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <img src={logo} alt="CogniVectra Logo" className="brand-logo" />
+            <span className="brand-text">enterprise automation for startups</span>
           </NavLink>
 
           {/* Desktop Navigation */}
-          <nav style={{ display: 'none', gap: '10px' }} className="desktop-nav">
-            <NavLink to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none', padding: '8px' }}>Home</NavLink>
-            <NavLink to="/services" style={{ color: 'var(--text-secondary)', textDecoration: 'none', padding: '8px' }}>Services</NavLink>
-            <NavLink to="/contact" style={{ color: 'var(--text-secondary)', textDecoration: 'none', padding: '8px' }}>Contact</NavLink>
-            <button 
-              onClick={() => setIsChatOpen(true)}
-              style={{
-                background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '8px 16px',
-                cursor: 'pointer'
-              }}
-            >
-              AI Assistant
+          <nav className="links desktop-links" aria-label="Desktop Navigation">
+            <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
+              Home
+            </NavLink>
+            <NavLink to="/services" className={({ isActive }) => (isActive ? "active" : "")}>
+              Services
+            </NavLink>
+            <NavLink to="/engagements" className={({ isActive }) => (isActive ? "active" : "")}>
+              Engagements
+            </NavLink>
+            <NavLink to="/results" className={({ isActive }) => (isActive ? "active" : "")}>
+              Results
+            </NavLink>
+            <NavLink to="/industries" className={({ isActive }) => (isActive ? "active" : "")}>
+              Industries
+            </NavLink>
+            <NavLink to="/who-we-are" className={({ isActive }) => (isActive ? "active" : "")}>
+              Who We Are
+            </NavLink>
+            <NavLink to="/blog" className={({ isActive }) => (isActive ? "active" : "")}>
+              Blog
+            </NavLink>
+            <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
+              Contact
+            </NavLink>
+            <button onClick={() => setIsChatOpen(true)} className="ai-chat-button" aria-label="Chat with AI Assistant">
+              <span className="ai-button-text">AI Assistant</span>
+              <span className="ai-status-dot"></span>
+              <span className="ai-button-glow"></span>
             </button>
           </nav>
 
-          {/* WORKING HAMBURGER MENU */}
-          <button 
+          {/* Mobile Hamburger */}
+          <button
+            className={`hamburger-menu-toggle ${mobileMenuOpen ? "active" : ""}`}
             onClick={toggleMenu}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              width: '30px',
-              height: '21px',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0'
-            }}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
-            <span style={{
-              display: 'block',
-              width: '100%',
-              height: '3px',
-              background: 'var(--accent-primary)',
-              transition: 'all 0.3s ease',
-              transform: mobileMenuOpen ? 'rotate(45deg) translate(0, 8px)' : 'rotate(0) translate(0, 0)'
-            }}></span>
-            <span style={{
-              display: 'block',
-              width: '100%',
-              height: '3px',
-              background: 'var(--accent-primary)',
-              transition: 'all 0.3s ease',
-              opacity: mobileMenuOpen ? 0 : 1
-            }}></span>
-            <span style={{
-              display: 'block',
-              width: '100%',
-              height: '3px',
-              background: 'var(--accent-primary)',
-              transition: 'all 0.3s ease',
-              transform: mobileMenuOpen ? 'rotate(-45deg) translate(0, -8px)' : 'rotate(0) translate(0, 0)'
-            }}></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </header>
 
-      {/* WORKING MOBILE MENU */}
-      {mobileMenuOpen && (
-        <div style={{
-          position: 'fixed',
-          top: '70px',
-          left: 0,
-          right: 0,
-          background: 'var(--bg-secondary)',
-          zIndex: 999,
-          padding: '20px',
-          borderBottom: '1px solid var(--border-light)',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <NavLink to="/" style={{ color: 'var(--text-primary)', textDecoration: 'none', padding: '10px' }} onClick={toggleMenu}>Home</NavLink>
-            <NavLink to="/services" style={{ color: 'var(--text-primary)', textDecoration: 'none', padding: '10px' }} onClick={toggleMenu}>Services</NavLink>
-            <NavLink to="/contact" style={{ color: 'var(--text-primary)', textDecoration: 'none', padding: '10px' }} onClick={toggleMenu}>Contact</NavLink>
-            <button 
+      <div
+        className={`mobile-menu-overlay ${mobileMenuOpen ? "active" : ""}`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      <div
+        className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
+        id="mobile-menu"
+        aria-hidden={!mobileMenuOpen}
+        aria-label="Mobile Navigation"
+      >
+        <div className="mobile-menu-header">
+          <img src={logo} alt="CogniVectra Logo" className="mobile-menu-logo" />
+          <button className="mobile-close-btn" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" />
+        </div>
+
+        <div className="mobile-menu-content">
+          <nav className="mobile-nav" aria-label="Mobile Navigation Links">
+            <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">🏠</span>
+              Home
+            </NavLink>
+            <NavLink to="/services" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">⚡</span>
+              Services
+            </NavLink>
+            <NavLink to="/engagements" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">🤝</span>
+              Engagements
+            </NavLink>
+            <NavLink to="/results" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">📊</span>
+              Results
+            </NavLink>
+            <NavLink to="/industries" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">🏢</span>
+              Industries
+            </NavLink>
+            <NavLink to="/who-we-are" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">👥</span>
+              Who We Are
+            </NavLink>
+            <NavLink to="/blog" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">📝</span>
+              Blog
+            </NavLink>
+            <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
+              <span className="mobile-nav-icon">📞</span>
+              Contact
+            </NavLink>
+          </nav>
+
+          <div className="mobile-menu-footer">
+            <button
               onClick={() => {
-                toggleMenu();
+                setMobileMenuOpen(false);
                 setIsChatOpen(true);
               }}
-              style={{
-                background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '10px',
-                cursor: 'pointer',
-                marginTop: '10px'
-              }}
+              className="mobile-ai-chat-button"
+              aria-label="Chat with AI Assistant"
             >
-              Chat with AI Assistant
+              <span className="mobile-ai-text">Chat with AI Assistant</span>
+              <span className="mobile-ai-badge">NEW</span>
             </button>
-          </nav>
+          </div>
         </div>
-      )}
-
-      {/* CSS for responsive behavior */}
-      <style jsx>{`
-        @media (min-width: 769px) {
-          .desktop-nav {
-            display: flex !important;
-          }
-        }
-        
-        @media (max-width: 768px) {
-          .desktop-nav {
-            display: none !important;
-          }
-        }
-      `}</style>
+      </div>
     </>
   );
 }

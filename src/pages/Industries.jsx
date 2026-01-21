@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 // Hero image - using the same high-quality style as home page
 import industriesHero from "../assets/industries-sectors.png";
 
-// High-quality industry images
-import saasImage from "../assets/hero-automation-new.png";
-import fintechImage from "../assets/engagement-models.png";
-import healthImage from "../assets/hero-automation.png";
-import ecommerceImage from "../assets/home-hero-automation.png";
-import edtechImage from "../assets/hero-automation-new.png";
-import logisticsImage from "../assets/engagement-models.png";
+// High-quality industry images - unique per industry
+import saasImage from "../assets/illustrations/industries-saas.svg";
+import fintechImage from "../assets/illustrations/industries-fintech.svg";
+import healthImage from "../assets/illustrations/industries-healthcare.svg";
+import ecommerceImage from "../assets/illustrations/industries-ecommerce.svg";
+import edtechImage from "../assets/illustrations/industries-edtech.svg";
+import logisticsImage from "../assets/illustrations/industries-ecommerce.svg"; // fallback to ecommerce if logistics not present
 
 export default function Industries() {
     const industries = [

@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 // Hero image - using the same high-quality style as home page
 import servicesHero from "../assets/cognivectra-capabilities-hero.png";
 
-// Service images
-import cloudInfraImage from "../assets/hero-automation-new.png";
-import automationImage from "../assets/hero-automation.png";
-import saasImage from "../assets/home-hero-automation.png";
-import devopsImage from "../assets/engagement-models.png";
-import aiImage from "../assets/hero-automation-new.png";
-import advisoryImage from "../assets/engagement-models.png";
+// Service images - use unique, high-quality illustrations per service
+import cloudInfraImage from "../assets/illustrations/cloud-infrastructure-premium.svg";
+import automationImage from "../assets/illustrations/process-automation-premium.svg";
+import saasImage from "../assets/illustrations/saas-platform-premium.svg";
+import devopsImage from "../assets/illustrations/devops-platform.svg";
+import aiImage from "../assets/illustrations/ai-data-platform.svg";
+import advisoryImage from "../assets/illustrations/strategic-leadership.svg";
 
 export default function Services() {
     const services = [

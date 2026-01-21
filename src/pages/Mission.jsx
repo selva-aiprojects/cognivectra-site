@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-// Hero image - using the same high-quality style as home page
+// Hero image - use the mission-vision.png instead of generic hero
 import missionHero from "../assets/mission-vision.png";
 
 export default function Mission() {

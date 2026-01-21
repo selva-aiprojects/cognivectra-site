@@ -444,8 +444,8 @@ p {
   background: var(--accent-secondary);
 }
 
-/* Show hamburger only on mobile */
-@media (max-width: 768px) {
+/* Show hamburger only on mobile/tablet */
+@media (max-width: 1100px) {
   .hamburger-menu-toggle {
     display: flex !important;
     flex-direction: column;
@@ -467,7 +467,7 @@ p {
 }
 
 /* MOBILE MENU - INSTANTLY VISIBLE */
-.mobile-menu {
+.mobile-menu--topdrop {
   position: fixed;
   top: 90px;
   left: 0;
@@ -485,13 +485,13 @@ p {
   z-index: 2999;
 }
 
-.mobile-menu.open {
+.mobile-menu--topdrop.open {
   opacity: 1 !important;
   visibility: visible !important;
   transform: translateY(0) !important;
 }
 
-.mobile-menu a {
+.mobile-menu--topdrop a {
   display: block;
   padding: 1.25rem 20px;
   font-size: 1.1rem;
@@ -499,10 +499,10 @@ p {
   color: var(--text-primary) !important;
 }
 
-.mobile-menu a:hover,
-.mobile-menu a.active {
-background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08));
-color: var(--accent-primary) !important;
+.mobile-menu--topdrop a:hover,
+.mobile-menu--topdrop a.active {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08));
+  color: var(--accent-primary) !important;
 }
 
 /* =======================
@@ -534,11 +534,15 @@ color: var(--accent-primary) !important;
 .mobile-menu {
   position: fixed;
   top: 0;
+  left: auto;
   right: -100%;
   width: 85%;
   max-width: 320px;
   height: 100vh;
-  background: var(--bg-mobile-menu);
+  background: #0B0E14 !important;
+  color: #F8FAFC !important;
+  display: flex;
+  flex-direction: column;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-left: 1px solid var(--border-light);
@@ -548,10 +552,19 @@ color: var(--accent-primary) !important;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
 
 .mobile-menu.active {
   right: 0;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  transform: translateY(0) !important;
+  background: #0B0E14 !important;
+  color: #F8FAFC !important;
 }
 
 /* Mobile Menu Header */
@@ -561,7 +574,7 @@ color: var(--accent-primary) !important;
   left: 0;
   right: 0;
   height: clamp(65px, 12vw, 90px);
-  background: var(--bg-glass);
+  background: rgba(11, 14, 20, 0.92) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-light);
@@ -570,6 +583,7 @@ color: var(--accent-primary) !important;
   justify-content: space-between;
   padding: 0 20px;
   z-index: 3000;
+  color: #F8FAFC;
 }
 
 .mobile-menu-logo {
@@ -580,6 +594,7 @@ color: var(--accent-primary) !important;
 /* Mobile Menu Content */
 .mobile-menu-content {
   padding: 20px;
+  color: #F8FAFC;
 }
 
 .mobile-nav {
@@ -595,7 +610,7 @@ color: var(--accent-primary) !important;
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  color: var(--text-primary);
+  color: #F8FAFC !important;
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 500;
@@ -1190,14 +1205,64 @@ ul li::before {
   }
 }
 
-/* TABLET (769px-1023px) */
-@media (min-width: 769px) {
+/* TABLET (769px-1100px) */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  .links {
+    display: flex !important;
+    gap: 0.5rem;
+  }
+
+  .links a {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .brand-text {
+    display: none;
+  }
+
+  .brand-logo {
+    height: 60px;
+  }
+
+  .section {
+    padding: 4rem 0;
+  }
+
+  .grid2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+
+  button,
+  .btn,
+  .btn-outline {
+    width: auto;
+    min-width: 140px;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* DESKTOP (1101px+) */
+@media (min-width: 1101px) {
   .container {
     padding: 0 24px;
   }
 
   /* Hide mobile menu elements on tablet/desktop */
   .hamburger,
+  .hamburger-menu-toggle,
   .mobile-menu-overlay,
   .mobile-menu,
   .mobile-close-btn {
@@ -1562,19 +1627,20 @@ ul li::before {
 /* =======================
    NAVBAR SPECIFIC BREAKPOINTS
    ====================== */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .desktop-links {
     display: none !important;
   }
 
-  .hamburger {
+  .hamburger-menu-toggle {
     display: flex !important;
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1101px) {
 
   .hamburger,
+  .hamburger-menu-toggle,
   .mobile-menu-overlay,
   .mobile-menu {
     display: none !important;
@@ -1609,7 +1675,7 @@ ul li::before {
 }
 
 /* Show hamburger only on mobile - FINAL OVERRIDE */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .hamburger-menu-toggle {
     display: flex !important;
     flex-direction: column !important;

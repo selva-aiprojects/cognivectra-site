@@ -16,6 +16,10 @@ export default function Chatbot({ isOpen, setIsOpen }) {
     });
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef(null);
+    const [floatingPos, setFloatingPos] = useState({ x: null, y: null });
+    const isDraggingRef = useRef(false);
+    const dragOffsetRef = useRef({ x: 0, y: 0 });
+    const containerRef = useRef(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -31,6 +35,60 @@ export default function Chatbot({ isOpen, setIsOpen }) {
             addBotMessage("👋 Hello! I'm your virtual assistant. I'm here to help you find the perfect technology solution for your startup. What's your name?");
         }
     }, [isOpen]);
+
+    useEffect(() => {
+        if (floatingPos.x !== null && floatingPos.y !== null) return;
+        if (typeof window === 'undefined') return;
+
+        const margin = 24;
+        const defaultWidth = 380;
+        const defaultHeight = 520;
+        const toggleSize = 64;
+        const gap = 16;
+
+        const x = Math.max(margin, window.innerWidth - defaultWidth - margin);
+        const y = Math.max(margin, window.innerHeight - (defaultHeight + toggleSize + gap + margin));
+        setFloatingPos({ x, y });
+    }, [floatingPos.x, floatingPos.y]);
+
+    useEffect(() => {
+        const onMove = (clientX, clientY) => {
+            if (!isDraggingRef.current) return;
+            const el = containerRef.current;
+            const rect = el ? el.getBoundingClientRect() : { width: 420, height: 620 };
+
+            const margin = 8;
+            const nextX = clientX - dragOffsetRef.current.x;
+            const nextY = clientY - dragOffsetRef.current.y;
+
+            const maxX = window.innerWidth - rect.width - margin;
+            const maxY = window.innerHeight - rect.height - margin;
+
+            setFloatingPos({
+                x: Math.min(Math.max(margin, nextX), Math.max(margin, maxX)),
+                y: Math.min(Math.max(margin, nextY), Math.max(margin, maxY))
+            });
+        };
+
+        const handleMouseMove = (e) => onMove(e.clientX, e.clientY);
+        const handleTouchMove = (e) => {
+            if (!e.touches || e.touches.length === 0) return;
+            onMove(e.touches[0].clientX, e.touches[0].clientY);
+        };
+        const stopDragging = () => { isDraggingRef.current = false; };
+
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', stopDragging);
+        document.addEventListener('touchmove', handleTouchMove, { passive: true });
+        document.addEventListener('touchend', stopDragging);
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', stopDragging);
+            document.removeEventListener('touchmove', handleTouchMove);
+            document.removeEventListener('touchend', stopDragging);
+        };
+    }, []);
 
     const addBotMessage = (text, delay = 800) => {
         setIsTyping(true);
@@ -194,11 +252,13 @@ export default function Chatbot({ isOpen, setIsOpen }) {
     if (!setIsOpen) return null; // Placeholder for safety
 
     return (
-        <div style={{
+        <div ref={containerRef} style={{
             position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            zIndex: 1000,
+            left: floatingPos.x !== null ? `${floatingPos.x}px` : 'auto',
+            top: floatingPos.y !== null ? `${floatingPos.y}px` : 'auto',
+            right: floatingPos.x === null ? '2rem' : 'auto',
+            bottom: floatingPos.y === null ? '2rem' : 'auto',
+            zIndex: 2500,
             fontFamily: 'var(--font-primary, system-ui, sans-serif)',
             display: 'flex',
             flexDirection: 'column',
@@ -220,14 +280,32 @@ export default function Chatbot({ isOpen, setIsOpen }) {
                     animation: 'slideUp 0.3s ease-out'
                 }}>
                     {/* Header */}
-                    <div style={{
+                    <div
+                        onMouseDown={(e) => {
+                            isDraggingRef.current = true;
+                            const rect = containerRef.current?.getBoundingClientRect();
+                            const baseX = rect ? rect.left : 0;
+                            const baseY = rect ? rect.top : 0;
+                            dragOffsetRef.current = { x: e.clientX - baseX, y: e.clientY - baseY };
+                        }}
+                        onTouchStart={(e) => {
+                            if (!e.touches || e.touches.length === 0) return;
+                            isDraggingRef.current = true;
+                            const rect = containerRef.current?.getBoundingClientRect();
+                            const baseX = rect ? rect.left : 0;
+                            const baseY = rect ? rect.top : 0;
+                            dragOffsetRef.current = { x: e.touches[0].clientX - baseX, y: e.touches[0].clientY - baseY };
+                        }}
+                        style={{
                         background: '#1e293b !important',
                         color: '#ffffff !important',
                         padding: '1.25rem',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        borderBottom: '3px solid #4f46e5 !important'
+                        borderBottom: '3px solid #4f46e5 !important',
+                        cursor: 'move',
+                        userSelect: 'none'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                             <div style={{ width: '32px', height: '32px', background: '#4f46e5 !important', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🤖</div>

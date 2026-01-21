@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+// Add a hero image for Results page
+import resultsHero from "../assets/engagement-models.png";
+
 export default function Results() {
     return (
         <section className="section ai-neutral">
@@ -8,19 +11,49 @@ export default function Results() {
                 <div 
                     className="card hero-card"
                     style={{
-                        maxWidth: "1000px",
+                        maxWidth: "1200px",
                         margin: "0 auto 4rem",
-                        textAlign: "center",
+                        display: "grid",
+                        gridTemplateColumns: "1.1fr 0.9fr",
+                        gap: "3rem",
+                        alignItems: "center",
                         padding: "3rem 2.5rem"
                     }}
                 >
-                    <div style={{ fontSize: "3rem", marginBottom: "1rem", opacity: 0.8 }}>📈</div>
-                    <h2>Results & Case Snapshots</h2>
-                    <p className="stack" style={{ fontSize: "1.1rem", maxWidth: "700px", margin: "0 auto" }}>
-                        CogniVectra helps startups and teams move from fragile setups to
-                        reliable, automated platforms. Here are a few examples of the kind
-                        of impact we aim to deliver.
-                    </p>
+                    <div>
+                        <h2>Results & Case Snapshots</h2>
+                        <p className="stack" style={{ fontSize: "1.1rem" }}>
+                            CogniVectra helps startups and teams move from fragile setups to
+                            reliable, automated platforms. Here are a few examples of the kind
+                            of impact we aim to deliver.
+                        </p>
+                        <div style={{ marginTop: "2rem" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                                <span style={{ fontSize: "1.2rem" }}>🚀</span>
+                                <strong>Faster Releases</strong>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                                <span style={{ fontSize: "1.2rem" }}>🤖</span>
+                                <strong>AI Enablement</strong>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                                <span style={{ fontSize: "1.2rem" }}>💼</span>
+                                <strong>Automation Wins</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <img
+                            src={resultsHero}
+                            alt="Results: Faster releases, AI enablement, automation wins"
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                borderRadius: "12px",
+                                boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+                            }}
+                        />
+                    </div>
                 </div>
 
                 {/* Case 1 */}

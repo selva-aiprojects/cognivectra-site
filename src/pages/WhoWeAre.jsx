@@ -1,3 +1,6 @@
+// Add a hero image for WhoWeAre page
+import aboutHero from "../assets/illustrations/about-expertise.svg";
+
 export default function WhoWeAre() {
   return (
     <section className="section ai-neutral">
@@ -37,22 +40,17 @@ export default function WhoWeAre() {
           </div>
 
           {/* Visual Element */}
-          <div style={{ textAlign: "center" }}>
-            <div style={{
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.05))",
-              borderRadius: "16px",
-              padding: "3rem",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "1.5rem"
-            }}>
-              <div style={{ fontSize: "4rem", opacity: 0.8 }}>🏗️</div>
-              <h3 style={{ color: "var(--accent-primary)" }}>Startup-Focused Engineering</h3>
-              <p style={{ color: "var(--text-secondary)", textAlign: "center" }}>
-                Pragmatic technology solutions designed for startup velocity and sustainability
-              </p>
-            </div>
+          <div>
+            <img
+              src={aboutHero}
+              alt="About CogniVectra: Startup-focused engineering and expertise"
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "12px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+              }}
+            />
           </div>
         </div>
 
