@@ -112,18 +112,14 @@ export default function Navbar({ setIsChatOpen }) {
             >
               <span className="ai-icon-wrapper">
                 <svg className="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H5C3.89543 16 3 15.1046 3 14V6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V14C21 15.1046 20.1046 16 19 16H14L9 21V16Z"
-                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M9.5 9.5C9.77614 9.5 10 9.27614 10 9C10 8.72386 9.77614 8.5 9.5 8.5C9.22386 8.5 9 8.72386 9 9C9 9.27614 9.22386 9.5 9.5 9.5Z"
-                    fill="currentColor" stroke="currentColor" strokeWidth="0.5" />
-                  <path d="M13.5 9.5C13.7761 9.5 14 9.27614 14 9C14 8.72386 13.7761 8.5 13.5 8.5C13.2239 8.5 13 8.72386 13 9C13 9.27614 13.2239 9.5 13.5 9.5Z"
-                    fill="currentColor" stroke="currentColor" strokeWidth="0.5" />
-                  <path d="M17.5 9.5C17.7761 9.5 18 9.27614 18 9C18 8.72386 17.7761 8.5 17.5 8.5C17.2239 8.5 17 8.72386 17 9C17 9.27614 17.2239 9.5 17.5 9.5Z"
-                    fill="currentColor" stroke="currentColor" strokeWidth="0.5" />
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="8" y1="9" x2="16" y2="9" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="8" y1="13" x2="14" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
               </span>
               <span className="ai-button-text">AI Assistant</span>
-              <span className="ai-button-pulse"></span>
+              <span className="ai-status-dot"></span>
+              <span className="ai-button-glow"></span>
             </button>
           </nav>
 
@@ -279,58 +275,88 @@ export default function Navbar({ setIsChatOpen }) {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          padding: 0.6rem 1.2rem;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 0.5rem 1rem;
+          background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
           color: white;
           border: none;
-          border-radius: 50px;
-          font-weight: 500;
-          font-size: 0.9rem;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 0.85rem;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
           position: relative;
           overflow: hidden;
           margin-left: 1rem;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+          box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          flex-shrink: 0;
         }
 
         .ai-chat-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-          background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+          transform: translateY(-2px) scale(1.01);
+          box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+          background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
         }
 
         .ai-chat-button:active {
-          transform: translateY(0);
+          transform: translateY(-1px) scale(1.005);
         }
 
         .ai-icon-wrapper {
           display: flex;
           align-items: center;
           justify-content: center;
+          position: relative;
         }
 
         .ai-icon {
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           color: white;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+          transition: transform 0.3s ease;
+        }
+
+        .ai-chat-button:hover .ai-icon {
+          transform: scale(1.1);
         }
 
         .ai-button-text {
           position: relative;
-          z-index: 1;
+          z-index: 2;
+          font-weight: 600;
+          letter-spacing: 0.01em;
         }
 
-        .ai-button-pulse {
+        .ai-status-dot {
           position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 0;
-          height: 0;
+          top: 6px;
+          right: 6px;
+          width: 6px;
+          height: 6px;
+          background: #4ade80;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.3);
-          animation: pulse 2s infinite;
+          border: 2px solid white;
+          animation: statusPulse 2s infinite;
+          z-index: 3;
+        }
+
+        .ai-button-glow {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+          border-radius: 12px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .ai-chat-button:hover .ai-button-glow {
+          opacity: 1;
         }
 
         .mobile-ai-chat-button {
@@ -378,6 +404,17 @@ export default function Navbar({ setIsChatOpen }) {
           border-radius: 20px;
           font-weight: 700;
           animation: glow 2s infinite;
+        }
+
+        @keyframes statusPulse {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.6;
+            transform: scale(1.2);
+          }
         }
 
         @keyframes pulse {

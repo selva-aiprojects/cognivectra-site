@@ -88,11 +88,17 @@ export default function Contact() {
       <div className="container">
         {/* Hero Section */}
         <div
-          className="card"
-          style={{ maxWidth: "800px", margin: "0 auto 3rem", textAlign: "center" }}
+          className="card hero-card"
+          style={{
+            maxWidth: "1000px",
+            margin: "0 auto 4rem",
+            textAlign: "center",
+            padding: "3rem 2.5rem"
+          }}
         >
+          <div style={{ fontSize: "3rem", marginBottom: "1rem", opacity: 0.8 }}>💬</div>
           <h2>Start a conversation</h2>
-          <p className="stack" style={{ fontSize: "1.1rem" }}>
+          <p className="stack" style={{ fontSize: "1.1rem", maxWidth: "600px", margin: "0 auto" }}>
             Not ready for a full pitch? Neither are we. <br />
             Tell us what you are building, and we will tell you if we can help (and how).
           </p>
@@ -173,7 +179,7 @@ export default function Contact() {
 
           {/* Contact Info */}
           <section className="card">
-            <div style={{ paddingBottom: "1.5rem", marginBottom: "1.5rem", borderBottom: "1px solid #e2e8f0" }}>
+            <div style={{ paddingBottom: "1.5rem", marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)" }}>
               <h3>Prefer to talk?</h3>
               <p className="stack" style={{ marginBottom: "1rem" }}>
                 Skip the form and book a 15-min intro call with our Principal Architect.
@@ -186,9 +192,10 @@ export default function Contact() {
             <h3>Connect with us</h3>
             <div className="stack">
               <div className="service-group">
-                <p>
-                  <strong>📧 Email</strong>
-                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                  <span style={{ fontSize: "1.2rem" }}>📧</span>
+                  <strong>Email</strong>
+                </div>
                 <p>
                   <a href="mailto:selvakumar.b@cognivectra.com">
                     selvakumar.b@cognivectra.com
@@ -197,18 +204,20 @@ export default function Contact() {
               </div>
 
               <div className="service-group">
-                <p>
-                  <strong>📱 WhatsApp</strong>
-                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                  <span style={{ fontSize: "1.2rem" }}>📱</span>
+                  <strong>WhatsApp</strong>
+                </div>
                 <p>
                   <a href="https://wa.me/918825492600">+91 8825492600</a>
                 </p>
               </div>
 
               <div className="service-group">
-                <p>
-                  <strong>🌐 Follow us</strong>
-                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                  <span style={{ fontSize: "1.2rem" }}>🌐</span>
+                  <strong>Follow us</strong>
+                </div>
                 <ul>
                   <li>
                     <a href="https://www.linkedin.com/company/cognivectra-innovations-solutions/?viewAsMember=true">

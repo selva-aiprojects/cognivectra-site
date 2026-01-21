@@ -1,78 +1,201 @@
-import missionImage from "../assets/mission-vision.png";
+import { Link } from "react-router-dom";
+
+// Hero image - using the same high-quality style as home page
+import missionHero from "../assets/mission-vision.png";
 
 export default function Mission() {
-  return (
-    <section className="section ai-neutral">
-      <div className="container">
+    return (
+        <section className="section ai-neutral">
+            <div className="container">
+                {/* Hero Section - Matching Home Page Style */}
+                <div 
+                    className="card hero-card"
+                    style={{
+                        maxWidth: "1200px",
+                        margin: "0 auto 4rem",
+                        display: "grid",
+                        gridTemplateColumns: "1.1fr 0.9fr",
+                        gap: "3rem",
+                        alignItems: "center",
+                        padding: "3rem 2.5rem"
+                    }}
+                >
+                    <div>
+                        <h2>Mission & Vision</h2>
+                        <p className="stack" style={{ fontSize: "1.1rem" }}>
+                            We help startups build reliable, automated platforms that scale with confidence.
+                            Our mission is to make enterprise-grade infrastructure accessible to every
+                            founder, and our vision is a world where technology enables innovation without friction.
+                        </p>
+                        <div style={{ marginTop: "2rem" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                                <span style={{ fontSize: "1.2rem" }}>🎯</span>
+                                <strong>Mission: Empower Founders</strong>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                                <span style={{ fontSize: "1.2rem" }}>🔭</span>
+                                <strong>Vision: Frictionless Innovation</strong>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                                <span style={{ fontSize: "1.2rem" }}>💎</span>
+                                <strong>Values: Excellence & Simplicity</strong>
+                            </div>
+                        </div>
+                    </div>
 
-        {/* Mission Hero */}
-        <div className="card" style={{ maxWidth: "800px", margin: "0 auto 3rem" }}>
-          <h2>Our Mission</h2>
-          <p className="stack">
-            Our mission is to help startups build intelligent, automated, and resilient
-            technology foundations so they can operate smarter, scale faster, and stay
-            focused on customers instead of infrastructure.
-          </p>
-          <p className="stack">
-            Intelligence for us is not just about AI. It is the combination of clear
-            thinking, robust architecture, thoughtful automation, and disciplined
-            execution—so your cloud, data, and processes work together as one system.
-          </p>
-        </div>
+                    <div>
+                        <img
+                            src={missionHero}
+                            alt="Mission and vision: empowering founders with frictionless innovation"
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                borderRadius: "12px",
+                                boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+                            }}
+                        />
+                    </div>
+                </div>
 
-        {/* Mission Visual: How We Work */}
-        <div
-          className="card"
-          style={{
-            maxWidth: "900px",
-            margin: "0 auto 3rem",
-            textAlign: "center",
-          }}
-        >
-          <img
-            src={missionImage}
-            alt="CogniVectra mission illustrated as a layered approach from cloud foundations to intelligent insights"
-            style={{
-              maxWidth: "600px",
-              width: "100%",
-              height: "auto",
-              margin: "0 auto",
-              display: "block",
-            }}
-          />
-        </div>
+                {/* Visual Break Section */}
+                <div style={{ margin: "3rem auto", textAlign: "center" }}>
+                    <div style={{
+                        background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
+                        borderRadius: "20px",
+                        padding: "2.5rem",
+                        maxWidth: "800px",
+                        margin: "0 auto"
+                    }}>
+                        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🚀</div>
+                        <h3 style={{ color: "var(--accent-primary)", marginBottom: "1rem" }}>
+                            Enabling Innovation at Scale
+                        </h3>
+                        <p className="stack" style={{ maxWidth: "600px", margin: "0 auto" }}>
+                            We believe great technology should be invisible, allowing founders to focus
+                            on what matters most: building amazing products and serving their customers
+                        </p>
+                    </div>
+                </div>
 
-        {/* Guiding Principles */}
-        <div className="card" style={{ maxWidth: "800px", margin: "0 auto 2rem" }}>
-          <h2>Guiding Principles</h2>
-          <ul className="stack" style={{ paddingLeft: "1.5rem" }}>
-            <li>Start with business outcomes, not tools or buzzwords.</li>
-            <li>Design for simplicity first—simple systems scale better than complex ones.</li>
-            <li>Treat automation as a product, with owners, feedback, and iteration.</li>
-            <li>Build cloud and data foundations that can evolve as the startup grows.</li>
-            <li>Prioritize reliability, security, and observability from day zero.</li>
-            <li>Reuse proven patterns and components; reinvent only where differentiation matters.</li>
-            <li>Create systems that remain understandable, maintainable, and valuable long term.</li>
-          </ul>
-        </div>
+                {/* Guiding Principles */}
+                <div className="grid2">
+                    <section className="card" style={{ padding: "2.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                            <div style={{ fontSize: "2rem", opacity: 0.7 }}>🎯</div>
+                            <h3>Founder-First</h3>
+                        </div>
+                        <p className="stack">
+                            We prioritize founder needs and business outcomes over technical complexity.
+                            Our solutions are designed to solve real business problems and accelerate growth.
+                        </p>
+                        <ul className="stack">
+                            <li>Business outcomes over technical complexity</li>
+                            <li>Rapid time-to-value for founders</li>
+                            <li>Scalable solutions that grow with your business</li>
+                        </ul>
+                    </section>
 
-        {/* Who We Serve */}
-        <div className="card" style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h2>Who We Serve</h2>
-          <p className="stack">
-            CogniVectra partners with founders and teams who need enterprise-grade
-            automation and cloud foundations without building a large in-house platform team.
-          </p>
-          <ul className="stack" style={{ paddingLeft: "1.5rem" }}>
-            <li>Early-stage startups from Pre-Seed to Series B.</li>
-            <li>SaaS and product-led startups building multi-tenant platforms.</li>
-            <li>AI-native and data-driven startups with strong data backbones.</li>
-            <li>Non-technical founders who need reliable, scalable IT foundations.</li>
-            <li>Founders in FinTech, HealthTech, InsurTech, EdTech, and regulated domains.</li>
-          </ul>
-        </div>
+                    <section className="card" style={{ padding: "2.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                            <div style={{ fontSize: "2rem", opacity: 0.7 }}>🔭</div>
+                            <h3>Long-Term Thinking</h3>
+                        </div>
+                        <p className="stack">
+                            We build foundations that support today's needs and tomorrow's growth.
+                            Our solutions are designed for scalability and long-term success.
+                        </p>
+                        <ul className="stack">
+                            <li>Scalable architecture from day one</li>
+                            <li>Future-proof technology choices</li>
+                            <li>Sustainable technical debt management</li>
+                        </ul>
+                    </section>
+                </div>
 
-      </div>
-    </section>
-  );
+                <div className="grid2">
+                    <section className="card" style={{ padding: "2.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                            <div style={{ fontSize: "2rem", opacity: 0.7 }}>💎</div>
+                            <h3>Excellence & Simplicity</h3>
+                        </div>
+                        <p className="stack">
+                            We deliver sophisticated solutions that are remarkably simple to use.
+                            Complex problems deserve elegant, user-friendly solutions.
+                        </p>
+                        <ul className="stack">
+                            <li>Enterprise-grade quality with startup speed</li>
+                            <li>Clean, maintainable code and architecture</li>
+                            <li>Intuitive user experiences</li>
+                        </ul>
+                    </section>
+
+                    <section className="card" style={{ padding: "2.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                            <div style={{ fontSize: "2rem", opacity: 0.7 }}>🤝</div>
+                            <h3>Partnership Approach</h3>
+                        </div>
+                        <p className="stack">
+                            We work as an extension of your team, not just as consultants.
+                            Your success is our success.
+                        </p>
+                        <ul className="stack">
+                            <li>Collaborative problem-solving</li>
+                            <li>Knowledge transfer and team enablement</li>
+                            <li>Long-term partnership mindset</li>
+                        </ul>
+                    </section>
+                </div>
+
+                {/* Who We Serve */}
+                <div className="card" style={{ maxWidth: "900px", margin: "3rem auto 0", padding: "3rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                        <div style={{ fontSize: "2.5rem", opacity: 0.7 }}>👥</div>
+                        <h3>Who We Serve</h3>
+                    </div>
+                    <p className="stack">
+                        Early-stage to Series B startups who need strong technical foundations but
+                        lack the time or expertise to build them from scratch.
+                    </p>
+                    <div className="grid2" style={{ marginTop: "2rem" }}>
+                        <div>
+                            <h4 style={{ color: "var(--accent-primary)", marginBottom: "1rem" }}>🚀 Pre-Seed to Seed</h4>
+                            <ul className="stack">
+                                <li>Founders building their first product</li>
+                                <li>Teams needing MVP infrastructure</li>
+                                <li>Companies preparing for first customers</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style={{ color: "var(--accent-primary)", marginBottom: "1rem" }}>📈 Series A to B</h4>
+                            <ul className="stack">
+                                <li>Scaling teams and products</li>
+                                <li>Improving reliability and performance</li>
+                                <li>Preparing for enterprise customers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {/* CTA */}
+                <div 
+                    className="card"
+                    style={{
+                        maxWidth: "700px",
+                        margin: "3rem auto 0",
+                        textAlign: "center",
+                        padding: "3rem"
+                    }}
+                >
+                    <h3 style={{ marginBottom: "1.5rem" }}>Ready to Build Your Foundation?</h3>
+                    <p className="stack" style={{ fontSize: "1.1rem", marginBottom: "2rem" }}>
+                        Let's discuss how we can help you build the technical foundation
+                        for your next stage of growth.
+                    </p>
+                    <Link to="/contact" className="btn">
+                        Start the Conversation →
+                    </Link>
+                </div>
+            </div>
+        </section>
+    );
 }

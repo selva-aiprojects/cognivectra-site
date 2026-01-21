@@ -1,0 +1,113 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="saasGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="blockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:0.7" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#0B0E14"/>
+  
+  <!-- Central Platform -->
+  <rect x="150" y="120" width="100" height="60" rx="8" fill="url(#saasGrad)" stroke="#6366F1" stroke-width="2"/>
+  <text x="200" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">SaaS Platform</text>
+  
+  <!-- Building Blocks -->
+  <!-- Authentication Block -->
+  <g transform="translate(50, 50)">
+    <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#blockGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    <circle cx="0" cy="-5" r="8" fill="#10B981" opacity="0.8"/>
+    <path d="M -3 -8 L 3 -8 L 3 -2 L -3 -2 Z" fill="#0B0E14"/>
+    <circle cx="-8" cy="0" r="2" fill="#06B6D4"/>
+    <circle cx="0" cy="0" r="2" fill="#06B6D4"/>
+    <circle cx="8" cy="0" r="2" fill="#06B6D4"/>
+    <text x="0" y="20" text-anchor="middle" fill="#94A3B8" font-size="10">Auth</text>
+  </g>
+  
+  <!-- Billing Block -->
+  <g transform="translate(350, 50)">
+    <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#blockGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    <rect x="-15" y="-10" width="30" height="20" rx="4" fill="#10B981" opacity="0.8"/>
+    <text x="0" y="-2" text-anchor="middle" fill="#0B0E14" font-size="12" font-weight="bold">$</text>
+    <text x="0" y="20" text-anchor="middle" fill="#94A3B8" font-size="10">Billing</text>
+  </g>
+  
+  <!-- Notifications Block -->
+  <g transform="translate(50, 250)">
+    <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#blockGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    <path d="M -10 -10 L 10 -10 L 10 0 L -10 0 Z" fill="#F59E0B" opacity="0.8"/>
+    <circle cx="8" cy="-8" r="4" fill="#EF4444"/>
+    <text x="0" y="20" text-anchor="middle" fill="#94A3B8" font-size="10">Notifications</text>
+  </g>
+  
+  <!-- Analytics Block -->
+  <g transform="translate(350, 250)">
+    <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#blockGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    <rect x="-20" y="-5" width="40" height="20" rx="2" fill="#10B981" opacity="0.8"/>
+    <rect x="-15" y="0" width="5" height="10" fill="#06B6D4" opacity="0.8"/>
+    <rect x="-5" y="-5" width="5" height="15" fill="#F59E0B" opacity="0.8"/>
+    <rect x="5" y="-8" width="5" height="18" fill="#EF4444" opacity="0.8"/>
+    <text x="0" y="20" text-anchor="middle" fill="#94A3B8" font-size="10">Analytics</text>
+  </g>
+  
+  <!-- API Block -->
+  <g transform="translate(150, 250)">
+    <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#blockGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    <circle cx="-15" cy="0" r="3" fill="#10B981"/>
+    <circle cx="0" cy="0" r="3" fill="#06B6D4"/>
+    <circle cx="15" cy="0" r="3" fill="#F59E0B"/>
+    <path d="M -15 0 L 15 0" stroke="#6366F1" stroke-width="2"/>
+    <text x="0" y="20" text-anchor="middle" fill="#94A3B8" font-size="10">API</text>
+  </g>
+  
+  <!-- Database Block -->
+  <g transform="translate(250, 250)">
+    <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#blockGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    <ellipse cx="0" cy="-5" rx="20" ry="8" fill="#8B5CF6" opacity="0.8"/>
+    <rect x="-20" y="-5" width="40" height="20" fill="#8B5CF6" opacity="0.8"/>
+    <ellipse cx="0" cy="15" rx="20" ry="8" fill="#6366F1" opacity="0.8"/>
+    <text x="0" y="35" text-anchor="middle" fill="#94A3B8" font-size="10">Database</text>
+  </g>
+  
+  <!-- Connection Lines -->
+  <path d="M 85 75 L 150 120" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+  <path d="M 315 75 L 250 120" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+  <path d="M 85 225 L 150 180" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+  <path d="M 315 225 L 250 180" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Data Flow Indicators -->
+  <g transform="translate(100, 90)">
+    <circle cx="0" cy="0" r="3" fill="#10B981" opacity="0.8">
+      <animate attributeName="cy" values="0;-10;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <g transform="translate(300, 90)">
+    <circle cx="0" cy="0" r="3" fill="#10B981" opacity="0.8">
+      <animate attributeName="cy" values="0;-10;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <g transform="translate(100, 210)">
+    <circle cx="0" cy="0" r="3" fill="#10B981" opacity="0.8">
+      <animate attributeName="cy" values="0;10;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <g transform="translate(300, 210)">
+    <circle cx="0" cy="0" r="3" fill="#10B981" opacity="0.8">
+      <animate attributeName="cy" values="0;10;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Central Hub Indicator -->
+  <circle cx="200" cy="150" r="5" fill="#10B981">
+    <animate attributeName="r" values="5;8;5" dur="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

@@ -1,186 +1,181 @@
 import { Link } from "react-router-dom";
 
-// Hero image
+// Hero image - using the same high-quality style as home page
 import servicesHero from "../assets/cognivectra-capabilities-hero.png";
 
-// Service icons
-import cloudIcon from "../assets/icons/icon-cloud-platform.svg";
-import automationIcon from "../assets/icons/icon-process-automation.svg";
-import saasIcon from "../assets/icons/icon-saas-blocks.svg";
-import devopsIcon from "../assets/icons/icon-devops.svg";
-import aiIcon from "../assets/icons/icon-ai-data.svg";
-import advisoryIcon from "../assets/icons/icon-advisory.svg";
+// Service images
+import cloudInfraImage from "../assets/hero-automation-new.png";
+import automationImage from "../assets/hero-automation.png";
+import saasImage from "../assets/home-hero-automation.png";
+import devopsImage from "../assets/engagement-models.png";
+import aiImage from "../assets/hero-automation-new.png";
+import advisoryImage from "../assets/engagement-models.png";
 
 export default function Services() {
     const services = [
         {
             title: "Cloud Infrastructure for Startups",
-            icon: cloudIcon,
             description: "Secure, scalable, and cost-aware cloud foundations on AWS, GCP, or Azure tailored for SaaS and AI-native startups.",
             items: [
                 "Cloud landing zones and multi-account / multi-environment setup.",
                 "Network, security, and identity baselines baked in.",
                 "FinOps-ready design to keep costs predictable."
             ],
-            image: null // service_cloud_infrastructure.png
+            image: cloudInfraImage
         },
         {
             title: "Process Automation & Workflow Enablement",
-            icon: automationIcon,
             description: "Automate recurring work across operations, finance, HR, and support using no-code, low-code, and API-based orchestration.",
             items: [
                 "Business process automation across key back-office functions.",
                 "No-code / low-code apps plus event-driven workflows.",
                 "GenAI-assisted workflows and internal or customer-facing chatbots."
             ],
-            image: null // service_process_automation.png
+            image: automationImage
         },
         {
             title: "SaaS Building Blocks",
-            icon: saasIcon,
             description: "Plug-and-play components so your team does not reinvent the wheel for every product capability.",
             items: [
                 "Authentication, authorization, and user management.",
-                "Billing, subscriptions, and usage-based metering.",
-                "Email, SMS, WhatsApp, and in-app notifications.",
-                "Logging, monitoring, and analytics dashboards."
+                "Billing, subscription management, and usage analytics.",
+                "Notifications, email delivery, and customer communication."
             ],
-            image: null // service_saas_blocks.png
+            image: saasImage
         },
         {
             title: "DevOps & Platform Engineering",
-            icon: devopsIcon,
-            description: "Production-ready delivery pipelines and platform capabilities designed to support rapid iteration without sacrificing reliability.",
+            description: "Build, ship, and run software faster with CI/CD, infrastructure as code, and platform engineering best practices.",
             items: [
-                "CI/CD pipelines and Infrastructure as Code (Terraform).",
-                "Kubernetes and container platforms where appropriate.",
-                "Observability, alerting, and release automation."
+                "CI/CD pipelines with automated testing and deployment.",
+                "Infrastructure as Code and GitOps workflows.",
+                "Observability, monitoring, and reliability engineering."
             ],
-            image: null // service_devops_platform.png
+            image: devopsImage
         },
         {
-            title: "AI & Data Enablement",
-            icon: aiIcon,
-            description: "Pragmatic AI and data platforms that align with your product roadmap and risk appetite.",
+            title: "AI Enablement & Data Engineering",
+            description: "Integrate AI capabilities into your products and build data pipelines that power intelligent experiences.",
             items: [
-                "GenAI integrations, assistants, and copilots.",
-                "Data platforms from ingestion pipelines to analytics.",
-                "AI governance and lifecycle patterns suitable for startups."
+                "ML model deployment and MLOps pipelines.",
+                "Data warehousing, ETL, and real-time streaming.",
+                "API integration with AI services and custom model development."
             ],
-            image: null // service_ai_data.png
+            image: aiImage
         },
         {
-            title: "Fractional CTO & Technology Advisory",
-            icon: advisoryIcon,
-            description: "Senior technology leadership without the overhead of a full-time executive.",
+            title: "CTO Advisory & Fractional Leadership",
+            description: "Strategic technology guidance and hands-on leadership to help you make the right architectural decisions and build high-performing teams.",
             items: [
                 "Technology roadmap and architecture reviews.",
-                "Tool selection, cost optimisation, and scaling strategies.",
-                "Advisory support for founders, product leaders, and boards."
+                "Team building, hiring, and engineering culture.",
+                "Vendor selection, due diligence, and technical due diligence."
             ],
-            image: null, // service_advisory_cto.png
-            cta: true
+            image: advisoryImage
         }
     ];
 
     return (
-        <section className="section ai-neutral">
+        <section className="section" style={{ padding: "6rem 0" }}>
             <div className="container">
-                {/* Services Hero */}
-                <div
-                    className="card no-hover-effect"
-                    style={{ maxWidth: "1000px", margin: "0 auto 5rem", textAlign: "center", padding: "4rem 2rem" }}
-                >
-                    <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>Our Capabilities</h1>
-                    <p className="stack" style={{ fontSize: "1.2rem", color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
-                        CogniVectra provides modular, pay-as-you-grow services that help startups
-                        build reliable cloud foundations, automate workflows, and bring AI into
-                        their products and operations.
-                    </p>
+                {/* Hero Section */}
+                <div className="grid2" style={{ alignItems: "center" }}>
+                    <div>
+                        <h1 style={{ marginBottom: "1.5rem" }}>Services</h1>
+                        <p className="stack" style={{ fontSize: "1.2rem", marginBottom: "2rem" }}>
+                            End-to-end technology solutions designed for startups who need to move fast and build right.
+                            From cloud foundations to AI integration, we provide the expertise and execution
+                            to deliver solutions that truly matter for your startup's success
+                        </p>
+                        <div style={{ marginTop: "2rem" }}>
+                            {services.map((service, index) => (
+                                <div key={index} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                                    <img src={service.image} alt={service.title} style={{ width: "24px", height: "24px", borderRadius: "4px" }} />
+                                    <strong>{service.title}</strong>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
-                    <img
-                        src={servicesHero}
-                        alt="Services overview"
-                        style={{
-                            maxWidth: "850px",
-                            width: "100%",
-                            height: "auto",
-                            borderRadius: "16px",
-                            boxShadow: "var(--shadow-lg)"
-                        }}
-                    />
+                    <div>
+                        <img
+                            src={servicesHero}
+                            alt="Services: Cloud Infrastructure, DevOps, Automation, AI Enablement"
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                borderRadius: "12px",
+                                boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+                            }}
+                        />
+                    </div>
                 </div>
 
-                {/* Service Items */}
-                <div className="stack" style={{ gap: "4rem" }}>
-                    {services.map((s, idx) => (
-                        <div
-                            key={idx}
-                            className="card"
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-                                gap: "3rem",
-                                alignItems: "center",
-                                padding: "3rem"
-                            }}
-                        >
-                            <div style={{ order: idx % 2 === 0 ? 0 : 1 }}>
-                                <h2 style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                                    <img src={s.icon} alt="" style={{ width: "32px", height: "32px" }} />
-                                    {s.title}
-                                </h2>
-                                <p className="stack" style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
-                                    {s.description}
-                                </p>
-                                <ul className="stack" style={{ marginTop: "1.5rem" }}>
-                                    {s.items.map((item, i) => (
-                                        <li key={i} style={{ marginBottom: "0.5rem" }}>✓ {item}</li>
-                                    ))}
-                                </ul>
-                                {s.cta && (
-                                    <div style={{ marginTop: "2rem" }}>
-                                        <Link to="/contact" className="btn">Talk to us →</Link>
-                                    </div>
-                                )}
+                {/* Services Grid - Consistent Layout */}
+                <div className="grid2">
+                    {services.map((service, index) => (
+                        <section key={index} className="card" style={{ padding: "2.5rem" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+                                <div style={{ fontSize: "2rem", opacity: 0.7 }}>
+                                    <img src={service.image} alt={service.title} style={{ width: "40px", height: "40px", borderRadius: "8px" }} />
+                                </div>
+                                <h3>{service.title}</h3>
                             </div>
-
-                            {/* Image Placeholder / Slot */}
-                            <div
-                                style={{
-                                    background: "rgba(99, 102, 241, 0.03)",
-                                    borderRadius: "12px",
-                                    width: "100%",
-                                    aspectRatio: "16 / 9",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    border: "1px dashed rgba(255, 255, 255, 0.1)",
-                                    position: "relative",
-                                    overflow: "hidden"
-                                }}
-                            >
-                                {s.image ? (
-                                    <img src={s.image} alt={s.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                                ) : (
-                                    <div style={{ color: "var(--text-muted)", fontSize: "0.9rem", textAlign: "center", padding: "1rem" }}>
-                                        <div style={{ fontSize: "2rem", marginBottom: "0.5rem", filter: "grayscale(1) opacity(0.5)" }}>✨</div>
-                                        Visual Insight Pending
-                                    </div>
-                                )}
-                                {/* Decorative Gradient Glow */}
-                                <div style={{
-                                    position: "absolute",
-                                    top: "-50%",
-                                    left: "-50%",
-                                    width: "200%",
-                                    height: "200%",
-                                    background: "radial-gradient(circle at center, rgba(6, 182, 212, 0.05) 0%, transparent 50%)",
-                                    pointerEvents: "none"
-                                }} />
+                            <p className="stack" style={{ marginBottom: "1.5rem" }}>
+                                {service.description}
+                            </p>
+                            
+                            {/* High-Quality Service Image */}
+                            <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+                                <img
+                                    src={service.image}
+                                    alt={service.title}
+                                    style={{
+                                        width: "100%",
+                                        maxWidth: "300px",
+                                        height: "auto",
+                                        borderRadius: "12px",
+                                        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                                        background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
+                                        padding: "1rem"
+                                    }}
+                                />
                             </div>
-                        </div>
+                            
+                            <ul className="stack">
+                                {service.items.map((item, itemIndex) => (
+                                    <li key={itemIndex} style={{ marginBottom: "0.5rem" }}>
+                                        ✓ {item}
+                                    </li>
+                                ))}
+                            </ul>
+                            <div style={{ marginTop: "2rem" }}>
+                                <Link to="/contact" className="btn">
+                                    Learn More →
+                                </Link>
+                            </div>
+                        </section>
                     ))}
+                </div>
+
+                {/* CTA */}
+                <div 
+                    className="card"
+                    style={{
+                        maxWidth: "700px",
+                        margin: "3rem auto 0",
+                        textAlign: "center",
+                        padding: "3rem"
+                    }}
+                >
+                    <h3 style={{ marginBottom: "1.5rem" }}>Ready to Accelerate Your Growth?</h3>
+                    <p className="stack" style={{ fontSize: "1.1rem", marginBottom: "2rem" }}>
+                        Let's discuss how we can help you build the technical foundation
+                        for your next stage of growth.
+                    </p>
+                    <Link to="/contact" className="btn">
+                        Schedule Your Strategy Session →
+                    </Link>
                 </div>
             </div>
         </section>

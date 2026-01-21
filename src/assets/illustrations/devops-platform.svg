@@ -1,0 +1,130 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="devopsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="pipelineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:0.7" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#0B0E14"/>
+  
+  <!-- CI/CD Pipeline -->
+  <g transform="translate(50, 100)">
+    <!-- Pipeline Stages -->
+    <rect x="0" y="0" width="60" height="40" rx="6" fill="url(#pipelineGrad)" stroke="#10B981" stroke-width="2"/>
+    <text x="30" y="25" text-anchor="middle" fill="white" font-size="10" font-weight="bold">CODE</text>
+    
+    <rect x="70" y="0" width="60" height="40" rx="6" fill="url(#pipelineGrad)" stroke="#10B981" stroke-width="2"/>
+    <text x="100" y="25" text-anchor="middle" fill="white" font-size="10" font-weight="bold">BUILD</text>
+    
+    <rect x="140" y="0" width="60" height="40" rx="6" fill="url(#pipelineGrad)" stroke="#10B981" stroke-width="2"/>
+    <text x="170" y="25" text-anchor="middle" fill="white" font-size="10" font-weight="bold">TEST</text>
+    
+    <rect x="210" y="0" width="60" height="40" rx="6" fill="url(#pipelineGrad)" stroke="#10B981" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" fill="white" font-size="10" font-weight="bold">DEPLOY</text>
+    
+    <!-- Pipeline Connections -->
+    <path d="M 60 20 L 70 20" stroke="#06B6D4" stroke-width="3"/>
+    <path d="M 130 20 L 140 20" stroke="#06B6D4" stroke-width="3"/>
+    <path d="M 200 20 L 210 20" stroke="#06B6D4" stroke-width="3"/>
+    
+    <!-- Progress Indicators -->
+    <circle cx="30" cy="20" r="4" fill="#10B981">
+      <animate attributeName="r" values="4;6;4" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="100" cy="20" r="4" fill="#F59E0B">
+      <animate attributeName="r" values="4;6;4" dur="1s" begin="0.25s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="170" cy="20" r="4" fill="#F59E0B">
+      <animate attributeName="r" values="4;6;4" dur="1s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="240" cy="20" r="4" fill="#10B981">
+      <animate attributeName="r" values="4;6;4" dur="1s" begin="0.75s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Kubernetes Cluster -->
+  <g transform="translate(320, 80)">
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.6"/>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.6"/>
+    
+    <!-- Pods -->
+    <circle cx="-15" cy="-15" r="8" fill="#06B6D4" opacity="0.8"/>
+    <circle cx="15" cy="-15" r="8" fill="#06B6D4" opacity="0.8"/>
+    <circle cx="-15" cy="15" r="8" fill="#06B6D4" opacity="0.8"/>
+    <circle cx="15" cy="15" r="8" fill="#06B6D4" opacity="0.8"/>
+    <circle cx="0" cy="0" r="8" fill="#10B981" opacity="0.8"/>
+    
+    <text x="0" y="60" text-anchor="middle" fill="#94A3B8" font-size="12">Kubernetes</text>
+  </g>
+  
+  <!-- Infrastructure as Code -->
+  <g transform="translate(50, 200)">
+    <rect x="-40" y="-30" width="80" height="60" rx="8" fill="url(#devopsGrad)" stroke="#6366F1" stroke-width="2"/>
+    <text x="0" y="-10" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Terraform</text>
+    
+    <!-- Code Lines -->
+    <rect x="-30" y="0" width="60" height="3" rx="1" fill="#10B981" opacity="0.8"/>
+    <rect x="-30" y="5" width="50" height="3" rx="1" fill="#06B6D4" opacity="0.8"/>
+    <rect x="-30" y="10" width="55" height="3" rx="1" fill="#F59E0B" opacity="0.8"/>
+    <rect x="-30" y="15" width="45" height="3" rx="1" fill="#EF4444" opacity="0.8"/>
+    
+    <text x="0" y="40" text-anchor="middle" fill="#94A3B8" font-size="10">Infrastructure as Code</text>
+  </g>
+  
+  <!-- Monitoring Dashboard -->
+  <g transform="translate(200, 200)">
+    <rect x="-40" y="-30" width="80" height="60" rx="8" fill="url(#devopsGrad)" stroke="#6366F1" stroke-width="2"/>
+    
+    <!-- Charts -->
+    <rect x="-30" y="-20" width="25" height="30" rx="2" fill="#10B981" opacity="0.8"/>
+    <rect x="-30" y="-20" width="25" height="20" rx="2" fill="#06B6D4" opacity="0.8"/>
+    <rect x="-30" y="-20" width="25" height="15" rx="2" fill="#F59E0B" opacity="0.8"/>
+    
+    <rect x="5" y="-20" width="25" height="25" rx="2" fill="#10B981" opacity="0.8"/>
+    <rect x="5" y="-20" width="25" height="18" rx="2" fill="#06B6D4" opacity="0.8"/>
+    <rect x="5" y="-20" width="25" height="12" rx="2" fill="#F59E0B" opacity="0.8"/>
+    
+    <text x="0" y="40" text-anchor="middle" fill="#94A3B8" font-size="10">Monitoring</text>
+  </g>
+  
+  <!-- Docker Containers -->
+  <g transform="translate(320, 200)">
+    <rect x="-25" y="-20" width="50" height="40" rx="8" fill="#06B6D4" opacity="0.8" stroke="#06B6D4" stroke-width="2"/>
+    <rect x="-20" y="-15" width="40" height="30" rx="4" fill="#0B0E14"/>
+    <circle cx="0" cy="-5" r="3" fill="#10B981"/>
+    <rect x="-15" y="0" width="30" height="2" fill="#06B6D4"/>
+    <rect x="-15" y="5" width="30" height="2" fill="#06B6D4"/>
+    <rect x="-15" y="10" width="30" height="2" fill="#06B6D4"/>
+    
+    <text x="0" y="35" text-anchor="middle" fill="#94A3B8" font-size="10">Docker</text>
+  </g>
+  
+  <!-- Connection Lines -->
+  <path d="M 150 120 L 280 80" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 90 200 L 160 200" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 240 200 L 295 200" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 150 140 L 200 170" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  
+  <!-- Automation Indicator -->
+  <g transform="translate(200, 150)">
+    <circle cx="0" cy="0" r="8" fill="#10B981" opacity="0.8">
+      <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="12" fill="none" stroke="#10B981" stroke-width="2" opacity="0.6">
+      <animate attributeName="r" values="12;20;12" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Success Indicator -->
+  <g transform="translate(270, 120)">
+    <circle cx="0" cy="0" r="12" fill="#10B981" opacity="0.8"/>
+    <path d="M -5 0 L -2 3 L 5 -4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

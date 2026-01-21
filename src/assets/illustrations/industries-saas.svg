@@ -1,0 +1,144 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="saasGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="appGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:0.7" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#0B0E14"/>
+  
+  <!-- SaaS Platform -->
+  <g transform="translate(200, 80)">
+    <rect x="-60" y="-30" width="120" height="60" rx="12" fill="url(#saasGrad)" stroke="#6366F1" stroke-width="2"/>
+    
+    <!-- Multi-tenant Layers -->
+    <rect x="-50" y="-20" width="100" height="8" rx="4" fill="#8B5CF6" opacity="0.8"/>
+    <rect x="-45" y="-8" width="90" height="8" rx="4" fill="#06B6D4" opacity="0.8"/>
+    <rect x="-40" y="4" width="80" height="8" rx="4" fill="#10B981" opacity="0.8"/>
+    <rect x="-35" y="16" width="70" height="8" rx="4" fill="#F59E0B" opacity="0.8"/>
+    
+    <!-- User Icons -->
+    <circle cx="-30" cy="-10" r="4" fill="#10B981"/>
+    <circle cx="-10" cy="-10" r="4" fill="#06B6D4"/>
+    <circle cx="10" cy="-10" r="4" fill="#F59E0B"/>
+    <circle cx="30" cy="-10" r="4" fill="#EF4444"/>
+    
+    <circle cx="-30" cy="0" r="4" fill="#10B981"/>
+    <circle cx="-10" cy="0" r="4" fill="#06B6D4"/>
+    <circle cx="10" cy="0" r="4" fill="#F59E0B"/>
+    <circle cx="30" cy="0" r="4" fill="#EF4444"/>
+    
+    <circle cx="-30" cy="10" r="4" fill="#10B981"/>
+    <circle cx="-10" cy="10" r="4" fill="#06B6D4"/>
+    <circle cx="10" cy="10" r="4" fill="#F59E0B"/>
+    <circle cx="30" cy="10" r="4" fill="#EF4444"/>
+    
+    <text x="0" y="40" text-anchor="middle" fill="white" font-size="14" font-weight="bold">SaaS Platform</text>
+  </g>
+  
+  <!-- Growth Chart -->
+  <g transform="translate(320, 200)">
+    <rect x="-30" y="-30" width="60" height="60" rx="8" fill="url(#appGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    
+    <!-- Chart -->
+    <rect x="-20" y="10" width="8" height="15" fill="#10B981" opacity="0.8"/>
+    <rect x="-8" y="0" width="8" height="25" fill="#06B6D4" opacity="0.8"/>
+    <rect x="4" y="-10" width="8" height="35" fill="#F59E0B" opacity="0.8"/>
+    <rect x="16" y="-20" width="8" height="45" fill="#EF4444" opacity="0.8"/>
+    
+    <!-- Arrow -->
+    <path d="M 0 -25 L 0 25" stroke="#10B981" stroke-width="3" opacity="0.8"/>
+    <path d="M -5 20 L 0 25 L 5 20" stroke="#10B981" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <text x="0" y="40" text-anchor="middle" fill="#94A3B8" font-size="10">Growth</text>
+  </g>
+  
+  <!-- Cloud Infrastructure -->
+  <g transform="translate(80, 200)">
+    <rect x="-30" y="-30" width="60" height="60" rx="8" fill="url(#appGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    
+    <!-- Cloud Shape -->
+    <ellipse cx="0" cy="-10" rx="25" ry="15" fill="#06B6D4" opacity="0.6"/>
+    <ellipse cx="-15" cy="-8" rx="15" ry="10" fill="#06B6D4" opacity="0.6"/>
+    <ellipse cx="15" cy="-8" rx="15" ry="10" fill="#06B6D4" opacity="0.6"/>
+    
+    <!-- Server -->
+    <rect x="-15" y="5" width="30" height="20" rx="4" fill="#8B5CF6" opacity="0.8"/>
+    <rect x="-10" y="10" width="20" height="3" rx="1" fill="#10B981" opacity="0.8"/>
+    <rect x="-10" y="15" width="20" height="3" rx="1" fill="#06B6D4" opacity="0.8"/>
+    <rect x="-10" y="20" width="20" height="3" rx="1" fill="#F59E0B" opacity="0.8"/>
+    
+    <text x="0" y="40" text-anchor="middle" fill="#94A3B8" font-size="10">Infrastructure</text>
+  </g>
+  
+  <!-- API Connections -->
+  <g transform="translate(200, 200)">
+    <rect x="-30" y="-30" width="60" height="60" rx="8" fill="url(#appGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    
+    <!-- API Endpoints -->
+    <circle cx="-15" cy="-15" r="4" fill="#10B981"/>
+    <circle cx="0" cy="-15" r="4" fill="#06B6D4"/>
+    <circle cx="15" cy="-15" r="4" fill="#F59E0B"/>
+    
+    <circle cx="-15" cy="0" r="4" fill="#10B981"/>
+    <circle cx="0" cy="0" r="4" fill="#06B6D4"/>
+    <circle cx="15" cy="0" r="4" fill="#F59E0B"/>
+    
+    <circle cx="-15" cy="15" r="4" fill="#10B981"/>
+    <circle cx="0" cy="15" r="4" fill="#06B6D4"/>
+    <circle cx="15" cy="15" r="4" fill="#F59E0B"/>
+    
+    <!-- Connection Lines -->
+    <path d="M -15 -15 L 15 -15" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+    <path d="M -15 0 L 15 0" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+    <path d="M -15 15 L 15 15" stroke="#06B6D4" stroke-width="2" opacity="0.6"/>
+    
+    <text x="0" y="40" text-anchor="middle" fill="#94A3B8" font-size="10">APIs</text>
+  </g>
+  
+  <!-- Data Flow -->
+  <g transform="translate(50, 80)">
+    <rect x="-25" y="-20" width="50" height="40" rx="6" fill="url(#appGrad)" stroke="#8B5CF6" stroke-width="2"/>
+    
+    <!-- Data Flow -->
+    <path d="M -15 -10 L 15 -10" stroke="#10B981" stroke-width="3" opacity="0.8"/>
+    <path d="M -15 0 L 15 0" stroke="#06B6D4" stroke-width="3" opacity="0.8"/>
+    <path d="M -15 10 L 15 10" stroke="#F59E0B" stroke-width="3" opacity="0.8"/>
+    
+    <!-- Data Points -->
+    <circle cx="-15" cy="-10" r="3" fill="#10B981"/>
+    <circle cx="0" cy="-10" r="3" fill="#06B6D4"/>
+    <circle cx="15" cy="-10" r="3" fill="#F59E0B"/>
+    
+    <circle cx="-15" cy="0" r="3" fill="#10B981"/>
+    <circle cx="0" cy="0" r="3" fill="#06B6D4"/>
+    <circle cx="15" cy="0" r="3" fill="#F59E0B"/>
+    
+    <circle cx="-15" cy="10" r="3" fill="#10B981"/>
+    <circle cx="0" cy="10" r="3" fill="#06B6D4"/>
+    <circle cx="15" cy="10" r="3" fill="#F59E0B"/>
+    
+    <text x="0" y="30" text-anchor="middle" fill="#94A3B8" font-size="10">Data Flow</text>
+  </g>
+  
+  <!-- Connection Lines -->
+  <path d="M 75 80 L 140 80" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 260 80 L 320 200" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 110 200 L 170 200" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 230 200 L 170 200" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  <path d="M 50 110 L 140 50" stroke="#06B6D4" stroke-width="2" opacity="0.4" stroke-dasharray="5,5"/>
+  
+  <!-- Animated Elements -->
+  <g transform="translate(200, 150)">
+    <circle cx="0" cy="0" r="8" fill="#10B981" opacity="0.8">
+      <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
