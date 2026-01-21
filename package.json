@@ -1,20 +1,5 @@
 {
-  "name": "cognivectra-site",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "generate-post": "node scripts/ai_content_agent.js",
-    "generate-post:enhanced": "node scripts/ai_content_agent_enhanced.js",
-    "publish:linkedin": "node scripts/publish_to_social.js",
-    "schedule-posts": "node scripts/scheduler.js"
-  },
   "dependencies": {
-    "@supabase/supabase-js": "^2.90.1",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "openai": "^6.16.0",
