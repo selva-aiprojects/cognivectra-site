@@ -32,7 +32,7 @@ export default function App() {
       <Navbar setIsChatOpen={setIsChatOpen} />
 
       {/* Main Content */}
-      <main style={{ minHeight: "80vh" }}>
+      <main className="main-content">
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
