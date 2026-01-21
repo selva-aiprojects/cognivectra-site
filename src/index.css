@@ -222,6 +222,7 @@ body.menu-open {
   flex: 1;
   overflow-y: auto;
   padding-top: clamp(65px, 12vw, 90px);
+  position: relative;
 }
 
 /* =======================
@@ -1056,7 +1057,8 @@ ul li::before {
   background: var(--bg-secondary);
   padding: clamp(2rem, 6vw, 3rem) 0 1.5rem;
   border-top: 1px solid var(--border-light);
-  /* iOS safe area handling */
+  position: relative;
+  z-index: 999;
   padding-bottom: calc(1.5rem + var(--safe-area-bottom));
 }
 
