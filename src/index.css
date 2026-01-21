@@ -160,7 +160,7 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   /* iOS safe area handling */
-  padding-top: calc(var(--safe-area-top) + clamp(65px, 12vw, 90px));
+  padding-top: var(--safe-area-top);
   padding-bottom: var(--safe-area-bottom);
 }
 
@@ -204,6 +204,8 @@ body.menu-open {
   /* iOS safe area handling */
   padding-left: calc(20px + var(--safe-area-left));
   padding-right: calc(20px + var(--safe-area-right));
+  /* Add top padding to account for fixed navbar */
+  padding-top: clamp(65px, 12vw, 90px);
 }
 
 /* =======================
