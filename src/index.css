@@ -227,6 +227,9 @@ body.menu-open {
   /* iOS safe area handling */
   padding-left: calc(20px + var(--safe-area-left));
   padding-right: calc(20px + var(--safe-area-right));
+  /* Container styles */
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 /* =======================
