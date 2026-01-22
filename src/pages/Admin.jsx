@@ -83,30 +83,72 @@ export default function Admin() {
   }
 
   return (
-    <section className="section ai-neutral">
-      <div className="container">
+    <>
+      {/* HERO */}
+      <section className="hero-modern">
+        <div className="hero-bg-gradient"></div>
 
-        {/* HEADER */}
-        <div className="admin-header">
-          <div>
-            <h1>🛠 Admin Dashboard</h1>
-            <p className="muted">Review and publish AI-generated content</p>
+        <div className="hero-modern-inner">
+          <div className="hero-copy">
+            <span className="hero-badge">🛠 Admin Dashboard</span>
+            <h1>
+              Content <br />
+              Management
+            </h1>
+            <p>
+              Review, edit, and publish AI-generated content
+              with our streamlined admin interface.
+            </p>
+            <p className="hero-subtext">
+              Full control over your content pipeline
+            </p>
           </div>
 
-          <div className="admin-actions">
-            <Link to="/admin/reports" className="btn-outline">
-              📊 Reports
-            </Link>
-            <button onClick={handleSignOut} className="btn-outline">
-              🚪 Sign Out
-            </button>
+          <div className="hero-visual">
+            <div className="hero-glass-card">
+              <ul>
+                <li>📝 Edit drafts instantly</li>
+                <li>🚀 One-click publishing</li>
+                <li>📊 Content analytics</li>
+                <li>🔄 Real-time updates</li>
+                <li>📱 Mobile-friendly interface</li>
+              </ul>
+            </div>
           </div>
         </div>
+      </section>
+
+      {/* MAIN CONTENT */}
+      <section className="services-modern">
+        <div className="container">
+          {/* HEADER ACTIONS */}
+          <div className="service-modern-card admin-header-card">
+            <div>
+              <h3>Content Queue</h3>
+              <p className="muted">Manage your AI-generated posts and drafts</p>
+            </div>
+            <div className="admin-header-actions">
+              <Link to="/admin/reports" className="btn-outline">
+                📊 Reports
+              </Link>
+              <button onClick={handleSignOut} className="btn-outline">
+                🚪 Sign Out
+              </button>
+            </div>
+          </div>
 
         {/* EDIT MODE */}
         {editingPost && (
-          <div className="card admin-editor">
-            <h3>Edit Post</h3>
+          <div className="service-modern-card admin-editor-card">
+            <div className="admin-editor-header">
+              <h3>✏️ Edit Post</h3>
+              <button
+                className="btn-outline btn-small"
+                onClick={() => setEditingPost(null)}
+              >
+                ❌ Cancel
+              </button>
+            </div>
 
             <form onSubmit={handleSave} className="form">
               <label>
@@ -147,14 +189,6 @@ export default function Admin() {
                 <button type="submit" className="btn">
                   💾 Save Changes
                 </button>
-
-                <button
-                  type="button"
-                  className="btn-outline"
-                  onClick={() => setEditingPost(null)}
-                >
-                  ❌ Cancel
-                </button>
               </div>
             </form>
           </div>
@@ -162,9 +196,9 @@ export default function Admin() {
 
         {/* POSTS LIST */}
         {!editingPost && (
-          <div className="admin-post-list">
+          <div className="admin-post-grid">
             {posts.map(post => (
-              <div key={post.id} className="card admin-post-row">
+              <div key={post.id} className="service-modern-card admin-post-card">
 
                 <div className="admin-post-info">
                   <span
@@ -213,7 +247,8 @@ export default function Admin() {
           </div>
         )}
 
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }
