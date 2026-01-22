@@ -60,7 +60,7 @@ export default function Footer() {
             </div>
 
             <div className="footer-social">
-              <a href="https://www.linkedin.com/company/cognivectra-innovations-solutions/" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/cognivectra-innovations-solutions/?viewAsMember=true" aria-label="LinkedIn">
                 in
               </a>
               <a href="#" aria-label="Twitter">
