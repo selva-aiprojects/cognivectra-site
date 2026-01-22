@@ -223,7 +223,7 @@ body.menu-open {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: clamp(65px, 12vw, 90px) 20px clamp(80px, 10vw, 120px) 20px;
+  padding: 20px 20px clamp(80px, 10vw, 120px) 20px;
   /* iOS safe area handling */
   padding-left: calc(20px + var(--safe-area-left));
   padding-right: calc(20px + var(--safe-area-right));
@@ -300,17 +300,17 @@ p {
    PERFECT MOBILE NAVBAR - Enhanced for Touch
    ====================== */
 .nav {
-  position: fixed !important;
-  top: var(--safe-area-top) !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: clamp(65px, 12vw, 90px) !important;
-  z-index: 1000 !important;
+  position: relative;
+  top: var(--safe-area-top);
+  left: 0;
+  right: 0;
+  height: clamp(65px, 12vw, 90px);
+  z-index: 1000;
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   /* iOS safe area handling */
-  padding-left: var(--safe-area-left) !important;
-  padding-right: var(--safe-area-right) !important;
-  background: transparent !important;
+  padding-left: var(--safe-area-left);
+  padding-right: var(--safe-area-right);
+  background: transparent;
 }
 
 .nav.scrolled {
