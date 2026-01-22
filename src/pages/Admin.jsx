@@ -1,170 +1,219 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Admin() {
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [editingPost, setEditingPost] = useState(null);
-    const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingPost, setEditingPost] = useState(null);
 
-    useEffect(() => {
-        checkUser();
-    }, []);
+  const navigate = useNavigate();
 
-    async function checkUser() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-            navigate('/login');
-        } else {
-            fetchDrafts();
-        }
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  async function checkUser() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) navigate("/login");
+    else fetchDrafts();
+  }
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    navigate("/login");
+  }
+
+  async function fetchDrafts() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error) setPosts(data || []);
+    setLoading(false);
+  }
+
+  async function handlePublish(post) {
+    if (!window.confirm(`Publish "${post.title}"?`)) return;
+
+    const { error } = await supabase
+      .from("posts")
+      .update({
+        status: "published",
+        published_at: new Date().toISOString()
+      })
+      .eq("id", post.id);
+
+    if (error) alert("Error publishing: " + error.message);
+    else {
+      alert("Post published!");
+      fetchDrafts();
     }
+  }
 
-    async function handleSignOut() {
-        await supabase.auth.signOut();
-        navigate('/login');
+  async function handleSave(e) {
+    e.preventDefault();
+
+    const { error } = await supabase
+      .from("posts")
+      .update({
+        title: editingPost.title,
+        excerpt: editingPost.excerpt,
+        body: editingPost.body
+      })
+      .eq("id", editingPost.id);
+
+    if (error) alert("Error saving: " + error.message);
+    else {
+      alert("Changes saved.");
+      setEditingPost(null);
+      fetchDrafts();
     }
+  }
 
-    async function fetchDrafts() {
-        setLoading(true);
-        // Fetch all posts order by created_at desc
-        const { data, error } = await supabase
-            .from('posts')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) console.error(error);
-        else setPosts(data || []);
-        setLoading(false);
-    }
-
-    async function handlePublish(post) {
-        if (!window.confirm(`Are you sure you want to publish "${post.title}"?`)) return;
-
-        const { error } = await supabase
-            .from('posts')
-            .update({ status: 'published', published_at: new Date() })
-            .eq('id', post.id);
-
-        if (error) alert('Error publishing: ' + error.message);
-        else {
-            alert('Post published!');
-            fetchDrafts();
-        }
-    }
-
-    async function handleSave(e) {
-        e.preventDefault();
-        const { error } = await supabase
-            .from('posts')
-            .update({
-                title: editingPost.title,
-                excerpt: editingPost.excerpt,
-                body: editingPost.body
-            })
-            .eq('id', editingPost.id);
-
-        if (error) alert('Error saving: ' + error.message);
-        else {
-            alert('Changes saved.');
-            setEditingPost(null);
-            fetchDrafts();
-        }
-    }
-
-    if (loading) return <div className="container" style={{ padding: '4rem' }}>Checking access...</div>;
-
+  if (loading) {
     return (
-        <div className="section ai-neutral">
-            <div className="container">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h1>Admin Dashboard</h1>
-                    <button onClick={handleSignOut} style={{ background: 'transparent', border: `1px solid var(--border-light)` }}>Sign Out</button>
-                </div>
-                <p>Review and publish AI-generated content.</p>
-
-                {editingPost ? (
-                    <div className="card" style={{ marginTop: '2rem' }}>
-                        <h3>Edit Post</h3>
-                        <form onSubmit={handleSave}>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <label>Title</label>
-                                <input
-                                    type="text"
-                                    value={editingPost.title}
-                                    onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
-                                    style={{ width: '100%', padding: '0.5rem' }}
-                                />
-                            </div>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <label>Excerpt</label>
-                                <textarea
-                                    value={editingPost.excerpt}
-                                    onChange={e => setEditingPost({ ...editingPost, excerpt: e.target.value })}
-                                    rows={3}
-                                    style={{ width: '100%', padding: '0.5rem' }}
-                                />
-                            </div>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <label>Body (Markdown)</label>
-                                <textarea
-                                    value={editingPost.body}
-                                    onChange={e => setEditingPost({ ...editingPost, body: e.target.value })}
-                                    rows={15}
-                                    style={{ width: '100%', padding: '0.5rem', fontFamily: 'monospace' }}
-                                />
-                            </div>
-                            <div>
-                                <button type="submit" className="button-primary">Save Changes</button>
-                                <button
-                                    type="button"
-                                    onClick={() => setEditingPost(null)}
-                                    style={{ marginLeft: '1rem', padding: '0.5rem 1rem' }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                ) : (
-                    <div className="grid1" style={{ marginTop: '2rem' }}>
-                        {posts.map(post => (
-                            <div key={post.id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <div>
-                                    <span style={{
-                                        background: post.status === 'published' ? '#dcfce7' : '#fef9c3',
-                                        color: post.status === 'published' ? '#166534' : '#854d0e',
-                                        padding: '0.25rem 0.5rem',
-                                        borderRadius: '4px',
-                                        fontSize: '0.8rem',
-                                        fontWeight: 'bold',
-                                        marginRight: '1rem'
-                                    }}>
-                                        {post.status.toUpperCase()}
-                                    </span>
-                                    <h3 style={{ display: 'inline', fontSize: '1.2rem' }}>{post.title}</h3>
-                                    <p style={{ color: "var(--text-muted-dark)", fontSize: '0.9rem' }}>{new Date(post.created_at).toLocaleDateString()}</p>
-                                </div>
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <button onClick={() => setEditingPost(post)}>Edit</button>
-                                    {post.status !== 'published' && (
-                                        <button
-                                            onClick={() => handlePublish(post)}
-                                            className="button-primary"
-                                        >
-                                            Publish
-                                        </button>
-                                    )}
-                                    {post.status === 'published' && (
-                                        <Link to={`/blog/${post.slug}`} target="_blank">View Live</Link>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
+      <div className="container blog-loading">
+        <div className="blog-loading-icon">⏳</div>
+        <p>Checking access...</p>
+      </div>
     );
+  }
+
+  return (
+    <section className="section ai-neutral">
+      <div className="container">
+
+        {/* HEADER */}
+        <div className="admin-header">
+          <div>
+            <h1>🛠 Admin Dashboard</h1>
+            <p className="muted">Review and publish AI-generated content</p>
+          </div>
+
+          <div className="admin-actions">
+            <Link to="/admin/reports" className="btn-outline">
+              📊 Reports
+            </Link>
+            <button onClick={handleSignOut} className="btn-outline">
+              🚪 Sign Out
+            </button>
+          </div>
+        </div>
+
+        {/* EDIT MODE */}
+        {editingPost && (
+          <div className="card admin-editor">
+            <h3>Edit Post</h3>
+
+            <form onSubmit={handleSave} className="form">
+              <label>
+                <span>Title</span>
+                <input
+                  type="text"
+                  value={editingPost.title}
+                  onChange={e =>
+                    setEditingPost({ ...editingPost, title: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                <span>Excerpt</span>
+                <textarea
+                  rows={3}
+                  value={editingPost.excerpt}
+                  onChange={e =>
+                    setEditingPost({ ...editingPost, excerpt: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                <span>Body (Markdown)</span>
+                <textarea
+                  rows={14}
+                  value={editingPost.body}
+                  className="monospace"
+                  onChange={e =>
+                    setEditingPost({ ...editingPost, body: e.target.value })
+                  }
+                />
+              </label>
+
+              <div className="admin-editor-actions">
+                <button type="submit" className="btn">
+                  💾 Save Changes
+                </button>
+
+                <button
+                  type="button"
+                  className="btn-outline"
+                  onClick={() => setEditingPost(null)}
+                >
+                  ❌ Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* POSTS LIST */}
+        {!editingPost && (
+          <div className="admin-post-list">
+            {posts.map(post => (
+              <div key={post.id} className="card admin-post-row">
+
+                <div className="admin-post-info">
+                  <span
+                    className={`status-pill ${post.status}`}
+                  >
+                    {post.status.toUpperCase()}
+                  </span>
+
+                  <div>
+                    <h3>{post.title}</h3>
+                    <p className="muted">
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="admin-post-actions">
+                  <button
+                    className="btn-outline"
+                    onClick={() => setEditingPost(post)}
+                  >
+                    ✏️ Edit
+                  </button>
+
+                  {post.status !== "published" && (
+                    <button
+                      className="btn"
+                      onClick={() => handlePublish(post)}
+                    >
+                      🚀 Publish
+                    </button>
+                  )}
+
+                  {post.status === "published" && (
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      target="_blank"
+                      className="btn-outline"
+                    >
+                      👁 View Live
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
+    </section>
+  );
 }

@@ -1,5 +1,10 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
+import Chatbot from "./components/Chatbot.jsx";
+
 import Home from "./pages/Home.jsx";
 import Mission from "./pages/Mission.jsx";
 import WhoWeAre from "./pages/WhoWeAre.jsx";
@@ -14,25 +19,30 @@ import Industries from "./pages/Industries.jsx";
 import Login from "./pages/Login.jsx";
 import AdminEnhanced from "./pages/AdminEnhanced.jsx";
 import AdminReports from "./pages/AdminReports.jsx";
-import Footer from "./components/Footer.jsx";
-import Chatbot from "./components/Chatbot.jsx";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+
+import chatIcon from "./assets/chat-icon.svg"; // or reuse existing icon
 import "./index.css";
 
 export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const location = useLocation();
 
+  /* Optional: Auto-close chat on route change */
+  useEffect(() => {
+    setIsChatOpen(false);
+  }, [location.pathname]);
+
   const showChatbot = true;
 
   return (
     <div className="app-layout">
       <div className="ambient-glow" />
+
+      {/* Navbar */}
       <Navbar setIsChatOpen={setIsChatOpen} />
-      
-      {/* Scrollable Content Container */}
-      <div className="content-wrapper">
+
+      {/* Main Content */}
+      <main className="appShell">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/mission" element={<Mission />} />
@@ -49,10 +59,27 @@ export default function App() {
           <Route path="/admin/reports" element={<AdminReports />} />
           <Route path="/login" element={<Login />} />
         </Routes>
-      </div>
+      </main>
 
+      {/* Floating Chat Icon */}
+      {showChatbot && (
+        <div
+          className="chat-widget-icon"
+          onClick={() => setIsChatOpen(true)}
+          aria-label="Chat with AI Assistant"
+          role="button"
+        >
+          <img src={chatIcon} alt="Chat" />
+        </div>
+      )}
+
+      {/* Chat Panel */}
+      {showChatbot && (
+        <Chatbot isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
+      )}
+
+      {/* Footer */}
       <Footer />
-      {showChatbot && <Chatbot isOpen={isChatOpen} setIsOpen={setIsChatOpen} />}
     </div>
   );
 }
