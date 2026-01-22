@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../lib/supabase";
 
-const STORAGE_KEY = "cv_chat_state_v2";
+const STORAGE_KEY = "cv_chat_state_v3";
 
 export default function Chatbot({ isOpen, setIsOpen }) {
   const [messages, setMessages] = useState([]);
@@ -26,17 +26,13 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   /* =========================
      Scroll
   ========================= */
-
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(scrollToBottom, [messages]);
+  }, [messages]);
 
   /* =========================
      Lead Scoring
   ========================= */
-
   const computeLeadScore = (data) => {
     let score = 0;
     if (data.email) score += 2;
@@ -50,9 +46,8 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   };
 
   /* =========================
-     Local Resume Hydration
+     Local Resume
   ========================= */
-
   useEffect(() => {
     if (hydratedRef.current) return;
 
@@ -93,7 +88,6 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   /* =========================
      Initial Greeting
   ========================= */
-
   useEffect(() => {
     if (isOpen && !hasGreetedRef.current && messages.length === 0) {
       hasGreetedRef.current = true;
@@ -104,9 +98,8 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   }, [isOpen]);
 
   /* =========================
-     Message Helpers
+     Helpers
   ========================= */
-
   const addBotMessage = (text, delay = 600) => {
     setIsTyping(true);
     setTimeout(() => {
@@ -119,15 +112,15 @@ export default function Chatbot({ isOpen, setIsOpen }) {
     setMessages((prev) => [...prev, { type: "user", text }]);
   };
 
-  const handleQuickReply = (value, label) => {
-    addUserMessage(label || value);
-    processResponse(value);
+  const pushOptions = (options) => {
+    setTimeout(() => {
+      setMessages((prev) => [...prev, { type: "options", options }]);
+    }, 500);
   };
 
   /* =========================
      Core Flow
   ========================= */
-
   const processResponse = (response) => {
     const newUserData = { ...userData };
 
@@ -142,9 +135,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
       case "email":
         newUserData.email = response;
         setUserData(newUserData);
-
         fetchServerResume(response);
-
         addBotMessage("What stage is your startup at?");
         pushOptions([
           { value: "idea", label: "Idea / Pre-Seed" },
@@ -205,7 +196,6 @@ export default function Chatbot({ isOpen, setIsOpen }) {
           setShowResumeBanner(false);
           setCurrentStep("complete");
         }, 1200);
-
         break;
 
       default:
@@ -213,52 +203,39 @@ export default function Chatbot({ isOpen, setIsOpen }) {
     }
   };
 
-  const pushOptions = (options) => {
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { type: "options", options }]);
-    }, 500);
-  };
-
   /* =========================
-     SERVER RESUME
+     Resume from Server
   ========================= */
-
-    const fetchServerResume = async (email) => {
+  const fetchServerResume = async (email) => {
     try {
-        const { data, error } = await supabase
+      const { data } = await supabase
         .from("chat_conversations")
         .select("*")
         .eq("user_email", email)
-        .order("created_at", { ascending: false })
+        .order("updated_at", { ascending: false })
         .limit(1);
 
-        if (error) throw error;
-
-        if (data?.length) {
-        const lead = data[0];
-
-        setMessages(lead.messages || []);
+      if (data?.length) {
+        setMessages(data[0].messages || []);
         setUserData({
-            name: lead.user_name || "",
-            email: lead.user_email || "",
-            company: lead.company || "",
-            stage: lead.stage || "",
-            challenge: lead.challenge || "",
-            budget: lead.budget || "",
-            timeline: lead.timeline || "",
+          name: data[0].user_name || "",
+          email: data[0].user_email || "",
+          company: data[0].company || "",
+          stage: data[0].stage || "",
+          challenge: data[0].challenge || "",
+          budget: data[0].budget || "",
+          timeline: data[0].timeline || "",
         });
-
         setShowResumeBanner(true);
-        }
+      }
     } catch (err) {
-        console.warn("Resume lookup failed:", err);
+      console.warn("Resume lookup failed:", err);
     }
-    };
+  };
 
   /* =========================
-     Supabase Save
+     Save to Supabase (STANDARDIZED)
   ========================= */
-
     const saveToSupabase = async (data, score) => {
     try {
         const payload = {
@@ -269,30 +246,53 @@ export default function Chatbot({ isOpen, setIsOpen }) {
         challenge: data.challenge || "",
         budget: data.budget || "",
         timeline: data.timeline || "",
-        messages: messages,
-        status: 'completed'
+        lead_score: score,
+        source: "chatbot",
+        messages,
+        updated_at: new Date().toISOString(),
         };
 
-        const { data: result, error } = await supabase
+        const { error } = await supabase
         .from("chat_conversations")
-        .insert([payload])
-        .select();
+        .upsert([payload], {
+            onConflict: "user_email",
+            ignoreDuplicates: false,
+        });
 
-        if (error) {
-        console.error("❌ Supabase error object:", error);
-        throw error;
-        }
+        if (error) throw error;
 
-        console.log("✅ Lead saved successfully:", result);
+        console.log("✅ Lead saved");
+
+        // Trigger CRM webhook (Zoho/HubSpot)
+        await fetch("/api/crm-webhook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        });
+
+        // Calendly CTA
+        setMessages((prev) => [
+        ...prev,
+        {
+            type: "final",
+            text:
+            "🎉 You're all set!\n\n📅 Want to book a 15-minute strategy call now?",
+            calendly: true,
+        },
+        ]);
+
+        setTimeout(() => setIsOpen(false), 6000);
     } catch (err) {
-        console.error("❌ Lead save failed FULL ERROR:", err);
+        console.error("❌ Lead save failed:", err);
+        addBotMessage(
+        "⚠️ We saved your details but had a sync issue. Our team will still contact you."
+        );
     }
     };
 
   /* =========================
      Reset / Resume
   ========================= */
-
   const handleFullReset = () => {
     localStorage.removeItem(STORAGE_KEY);
     hasGreetedRef.current = false;
@@ -319,7 +319,6 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   /* =========================
      Submit
   ========================= */
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
@@ -331,7 +330,6 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   /* =========================
      JSX
   ========================= */
-
   return (
     <>
       <button className="chat-fab" onClick={() => setIsOpen(!isOpen)}>
@@ -365,9 +363,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
                   {msg.options.map((opt, j) => (
                     <button
                       key={j}
-                      onClick={() =>
-                        handleQuickReply(opt.value, opt.label)
-                      }
+                      onClick={() => processResponse(opt.value)}
                     >
                       {opt.label}
                     </button>
@@ -376,7 +372,6 @@ export default function Chatbot({ isOpen, setIsOpen }) {
               )}
             </div>
           ))}
-
           {isTyping && <div className="chat-typing">Typing…</div>}
           <div ref={messagesEndRef} />
         </div>

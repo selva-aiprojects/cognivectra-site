@@ -50,7 +50,7 @@ export default function Contact() {
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
-          access_key: "eac1f10e-c0f3-4224-930e-ac76ba03adc0",
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
           name,
           email,
           message: `New Contact Form Submission from ${name}

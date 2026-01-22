@@ -1,24 +1,32 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { supabase } from "../lib/supabase";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminReports() {
-  const [chats, setChats] = useState([]);
-  const [contacts, setContacts] = useState([]);
+  const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("chats");
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedLead, setSelectedLead] = useState(null);
+
+  const [filterScore, setFilterScore] = useState("all");
+  const [filterStage, setFilterStage] = useState("all");
+  const [filterSource, setFilterSource] = useState("all");
 
   const navigate = useNavigate();
+
+  /* =========================
+     AUTH
+  ========================= */
 
   useEffect(() => {
     checkUser();
   }, []);
 
   async function checkUser() {
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     if (!session) navigate("/login");
-    else fetchData();
+    else fetchLeads();
   }
 
   async function handleSignOut() {
@@ -26,186 +34,330 @@ export default function AdminReports() {
     navigate("/login");
   }
 
-  async function fetchData() {
-    setLoading(true);
-    const [chatsRes, contactsRes] = await Promise.all([
-      supabase.from("chat_conversations").select("*").order("created_at", { ascending: false }),
-      supabase.from("contacts").select("*").order("created_at", { ascending: false })
-    ]);
+  /* =========================
+     DATA LOAD
+  ========================= */
 
-    setChats(chatsRes.data || []);
-    setContacts(contactsRes.data || []);
+  async function fetchLeads() {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("chat_conversations")
+        .select("*")
+        .order("updated_at", { ascending: false });
+
+      if (error) throw error;
+      setLeads(data || []);
+    } catch (err) {
+      console.error("Lead fetch failed:", err);
+    }
     setLoading(false);
   }
 
-  const items = activeTab === "chats" ? chats : contacts;
+  /* =========================
+     FILTERS
+  ========================= */
 
-  const formatDate = date =>
-    new Date(date).toLocaleString("en-US", {
+  const filteredLeads = useMemo(() => {
+    return leads.filter((l) => {
+      if (filterScore !== "all" && l.lead_score !== filterScore) return false;
+      if (filterStage !== "all" && l.stage !== filterStage) return false;
+      if (filterSource !== "all" && l.source !== filterSource) return false;
+      return true;
+    });
+  }, [leads, filterScore, filterStage, filterSource]);
+
+  /* =========================
+     CSV EXPORT
+  ========================= */
+
+  const exportCSV = () => {
+    if (!filteredLeads.length) return alert("No data to export.");
+
+    const headers = [
+      "Name",
+      "Email",
+      "Company",
+      "Stage",
+      "Challenge",
+      "Budget",
+      "Timeline",
+      "Lead Score",
+      "Source",
+      "Updated At",
+    ];
+
+    const rows = filteredLeads.map((l) => [
+      l.user_name,
+      l.user_email,
+      l.company,
+      l.stage,
+      l.challenge,
+      l.budget,
+      l.timeline,
+      l.lead_score,
+      l.source,
+      new Date(l.updated_at).toLocaleString(),
+    ]);
+
+    const csv = [headers, ...rows]
+      .map((r) => r.map((v) => `"${v || ""}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cognivectra-leads.csv";
+    link.click();
+  };
+
+  /* =========================
+     UI HELPERS
+  ========================= */
+
+  const badgeStyle = (score) => {
+    if (score === "hot") return "badge-hot";
+    if (score === "warm") return "badge-warm";
+    return "badge-cold";
+  };
+
+  const formatDate = (d) =>
+    new Date(d).toLocaleString("en-US", {
       month: "short",
       day: "numeric",
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
     });
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="container blog-loading">
-        <div className="blog-loading-icon">⏳</div>
-        <p>Loading lead reports...</p>
+      <div className="container" style={{ padding: "4rem" }}>
+        Loading reports…
       </div>
     );
-  }
 
   return (
-    <section className="section ai-neutral">
+    <div className="section ai-neutral">
       <div className="container">
-
         {/* HEADER */}
-        <div className="admin-header">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "2rem",
+          }}
+        >
           <div>
-            <h1>📊 Lead Reports</h1>
-            <p className="muted">User details collected from Chatbot and Contact Form</p>
+            <h1>📊 Lead Intelligence</h1>
+            <p>All chatbot & contact leads — centralized</p>
           </div>
-
-          <div className="admin-actions">
-            <Link to="/admin" className="btn-outline">📁 Content Manager</Link>
-            <button onClick={handleSignOut} className="btn-outline">🚪 Sign Out</button>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <Link to="/admin" className="btn-outline">
+              📁 Content Manager
+            </Link>
+            <button onClick={exportCSV} className="btn-outline">
+              ⬇ Export CSV
+            </button>
+            <button onClick={handleSignOut} className="btn-outline">
+              🚪 Sign Out
+            </button>
           </div>
         </div>
 
-        {/* TABS */}
-        <div className="admin-tabs">
-          <button
-            className={`admin-tab ${activeTab === "chats" ? "active" : ""}`}
-            onClick={() => { setActiveTab("chats"); setSelectedItem(null); }}
-          >
-            🤖 ChatBot Leads ({chats.length})
-          </button>
+        {/* FILTERS */}
+        <div
+          className="card no-hover-effect"
+          style={{ marginBottom: "1.5rem" }}
+        >
+          <div className="grid3">
+            <select
+              value={filterScore}
+              onChange={(e) => setFilterScore(e.target.value)}
+            >
+              <option value="all">All Scores</option>
+              <option value="hot">🔥 Hot</option>
+              <option value="warm">🟡 Warm</option>
+              <option value="cold">❄ Cold</option>
+            </select>
 
-          <button
-            className={`admin-tab ${activeTab === "contacts" ? "active" : ""}`}
-            onClick={() => { setActiveTab("contacts"); setSelectedItem(null); }}
-          >
-            📧 Contact Form ({contacts.length})
-          </button>
+            <select
+              value={filterStage}
+              onChange={(e) => setFilterStage(e.target.value)}
+            >
+              <option value="all">All Stages</option>
+              <option value="idea">Idea / Pre-Seed</option>
+              <option value="mvp">MVP / Seed</option>
+              <option value="launched">Launched</option>
+              <option value="series-a">Series A+</option>
+            </select>
+
+            <select
+              value={filterSource}
+              onChange={(e) => setFilterSource(e.target.value)}
+            >
+              <option value="all">All Sources</option>
+              <option value="chatbot">Chatbot</option>
+              <option value="contact">Contact Form</option>
+            </select>
+          </div>
         </div>
 
         {/* GRID */}
-        <div className="admin-report-grid">
-
+        <div className="grid2" style={{ alignItems: "start" }}>
           {/* LIST */}
-          <div className="admin-lead-list">
-            {items.map(item => (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {filteredLeads.length === 0 && (
+              <div className="card no-hover-effect">
+                No leads match filters.
+              </div>
+            )}
+
+            {filteredLeads.map((lead) => (
               <div
-                key={item.id}
-                className={`card admin-lead-row ${selectedItem?.id === item.id ? "active" : ""}`}
-                onClick={() => setSelectedItem(item)}
+                key={lead.id}
+                className={`card no-hover-effect ${
+                  selectedLead?.id === lead.id ? "active" : ""
+                }`}
+                onClick={() => setSelectedLead(lead)}
+                style={{
+                  cursor: "pointer",
+                  border:
+                    selectedLead?.id === lead.id
+                      ? "2px solid var(--accent-primary)"
+                      : "1px solid var(--border-light)",
+                }}
               >
-                <div className="lead-row-header">
-                  <strong>{item.user_name || item.name || "Anonymous"}</strong>
-                  <span className="muted">{formatDate(item.created_at)}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  <strong>{lead.user_name || "Anonymous"}</strong>
+                  <span className={`badge ${badgeStyle(lead.lead_score)}`}>
+                    {lead.lead_score || "cold"}
+                  </span>
                 </div>
 
-                <div className="lead-row-sub">
-                  {item.user_email || item.email}
+                <div style={{ fontSize: "0.85rem" }}>
+                  {lead.user_email}
                 </div>
 
-                {activeTab === "chats" && item.company && (
-                  <div className="lead-row-sub">
-                    🏢 {item.company}
-                  </div>
-                )}
+                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                  {lead.stage} • {lead.budget} • {formatDate(lead.updated_at)}
+                </div>
               </div>
             ))}
           </div>
 
           {/* DETAILS */}
-          <div className="card admin-lead-details">
-            {selectedItem ? (
+          <div
+            className="card no-hover-effect"
+            style={{ position: "sticky", top: "2rem", minHeight: "420px" }}
+          >
+            {selectedLead ? (
               <>
-                <h3>Full Details</h3>
+                <h3 style={{ marginBottom: "1rem" }}>
+                  Lead Profile
+                </h3>
 
-                <div className="lead-detail-group">
-                  <label>Name</label>
-                  <p>{selectedItem.user_name || selectedItem.name || "Not provided"}</p>
-                </div>
-
-                <div className="lead-detail-group">
-                  <label>Email</label>
-                  <p>
-                    <a href={`mailto:${selectedItem.user_email || selectedItem.email}`}>
-                      {selectedItem.user_email || selectedItem.email}
+                <div className="stack">
+                  <div><strong>Name:</strong> {selectedLead.user_name}</div>
+                  <div>
+                    <strong>Email:</strong>{" "}
+                    <a
+                      href={`mailto:${selectedLead.user_email}`}
+                      style={{ color: "var(--accent-primary)" }}
+                    >
+                      {selectedLead.user_email}
                     </a>
-                  </p>
+                  </div>
+                  <div><strong>Company:</strong> {selectedLead.company}</div>
+                  <div><strong>Stage:</strong> {selectedLead.stage}</div>
+                  <div><strong>Budget:</strong> {selectedLead.budget}</div>
+                  <div><strong>Timeline:</strong> {selectedLead.timeline}</div>
+                  <div>
+                    <strong>Challenge:</strong>{" "}
+                    {selectedLead.challenge}
+                  </div>
+                  <div>
+                    <strong>Score:</strong>{" "}
+                    <span
+                      className={`badge ${badgeStyle(
+                        selectedLead.lead_score
+                      )}`}
+                    >
+                      {selectedLead.lead_score}
+                    </span>
+                  </div>
                 </div>
 
-                {activeTab === "chats" ? (
-                  <>
-                    <div className="lead-detail-group">
-                      <label>Company</label>
-                      <p>{selectedItem.company || "Not provided"}</p>
-                    </div>
+                <hr />
 
-                    <div className="lead-detail-grid">
-                      <div>
-                        <label>Stage</label>
-                        <p>{selectedItem.stage || "Not provided"}</p>
-                      </div>
-                      <div>
-                        <label>Budget</label>
-                        <p>{selectedItem.budget || "Not provided"}</p>
-                      </div>
-                    </div>
-
-                    <div className="lead-detail-group">
-                      <label>Challenge</label>
-                      <p>{selectedItem.challenge || "Not provided"}</p>
-                    </div>
-
-                    <div className="lead-detail-group">
-                      <label>Chat History</label>
-                      <div className="chat-history-box">
-                        {selectedItem.messages?.map((msg, i) => (
-                          <div key={i} className={`chat-bubble ${msg.role}`}>
-                            {msg.content}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="lead-detail-grid">
-                      <div>
-                        <label>Stage</label>
-                        <p>{selectedItem.stage || "Not provided"}</p>
-                      </div>
-                      <div>
-                        <label>Need</label>
-                        <p>{selectedItem.need || "Not provided"}</p>
-                      </div>
-                    </div>
-
-                    <div className="lead-detail-group">
-                      <label>Message</label>
-                      <div className="contact-message-box">
-                        {selectedItem.message}
+                <h4>Chat History</h4>
+                <div
+                  style={{
+                    background: "var(--bg-secondary)",
+                    padding: "1rem",
+                    borderRadius: "12px",
+                    maxHeight: "260px",
+                    overflowY: "auto",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {(selectedLead.messages || []).map((m, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        marginBottom: "0.75rem",
+                        textAlign: m.type === "user" ? "right" : "left",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "inline-block",
+                          background:
+                            m.type === "user"
+                              ? "var(--accent-primary)"
+                              : "var(--bg-primary)",
+                          color:
+                            m.type === "user"
+                              ? "white"
+                              : "var(--text-primary)",
+                          padding: "0.5rem 0.75rem",
+                          borderRadius: "8px",
+                          maxWidth: "85%",
+                        }}
+                      >
+                        {m.text}
                       </div>
                     </div>
-                  </>
-                )}
+                  ))}
+                </div>
               </>
             ) : (
-              <div className="admin-empty-state">
-                <div className="blog-empty-icon">📥</div>
-                <p>Select a lead from the list to view full details</p>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  color: "var(--text-muted)",
+                }}
+              >
+                <span style={{ fontSize: "3rem", marginBottom: "1rem" }}>
+                  📥
+                </span>
+                <p>Select a lead to view full profile</p>
               </div>
             )}
           </div>
-
         </div>
       </div>
-    </section>
+    </div>
   );
 }
