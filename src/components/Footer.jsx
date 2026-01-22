@@ -48,8 +48,8 @@ export default function Footer() {
           <div className="footer-contact">
             <div>
               <span>Email</span><br />
-              <a href="mailto:selvakumar.b@cognivectra.com">
-                selvakumar.b@cognivectra.com
+              <a href="mailto:Care@cognivectra.com">
+                Care@cognivectra.com
               </a>
             </div>
             <div>

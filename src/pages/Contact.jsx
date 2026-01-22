@@ -71,7 +71,7 @@ export default function Contact() {
       e.target.reset();
     } catch (error) {
       console.error("Contact form error:", error);
-      setMessage("Unable to send. Please email: selvakumar.b@cognivectra.com");
+      setMessage("Unable to send. Please email: Care@cognivectra.com");
     } finally {
       setLoading(false);
     }
