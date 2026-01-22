@@ -1,183 +1,183 @@
 import { Link } from "react-router-dom";
 
-// Hero image - using the same high-quality style as home page
-import servicesHero from "../assets/cognivectra-capabilities-hero.png";
-
-// Service images - use unique, high-quality illustrations per service
-import cloudInfraImage from "../assets/illustrations/cloud-infrastructure-premium.svg";
-import automationImage from "../assets/illustrations/process-automation-premium.svg";
-import saasImage from "../assets/illustrations/saas-platform-premium.svg";
-import devopsImage from "../assets/illustrations/devops-platform.svg";
-import aiImage from "../assets/illustrations/ai-data-platform.svg";
-import advisoryImage from "../assets/illustrations/strategic-leadership.svg";
-
 export default function Services() {
-    const services = [
-        {
-            title: "Cloud Infrastructure for Startups",
-            description: "Secure, scalable, and cost-aware cloud foundations on AWS, GCP, or Azure tailored for SaaS and AI-native startups.",
-            items: [
-                "Cloud landing zones and multi-account / multi-environment setup.",
-                "Network, security, and identity baselines baked in.",
-                "FinOps-ready design to keep costs predictable."
-            ],
-            image: cloudInfraImage
-        },
-        {
-            title: "Process Automation & Workflow Enablement",
-            description: "Automate recurring work across operations, finance, HR, and support using no-code, low-code, and API-based orchestration.",
-            items: [
-                "Business process automation across key back-office functions.",
-                "No-code / low-code apps plus event-driven workflows.",
-                "GenAI-assisted workflows and internal or customer-facing chatbots."
-            ],
-            image: automationImage
-        },
-        {
-            title: "SaaS Building Blocks",
-            description: "Plug-and-play components so your team does not reinvent the wheel for every product capability.",
-            items: [
-                "Authentication, authorization, and user management.",
-                "Billing, subscription management, and usage analytics.",
-                "Notifications, email delivery, and customer communication."
-            ],
-            image: saasImage
-        },
-        {
-            title: "DevOps & Platform Engineering",
-            description: "Build, ship, and run software faster with CI/CD, infrastructure as code, and platform engineering best practices.",
-            items: [
-                "CI/CD pipelines with automated testing and deployment.",
-                "Infrastructure as Code and GitOps workflows.",
-                "Observability, monitoring, and reliability engineering."
-            ],
-            image: devopsImage
-        },
-        {
-            title: "AI Enablement & Data Engineering",
-            description: "Integrate AI capabilities into your products and build data pipelines that power intelligent experiences.",
-            items: [
-                "ML model deployment and MLOps pipelines.",
-                "Data warehousing, ETL, and real-time streaming.",
-                "API integration with AI services and custom model development."
-            ],
-            image: aiImage
-        },
-        {
-            title: "CTO Advisory & Fractional Leadership",
-            description: "Strategic technology guidance and hands-on leadership to help you make the right architectural decisions and build high-performing teams.",
-            items: [
-                "Technology roadmap and architecture reviews.",
-                "Team building, hiring, and engineering culture.",
-                "Vendor selection, due diligence, and technical due diligence."
-            ],
-            image: advisoryImage
-        }
-    ];
+  return (
+    <main>
 
-    return (
-        <section className="section" style={{ padding: "6rem 0" }}>
-            <div className="container">
-                {/* Hero Section */}
-                <div className="grid2" style={{ alignItems: "center" }}>
-                    <div>
-                        <h1 style={{ marginBottom: "1.5rem" }}>Services</h1>
-                        <p className="stack" style={{ fontSize: "1.2rem", marginBottom: "2rem" }}>
-                            End-to-end technology solutions designed for startups who need to move fast and build right.
-                            From cloud foundations to AI integration, we provide the expertise and execution
-                            to deliver solutions that truly matter for your startup's success
-                        </p>
-                        <div style={{ marginTop: "2rem" }}>
-                            {services.map((service, index) => (
-                                <div key={index} style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                                    <img src={service.image} alt={service.title} style={{ width: "24px", height: "24px", borderRadius: "4px" }} />
-                                    <strong>{service.title}</strong>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+      {/* HERO */}
+      <section className="hero-modern">
+        <div className="hero-bg-gradient"></div>
 
-                    <div>
-                        <img
-                            src={servicesHero}
-                            alt="Services: Cloud Infrastructure, DevOps, Automation, AI Enablement"
-                            style={{
-                                width: "100%",
-                                height: "auto",
-                                borderRadius: "12px",
-                                boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
-                            }}
-                        />
-                    </div>
-                </div>
+        <div className="hero-modern-inner">
 
-                {/* Services Grid - Consistent Layout */}
-                <div className="grid2">
-                    {services.map((service, index) => (
-                        <section key={index} className="card" style={{ padding: "2.5rem" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-                                <div style={{ fontSize: "2rem", opacity: 0.7 }}>
-                                    <img src={service.image} alt={service.title} style={{ width: "40px", height: "40px", borderRadius: "8px" }} />
-                                </div>
-                                <h3>{service.title}</h3>
-                            </div>
-                            <p className="stack" style={{ marginBottom: "1.5rem" }}>
-                                {service.description}
-                            </p>
-                            
-                            {/* High-Quality Service Image */}
-                            <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-                                <img
-                                    src={service.image}
-                                    alt={service.title}
-                                    style={{
-                                        width: "100%",
-                                        maxWidth: "300px",
-                                        height: "auto",
-                                        borderRadius: "12px",
-                                        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                                        background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
-                                        padding: "1rem"
-                                    }}
-                                />
-                            </div>
-                            
-                            <ul className="stack">
-                                {service.items.map((item, itemIndex) => (
-                                    <li key={itemIndex} style={{ marginBottom: "0.5rem" }}>
-                                        ✓ {item}
-                                    </li>
-                                ))}
-                            </ul>
-                            <div style={{ marginTop: "2rem" }}>
-                                <Link to="/contact" className="btn">
-                                    Learn More →
-                                </Link>
-                            </div>
-                        </section>
-                    ))}
-                </div>
+          <div className="hero-copy">
+            <span className="hero-badge">⚙️ Startup-Grade Engineering</span>
 
-                {/* CTA */}
-                <div 
-                    className="card"
-                    style={{
-                        maxWidth: "700px",
-                        margin: "3rem auto 0",
-                        textAlign: "center",
-                        padding: "3rem"
-                    }}
-                >
-                    <h3 style={{ marginBottom: "1.5rem" }}>Ready to Accelerate Your Growth?</h3>
-                    <p className="stack" style={{ fontSize: "1.1rem", marginBottom: "2rem" }}>
-                        Let's discuss how we can help you build the technical foundation
-                        for your next stage of growth.
-                    </p>
-                    <Link to="/contact" className="btn">
-                        Schedule Your Strategy Session →
-                    </Link>
-                </div>
+            <h1>
+              Services Built for <br />
+              Speed, Scale & Stability
+            </h1>
+
+            <p>
+              CogniVectra delivers modular, enterprise-grade services that help
+              startups build intelligent platforms, automate operations, and
+              scale without technical debt.
+            </p>
+
+            <div className="hero-cta">
+              <Link to="/contact" className="btn">
+                Book Strategy Call
+              </Link>
+              <Link to="/engagements" className="btn-outline">
+                View Engagement Models
+              </Link>
             </div>
-        </section>
-    );
+
+            <p className="hero-subtext">
+              Flexible delivery · Startup pricing · Senior engineers only
+            </p>
+          </div>
+
+          {/* No image dependency — premium glass card instead */}
+          <div className="hero-visual">
+            <div className="hero-glass-card">
+              <ul>
+                <li>Cloud Architecture & Landing Zones</li>
+                <li>DevOps Automation & CI/CD</li>
+                <li>AI Workflow Orchestration</li>
+                <li>SaaS Product Foundations</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* CORE SERVICES */}
+      <section className="services-modern">
+        <h3>Our Core Services</h3>
+
+        <div className="services-modern-grid">
+
+          <div className="service-modern-card">
+            <h4>☁️ Cloud Architecture</h4>
+            <p>
+              Scalable, secure cloud foundations on AWS, GCP, or Azure.
+            </p>
+            <ul>
+              <li>Landing zones & environment strategy</li>
+              <li>Infrastructure as Code (Terraform)</li>
+              <li>High-availability architecture</li>
+              <li>Security & compliance baseline</li>
+            </ul>
+          </div>
+
+          <div className="service-modern-card">
+            <h4>🚀 DevOps & Platform Engineering</h4>
+            <p>
+              CI/CD pipelines, reliability engineering, and platform automation.
+            </p>
+            <ul>
+              <li>CI/CD pipelines (GitHub, GitLab, Bitbucket)</li>
+              <li>Monitoring, logging & observability</li>
+              <li>Release automation</li>
+              <li>Performance optimization</li>
+            </ul>
+          </div>
+
+          <div className="service-modern-card">
+            <h4>🤖 AI & Workflow Automation</h4>
+            <p>
+              GenAI-powered automations across business and engineering.
+            </p>
+            <ul>
+              <li>AI workflow orchestration</li>
+              <li>Internal tools & bots</li>
+              <li>Customer support automation</li>
+              <li>Operations & finance automation</li>
+            </ul>
+          </div>
+
+          <div className="service-modern-card">
+            <h4>🏗 SaaS Foundations</h4>
+            <p>
+              Production-ready components for modern SaaS products.
+            </p>
+            <ul>
+              <li>Authentication & authorization</li>
+              <li>Billing & subscription systems</li>
+              <li>Notifications & messaging</li>
+              <li>API design & data modeling</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      {/* WHY US */}
+      <section className="why-modern">
+        <div className="why-modern-inner">
+          <h3>Why Startups Choose CogniVectra</h3>
+
+          <div className="why-modern-grid">
+            <div className="why-pill">Senior engineers only</div>
+            <div className="why-pill">Startup-speed execution</div>
+            <div className="why-pill">AI-first mindset</div>
+            <div className="why-pill">Cloud-native by default</div>
+            <div className="why-pill">Security built in</div>
+            <div className="why-pill">No vendor lock-in</div>
+          </div>
+        </div>
+      </section>
+
+      {/* DELIVERY PROCESS */}
+      <section className="services-modern">
+        <h3>How We Work</h3>
+
+        <div className="services-modern-grid">
+
+          <div className="service-modern-card">
+            <h4>1. Discover</h4>
+            <p>
+              Deep dive into your product, architecture, goals, and constraints.
+            </p>
+          </div>
+
+          <div className="service-modern-card">
+            <h4>2. Design</h4>
+            <p>
+              Define architecture, automation strategy, and delivery roadmap.
+            </p>
+          </div>
+
+          <div className="service-modern-card">
+            <h4>3. Build</h4>
+            <p>
+              Implement infrastructure, pipelines, and workflows.
+            </p>
+          </div>
+
+          <div className="service-modern-card">
+            <h4>4. Scale</h4>
+            <p>
+              Optimize performance, costs, and reliability as you grow.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-modern">
+        <h3>Ready to build your startup foundation?</h3>
+        <p>
+          Book a free strategy session and get a 90-day execution plan.
+        </p>
+        <Link to="/contact" className="btn">
+          Start Free Strategy Call
+        </Link>
+      </section>
+
+    </main>
+  );
 }

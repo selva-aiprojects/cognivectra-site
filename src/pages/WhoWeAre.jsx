@@ -1,193 +1,184 @@
-// Add a hero image for WhoWeAre page
+import { Link } from "react-router-dom";
+
+/* High-resolution illustrations */
 import aboutHero from "../assets/illustrations/about-expertise.svg";
+import cloudImage from "../assets/illustrations/industries-saas.svg";
+import automationImage from "../assets/illustrations/industries-fintech.svg";
+import aiImage from "../assets/illustrations/industries-healthcare.svg";
+import advisoryImage from "../assets/illustrations/industries-edtech.svg";
 
 export default function WhoWeAre() {
   return (
-    <section className="section ai-neutral">
-      <div className="container">
-        {/* Hero Section */}
-        <div
-          className="card hero-card"
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto 4rem",
-            display: "grid",
-            gridTemplateColumns: "1.1fr 0.9fr",
-            gap: "3rem",
-            alignItems: "center",
-            padding: "3rem 2.5rem"
-          }}
-        >
-          <div>
-            <h2>Who We Are</h2>
-            <p className="stack">
+    <main>
+
+      {/* HERO */}
+      <section className="hero-modern">
+        <div className="hero-bg-gradient"></div>
+
+        <div className="hero-modern-inner">
+
+          <div className="hero-copy">
+            <span className="hero-badge">👥 About CogniVectra</span>
+
+            <h1>
+              Startup-Focused <br />
+              Technology Partners
+            </h1>
+
+            <p>
               CogniVectra Innovations is a startup-focused technology partner
               specializing in automation, cloud foundations, and SaaS building
-              blocks that enable founders to move fast without compromising on
+              blocks that enable founders to move fast without compromising
               reliability.
             </p>
-            <p className="stack">
-              We work at the intersection of systems engineering, data, cloud, and
-              applied intelligence, helping startups modernize operations,
-              streamline workflows, and build future-ready digital platforms that
-              investors and customers can trust.
+
+            <p>
+              We operate at the intersection of systems engineering, cloud,
+              data, and applied intelligence — helping startups modernize
+              operations, streamline workflows, and build future-ready
+              digital platforms investors and customers can trust.
             </p>
-            <p className="stack">
-              Our approach is pragmatic and outcome-driven: design lean, robust
-              foundations, automate what slows you down, and keep your technology
-              stack understandable as you scale.
+
+            <p>
+              Our approach is pragmatic and outcome-driven: design lean,
+              robust foundations, automate what slows you down, and keep
+              your technology stack understandable as you scale.
+            </p>
+
+            <div className="hero-cta">
+              <Link to="/contact" className="btn">
+                Talk to Us
+              </Link>
+              <Link to="/services" className="btn-outline">
+                View Services
+              </Link>
+            </div>
+
+            <p className="hero-subtext">
+              Pragmatic · Sustainable · Built for startups
             </p>
           </div>
 
-          {/* Visual Element */}
-          <div>
-            <img
-              src={aboutHero}
-              alt="About CogniVectra: Startup-focused engineering and expertise"
-              style={{
-                width: "100%",
-                height: "auto",
-                borderRadius: "12px",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
-              }}
-            />
+          {/* Visual */}
+          <div className="hero-visual">
+            <div className="hero-glass-card hero-visual-image">
+              <img
+                src={aboutHero}
+                alt="Startup-focused engineering expertise"
+              />
+            </div>
           </div>
+
         </div>
+      </section>
 
-        {/* Grid Section */}
-        <div className="grid2">
-          <section className="card">
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", opacity: 0.7 }}>💎</div>
-              <h2>What We Value</h2>
-            </div>
-            <ul className="stack">
-              <li>Integrity in advice, estimates, and delivery.</li>
-              <li>Consistency in architecture, operations, and support.</li>
-              <li>Community ownership and knowledge sharing with your team.</li>
-              <li>Outcome-driven innovation, not technology for its own sake.</li>
-              <li>
-                Pragmatic technology leadership that balances speed, cost, and
-                risk.
-              </li>
+      {/* VALUES + APPROACH */}
+      <section className="services-modern">
+        <h3>What Guides Our Work</h3>
+
+        <div className="services-modern-grid">
+
+          <div className="service-modern-card">
+            <h4>💎 What We Value</h4>
+            <ul>
+              <li>Integrity in advice, estimates, and delivery</li>
+              <li>Consistency in architecture and operations</li>
+              <li>Community ownership and team knowledge sharing</li>
+              <li>Outcome-driven innovation, not hype</li>
+              <li>Pragmatic leadership balancing speed, cost, and risk</li>
             </ul>
-          </section>
+          </div>
 
-          <section className="card">
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", opacity: 0.7 }}>🎯</div>
-              <h2>Our Approach</h2>
-            </div>
-            <p className="stack">
-              We start with your business model, customers, and runway, then
+          <div className="service-modern-card">
+            <h4>🎯 Our Approach</h4>
+            <p>
+              We start with your business model, customers, and runway — then
               design automation and cloud foundations that match your current
               stage and future growth.
             </p>
-            <p className="stack">
-              Every engagement blends architecture, hands-on implementation, and
-              mentoring for your in-house team, so you are not locked into a
-              black-box platform.
+            <p>
+              Every engagement blends architecture, hands-on implementation,
+              and mentoring for your in-house team, so you are never locked
+              into a black-box platform.
             </p>
-            <div style={{
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
-              borderRadius: "12px",
-              padding: "1.5rem",
-              marginTop: "1.5rem",
-              textAlign: "center"
-            }}>
-              <p style={{ margin: 0, fontWeight: "600", color: "var(--accent-primary)" }}>
-                Pragmatic. Sustainable. Built for startups.
-              </p>
+            <div className="highlight-pill">
+              Pragmatic. Sustainable. Built for startups.
             </div>
-          </section>
-        </div>
-
-        {/* Visual Break Section */}
-        <div style={{ margin: "3rem auto", textAlign: "center" }}>
-          <div style={{
-            background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
-            borderRadius: "20px",
-            padding: "2.5rem",
-            maxWidth: "800px",
-            margin: "0 auto"
-          }}>
-            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>⚡</div>
-            <h3 style={{ color: "var(--accent-primary)", marginBottom: "1rem" }}>
-              What We Do
-            </h3>
-            <p className="stack" style={{ maxWidth: "600px", margin: "0 auto" }}>
-              Comprehensive technology solutions spanning cloud foundations, intelligent operations,
-              SaaS building blocks, and strategic advisory
-            </p>
           </div>
-        </div>
 
-        {/* What We Do - Grid Layout */}
-        <div className="grid2">
-          <div className="card" style={{ padding: "2.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", opacity: 0.7 }}>☁️</div>
-              <h3>Cloud & Platform Foundations</h3>
+        </div>
+      </section>
+
+      {/* OFFERINGS */}
+      <section className="services-modern">
+        <h3>What We Do</h3>
+
+        <div className="services-modern-grid">
+
+          <div className="service-modern-card">
+            <div className="industry-header">
+              <img src={cloudImage} alt="Cloud foundations" className="industry-icon" />
+              <h4>Cloud & Platform Foundations</h4>
             </div>
             <ul>
-              <li>Design and setup of startup-ready cloud landing zones.</li>
-              <li>Cloud-native and hybrid architecture for SaaS products.</li>
-              <li>Multi-environment, multi-account setups with security baked in.</li>
-              <li>
-                Integration of data, automation, and observability into core
-                platforms.
-              </li>
+              <li>Startup-ready cloud landing zones</li>
+              <li>Cloud-native and hybrid SaaS architecture</li>
+              <li>Multi-environment setups with security baked in</li>
+              <li>Data, automation, and observability integration</li>
             </ul>
           </div>
 
-          <div className="card" style={{ padding: "2.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", opacity: 0.7 }}>🤖</div>
-              <h3>Intelligent Operations & Automation</h3>
+          <div className="service-modern-card">
+            <div className="industry-header">
+              <img src={automationImage} alt="Automation" className="industry-icon" />
+              <h4>Intelligent Operations & Automation</h4>
             </div>
             <ul>
-              <li>Business and IT operations optimization for lean teams.</li>
-              <li>Workflow orchestration and event-driven automation.</li>
-              <li>
-                No-code, low-code, and API-based automation across tools and
-                teams.
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="grid2">
-          <div className="card" style={{ padding: "2.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", opacity: 0.7 }}>🚀</div>
-              <h3>SaaS & Applied Intelligence</h3>
-            </div>
-            <ul>
-              <li>Reusable SaaS components: auth, billing, and notifications.</li>
-              <li>
-                Practical AI and analytics embedded into products and operations.
-              </li>
-              <li>
-                Human-in-the-loop patterns for safer, more reliable automation.
-              </li>
+              <li>Lean business & IT operations optimization</li>
+              <li>Workflow orchestration & event-driven automation</li>
+              <li>No-code, low-code, and API-based automation</li>
             </ul>
           </div>
 
-          <div className="card" style={{ padding: "2.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", opacity: 0.7 }}>👥</div>
-              <h3>Advisory & Fractional Leadership</h3>
+          <div className="service-modern-card">
+            <div className="industry-header">
+              <img src={aiImage} alt="Applied AI" className="industry-icon" />
+              <h4>SaaS & Applied Intelligence</h4>
             </div>
             <ul>
-              <li>Technology strategy and runway-aware roadmaps.</li>
-              <li>Architecture reviews and modernization planning.</li>
-              <li>
-                Fractional CTO and platform advisory for founders and boards.
-              </li>
+              <li>Reusable SaaS components (auth, billing, notifications)</li>
+              <li>Practical AI embedded into products and operations</li>
+              <li>Human-in-the-loop automation patterns</li>
             </ul>
           </div>
+
+          <div className="service-modern-card">
+            <div className="industry-header">
+              <img src={advisoryImage} alt="Advisory" className="industry-icon" />
+              <h4>Advisory & Fractional Leadership</h4>
+            </div>
+            <ul>
+              <li>Technology strategy and runway-aware roadmaps</li>
+              <li>Architecture reviews & modernization planning</li>
+              <li>Fractional CTO and board-level advisory</li>
+            </ul>
+          </div>
+
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-modern">
+        <h3>Build Your Platform with Confidence</h3>
+        <p>
+          Whether you are launching, scaling, or modernizing,
+          we help you build technology foundations that last.
+        </p>
+        <Link to="/contact" className="btn">
+          Start the Conversation
+        </Link>
+      </section>
+
+    </main>
   );
 }

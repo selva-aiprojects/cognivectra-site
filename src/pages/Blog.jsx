@@ -9,160 +9,177 @@ export default function Blog() {
   useEffect(() => {
     async function fetchPosts() {
       const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('status', 'published')
-        .order('published_at', { ascending: false });
+        .from("posts")
+        .select("*")
+        .eq("status", "published")
+        .order("published_at", { ascending: false });
 
       if (!error && data) {
         setPosts(data);
       }
       setLoading(false);
     }
+
     fetchPosts();
   }, []);
 
   return (
-    <section className="section ai-neutral">
-      <div className="container">
-        {/* Hero Section */}
-        <div 
-          className="card hero-card"
-          style={{
-            maxWidth: "1000px",
-            margin: "0 auto 4rem",
-            textAlign: "center",
-            padding: "3rem 2.5rem"
-          }}
-        >
-          <div style={{ fontSize: "3rem", marginBottom: "1rem", opacity: 0.8 }}>📝</div>
-          <h1>Latest Insights</h1>
-          <p className="stack" style={{ fontSize: "1.1rem", maxWidth: "700px", margin: "0 auto" }}>
-            Practical articles on cloud setup, process automation, SaaS building
-            blocks, and applied AI—written for founders and teams building
-            scalable startups.
-          </p>
-          <p className="stack" style={{ fontSize: "1.1rem", maxWidth: "700px", margin: "0 auto" }}>
-            Explore how to design lean, reliable platforms and automate what
-            slows you down, from day zero through Series B.
-          </p>
-        </div>
+    <main>
 
-        {/* Loading State */}
-        {loading && (
-          <div 
-            className="card"
-            style={{
-              maxWidth: "600px",
-              margin: "2rem auto",
-              textAlign: "center",
-              padding: "3rem"
-            }}
-          >
-            <div style={{ fontSize: "2rem", marginBottom: "1rem", opacity: 0.6 }}>⏳</div>
-            <p style={{ color: "var(--text-secondary)" }}>Loading insights...</p>
+      {/* HERO */}
+      <section className="hero-modern">
+        <div className="hero-bg-gradient"></div>
+
+        <div className="hero-modern-inner">
+
+          <div className="hero-copy">
+            <span className="hero-badge">📝 Insights</span>
+
+            <h1>
+              Founder-Friendly <br />
+              Technology Insights
+            </h1>
+
+            <p>
+              Practical articles on cloud setup, automation, SaaS building blocks,
+              and applied AI — written for founders building scalable startups.
+            </p>
+
+            <p>
+              Learn how to design lean, reliable platforms and automate what slows
+              you down — from day zero through Series B.
+            </p>
+
+            <div className="hero-cta">
+              <Link to="/contact" className="btn">
+                Talk to an Architect
+              </Link>
+              <Link to="/services" className="btn-outline">
+                View Services
+              </Link>
+            </div>
+
+            <p className="hero-subtext">
+              Cloud · Automation · SaaS · AI · Startup Engineering
+            </p>
           </div>
-        )}
 
-        {/* Blog Posts Grid */}
-        {!loading && posts.length > 0 && (
-          <div className="grid2" style={{ gap: "2rem" }}>
+          {/* Visual Card */}
+          <div className="hero-visual">
+            <div className="hero-glass-card">
+              <ul>
+                <li>Cloud Architecture</li>
+                <li>Automation Patterns</li>
+                <li>SaaS Foundations</li>
+                <li>AI in Operations</li>
+                <li>Startup DevOps</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* LOADING STATE */}
+      {loading && (
+        <section className="services-modern">
+          <div className="services-modern-grid">
+
+            <div className="service-modern-card blog-loading">
+              <div className="blog-loading-icon">⏳</div>
+              <p>Loading insights…</p>
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      {/* POSTS GRID */}
+      {!loading && posts.length > 0 && (
+        <section className="services-modern">
+          <h3>Latest Articles</h3>
+
+          <div className="services-modern-grid">
+
             {posts.map((post) => (
-              <article key={post.slug} className="card" style={{ padding: "2.5rem" }}>
-                <div style={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: "0.5rem", 
-                  marginBottom: "1rem",
-                  color: "var(--text-muted)",
-                  fontSize: "0.9rem"
-                }}>
-                  <span style={{ fontSize: "1.2rem" }}>📅</span>
-                  {new Date(post.published_at || post.created_at).toLocaleDateString()}
+              <article key={post.slug} className="service-modern-card blog-card">
+
+                <div className="blog-meta">
+                  <span>📅</span>
+                  {new Date(
+                    post.published_at || post.created_at
+                  ).toLocaleDateString()}
                 </div>
 
-                <h2 style={{ marginBottom: "1rem", lineHeight: "1.3" }}>{post.title}</h2>
+                <h4 className="blog-title">{post.title}</h4>
 
-                <p className="stack" style={{ 
-                  color: "var(--text-secondary)", 
-                  marginBottom: "1.5rem",
-                  fontSize: "1rem"
-                }}>
+                <p className="blog-excerpt">
                   {post.excerpt}
                 </p>
 
-                <div style={{
-                  background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
-                  borderRadius: "12px",
-                  padding: "1.5rem",
-                  textAlign: "center",
-                  marginTop: "auto"
-                }}>
-                  <Link 
-                    to={`/blog/${post.slug}`} 
-                    className="btn"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Read full article →
+                <div className="blog-cta">
+                  <Link to={`/blog/${post.slug}`} className="btn-outline">
+                    Read Article →
                   </Link>
                 </div>
+
               </article>
             ))}
-          </div>
-        )}
 
-        {/* CTA when no posts */}
-        {!loading && posts.length === 0 && (
-          <div 
-            className="card"
-            style={{
-              maxWidth: "700px",
-              margin: "3rem auto",
-              textAlign: "center",
-              padding: "3rem"
-            }}
-          >
-            <div style={{ fontSize: "3rem", marginBottom: "1rem", opacity: 0.8 }}>🚧</div>
-            <h3 style={{ marginBottom: "1rem", color: "var(--accent-primary)" }}>Coming Soon</h3>
-            <p className="stack" style={{ fontSize: "1.1rem" }}>
-              Our blog is coming soon. Check back for founder-friendly insights on
-              cloud infrastructure, automation, and SaaS development.
+          </div>
+        </section>
+      )}
+
+      {/* EMPTY STATE */}
+      {!loading && posts.length === 0 && (
+        <section className="services-modern">
+          <div className="service-modern-card blog-empty">
+
+            <div className="blog-empty-icon">🚧</div>
+            <h4>Coming Soon</h4>
+            <p>
+              Our blog is coming soon. Check back for founder-friendly insights
+              on cloud infrastructure, automation, and SaaS development.
             </p>
-            <div style={{
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
-              borderRadius: "12px",
-              padding: "1.5rem",
-              marginTop: "2rem"
-            }}>
-              <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--text-secondary)" }}>
-                <strong>Want to be notified?</strong> Subscribe to our newsletter for updates.
-              </p>
-            </div>
-          </div>
-        )}
 
-        {/* Visual Break Section */}
-        {!loading && (
-          <div style={{ margin: "4rem auto", textAlign: "center" }}>
-            <div style={{
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.02))",
-              borderRadius: "20px",
-              padding: "2.5rem",
-              maxWidth: "800px",
-              margin: "0 auto"
-            }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>💡</div>
-              <h3 style={{ color: "var(--accent-primary)", marginBottom: "1rem" }}>
-                Founder-Friendly Content
-              </h3>
-              <p className="stack" style={{ maxWidth: "600px", margin: "0 auto" }}>
-                Practical insights designed to help you build better technology foundations
-                without getting lost in technical jargon
-              </p>
+            <div className="highlight-pill">
+              Want updates? Subscribe to our newsletter.
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      {/* VALUE BREAK */}
+      {!loading && (
+        <section className="why-modern">
+          <div className="why-modern-inner">
+            <h3>Founder-Friendly Content</h3>
+
+            <div className="why-modern-grid">
+              <div className="why-pill">No fluff, only execution</div>
+              <div className="why-pill">Real startup examples</div>
+              <div className="why-pill">Architecture best practices</div>
+              <div className="why-pill">Automation blueprints</div>
+              <div className="why-pill">Cost-aware engineering</div>
+              <div className="why-pill">AI without hype</div>
             </div>
           </div>
-        )}
-      </div>
-    </section>
+        </section>
+      )}
+
+      {/* CTA */}
+      <section className="cta-modern">
+        <h3>Want Similar Results for Your Startup?</h3>
+        <p>
+          Share your current platform challenges and we’ll suggest
+          the smallest useful starting point.
+        </p>
+        <Link to="/contact" className="btn">
+          Talk to Us
+        </Link>
+      </section>
+
+    </main>
   );
 }
