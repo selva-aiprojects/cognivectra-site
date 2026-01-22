@@ -33,24 +33,22 @@ export default function App() {
       
       {/* Scrollable Content Container */}
       <div className="content-wrapper">
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/mission" element={<Mission />} />
-            <Route path="/who-we-are" element={<WhoWeAre />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/engagements" element={<Engagements />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/industries" element={<Industries />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/admin" element={<AdminEnhanced />} />
-            <Route path="/admin/reports" element={<AdminReports />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mission" element={<Mission />} />
+          <Route path="/who-we-are" element={<WhoWeAre />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/engagements" element={<Engagements />} />
+          <Route path="/results" element={<Results />} />
+          <Route path="/industries" element={<Industries />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/admin" element={<AdminEnhanced />} />
+          <Route path="/admin/reports" element={<AdminReports />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </div>
 
       <Footer />
