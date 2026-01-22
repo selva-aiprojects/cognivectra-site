@@ -223,7 +223,7 @@ body.menu-open {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 20px;
+  padding: clamp(65px, 12vw, 90px) 20px 20px 20px;
   /* iOS safe area handling */
   padding-left: calc(20px + var(--safe-area-left));
   padding-right: calc(20px + var(--safe-area-right));
@@ -300,7 +300,7 @@ p {
    PERFECT MOBILE NAVBAR - Enhanced for Touch
    ====================== */
 .nav {
-  position: relative;
+  position: fixed;
   top: var(--safe-area-top);
   left: 0;
   right: 0;
