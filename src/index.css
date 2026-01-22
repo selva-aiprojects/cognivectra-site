@@ -209,23 +209,32 @@ body.menu-open {
 }
 
 /* =======================
-   APP LAYOUT - Fixed Header/Footer, Scrollable Main
+   NEW LAYOUT APPROACH - Absolute Header/Footer
    ====================== */
-.appShell {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.app-layout {
   position: relative;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.main-content {
-  flex: 1;
+.content-wrapper {
+  position: absolute;
+  top: clamp(65px, 12vw, 90px);
+  left: 0;
+  right: 0;
+  bottom: clamp(80px, 10vw, 120px);
   overflow-y: auto;
-  padding-top: clamp(65px, 12vw, 90px);
-  position: relative;
-  z-index: 1;
-  /* Ensure content doesn't overlap header/footer */
-  margin-bottom: 80px; /* Approximate footer height */
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 0;
+}
+
+.content-wrapper .container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  /* iOS safe area handling */
+  padding-left: calc(20px + var(--safe-area-left));
+  padding-right: calc(20px + var(--safe-area-right));
 }
 
 /* =======================

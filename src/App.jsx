@@ -27,12 +27,12 @@ export default function App() {
   const showChatbot = true;
 
   return (
-    <div className="appShell">
+    <div className="app-layout">
       <div className="ambient-glow" />
       <Navbar setIsChatOpen={setIsChatOpen} />
-
-      {/* Main Content */}
-      <main className="main-content">
+      
+      {/* Scrollable Content Container */}
+      <div className="content-wrapper">
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -51,7 +51,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
-      </main>
+      </div>
 
       <Footer />
       {showChatbot && <Chatbot isOpen={isChatOpen} setIsOpen={setIsChatOpen} />}
