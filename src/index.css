@@ -209,20 +209,18 @@ body.menu-open {
 }
 
 /* =======================
-   NEW LAYOUT APPROACH - Fixed Header/Footer
+   NEW LAYOUT APPROACH - Normal Document Flow
    ====================== */
 .app-layout {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .content-wrapper {
-  position: absolute;
-  top: clamp(65px, 12vw, 90px);
-  left: 0;
-  right: 0;
-  bottom: clamp(80px, 10vw, 120px);
+  flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 20px;
@@ -302,7 +300,7 @@ p {
    PERFECT MOBILE NAVBAR - Enhanced for Touch
    ====================== */
 .nav {
-  position: fixed;
+  position: relative;
   top: var(--safe-area-top);
   left: 0;
   right: 0;
