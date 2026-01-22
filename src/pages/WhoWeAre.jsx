@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 /* High-resolution illustrations */
-import aboutHero from "../assets/illustrations/about-expertise.svg";
+import aboutHero from "../assets/illustrations/mission-vision.png";
 import cloudImage from "../assets/illustrations/industries-saas.svg";
 import automationImage from "../assets/illustrations/industries-fintech.svg";
 import aiImage from "../assets/illustrations/industries-healthcare.svg";
