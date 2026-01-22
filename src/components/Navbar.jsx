@@ -4,6 +4,7 @@ import logo from "../assets/Logo.png";
 
 export default function SimpleNavbar({ setIsChatOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -17,14 +18,23 @@ export default function SimpleNavbar({ setIsChatOpen }) {
     };
   }, [mobileMenuOpen]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30);
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const toggleMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
     <>
-      <header className="nav">
+      <header className={`nav ${scrolled ? "scrolled" : ""}`}>
         <div className="navInner container">
+
           {/* Logo */}
           <NavLink
             to="/"
@@ -33,40 +43,33 @@ export default function SimpleNavbar({ setIsChatOpen }) {
             onClick={() => setMobileMenuOpen(false)}
           >
             <img src={logo} alt="CogniVectra Logo" className="brand-logo" />
-            <span className="brand-text">enterprise automation for startups</span>
           </NavLink>
 
           {/* Desktop Navigation */}
           <nav className="links desktop-links" aria-label="Desktop Navigation">
-            <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
-              Home
+
+            <NavLink to="/services">Services</NavLink>
+            <NavLink to="/engagements">Engagements</NavLink>
+            <NavLink to="/results">Results</NavLink>
+            <NavLink to="/industries">Industries</NavLink>
+            <NavLink to="/who-we-are">Who We Are</NavLink>
+            <NavLink to="/blog">Blog</NavLink>
+
+            {/* Primary CTA */}
+            <NavLink to="/contact" className="btn nav-cta">
+              Book Strategy Call
             </NavLink>
-            <NavLink to="/services" className={({ isActive }) => (isActive ? "active" : "")}>
-              Services
-            </NavLink>
-            <NavLink to="/engagements" className={({ isActive }) => (isActive ? "active" : "")}>
-              Engagements
-            </NavLink>
-            <NavLink to="/results" className={({ isActive }) => (isActive ? "active" : "")}>
-              Results
-            </NavLink>
-            <NavLink to="/industries" className={({ isActive }) => (isActive ? "active" : "")}>
-              Industries
-            </NavLink>
-            <NavLink to="/who-we-are" className={({ isActive }) => (isActive ? "active" : "")}>
-              Who We Are
-            </NavLink>
-            <NavLink to="/blog" className={({ isActive }) => (isActive ? "active" : "")}>
-              Blog
-            </NavLink>
-            <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
-              Contact
-            </NavLink>
-            <button onClick={() => setIsChatOpen(true)} className="ai-chat-button" aria-label="Chat with AI Assistant">
-              <span className="ai-button-text">AI Assistant</span>
+
+            {/* AI Assistant */}
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="ai-chat-button"
+              aria-label="Chat with AI Assistant"
+            >
+              AI Assistant
               <span className="ai-status-dot"></span>
-              <span className="ai-button-glow"></span>
             </button>
+
           </nav>
 
           {/* Mobile Hamburger */}
@@ -84,12 +87,14 @@ export default function SimpleNavbar({ setIsChatOpen }) {
         </div>
       </header>
 
+      {/* Mobile Overlay */}
       <div
         className={`mobile-menu-overlay ${mobileMenuOpen ? "active" : ""}`}
         onClick={() => setMobileMenuOpen(false)}
         aria-hidden="true"
       />
 
+      {/* Mobile Menu */}
       <div
         className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
         id="mobile-menu"
@@ -98,46 +103,29 @@ export default function SimpleNavbar({ setIsChatOpen }) {
       >
         <div className="mobile-menu-header">
           <img src={logo} alt="CogniVectra Logo" className="mobile-menu-logo" />
-          <button className="mobile-close-btn" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" />
+          <button
+            className="mobile-close-btn"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+          />
         </div>
 
         <div className="mobile-menu-content">
           <nav className="mobile-nav" aria-label="Mobile Navigation Links">
-            <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">🏠</span>
-              Home
-            </NavLink>
-            <NavLink to="/services" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">⚡</span>
-              Services
-            </NavLink>
-            <NavLink to="/engagements" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">🤝</span>
-              Engagements
-            </NavLink>
-            <NavLink to="/results" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">📊</span>
-              Results
-            </NavLink>
-            <NavLink to="/industries" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">🏢</span>
-              Industries
-            </NavLink>
-            <NavLink to="/who-we-are" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">👥</span>
-              Who We Are
-            </NavLink>
-            <NavLink to="/blog" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">📝</span>
-              Blog
-            </NavLink>
-            <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")} onClick={() => setMobileMenuOpen(false)}>
-              <span className="mobile-nav-icon">📞</span>
-              Contact
-            </NavLink>
+
+            <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
+            <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>Services</NavLink>
+            <NavLink to="/engagements" onClick={() => setMobileMenuOpen(false)}>Engagements</NavLink>
+            <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>Results</NavLink>
+            <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>Industries</NavLink>
+            <NavLink to="/who-we-are" onClick={() => setMobileMenuOpen(false)}>Who We Are</NavLink>
+            <NavLink to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</NavLink>
+            <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
+
           </nav>
 
           <div className="mobile-menu-footer">
+
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
@@ -146,9 +134,18 @@ export default function SimpleNavbar({ setIsChatOpen }) {
               className="mobile-ai-chat-button"
               aria-label="Chat with AI Assistant"
             >
-              <span className="mobile-ai-text">Chat with AI Assistant</span>
+              Chat with AI Assistant
               <span className="mobile-ai-badge">NEW</span>
             </button>
+
+            <NavLink
+              to="/contact"
+              className="btn mobile-cta"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Book Strategy Call
+            </NavLink>
+
           </div>
         </div>
       </div>
