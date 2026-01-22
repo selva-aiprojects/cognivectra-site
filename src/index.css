@@ -1977,30 +1977,75 @@ body.menu-open {
 }
 
 /* =========================
-   MODERN ADMIN STYLES
+   SIMPLIFIED ADMIN STYLES
 ========================= */
-.admin-header-card {
+.admin-simple-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
 }
 
-.admin-header-actions {
+.admin-actions {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-.admin-editor-card {
-  margin-bottom: 2rem;
+/* Clean, functional admin layouts */
+.admin-post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.admin-editor-header {
+.admin-post-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--bg-primary);
+}
+
+.admin-post-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-post-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.admin-post-info .muted {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.9rem;
+}
+
+.admin-post-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.admin-editor {
+  padding: 2rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--bg-primary);
+}
+
+.admin-editor h3 {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
 }
 
 .admin-editor-actions {
@@ -2009,55 +2054,38 @@ body.menu-open {
   margin-top: 1.5rem;
 }
 
-.admin-post-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1.5rem;
+/* Better readability for reports */
+.grid2.admin-reports-grid {
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  align-items: start;
 }
 
-.admin-post-card {
-  padding: 1.5rem;
-}
-
-.admin-post-info {
-  margin-bottom: 1rem;
-}
-
-.admin-post-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.btn-small {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
-/* Responsive adjustments */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .admin-header-card {
+  .admin-simple-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
   
-  .admin-header-actions {
+  .admin-actions {
     width: 100%;
-    justify-content: flex-start;
+    flex-wrap: wrap;
   }
   
-  .admin-post-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .admin-editor-header {
+  .admin-post-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
   
   .admin-post-actions {
-    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .grid2.admin-reports-grid {
+    grid-template-columns: 1fr;
   }
 }

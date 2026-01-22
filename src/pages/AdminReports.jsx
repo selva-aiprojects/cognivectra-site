@@ -138,63 +138,26 @@ export default function AdminReports() {
     );
 
   return (
-    <>
-      {/* HERO */}
-      <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
-        <div className="hero-modern-inner">
-          <div className="hero-copy">
-            <span className="hero-badge">📊 Lead Intelligence</span>
-            <h1>
-              Analytics &amp;
-              <br />
-              Reports
-            </h1>
-            <p>
-              Track, analyze, and convert leads with our
-              comprehensive reporting dashboard and real-time insights.
-            </p>
-            <p className="hero-subtext">
-              Data-driven decisions for startup growth
-            </p>
+    <section className="section ai-neutral">
+      <div className="container">
+        {/* SIMPLE HEADER */}
+        <div className="admin-simple-header">
+          <div>
+            <h1>📊 Lead Reports</h1>
+            <p className="muted">All chatbot & contact leads — centralized</p>
           </div>
-
-          <div className="hero-visual">
-            <div className="hero-glass-card">
-              <ul>
-                <li>📈 Real-time lead scoring</li>
-                <li>🎯 Advanced filtering</li>
-                <li>📊 CSV export capability</li>
-                <li>💬 Chat history tracking</li>
-                <li>🔄 Live data updates</li>
-              </ul>
-            </div>
+          <div className="admin-actions">
+            <Link to="/admin" className="btn-outline">
+              📁 Content Manager
+            </Link>
+            <button onClick={exportCSV} className="btn-outline">
+              ⬇ Export CSV
+            </button>
+            <button onClick={handleSignOut} className="btn-outline">
+              🚪 Sign Out
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* MAIN CONTENT */}
-      <section className="services-modern">
-        <div className="container">
-          {/* HEADER ACTIONS */}
-          <div className="service-modern-card admin-header-card">
-            <div>
-              <h3>Lead Dashboard</h3>
-              <p className="muted">All chatbot &amp; contact leads — centralized</p>
-            </div>
-            <div className="admin-header-actions">
-              <Link to="/admin" className="btn-outline">
-                📁 Content Manager
-              </Link>
-              <button onClick={exportCSV} className="btn-outline">
-                ⬇ Export CSV
-              </button>
-              <button onClick={handleSignOut} className="btn-outline">
-                🚪 Sign Out
-              </button>
-            </div>
-          </div>
 
         {/* FILTERS */}
         <div
@@ -388,7 +351,6 @@ export default function AdminReports() {
           </div>
         </div>
       </div>
-      </section>
-    </>
+    </section>
   );
 }
