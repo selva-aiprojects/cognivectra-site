@@ -45,12 +45,20 @@ export default function Contact() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-      await fetch("https://api.web3forms.com/submit", {
+      // Debug: Check if API key is loaded
+      const apiKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+      console.log("Web3Forms API Key:", apiKey ? "Loaded" : "Missing");
+      
+      if (!apiKey) {
+        throw new Error("Web3Forms API key not configured");
+      }
+
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          access_key: apiKey,
           name,
           email,
           message: `New Contact Form Submission from ${name}
@@ -66,6 +74,13 @@ export default function Contact() {
       });
 
       clearTimeout(timeoutId);
+
+      const result = await response.json();
+      console.log("Web3Forms Response:", result);
+      
+      if (!response.ok) {
+        throw new Error(`Web3Forms error: ${result.message || 'Unknown error'}`);
+      }
 
       setMessage("Thank you! Your message has been received. We will reply within 24 hours.");
       e.target.reset();
