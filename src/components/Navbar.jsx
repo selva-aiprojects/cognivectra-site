@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../assets/Logo.png";
+import logo from "/cognivectra-dark-crop.png";
 
 export default function SimpleNavbar({ setIsChatOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
