@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:publish": "node scripts/test-publish-local.js",
+    "test:edge": "node scripts/test-edge-function.js",
+    "check": "node scripts/check-setup.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.91.0",

@@ -7,6 +7,10 @@ export default function AdminEnhanced() {
   const [loading, setLoading] = useState(true);
   const [editingPost, setEditingPost] = useState(null);
   const [publishingTo, setPublishingTo] = useState({});
+  const [publishStatus, setPublishStatus] = useState({}); // { postId: { platform: { status, error } } }
+  const [selectedPlatforms, setSelectedPlatforms] = useState({}); // { postId: ['blog', 'linkedin', ...] }
+  const [showPlatformSelector, setShowPlatformSelector] = useState({}); // { postId: true/false }
+  const [socialMediaStatus, setSocialMediaStatus] = useState({}); // { postId: { platform: { published_at, platform_post_id } } }
   const [activeTab, setActiveTab] = useState("drafts");
 
   const navigate = useNavigate();
@@ -64,8 +68,50 @@ export default function AdminEnhanced() {
     }
   }
 
-  async function publishPost(post, platforms = ["blog"]) {
+  function togglePlatformSelector(postId) {
+    setShowPlatformSelector(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+    // Initialize with default selection if not set
+    if (!selectedPlatforms[postId]) {
+      setSelectedPlatforms(prev => ({
+        ...prev,
+        [postId]: ["blog", "linkedin"]
+      }));
+    }
+  }
+
+  function togglePlatform(postId, platform) {
+    setSelectedPlatforms(prev => {
+      const current = prev[postId] || [];
+      if (current.includes(platform)) {
+        return { ...prev, [postId]: current.filter(p => p !== platform) };
+      } else {
+        return { ...prev, [postId]: [...current, platform] };
+      }
+    });
+  }
+
+  async function publishPost(post, platforms = null) {
+    // Use provided platforms or selected platforms
+    const platformsToUse = platforms || selectedPlatforms[post.id] || ["blog"];
+    
+    if (platformsToUse.length === 0) {
+      alert("Please select at least one platform to publish to.");
+      return;
+    }
+
     setPublishingTo(prev => ({ ...prev, [post.id]: true }));
+    setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }));
+    
+    // Initialize status tracking
+    const socials = platformsToUse.filter(p => p !== "blog");
+    const initialStatus = {};
+    socials.forEach(platform => {
+      initialStatus[platform] = { status: "publishing", error: null };
+    });
+    setPublishStatus(prev => ({ ...prev, [post.id]: initialStatus }));
 
     try {
       const { error } = await supabase
@@ -73,28 +119,91 @@ export default function AdminEnhanced() {
         .update({
           status: "published",
           published_at: new Date().toISOString(),
-          published_platforms: platforms
+          published_platforms: platformsToUse
         })
         .eq("id", post.id);
 
       if (error) throw error;
 
-      const socials = platforms.filter(p => p !== "blog");
-      if (socials.length) await publishToSocialMedia(post, socials);
+      // Publish to social media
+      if (socials.length > 0) {
+        await publishToSocialMedia(post, socials);
+      }
 
-      alert("Post published.");
-      fetchPosts();
+      // Refresh posts and social media status
+      await fetchPosts();
+      
+      // Clear status after a delay
+      setTimeout(() => {
+        setPublishStatus(prev => {
+          const updated = { ...prev };
+          delete updated[post.id];
+          return updated;
+        });
+      }, 5000);
     } catch (err) {
-      alert("Publish failed.");
+      alert("Publish failed: " + err.message);
     } finally {
       setPublishingTo(prev => ({ ...prev, [post.id]: false }));
     }
   }
 
   async function publishToSocialMedia(post, platforms) {
-    await supabase.functions.invoke("publish-social", {
-      body: { postId: post.id, platforms }
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke("publish-social", {
+        body: { postId: post.id, platforms }
+      });
+
+      if (error) throw error;
+
+      // Update status based on results
+      if (data && data.results) {
+        const statusUpdate = {};
+        data.results.forEach((result) => {
+          statusUpdate[result.platform] = {
+            status: result.success ? "success" : "error",
+            error: result.error || null
+          };
+        });
+        setPublishStatus(prev => ({
+          ...prev,
+          [post.id]: { ...prev[post.id], ...statusUpdate }
+        }));
+
+        // Show summary
+        const successCount = data.results.filter(r => r.success).length;
+        const failCount = data.results.filter(r => !r.success).length;
+        if (failCount > 0) {
+          const failedPlatforms = data.results
+            .filter(r => !r.success)
+            .map(r => `${r.platform}: ${r.error}`)
+            .join("\n");
+          alert(`Published to ${successCount} platform(s).\n\nFailed:\n${failedPlatforms}`);
+        }
+      }
+    } catch (err) {
+      console.error("Social media publishing error:", err);
+      const errorStatus = {};
+      platforms.forEach(platform => {
+        errorStatus[platform] = { status: "error", error: err.message };
+      });
+      setPublishStatus(prev => ({
+        ...prev,
+        [post.id]: { ...prev[post.id], ...errorStatus }
+      }));
+    }
+  }
+
+  function getPlatformStatus(postId, platform) {
+    // Check if already published
+    if (socialMediaStatus[postId]?.[platform]) {
+      return { type: "published", date: socialMediaStatus[postId][platform].published_at };
+    }
+    // Check current publishing status
+    if (publishStatus[postId]?.[platform]) {
+      return publishStatus[postId][platform];
+    }
+    return null;
   }
 
   if (loading) {
@@ -233,40 +342,146 @@ export default function AdminEnhanced() {
                   ✏️ Edit
                 </button>
 
-                {post.status === "draft" && (
-                  <button
-                    className="btn"
-                    disabled={publishingTo[post.id]}
-                    onClick={() => publishPost(post, ["blog", "linkedin", "instagram", "facebook"])}
-                  >
-                    {publishingTo[post.id] ? "⏳ Publishing…" : "🚀 Publish All"}
-                  </button>
+                {/* Platform Status Display */}
+                {(post.status === "published" || socialMediaStatus[post.id]) && (
+                  <div className="platform-status" style={{ marginTop: "0.5rem", fontSize: "0.85rem" }}>
+                    {["blog", "linkedin", "instagram", "facebook"].map(platform => {
+                      const status = getPlatformStatus(post.id, platform);
+                      if (!status) return null;
+                      
+                      if (status.type === "published") {
+                        return (
+                          <span key={platform} style={{ 
+                            marginRight: "0.5rem", 
+                            padding: "0.2rem 0.5rem", 
+                            background: "var(--bg-secondary)", 
+                            borderRadius: "4px",
+                            display: "inline-block"
+                          }}>
+                            ✅ {platform}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
                 )}
 
-                {post.status === "pending_review" && (
-                  <>
-                    <button
-                      className="btn"
-                      disabled={publishingTo[post.id]}
-                      onClick={() => publishPost(post, ["blog", "linkedin"])}
-                    >
-                      {publishingTo[post.id] ? "⏳ Publishing…" : "✅ Approve & Share"}
-                    </button>
+                {/* Publishing Actions */}
+                {(post.status === "draft" || post.status === "pending_review") && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    {!showPlatformSelector[post.id] ? (
+                      <button
+                        className="btn"
+                        disabled={publishingTo[post.id]}
+                        onClick={() => togglePlatformSelector(post.id)}
+                      >
+                        {publishingTo[post.id] ? "⏳ Publishing…" : "🚀 Publish"}
+                      </button>
+                    ) : (
+                      <div style={{ 
+                        background: "var(--bg-secondary)", 
+                        padding: "1rem", 
+                        borderRadius: "8px",
+                        marginTop: "0.5rem"
+                      }}>
+                        <div style={{ marginBottom: "0.75rem", fontWeight: "600" }}>
+                          Select Platforms:
+                        </div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "0.75rem" }}>
+                          {["blog", "linkedin", "instagram", "facebook"].map(platform => {
+                            const isSelected = (selectedPlatforms[post.id] || []).includes(platform);
+                            const status = getPlatformStatus(post.id, platform);
+                            const isDisabled = publishingTo[post.id];
+                            
+                            return (
+                              <label
+                                key={platform}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  padding: "0.5rem 0.75rem",
+                                  background: isSelected ? "var(--accent-primary)" : "transparent",
+                                  border: `1px solid ${isSelected ? "var(--accent-primary)" : "var(--border-color)"}`,
+                                  borderRadius: "6px",
+                                  cursor: isDisabled ? "not-allowed" : "pointer",
+                                  opacity: isDisabled ? 0.6 : 1,
+                                  fontSize: "0.9rem"
+                                }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  disabled={isDisabled}
+                                  onChange={() => togglePlatform(post.id, platform)}
+                                  style={{ marginRight: "0.5rem" }}
+                                />
+                                {platform === "blog" && "📰"}
+                                {platform === "linkedin" && "💼"}
+                                {platform === "instagram" && "📷"}
+                                {platform === "facebook" && "👥"}
+                                <span style={{ marginLeft: "0.25rem" }}>{platform}</span>
+                                {status?.type === "published" && " ✓"}
+                              </label>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Publishing Status */}
+                        {publishStatus[post.id] && (
+                          <div style={{ marginBottom: "0.75rem", fontSize: "0.85rem" }}>
+                            {Object.entries(publishStatus[post.id]).map(([platform, status]) => (
+                              <div key={platform} style={{ marginBottom: "0.25rem" }}>
+                                {status.status === "publishing" && `⏳ Publishing to ${platform}...`}
+                                {status.status === "success" && `✅ ${platform} published`}
+                                {status.status === "error" && (
+                                  <span style={{ color: "var(--error-color, #e74c3c)" }}>
+                                    ❌ {platform}: {status.error}
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
 
-                    <button
-                      className="btn-outline"
-                      disabled={publishingTo[post.id]}
-                      onClick={() => publishPost(post, ["blog"])}
-                    >
-                      📰 Blog Only
-                    </button>
-                  </>
+                        <div style={{ display: "flex", gap: "0.5rem" }}>
+                          <button
+                            className="btn"
+                            disabled={publishingTo[post.id] || (selectedPlatforms[post.id] || []).length === 0}
+                            onClick={() => publishPost(post)}
+                          >
+                            {publishingTo[post.id] ? "⏳ Publishing…" : "✅ Publish Selected"}
+                          </button>
+                          <button
+                            className="btn-outline"
+                            disabled={publishingTo[post.id]}
+                            onClick={() => {
+                              setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }));
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {post.status === "published" && (
-                  <Link to={`/blog/${post.slug}`} target="_blank" className="btn-outline">
-                    👁️ View Live
-                  </Link>
+                  <>
+                    <Link to={`/blog/${post.slug}`} target="_blank" className="btn-outline" style={{ marginTop: "0.5rem" }}>
+                      👁️ View Live
+                    </Link>
+                    {Object.keys(socialMediaStatus[post.id] || {}).length > 0 && (
+                      <button
+                        className="btn-outline"
+                        style={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}
+                        onClick={() => togglePlatformSelector(post.id)}
+                      >
+                        🔄 Republish
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
 
