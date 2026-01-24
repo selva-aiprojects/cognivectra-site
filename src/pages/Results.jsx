@@ -40,14 +40,11 @@ export default function Results() {
 
           {/* Visual Card Instead of Image */}
           <div className="hero-visual">
-            <div className="hero-glass-card">
-              <ul>
-                <li>Faster Releases</li>
-                <li>AI Enablement</li>
-                <li>Automation Wins</li>
-                <li>Cost Optimization</li>
-              </ul>
-            </div>
+            <img
+              src="/hero_results.png"
+              alt="Measurable Results & Outcomes"
+              className="hero-image-modern"
+            />
           </div>
 
         </div>

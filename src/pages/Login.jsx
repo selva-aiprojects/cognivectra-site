@@ -47,7 +47,7 @@ export default function Login() {
     }
 
     return (
-        <div className="section ai-neutral" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: "linear-gradient(180deg, rgba(5,7,12,0) 0%, rgba(5,7,12,1) 100%)" }}>
             <div className="card no-hover-effect" style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }}>
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                     <h2 style={{ marginBottom: '0.5rem' }}>Admin Portal</h2>

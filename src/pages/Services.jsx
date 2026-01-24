@@ -34,20 +34,17 @@ export default function Services() {
             </div>
 
             <p className="hero-subtext">
-              Flexible delivery · Startup pricing · Senior engineers only
+              Flexible delivery · Cost-effective solutions · Senior engineers only
             </p>
           </div>
 
           {/* No image dependency — premium glass card instead */}
           <div className="hero-visual">
-            <div className="hero-glass-card">
-              <ul>
-                <li>Cloud Architecture & Landing Zones</li>
-                <li>DevOps Automation & CI/CD</li>
-                <li>AI Workflow Orchestration</li>
-                <li>SaaS Product Foundations</li>
-              </ul>
-            </div>
+            <img
+              src="/hero_tech_services.png"
+              alt="Cloud Infrastructure & Services"
+              className="hero-image-modern"
+            />
           </div>
 
         </div>

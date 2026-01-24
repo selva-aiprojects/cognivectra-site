@@ -61,12 +61,11 @@ export default function WhoWeAre() {
 
           {/* Visual */}
           <div className="hero-visual">
-            <div className="hero-glass-card hero-visual-image">
-              <img
-                src={aboutHero}
-                alt="Startup-focused engineering expertise"
-              />
-            </div>
+            <img
+              src="/hero_engagements.png"
+              alt="Startup-focused Engineering Team"
+              className="hero-image-modern"
+            />
           </div>
 
         </div>

@@ -20,7 +20,7 @@ if (!clientId || !clientSecret) {
 
 // Generate the authorization URL
 const redirectUri = 'http://localhost:3000/callback'; // You'll need to add this to your LinkedIn app
-const scopes = ['profile', 'w_member_social', 'openid', 'email'];
+const scopes = ['profile', 'w_member_social', 'w_organization_social', 'openid', 'email'];
 const state = Math.random().toString(36).substring(7); // Random state for security
 
 const authUrl = `https://www.linkedin.com/oauth/v2/authorization?` +
@@ -45,7 +45,7 @@ console.log(`node ${__filename} --exchange-code YOUR_CODE_HERE`);
 if (process.argv.includes('--exchange-code')) {
   const codeIndex = process.argv.indexOf('--exchange-code') + 1;
   const authCode = process.argv[codeIndex];
-  
+
   if (!authCode) {
     console.error('❌ Please provide the authorization code');
     console.log('Usage: node test_linkedin_setup.js --exchange-code YOUR_CODE');
@@ -58,7 +58,7 @@ if (process.argv.includes('--exchange-code')) {
 async function exchangeCodeForToken(code) {
   try {
     console.log('\n=== Exchanging Code for Access Token ===');
-    
+
     const tokenUrl = 'https://www.linkedin.com/oauth/v2/accessToken';
     const data = {
       grant_type: 'authorization_code',
@@ -75,18 +75,18 @@ async function exchangeCodeForToken(code) {
     });
 
     const { access_token, expires_in } = response.data;
-    
+
     console.log('✅ Access Token Generated Successfully!');
     console.log('Token:', access_token.substring(0, 50) + '...');
     console.log('Expires in:', expires_in, 'seconds');
-    
+
     console.log('\n=== Update Your .env File ===');
     console.log('Replace LINKEDIN_ACCESS_TOKEN with:');
     console.log(`LINKEDIN_ACCESS_TOKEN=${access_token}`);
-    
+
     console.log('\n=== Test the New Token ===');
     console.log('Run: node scripts/test_linkedin_setup.js');
-    
+
   } catch (error) {
     console.error('❌ Error exchanging code for token:');
     if (error.response) {

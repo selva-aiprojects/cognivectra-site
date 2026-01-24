@@ -35,7 +35,7 @@ export default function Home() {
             </div>
 
             <p className="hero-subtext">
-              Complimentary consultation · Direct engagement with our Principal Architect
+              Delivering cost-effective, enterprise-grade solutions · Direct engagement with our Principal Architect
             </p>
           </div>
 
@@ -87,6 +87,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* MISSION TEASER */}
+      <section className="why-modern" style={{ background: "rgba(255,255,255,0.02)" }}>
+        <div className="why-modern-inner">
+          <h3>Our Mission</h3>
+          <p style={{ maxWidth: "800px", margin: "0 auto 2rem", fontSize: "1.2rem", lineHeight: "1.6", color: "var(--text-secondary)" }}>
+            Empowering founders through frictionless technology. We help startups build
+            reliable, automated platforms that scale with confidence—making enterprise-grade
+            infrastructure accessible to every founder.
+          </p>
+
+          <div className="why-modern-grid">
+            <div className="why-pill">Founder Empowerment</div>
+            <div className="why-pill">Frictionless Innovation</div>
+            <div className="why-pill">Invisible Foundations</div>
+          </div>
+
+          <div style={{ marginTop: "2.5rem" }}>
+            <Link to="/who-we-are" className="btn-outline">
+              Read Our Full Vision
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* WHY */}
       <section className="why-modern">
         <div className="why-modern-inner">
@@ -114,6 +138,6 @@ export default function Home() {
         </Link>
       </section>
 
-    </main>
+    </main >
   );
 }

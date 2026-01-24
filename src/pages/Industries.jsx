@@ -117,13 +117,11 @@ export default function Industries() {
 
           {/* Visual Summary Card */}
           <div className="hero-visual">
-            <div className="hero-glass-card">
-              <ul>
-                {industries.map((industry) => (
-                  <li key={industry.title}>{industry.title}</li>
-                ))}
-              </ul>
-            </div>
+            <img
+              src="/hero_tech_services.png"
+              alt="Industry-Specific Tech Solutions"
+              className="hero-image-modern"
+            />
           </div>
 
         </div>

@@ -34,20 +34,17 @@ export default function Engagements() {
             </div>
 
             <p className="hero-subtext">
-              Complimentary consultation · No long-term lock-in
+              Complimentary consultation · Cost-effective solutions · No long-term lock-in
             </p>
           </div>
 
           {/* Visual Card Instead of Image */}
           <div className="hero-visual">
-            <div className="hero-glass-card">
-              <ul>
-                <li>Startup Launch Pack</li>
-                <li>Monthly Platform Support</li>
-                <li>Flexible Retainer</li>
-                <li>Fractional CTO & Advisory</li>
-              </ul>
-            </div>
+            <img
+              src="/hero_engagements.png"
+              alt="Flexible Partnerships & Meeting"
+              className="hero-image-modern"
+            />
           </div>
 
         </div>

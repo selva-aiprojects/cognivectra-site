@@ -56,21 +56,44 @@ export default function Admin() {
   async function handleSave(e) {
     e.preventDefault();
 
-    const { error } = await supabase
-      .from("posts")
-      .update({
-        title: editingPost.title,
-        excerpt: editingPost.excerpt,
-        body: editingPost.body
-      })
-      .eq("id", editingPost.id);
+    const payload = {
+      title: editingPost.title,
+      excerpt: editingPost.excerpt,
+      body: editingPost.body,
+      updated_at: new Date().toISOString()
+    };
+
+    let error;
+
+    if (editingPost.id) {
+      // Update
+      const res = await supabase.from("posts").update(payload).eq("id", editingPost.id);
+      error = res.error;
+    } else {
+      // Insert
+      const res = await supabase.from("posts").insert([{
+        ...payload,
+        status: "draft",
+        created_at: new Date().toISOString(),
+        tags: editingPost.tags || []
+      }]);
+      error = res.error;
+    }
 
     if (error) alert("Error saving: " + error.message);
     else {
-      alert("Changes saved.");
+      alert("Saved successfully.");
       setEditingPost(null);
       fetchDrafts();
     }
+  }
+
+  async function publishToSocial(post) {
+    if (!window.confirm(`Publish "${post.title}" to LinkedIn/Twitter?`)) return;
+
+    // Mock loading
+    await new Promise(r => setTimeout(r, 1000));
+    alert("✅ Successfully published to LinkedIn, Facebook, and Instagram (Simulated)!");
   }
 
   if (loading) {
@@ -83,19 +106,25 @@ export default function Admin() {
   }
 
   return (
-    <section className="section ai-neutral">
-      <div className="container">
+    <section className="section" style={{ minHeight: "100vh", paddingTop: "120px", background: "linear-gradient(180deg, rgba(5,7,12,0) 0%, rgba(5,7,12,1) 100%)" }}>
+      <div className="container" style={{ maxWidth: "1200px" }}>
 
-        {/* SIMPLE HEADER */}
-        <div className="admin-simple-header">
+        {/* HEADER & ACTIONS */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
           <div>
-            <h1>🛠 Content Management</h1>
-            <p className="muted">Review and publish AI-generated content</p>
+            <h1 style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>Admin Dashboard</h1>
+            <p className="muted">Manage your content and platform health.</p>
           </div>
 
           <div className="admin-actions">
+            <button
+              className="btn"
+              onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })}
+            >
+              + New Post
+            </button>
             <Link to="/admin/reports" className="btn-outline">
-              📊 Reports
+              📊 View Reports
             </Link>
             <button onClick={handleSignOut} className="btn-outline">
               🚪 Sign Out
@@ -103,10 +132,40 @@ export default function Admin() {
           </div>
         </div>
 
+        {/* STATS GRID */}
+        {!editingPost && (
+          <div className="admin-stats-grid">
+            <div className="admin-stat-card">
+              <div className="admin-stat-number">{posts.length}</div>
+              <div className="admin-stat-label">Total Articles</div>
+            </div>
+            <div className="admin-stat-card">
+              <div className="admin-stat-number">
+                {posts.filter(p => p.status === "published").length}
+              </div>
+              <div className="admin-stat-label">Published Live</div>
+            </div>
+            <div className="admin-stat-card">
+              <div className="admin-stat-number">
+                {posts.filter(p => p.status !== "published").length}
+              </div>
+              <div className="admin-stat-label">Drafts Pending</div>
+            </div>
+          </div>
+        )}
+
         {/* EDIT MODE */}
-        {editingPost && (
+        {editingPost ? (
           <div className="card admin-editor">
-            <h3>✏️ Edit Post</h3>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+              <h3>✏️ Edit Post</h3>
+              <button
+                className="btn-outline"
+                onClick={() => setEditingPost(null)}
+              >
+                ← Back to List
+              </button>
+            </div>
 
             <form onSubmit={handleSave} className="form">
               <label>
@@ -157,58 +216,74 @@ export default function Admin() {
               </div>
             </form>
           </div>
-        )}
-
-        {/* POSTS LIST */}
-        {!editingPost && (
-          <div className="admin-post-list">
-            {posts.map(post => (
-              <div key={post.id} className="card admin-post-row">
-
-                <div className="admin-post-info">
-                  <span
-                    className={`status-pill ${post.status}`}
-                  >
-                    {post.status.toUpperCase()}
-                  </span>
-
-                  <div>
-                    <h3>{post.title}</h3>
-                    <p className="muted">
+        ) : (
+          /* DATA TABLE VIEW */
+          <div className="admin-table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Title</th>
+                  <th>Date Created</th>
+                  <th style={{ textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {posts.map(post => (
+                  <tr key={post.id}>
+                    <td>
+                      <span className={`status-pill ${post.status}`}>
+                        {post.status.toUpperCase()}
+                      </span>
+                    </td>
+                    <td>
+                      <strong>{post.title}</strong>
+                    </td>
+                    <td className="muted">
                       {new Date(post.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
+                    </td>
+                    <td style={{ textAlign: "right" }}>
+                      <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
+                        <button
+                          className="btn-outline"
+                          style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
+                          onClick={() => setEditingPost(post)}
+                        >
+                          ✏️ Edit
+                        </button>
 
-                <div className="admin-post-actions">
-                  <button
-                    className="btn-outline"
-                    onClick={() => setEditingPost(post)}
-                  >
-                    ✏️ Edit
-                  </button>
+                        {post.status !== "published" && (
+                          <button
+                            className="btn"
+                            style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
+                            onClick={() => handlePublish(post)}
+                          >
+                            🚀 Publish
+                          </button>
+                        )}
 
-                  {post.status !== "published" && (
-                    <button
-                      className="btn"
-                      onClick={() => handlePublish(post)}
-                    >
-                      🚀 Publish
-                    </button>
-                  )}
-
-                  {post.status === "published" && (
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      target="_blank"
-                      className="btn-outline"
-                    >
-                      👁 View Live
-                    </Link>
-                  )}
-                </div>
-              </div>
-            ))}
+                        {post.status === "published" && (
+                          <button
+                            className="btn-outline"
+                            style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
+                            onClick={() => publishToSocial(post)}
+                          >
+                            📢 Social
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {posts.length === 0 && (
+                  <tr>
+                    <td colSpan="4" style={{ textAlign: "center", padding: "3rem" }}>
+                      No posts found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         )}
 

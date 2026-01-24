@@ -66,15 +66,11 @@ export default function Blog() {
 
           {/* Visual Card */}
           <div className="hero-visual">
-            <div className="hero-glass-card">
-              <ul>
-                <li>Cloud Architecture</li>
-                <li>Automation Patterns</li>
-                <li>SaaS Foundations</li>
-                <li>AI in Operations</li>
-                <li>Startup DevOps</li>
-              </ul>
-            </div>
+            <img
+              src="/hero_results.png"
+              alt="Technology Insights & Data"
+              className="hero-image-modern"
+            />
           </div>
 
         </div>
