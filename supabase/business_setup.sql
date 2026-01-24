@@ -482,6 +482,7 @@ SELECT
   p.id,
   p.project_id,
   p.project_name,
+  p.client_id, -- Keep BIGINT client_id for foreign key operations
   p.project_type,
   p.project_status,
   p.health_status,
@@ -492,7 +493,7 @@ SELECT
   p.budget,
   p.actual_cost,
   c.company_name as client_name,
-  c.client_id,
+  c.client_id as client_code, -- Rename text client_id to client_code
   pm.full_name as project_manager_name,
   COUNT(DISTINCT pt.id) as total_tasks,
   COUNT(DISTINCT CASE WHEN pt.task_status = 'completed' THEN pt.id END) as completed_tasks,

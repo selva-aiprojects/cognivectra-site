@@ -88,9 +88,26 @@ export default function AdminClients() {
         setError('');
 
         try {
+            // Clean the payload for 'clients' table
+            const payload = {
+                company_name: formData.company_name,
+                industry: formData.industry,
+                company_size: formData.company_size,
+                website: formData.website,
+                primary_contact_name: formData.primary_contact_name,
+                primary_contact_email: formData.primary_contact_email,
+                primary_contact_phone: formData.primary_contact_phone,
+                primary_contact_title: formData.primary_contact_title,
+                client_type: formData.client_type,
+                lead_source: formData.lead_source,
+                relationship_status: formData.relationship_status,
+                country: formData.country,
+                notes: formData.notes
+            };
+
             const { error } = editingClient
-                ? await supabase.from('clients').update(formData).eq('id', editingClient.id)
-                : await supabase.from('clients').insert([formData]);
+                ? await supabase.from('clients').update(payload).eq('id', editingClient.id)
+                : await supabase.from('clients').insert([payload]);
 
             if (error) throw error;
 

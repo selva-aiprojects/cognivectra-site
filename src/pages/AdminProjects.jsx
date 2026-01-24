@@ -89,9 +89,24 @@ export default function AdminProjects() {
         setError('');
 
         try {
+            // Clean the payload to include only fields that belong in the 'projects' table
+            const payload = {
+                project_name: formData.project_name,
+                client_id: formData.client_id,
+                project_type: formData.project_type,
+                description: formData.description,
+                start_date: formData.start_date || null,
+                estimated_end_date: formData.estimated_end_date || null,
+                project_status: formData.project_status,
+                health_status: formData.health_status,
+                completion_percentage: parseInt(formData.completion_percentage) || 0,
+                project_value: formData.project_value ? parseFloat(formData.project_value) : null,
+                priority: formData.priority || 'medium'
+            };
+
             const { error } = editingProject
-                ? await supabase.from('projects').update(formData).eq('id', editingProject.id)
-                : await supabase.from('projects').insert([formData]);
+                ? await supabase.from('projects').update(payload).eq('id', editingProject.id)
+                : await supabase.from('projects').insert([payload]);
 
             if (error) throw error;
 
@@ -170,7 +185,7 @@ export default function AdminProjects() {
                                     </td>
                                     <td>
                                         <div style={{ fontSize: '0.9rem' }}>{project.client_name}</div>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{project.client_id}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{project.client_code}</div>
                                     </td>
                                     <td>
                                         <span style={{
