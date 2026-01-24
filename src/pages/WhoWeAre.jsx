@@ -62,7 +62,7 @@ export default function WhoWeAre() {
           {/* Visual */}
           <div className="hero-visual">
             <img
-              src="/hero_engagements.png"
+              src={aboutHero}
               alt="Startup-focused Engineering Team"
               className="hero-image-modern"
             />

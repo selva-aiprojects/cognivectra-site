@@ -43,7 +43,7 @@ export default function Home() {
             <img
               src={heroImage}
               alt="Startup Platform Architecture"
-              className="hero-image"
+              className="hero-image-modern"
             />
           </div>
 
