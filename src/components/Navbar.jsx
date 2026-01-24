@@ -54,6 +54,7 @@ export default function SimpleNavbar({ setIsChatOpen }) {
             <NavLink to="/industries">Industries</NavLink>
             <NavLink to="/who-we-are">Who We Are</NavLink>
             <NavLink to="/blog">Blog</NavLink>
+            <NavLink to="/careers">Careers</NavLink>
 
             {/* Primary CTA */}
             <NavLink to="/contact" className="btn nav-cta">
@@ -120,6 +121,7 @@ export default function SimpleNavbar({ setIsChatOpen }) {
             <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>Industries</NavLink>
             <NavLink to="/who-we-are" onClick={() => setMobileMenuOpen(false)}>Who We Are</NavLink>
             <NavLink to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</NavLink>
+            <NavLink to="/careers" onClick={() => setMobileMenuOpen(false)}>Careers</NavLink>
             <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
 
           </nav>

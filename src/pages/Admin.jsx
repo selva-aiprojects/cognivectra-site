@@ -123,6 +123,9 @@ export default function Admin() {
             >
               + New Post
             </button>
+            <Link to="/admin/jobs" className="btn-outline">
+              💼 Manage Jobs
+            </Link>
             <Link to="/admin/reports" className="btn-outline">
               📊 View Reports
             </Link>

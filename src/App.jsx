@@ -19,6 +19,8 @@ import Industries from "./pages/Industries.jsx";
 import Login from "./pages/Login.jsx";
 import Admin from "./pages/Admin.jsx";
 import AdminReports from "./pages/AdminReports.jsx";
+import AdminJobs from "./pages/AdminJobs.jsx";
+import Careers from "./pages/Careers.jsx";
 
 import chatIcon from "./assets/chat-icon.svg";
 import "./index.css";
@@ -55,8 +57,10 @@ export default function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/reports" element={<AdminReports />} />
+          <Route path="/admin/jobs" element={<AdminJobs />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>
