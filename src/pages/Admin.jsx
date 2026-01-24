@@ -1,317 +1,245 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
-import { Link, useNavigate } from "react-router-dom";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Admin() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [editingPost, setEditingPost] = useState(null);
-
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [metrics, setMetrics] = useState({
+    total_active_clients: 0,
+    total_prospects: 0,
+    total_active_projects: 0,
+    projects_in_progress: 0,
+    total_active_employees: 0,
+    total_revenue: 0,
+    total_outstanding: 0,
+    overdue_invoices: 0,
+    pending_payments: 0
+  });
+  const [recentInteractions, setRecentInteractions] = useState([]);
 
   useEffect(() => {
-    checkUser();
+    checkAuth();
   }, []);
 
-  async function checkUser() {
+  async function checkAuth() {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) navigate("/login");
-    else fetchDrafts();
+    if (!session) {
+      navigate('/login');
+      return;
+    }
+    fetchDashboardData();
   }
 
-  async function handleSignOut() {
+  async function fetchDashboardData() {
+    try {
+      // Fetch business metrics from the view we created
+      const { data: metricsData, error: metricsError } = await supabase
+        .from('business_metrics')
+        .select('*')
+        .single();
+
+      if (metricsError) throw metricsError;
+      if (metricsData) setMetrics(metricsData);
+
+      // Fetch recent interactions
+      const { data: interactionsData, error: interactionsError } = await supabase
+        .from('client_interactions')
+        .select('*, clients(company_name)')
+        .order('interaction_date', { ascending: false })
+        .limit(5);
+
+      if (interactionsError) throw interactionsError;
+      setRecentInteractions(interactionsData || []);
+
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate("/login");
-  }
+    navigate('/login');
+  };
 
-  async function fetchDrafts() {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (!error) setPosts(data || []);
-    setLoading(false);
-  }
-
-  async function handlePublish(post) {
-    if (!window.confirm(`Publish "${post.title}"?`)) return;
-
-    const { error } = await supabase
-      .from("posts")
-      .update({
-        status: "published",
-        published_at: new Date().toISOString()
-      })
-      .eq("id", post.id);
-
-    if (error) alert("Error publishing: " + error.message);
-    else {
-      alert("Post published!");
-      fetchDrafts();
-    }
-  }
-
-  async function handleSave(e) {
-    e.preventDefault();
-
-    const payload = {
-      title: editingPost.title,
-      excerpt: editingPost.excerpt,
-      body: editingPost.body,
-      updated_at: new Date().toISOString()
-    };
-
-    let error;
-
-    if (editingPost.id) {
-      // Update
-      const res = await supabase.from("posts").update(payload).eq("id", editingPost.id);
-      error = res.error;
-    } else {
-      // Insert
-      const res = await supabase.from("posts").insert([{
-        ...payload,
-        status: "draft",
-        created_at: new Date().toISOString(),
-        tags: editingPost.tags || []
-      }]);
-      error = res.error;
-    }
-
-    if (error) alert("Error saving: " + error.message);
-    else {
-      alert("Saved successfully.");
-      setEditingPost(null);
-      fetchDrafts();
-    }
-  }
-
-  async function publishToSocial(post) {
-    if (!window.confirm(`Publish "${post.title}" to LinkedIn/Twitter?`)) return;
-
-    // Mock loading
-    await new Promise(r => setTimeout(r, 1000));
-    alert("✅ Successfully published to LinkedIn, Facebook, and Instagram (Simulated)!");
-  }
+  const formatCurrency = (val) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(val || 0);
+  };
 
   if (loading) {
     return (
-      <div className="container blog-loading">
-        <div className="blog-loading-icon">⏳</div>
-        <p>Checking access...</p>
+      <div className="admin-layout">
+        <div className="admin-main-content">
+          <p>Loading your Command Center...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <section className="section" style={{ minHeight: "100vh", paddingTop: "120px", background: "linear-gradient(180deg, rgba(5,7,12,0) 0%, rgba(5,7,12,1) 100%)" }}>
-      <div className="container" style={{ maxWidth: "1200px" }}>
+    <div className="admin-layout">
+      {/* SIDEBAR */}
+      <aside className="admin-sidebar">
+        <Link to="/admin" className="sidebar-link active">
+          🏠 Dashboard
+        </Link>
+        <Link to="/admin/clients" className="sidebar-link">
+          👥 Clients & CRM
+        </Link>
+        <Link to="/admin/projects" className="sidebar-link">
+          🚀 Projects
+        </Link>
+        <Link to="/admin/jobs" className="sidebar-link">
+          💼 Careers & Jobs
+        </Link>
+        <Link to="/admin/compensation" className="sidebar-link">
+          💰 Compensation
+        </Link>
+        <Link to="/admin/offers" className="sidebar-link">
+          📄 Offer Letters
+        </Link>
+        <Link to="/admin/blog" className="sidebar-link">
+          ✍️ Blog Posts
+        </Link>
+        <Link to="/admin/reports" className="sidebar-link">
+          📊 Reports
+        </Link>
+        <div style={{ marginTop: 'auto', padding: '1rem 0' }}>
+          <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
+            🚪 Sign Out
+          </button>
+        </div>
+      </aside>
 
-        {/* HEADER & ACTIONS */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
-          <div>
-            <h1 style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>Admin Dashboard</h1>
-            <p className="muted">Manage your content and platform health.</p>
+      {/* MAIN CONTENT */}
+      <main className="admin-main-content">
+        <div className="admin-header">
+          <div className="admin-title-area">
+            <h1>Command Center</h1>
+            <p>Welcome back! Here's what's happening at CogniVectra.</p>
           </div>
-
           <div className="admin-actions">
-            <button
-              className="btn"
-              onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })}
-            >
-              + New Post
-            </button>
-            <Link to="/admin/jobs" className="btn-outline">
-              💼 Manage Jobs
-            </Link>
-            <Link to="/admin/compensation" className="btn-outline">
-              💰 Compensation
-            </Link>
-            <Link to="/admin/offers" className="btn-outline">
-              📄 Offer Letters
-            </Link>
-            <Link to="/admin/reports" className="btn-outline">
-              📊 View Reports
-            </Link>
-            <button onClick={handleSignOut} className="btn-outline">
-              🚪 Sign Out
-            </button>
+            <Link to="/admin/blog/new" className="btn">+ New Post</Link>
+            <Link to="/admin/jobs/new" className="btn-outline">+ New Job</Link>
           </div>
         </div>
 
-        {/* STATS GRID */}
-        {!editingPost && (
-          <div className="admin-stats-grid">
-            <div className="admin-stat-card">
-              <div className="admin-stat-number">{posts.length}</div>
-              <div className="admin-stat-label">Total Articles</div>
+        {/* METRICS GRID */}
+        <div className="admin-stats-grid">
+          <div className="admin-stat-card">
+            <div className="admin-stat-header">
+              <div className="admin-stat-icon">👥</div>
+              <span className="admin-stat-trend trend-up">↑ 12%</span>
             </div>
-            <div className="admin-stat-card">
-              <div className="admin-stat-number">
-                {posts.filter(p => p.status === "published").length}
-              </div>
-              <div className="admin-stat-label">Published Live</div>
+            <div className="admin-stat-number">{metrics.total_active_clients}</div>
+            <div className="admin-stat-label">Active Clients</div>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-header">
+              <div className="admin-stat-icon">🚀</div>
+              <span className="admin-stat-trend trend-up">↑ 4%</span>
             </div>
-            <div className="admin-stat-card">
-              <div className="admin-stat-number">
-                {posts.filter(p => p.status !== "published").length}
-              </div>
-              <div className="admin-stat-label">Drafts Pending</div>
+            <div className="admin-stat-number">{metrics.total_active_projects}</div>
+            <div className="admin-stat-label">Active Projects</div>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-header">
+              <div className="admin-stat-icon">💰</div>
+              <span className="admin-stat-trend trend-down">↓ 2%</span>
+            </div>
+            <div className="admin-stat-number">{formatCurrency(metrics.pending_payments)}</div>
+            <div className="admin-stat-label">Pending Invoices</div>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-header">
+              <div className="admin-stat-icon">👷</div>
+            </div>
+            <div className="admin-stat-number">{metrics.total_active_employees}</div>
+            <div className="admin-stat-label">Total Staff</div>
+          </div>
+        </div>
+
+        {/* DASHBOARD MODULES */}
+        <div className="dashboard-grid">
+          {/* CLIENTS MODULE */}
+          <div className="module-card">
+            <div className="module-icon">🏢</div>
+            <div className="module-info">
+              <h3>Client Relations</h3>
+              <p>Manage {metrics.total_prospects} active prospects and track client health. View interactions and onboarding status.</p>
+            </div>
+            <div className="module-actions">
+              <Link to="/admin/clients" className="btn-outline" style={{ fontSize: '0.8rem' }}>View CRM</Link>
+              <Link to="/admin/clients/new" className="btn" style={{ fontSize: '0.8rem' }}>Add Client</Link>
             </div>
           </div>
-        )}
 
-        {/* EDIT MODE */}
-        {editingPost ? (
-          <div className="card admin-editor">
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1.5rem" }}>
-              <h3>✏️ Edit Post</h3>
-              <button
-                className="btn-outline"
-                onClick={() => setEditingPost(null)}
-              >
-                ← Back to List
-              </button>
+          {/* PROJECTS MODULE */}
+          <div className="module-card">
+            <div className="module-icon">📑</div>
+            <div className="module-info">
+              <h3>Project Delivery</h3>
+              <p>{metrics.projects_in_progress} projects currently in flight. Check health status, milestones and delivery timelines.</p>
             </div>
-
-            <form onSubmit={handleSave} className="form">
-              <label>
-                <span>Title</span>
-                <input
-                  type="text"
-                  value={editingPost.title}
-                  onChange={e =>
-                    setEditingPost({ ...editingPost, title: e.target.value })
-                  }
-                />
-              </label>
-
-              <label>
-                <span>Excerpt</span>
-                <textarea
-                  rows={3}
-                  value={editingPost.excerpt}
-                  onChange={e =>
-                    setEditingPost({ ...editingPost, excerpt: e.target.value })
-                  }
-                />
-              </label>
-
-              <label>
-                <span>Body (Rich Text Editor)</span>
-                <div style={{ background: 'white', borderRadius: '8px', marginTop: '0.5rem' }}>
-                  <ReactQuill
-                    theme="snow"
-                    value={editingPost.body || ''}
-                    onChange={(content) => setEditingPost({ ...editingPost, body: content })}
-                    modules={{
-                      toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'color': [] }, { 'background': [] }],
-                        ['link', 'image'],
-                        ['clean']
-                      ]
-                    }}
-                    style={{ minHeight: '300px' }}
-                  />
-                </div>
-                <p style={{ fontSize: '0.85rem', color: '#9ca3af', marginTop: '0.5rem' }}>
-                  Use the toolbar above to format your content. The content will be saved as HTML.
-                </p>
-              </label>
-
-              <div className="admin-editor-actions">
-                <button type="submit" className="btn">
-                  💾 Save Changes
-                </button>
-                <button
-                  type="button"
-                  className="btn-outline"
-                  onClick={() => setEditingPost(null)}
-                >
-                  ❌ Cancel
-                </button>
-              </div>
-            </form>
+            <div className="module-actions">
+              <Link to="/admin/projects" className="btn-outline" style={{ fontSize: '0.8rem' }}>Project Board</Link>
+            </div>
           </div>
-        ) : (
-          /* DATA TABLE VIEW */
-          <div className="admin-table-container">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Title</th>
-                  <th>Date Created</th>
-                  <th style={{ textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.map(post => (
-                  <tr key={post.id}>
-                    <td>
-                      <span className={`status-pill ${post.status}`}>
-                        {post.status.toUpperCase()}
-                      </span>
-                    </td>
-                    <td>
-                      <strong>{post.title}</strong>
-                    </td>
-                    <td className="muted">
-                      {new Date(post.created_at).toLocaleDateString()}
-                    </td>
-                    <td style={{ textAlign: "right" }}>
-                      <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
-                        <button
-                          className="btn-outline"
-                          style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
-                          onClick={() => setEditingPost(post)}
-                        >
-                          ✏️ Edit
-                        </button>
 
-                        {post.status !== "published" && (
-                          <button
-                            className="btn"
-                            style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
-                            onClick={() => handlePublish(post)}
-                          >
-                            🚀 Publish
-                          </button>
-                        )}
+          {/* RECRUITMENT MODULE */}
+          <div className="module-card">
+            <div className="module-icon">👨‍💻</div>
+            <div className="module-info">
+              <h3>Hiring & Talent</h3>
+              <p>Manage job openings, review applications, and generate professional offer letters with pre-set compensation.</p>
+            </div>
+            <div className="module-actions">
+              <Link to="/admin/jobs" className="btn-outline" style={{ fontSize: '0.8rem' }}>Jobs</Link>
+              <Link to="/admin/offers" className="btn-outline" style={{ fontSize: '0.8rem' }}>Offers</Link>
+              <Link to="/admin/compensation" className="btn-outline" style={{ fontSize: '0.8rem' }}>Salary Table</Link>
+            </div>
+          </div>
 
-                        {post.status === "published" && (
-                          <button
-                            className="btn-outline"
-                            style={{ padding: "0.4rem 0.8rem", fontSize: "0.8rem" }}
-                            onClick={() => publishToSocial(post)}
-                          >
-                            📢 Social
-                          </button>
-                        )}
+          {/* RECENT ACTIVITY */}
+          <div className="module-card" style={{ gridColumn: 'span 1' }}>
+            <div className="module-info">
+              <h3>Recent Activity</h3>
+              <div style={{ marginTop: '1rem' }}>
+                {recentInteractions.length > 0 ? (
+                  recentInteractions.map(interaction => (
+                    <div key={interaction.id} style={{
+                      padding: '0.75rem 0',
+                      borderBottom: '1px solid rgba(255,255,255,0.05)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <div>
+                        <div style={{ fontSize: '0.9rem', color: 'white' }}>{interaction.clients?.company_name}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{interaction.interaction_type} - {interaction.subject}</div>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-                {posts.length === 0 && (
-                  <tr>
-                    <td colSpan="4" style={{ textAlign: "center", padding: "3rem" }}>
-                      No posts found.
-                    </td>
-                  </tr>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                        {new Date(interaction.interaction_date).toLocaleDateString()}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p style={{ fontSize: '0.85rem' }}>No recent interactions found.</p>
                 )}
-              </tbody>
-            </table>
+              </div>
+            </div>
           </div>
-        )}
-
-      </div>
-    </section>
+        </div>
+      </main>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function AdminOffers() {
     const navigate = useNavigate();
@@ -18,7 +18,6 @@ export default function AdminOffers() {
     const [showPreview, setShowPreview] = useState(false);
 
     const [offerData, setOfferData] = useState({
-        // Candidate
         candidateName: '',
         candidateEmail: '',
         candidateAddressLine1: '',
@@ -26,20 +25,14 @@ export default function AdminOffers() {
         candidateCity: '',
         candidateState: '',
         candidatePincode: '',
-
-        // Job
         jobTitle: '',
         department: '',
         reportingManager: 'Selvakumar B, Principal Architect',
         workLocation: 'Remote',
         jobResponsibilities: '',
-
-        // Employment
         startDate: '',
         employmentType: 'full-time permanent',
         probationPeriod: 'You will be on probation for the first 3 months of employment.',
-
-        // Compensation
         compensationPackageId: '',
         annualCtc: '',
         basicSalary: '',
@@ -47,23 +40,15 @@ export default function AdminOffers() {
         specialAllowance: '',
         performanceBonus: '',
         otherBenefits: '',
-
-        // Benefits
         benefits: ['', '', '', '', ''],
-
-        // Working
         workingHours: '40',
         workSchedule: 'Monday to Friday, flexible hours',
         annualLeave: '21',
         sickLeave: '12',
         casualLeave: '7',
-
-        // Terms
         noticePeriod: '60',
         additionalCondition: 'Right to work in India',
         acceptanceDeadline: '',
-
-        // Signatory
         signatoryName: 'Selvakumar B',
         signatoryTitle: 'Principal Architect & Founder'
     });
@@ -204,8 +189,6 @@ export default function AdminOffers() {
         try {
             const response = await fetch('/email-templates/offer-letter.html');
             let template = await response.text();
-
-            // Replace all variables
             const today = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
 
             template = template
@@ -262,7 +245,6 @@ export default function AdminOffers() {
 
         try {
             const benefits = offerData.benefits.filter(b => b.trim().length > 0);
-
             const offerLetterData = {
                 candidate_name: offerData.candidateName,
                 candidate_email: offerData.candidateEmail,
@@ -304,15 +286,11 @@ export default function AdminOffers() {
                 compensation_package_id: offerData.compensationPackageId ? parseInt(offerData.compensationPackageId) : null
             };
 
-            const { error } = await supabase
-                .from('offer_letters')
-                .insert([offerLetterData]);
-
+            const { error } = await supabase.from('offer_letters').insert([offerLetterData]);
             if (error) throw error;
 
             setSuccess('Offer letter saved successfully!');
             await fetchOffers();
-
             setTimeout(() => {
                 setShowGenerator(false);
                 setShowPreview(false);
@@ -327,447 +305,156 @@ export default function AdminOffers() {
         }
     }
 
-    async function handleSignOut() {
+    const handleSignOut = async () => {
         await supabase.auth.signOut();
         navigate('/login');
-    }
+    };
 
-    if (loading) {
-        return (
-            <main style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-                <h2>Loading...</h2>
-            </main>
-        );
-    }
+    if (loading) return <div className="admin-layout"><div className="admin-main-content">Loading...</div></div>;
 
     return (
-        <main style={{ padding: '4rem 2rem', maxWidth: '1400px', margin: '0 auto' }}>
-            {/* Header */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '3rem',
-                flexWrap: 'wrap',
-                gap: '1rem'
-            }}>
-                <div>
-                    <h1 style={{ marginBottom: '0.5rem' }}>Offer Letter Generator</h1>
-                    <p style={{ color: 'var(--text-secondary)' }}>
-                        Generate and manage employment offer letters
-                    </p>
-                </div>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button onClick={() => navigate('/admin')} className="btn-outline">
-                        ← Back to Admin
-                    </button>
-                    <button onClick={() => setShowGenerator(true)} className="btn">
-                        + Generate Offer
-                    </button>
-                    <button onClick={handleSignOut} className="btn-outline">
-                        Sign Out
+        <div className="admin-layout">
+            <aside className="admin-sidebar">
+                <Link to="/admin" className="sidebar-link">🏠 Dashboard</Link>
+                <Link to="/admin/clients" className="sidebar-link">👥 Clients & CRM</Link>
+                <Link to="/admin/projects" className="sidebar-link">🚀 Projects</Link>
+                <Link to="/admin/jobs" className="sidebar-link">💼 Careers & Jobs</Link>
+                <Link to="/admin/compensation" className="sidebar-link">💰 Compensation</Link>
+                <Link to="/admin/offers" className="sidebar-link active">📄 Offer Letters</Link>
+                <Link to="/admin/blog" className="sidebar-link">✍️ Blog Posts</Link>
+                <div style={{ marginTop: 'auto', padding: '1rem 0' }}>
+                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
+                        🚪 Sign Out
                     </button>
                 </div>
-            </div>
+            </aside>
 
-            {/* Success/Error Messages */}
-            {success && (
-                <div style={{
-                    background: 'rgba(34, 197, 94, 0.1)',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
-                    color: '#86efac',
-                    padding: '1rem',
-                    borderRadius: '10px',
-                    marginBottom: '2rem'
-                }}>
-                    {success}
-                </div>
-            )}
-
-            {error && (
-                <div className="error-message" style={{ marginBottom: '2rem' }}>
-                    {error}
-                </div>
-            )}
-
-            {/* Offer Generator Modal */}
-            {showGenerator && !showPreview && (
-                <div className="modal-overlay" onClick={() => setShowGenerator(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1000px', maxHeight: '90vh', overflowY: 'auto' }}>
-                        <div className="modal-header">
-                            <h2>Generate Offer Letter</h2>
-                            <button className="modal-close" onClick={() => setShowGenerator(false)}>×</button>
+            <main className="admin-main-content">
+                <div className="admin-header">
+                    <div className="admin-title-area">
+                        <div className="admin-breadcrumbs">
+                            <Link to="/admin">Dashboard</Link> <span>/</span> <span>Offers</span>
                         </div>
+                        <h1>Offer Letters</h1>
+                        <p>Generate and manage employment offers.</p>
+                    </div>
+                    <div className="admin-actions">
+                        <button onClick={() => setShowGenerator(true)} className="btn">+ Generate Offer</button>
+                    </div>
+                </div>
 
-                        <form className="application-form">
-                            {/* Select Candidate */}
-                            <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>1. Select Candidate</h3>
-                            <div className="form-group">
-                                <label>Choose from Applications</label>
-                                <select
-                                    onChange={(e) => {
+                {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>{success}</div>}
+                {error && <div className="error-message" style={{ marginBottom: '2rem' }}>{error}</div>}
+
+                {/* Offer Generator Modal */}
+                {showGenerator && !showPreview && (
+                    <div className="modal-overlay" onClick={() => setShowGenerator(false)}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1000px', maxHeight: '90vh', overflowY: 'auto' }}>
+                            <div className="modal-header">
+                                <h2>Generate Offer</h2>
+                                <button className="modal-close" onClick={() => setShowGenerator(false)}>×</button>
+                            </div>
+                            <form className="application-form">
+                                <h3>1. Select Candidate</h3>
+                                <div className="form-group">
+                                    <select onChange={(e) => {
                                         const app = applications.find(a => a.id === parseInt(e.target.value));
                                         if (app) selectApplication(app);
-                                    }}
-                                    value={selectedApplication?.id || ''}
-                                >
-                                    <option value="">-- Select Application --</option>
-                                    {applications.map(app => (
-                                        <option key={app.id} value={app.id}>
-                                            {app.full_name} - {app.position} ({app.status})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* Candidate Details */}
-                            <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>2. Candidate Information</h3>
-                            <div className="form-grid">
+                                    }} value={selectedApplication?.id || ''}>
+                                        <option value="">-- Choose Application --</option>
+                                        {applications.map(app => (
+                                            <option key={app.id} value={app.id}>{app.full_name} - {app.position}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>Full Name</label>
+                                        <input type="text" name="candidateName" value={offerData.candidateName} onChange={handleInputChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Email</label>
+                                        <input type="email" name="candidateEmail" value={offerData.candidateEmail} onChange={handleInputChange} required />
+                                    </div>
+                                </div>
+                                <h3>2. Compensation</h3>
                                 <div className="form-group">
-                                    <label>Full Name *</label>
-                                    <input
-                                        type="text"
-                                        name="candidateName"
-                                        value={offerData.candidateName}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
+                                    <select value={offerData.compensationPackageId} onChange={(e) => selectCompensationPackage(e.target.value)}>
+                                        <option value="">-- Select Compensation Package --</option>
+                                        {compensationPackages.map(pkg => (
+                                            <option key={pkg.id} value={pkg.id}>{pkg.role_title} ({pkg.role_level})</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div className="form-group">
-                                    <label>Email *</label>
-                                    <input
-                                        type="email"
-                                        name="candidateEmail"
-                                        value={offerData.candidateEmail}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>Annual CTC</label>
+                                        <input type="text" name="annualCtc" value={offerData.annualCtc} onChange={handleInputChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Start Date</label>
+                                        <input type="date" name="startDate" value={offerData.startDate} onChange={handleInputChange} required />
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Address Line 1</label>
-                                    <input
-                                        type="text"
-                                        name="candidateAddressLine1"
-                                        value={offerData.candidateAddressLine1}
-                                        onChange={handleInputChange}
-                                    />
+                                <div className="form-actions">
+                                    <button type="button" onClick={() => setShowGenerator(false)} className="btn-outline">Cancel</button>
+                                    <button type="button" onClick={generatePreview} className="btn">Preview Offer</button>
                                 </div>
-                                <div className="form-group">
-                                    <label>Address Line 2</label>
-                                    <input
-                                        type="text"
-                                        name="candidateAddressLine2"
-                                        value={offerData.candidateAddressLine2}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>City</label>
-                                    <input
-                                        type="text"
-                                        name="candidateCity"
-                                        value={offerData.candidateCity}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>State</label>
-                                    <input
-                                        type="text"
-                                        name="candidateState"
-                                        value={offerData.candidateState}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Pincode</label>
-                                    <input
-                                        type="text"
-                                        name="candidatePincode"
-                                        value={offerData.candidatePincode}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Select Compensation Package */}
-                            <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>3. Select Role & Compensation</h3>
-                            <div className="form-group">
-                                <label>Compensation Package</label>
-                                <select
-                                    value={offerData.compensationPackageId}
-                                    onChange={(e) => selectCompensationPackage(e.target.value)}
-                                >
-                                    <option value="">-- Select Package (Auto-fills compensation) --</option>
-                                    {compensationPackages.map(pkg => (
-                                        <option key={pkg.id} value={pkg.id}>
-                                            {pkg.role_title} ({pkg.role_level}) - {pkg.currency === 'INR' ? '₹' : '$'}{(pkg.annual_ctc_min / 100000).toFixed(1)}L - {(pkg.annual_ctc_max / 100000).toFixed(1)}L
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* Job Details */}
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Job Title *</label>
-                                    <input
-                                        type="text"
-                                        name="jobTitle"
-                                        value={offerData.jobTitle}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Department *</label>
-                                    <input
-                                        type="text"
-                                        name="department"
-                                        value={offerData.department}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Reporting Manager</label>
-                                    <input
-                                        type="text"
-                                        name="reportingManager"
-                                        value={offerData.reportingManager}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Work Location</label>
-                                    <input
-                                        type="text"
-                                        name="workLocation"
-                                        value={offerData.workLocation}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Job Responsibilities</label>
-                                <textarea
-                                    name="jobResponsibilities"
-                                    value={offerData.jobResponsibilities}
-                                    onChange={handleInputChange}
-                                    rows="3"
-                                />
-                            </div>
-
-                            {/* Employment Terms */}
-                            <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>4. Employment Terms</h3>
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Start Date *</label>
-                                    <input
-                                        type="date"
-                                        name="startDate"
-                                        value={offerData.startDate}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Acceptance Deadline *</label>
-                                    <input
-                                        type="date"
-                                        name="acceptanceDeadline"
-                                        value={offerData.acceptanceDeadline}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Compensation */}
-                            <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>5. Compensation Details</h3>
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Annual CTC *</label>
-                                    <input
-                                        type="text"
-                                        name="annualCtc"
-                                        value={offerData.annualCtc}
-                                        onChange={handleInputChange}
-                                        required
-                                        placeholder="e.g., ₹18,00,000 per annum"
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Basic Salary</label>
-                                    <input
-                                        type="text"
-                                        name="basicSalary"
-                                        value={offerData.basicSalary}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>HRA</label>
-                                    <input
-                                        type="text"
-                                        name="hra"
-                                        value={offerData.hra}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Special Allowance</label>
-                                    <input
-                                        type="text"
-                                        name="specialAllowance"
-                                        value={offerData.specialAllowance}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Performance Bonus</label>
-                                <input
-                                    type="text"
-                                    name="performanceBonus"
-                                    value={offerData.performanceBonus}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-
-                            {/* Benefits */}
-                            <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>6. Benefits</h3>
-                            {[0, 1, 2, 3, 4].map(index => (
-                                <div key={index} className="form-group">
-                                    <label>Benefit {index + 1}</label>
-                                    <input
-                                        type="text"
-                                        value={offerData.benefits[index] || ''}
-                                        onChange={(e) => handleBenefitChange(index, e.target.value)}
-                                    />
-                                </div>
-                            ))}
-
-                            {/* Preview & Save */}
-                            <div className="form-actions" style={{ marginTop: '2rem' }}>
-                                <button type="button" onClick={() => setShowGenerator(false)} className="btn-outline">
-                                    Cancel
-                                </button>
-                                <button type="button" onClick={generatePreview} className="btn">
-                                    Preview Offer Letter
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {/* Preview Modal */}
-            {showPreview && (
-                <div className="modal-overlay" onClick={() => setShowPreview(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', maxHeight: '90vh', overflowY: 'auto' }}>
-                        <div className="modal-header">
-                            <h2>Offer Letter Preview</h2>
-                            <button className="modal-close" onClick={() => setShowPreview(false)}>×</button>
+                            </form>
                         </div>
-
-                        <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', marginBottom: '1rem' }}>
-                            <div dangerouslySetInnerHTML={{ __html: previewHTML }} />
-                        </div>
-
-                        <div className="form-actions">
-                            <button onClick={() => setShowPreview(false)} className="btn-outline">
-                                ← Back to Edit
-                            </button>
-                            <button onClick={saveOffer} className="btn" disabled={saving}>
-                                {saving ? 'Saving...' : 'Save Offer Letter'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Offers List */}
-            <div style={{ marginTop: '2rem' }}>
-                <h3 style={{ marginBottom: '1.5rem' }}>All Offer Letters ({offers.length})</h3>
-
-                {offers.length === 0 ? (
-                    <div style={{
-                        textAlign: 'center',
-                        padding: '3rem',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(255, 255, 255, 0.1)'
-                    }}>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                            No offer letters generated yet. Create your first one!
-                        </p>
-                        <button onClick={() => setShowGenerator(true)} className="btn">
-                            + Generate Offer
-                        </button>
-                    </div>
-                ) : (
-                    <div style={{ display: 'grid', gap: '1rem' }}>
-                        {offers.map(offer => (
-                            <div
-                                key={offer.id}
-                                style={{
-                                    background: 'rgba(255, 255, 255, 0.03)',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                    borderRadius: '12px',
-                                    padding: '1.5rem'
-                                }}
-                            >
-                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                    <h4 style={{ margin: 0 }}>{offer.candidate_name}</h4>
-                                    <span style={{
-                                        background: offer.offer_status === 'sent' ? 'rgba(59, 130, 246, 0.15)' :
-                                            offer.offer_status === 'accepted' ? 'rgba(34, 197, 94, 0.15)' :
-                                                offer.offer_status === 'rejected' ? 'rgba(239, 68, 68, 0.15)' :
-                                                    'rgba(156, 163, 175, 0.15)',
-                                        color: offer.offer_status === 'sent' ? '#93c5fd' :
-                                            offer.offer_status === 'accepted' ? '#86efac' :
-                                                offer.offer_status === 'rejected' ? '#fca5a5' :
-                                                    '#9ca3af',
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: '600'
-                                    }}>
-                                        {offer.offer_status}
-                                    </span>
-                                </div>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
-                                    {offer.job_title} • {offer.department}
-                                </p>
-                                <p style={{ color: 'var(--accent-primary)', fontSize: '1rem', fontWeight: '600' }}>
-                                    💰 {offer.annual_ctc}
-                                </p>
-                                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                    📧 {offer.candidate_email} • 📅 Start: {new Date(offer.start_date).toLocaleDateString()}
-                                </p>
-                                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-                                    Reference: {offer.offer_reference} • Created: {new Date(offer.created_at).toLocaleDateString()}
-                                </p>
-                            </div>
-                        ))}
                     </div>
                 )}
-            </div>
-        </main>
+
+                {/* Preview Modal */}
+                {showPreview && (
+                    <div className="modal-overlay" onClick={() => setShowPreview(false)}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', maxHeight: '90vh', overflowY: 'auto' }}>
+                            <div className="modal-header">
+                                <h2>Offer Preview</h2>
+                                <button className="modal-close" onClick={() => setShowPreview(false)}>×</button>
+                            </div>
+                            <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', marginBottom: '1rem', color: '#111827' }} dangerouslySetInnerHTML={{ __html: previewHTML }} />
+                            <div className="form-actions">
+                                <button onClick={() => setShowPreview(false)} className="btn-outline">Back</button>
+                                <button onClick={saveOffer} className="btn" disabled={saving}>{saving ? 'Saving...' : 'Save Offer'}</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <div className="admin-table-container">
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Role</th>
+                                <th>Annual CTC</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {offers.map(offer => (
+                                <tr key={offer.id}>
+                                    <td style={{ fontWeight: '600' }}>{offer.candidate_name}</td>
+                                    <td>{offer.job_title}</td>
+                                    <td style={{ color: 'var(--accent-primary)', fontWeight: '500' }}>{offer.annual_ctc}</td>
+                                    <td>
+                                        <span style={{
+                                            padding: '0.25rem 0.75rem',
+                                            borderRadius: '999px',
+                                            fontSize: '0.75rem',
+                                            background: offer.offer_status === 'accepted' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255,255,255,0.05)',
+                                            color: offer.offer_status === 'accepted' ? '#10b981' : '#9ca3af'
+                                        }}>{offer.offer_status}</span>
+                                    </td>
+                                    <td>{new Date(offer.created_at).toLocaleDateString()}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
     );
 }

@@ -22,6 +22,9 @@ import AdminReports from "./pages/AdminReports.jsx";
 import AdminJobs from "./pages/AdminJobs.jsx";
 import AdminCompensation from "./pages/AdminCompensation.jsx";
 import AdminOffers from "./pages/AdminOffers.jsx";
+import AdminBlog from "./pages/AdminBlog.jsx";
+import AdminClients from "./pages/AdminClients.jsx";
+import AdminProjects from "./pages/AdminProjects.jsx";
 import Careers from "./pages/Careers.jsx";
 
 import chatIcon from "./assets/chat-icon.svg";
@@ -65,6 +68,9 @@ export default function App() {
           <Route path="/admin/jobs" element={<AdminJobs />} />
           <Route path="/admin/compensation" element={<AdminCompensation />} />
           <Route path="/admin/offers" element={<AdminOffers />} />
+          <Route path="/admin/blog" element={<AdminBlog />} />
+          <Route path="/admin/clients" element={<AdminClients />} />
+          <Route path="/admin/projects" element={<AdminProjects />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>
