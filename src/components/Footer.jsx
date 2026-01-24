@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/Logo.png";
+import logo from "/cognivectra-dark-crop.png";
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-inner">
-        
+
         {/* Brand Column */}
         <div className="footer-brand">
           <img src={logo} alt="CogniVectra Logo" className="footer-logo" />
@@ -48,8 +48,8 @@ export default function Footer() {
           <div className="footer-contact">
             <div>
               <span>Email</span><br />
-              <a href="mailto:Care@cognivectra.com">
-                Care@cognivectra.com
+              <a href="mailto:info@cognivectra.com">
+                info@cognivectra.com
               </a>
             </div>
             <div>

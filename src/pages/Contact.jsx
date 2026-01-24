@@ -28,18 +28,25 @@ export default function Contact() {
         (window.location.hostname === "localhost" ||
           window.location.hostname === "127.0.0.1");
 
-      if (!isLocalhost) {
-        const { error } = await supabase.from("contacts").insert([
+      if (!isLocalhost || true) { // Force save even on localhost for testing if env vars exist
+        // Save to chat_conversations to unify Admin Dashboard
+        const { error } = await supabase.from("chat_conversations").upsert([
           {
-            name,
-            email,
-            message: msg,
-            stage,
-            need,
-            created_at: new Date().toISOString(),
+            user_name: name,
+            user_email: email,
+            company: "", // Not asked in simple form
+            stage: stage || "Not specified",
+            challenge: need || "Not specified",
+            messages: [
+              { type: "user", text: `(Contact Form Message): ${msg}` }
+            ],
+            source: "contact",
+            lead_score: "warm",
+            updated_at: new Date().toISOString(),
           },
-        ]);
-        if (error) console.error("Supabase (non-critical):", error);
+        ], { onConflict: "user_email" });
+
+        if (error) console.error("Supabase Save Error:", error);
       }
 
       const controller = new AbortController();
@@ -48,7 +55,7 @@ export default function Contact() {
       // Debug: Check if API key is loaded
       const apiKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
       console.log("Web3Forms API Key:", apiKey ? "Loaded" : "Missing");
-      
+
       if (!apiKey) {
         throw new Error("Web3Forms API key not configured");
       }
@@ -77,7 +84,7 @@ export default function Contact() {
 
       const result = await response.json();
       console.log("Web3Forms Response:", result);
-      
+
       if (!response.ok) {
         throw new Error(`Web3Forms error: ${result.message || 'Unknown error'}`);
       }
@@ -86,7 +93,7 @@ export default function Contact() {
       e.target.reset();
     } catch (error) {
       console.error("Contact form error:", error);
-      setMessage("Unable to send. Please email: Care@cognivectra.com");
+      setMessage("Unable to send. Please email: info@cognivectra.com");
     } finally {
       setLoading(false);
     }
@@ -238,20 +245,23 @@ export default function Contact() {
           {activeTab === "call" && (
             <div className="contact-tab-panel contact-call-panel">
 
-              <h4>Book a 15-Minute Intro Call</h4>
+              <h4>Book a 30-Minute Meeting</h4>
               <p>
                 Skip the form and speak directly with our Principal Architect.
                 No sales pressure — just practical guidance.
               </p>
 
-              <a
-                href="https://calendly.com/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
                 className="btn"
+                disabled
+                style={{ opacity: 0.6, cursor: 'not-allowed' }}
               >
-                📅 Book 15-min Intro
-              </a>
+                📅 Scheduling Coming Soon
+              </button>
+
+              <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
+                Calendar scheduling is currently unavailable. Please use the contact form or email us directly.
+              </p>
 
               <div className="contact-direct">
 
@@ -259,8 +269,8 @@ export default function Contact() {
                   <span>📧</span>
                   <div>
                     <strong>Email</strong>
-                    <a href="mailto:selvakumar.b@cognivectra.com">
-                      selvakumar.b@cognivectra.com
+                    <a href="mailto:info@cognivectra.com">
+                      info@cognivectra.com
                     </a>
                   </div>
                 </div>
