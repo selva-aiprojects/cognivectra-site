@@ -2285,8 +2285,9 @@ body.menu-open {
   margin: 0 auto;
   padding: 0 2rem;
   width: 100%;
-} 
- 
+}
+
+   
 /* =======================
    CAREERS PAGE STYLES
    ====================== */
@@ -2436,15 +2437,15 @@ body.menu-open {
   .form-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-content {
     margin: 1rem;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .form-actions button {
     width: 100%;
   }
@@ -2571,13 +2572,102 @@ body.menu-open {
 .ql-container {
   min-height: 300px;
   font-size: 16px;
+  background: white;
 }
 
 .ql-editor {
   min-height: 300px;
+  color: #1f2937 !important;
+  /* Dark gray text */
 }
 
 .ql-editor.ql-blank::before {
   color: #9ca3af;
   font-style: normal;
+}
+
+/* Quill Toolbar Styling */
+.ql-toolbar {
+  background: #f9fafb;
+  border-radius: 8px 8px 0 0;
+}
+
+.ql-toolbar button {
+  color: #374151 !important;
+}
+
+.ql-toolbar button:hover {
+  color: #6366f1 !important;
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: #374151 !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: #374151 !important;
+}
+
+.ql-toolbar button:hover .ql-stroke {
+  stroke: #6366f1 !important;
+}
+
+.ql-toolbar button:hover .ql-fill {
+  fill: #6366f1 !important;
+}
+
+/* Dropdown styling */
+.ql-toolbar select {
+  color: #1f2937 !important;
+  background: white;
+}
+
+.ql-picker-label {
+  color: #374151 !important;
+}
+
+.ql-picker-options {
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+.ql-picker-item {
+  color: #1f2937 !important;
+}
+
+.ql-picker-item:hover {
+  background: #f3f4f6;
+  color: #6366f1 !important;
+}
+
+/* Active states */
+.ql-toolbar button.ql-active {
+  color: #6366f1 !important;
+}
+
+.ql-toolbar button.ql-active .ql-stroke {
+  stroke: #6366f1 !important;
+}
+
+.ql-toolbar button.ql-active .ql-fill {
+  fill: #6366f1 !important;
+}
+
+/* Editor content styling */
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3 {
+  color: #111827 !important;
+}
+
+.ql-editor p {
+  color: #1f2937 !important;
+}
+
+.ql-editor strong {
+  color: #111827 !important;
+}
+
+.ql-editor a {
+  color: #6366f1 !important;
 }
