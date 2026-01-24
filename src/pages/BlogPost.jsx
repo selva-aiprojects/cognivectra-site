@@ -55,24 +55,11 @@ export default function BlogPost() {
           <img src={post.image_url} alt={post.title} style={{ width: '100%', borderRadius: '8px', margin: '2rem 0' }} />
         )}
 
-        <div style={{ marginTop: '2rem', lineHeight: '1.8' }}>
-          <ReactMarkdown
-            components={{
-              h1: ({ node, ...props }) => <h2 style={{ marginTop: '2rem', marginBottom: '1rem' }} {...props} />,
-              h2: ({ node, ...props }) => <h3 style={{ marginTop: '1.5rem', marginBottom: '0.8rem' }} {...props} />,
-              p: ({ node, ...props }) => <p style={{ marginBottom: '1rem' }} {...props} />,
-              ul: ({ node, ...props }) => <ul style={{ marginBottom: '1rem', marginLeft: '1.5rem' }} {...props} />,
-              ol: ({ node, ...props }) => <ol style={{ marginBottom: '1rem', marginLeft: '1.5rem' }} {...props} />,
-              li: ({ node, ...props }) => <li style={{ marginBottom: '0.5rem' }} {...props} />,
-              code: ({ node, inline, ...props }) => inline ?
-                <code style={{ background: 'var(--bg-secondary)', padding: '0.2rem 0.4rem', borderRadius: '4px', fontFamily: 'monospace' }} {...props} /> :
-                <code style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '6px', display: 'block', overflow: 'auto', marginBottom: '1rem' }} {...props} />,
-              blockquote: ({ node, ...props }) => <blockquote style={{ borderLeft: '4px solid var(--accent-primary)', paddingLeft: '1rem', marginLeft: 0, marginBottom: '1rem', fontStyle: 'italic' }} {...props} />
-            }}
-          >
-            {post.body}
-          </ReactMarkdown>
-        </div>
+        <div
+          className="blog-post-content"
+          style={{ marginTop: '2rem', lineHeight: '1.8' }}
+          dangerouslySetInnerHTML={{ __html: post.body }}
+        />
       </div>
     </section>
   );

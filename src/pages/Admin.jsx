@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { Link, useNavigate } from "react-router-dom";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function Admin() {
   const [posts, setPosts] = useState([]);
@@ -194,15 +196,28 @@ export default function Admin() {
               </label>
 
               <label>
-                <span>Body (Markdown)</span>
-                <textarea
-                  rows={14}
-                  value={editingPost.body}
-                  className="monospace"
-                  onChange={e =>
-                    setEditingPost({ ...editingPost, body: e.target.value })
-                  }
-                />
+                <span>Body (Rich Text Editor)</span>
+                <div style={{ background: 'white', borderRadius: '8px', marginTop: '0.5rem' }}>
+                  <ReactQuill
+                    theme="snow"
+                    value={editingPost.body || ''}
+                    onChange={(content) => setEditingPost({ ...editingPost, body: content })}
+                    modules={{
+                      toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['link', 'image'],
+                        ['clean']
+                      ]
+                    }}
+                    style={{ minHeight: '300px' }}
+                  />
+                </div>
+                <p style={{ fontSize: '0.85rem', color: '#9ca3af', marginTop: '0.5rem' }}>
+                  Use the toolbar above to format your content. The content will be saved as HTML.
+                </p>
               </label>
 
               <div className="admin-editor-actions">
