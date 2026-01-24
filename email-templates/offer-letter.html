@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employment Offer Letter - CogniVectra</title>
+</head>
+
+<body
+    style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+
+    <!-- Main Container -->
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+        style="background-color: #f3f4f6;">
+        <tr>
+            <td style="padding: 40px 20px;">
+
+                <!-- Email Content -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                    style="max-width: 700px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header with Logo -->
+                    <tr>
+                        <td
+                            style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+                            <img src="https://cognivectra.org/cognivectra-dark-crop.png" alt="CogniVectra Logo"
+                                style="max-width: 200px; height: auto; margin-bottom: 10px;">
+                            <h1 style="color: #ffffff; font-size: 26px; margin: 10px 0 0 0; font-weight: 600;">
+                                Employment Offer Letter</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+
+                            <!-- Date and Reference -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                style="margin-bottom: 30px;">
+                                <tr>
+                                    <td>
+                                        <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                                            <strong>Date:</strong> {{OFFER_DATE}}<br>
+                                            <strong>Reference:</strong> {{OFFER_REFERENCE}}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Recipient Address -->
+                            <div style="margin-bottom: 30px;">
+                                <p style="color: #1f2937; font-size: 16px; line-height: 1.6; margin: 0;">
+                                    <strong>{{CANDIDATE_NAME}}</strong><br>
+                                    {{CANDIDATE_ADDRESS_LINE1}}<br>
+                                    {{CANDIDATE_ADDRESS_LINE2}}<br>
+                                    {{CANDIDATE_CITY}}, {{CANDIDATE_STATE}} {{CANDIDATE_PINCODE}}
+                                </p>
+                            </div>
+
+                            <!-- Subject -->
+                            <p style="color: #1f2937; font-size: 16px; margin: 0 0 20px 0;">
+                                <strong>Subject: Offer of Employment - {{JOB_TITLE}}</strong>
+                            </p>
+
+                            <!-- Opening -->
+                            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Dear <strong>{{CANDIDATE_NAME}}</strong>,
+                            </p>
+
+                            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                We are delighted to offer you the position of <strong>{{JOB_TITLE}}</strong> at
+                                CogniVectra Innovations. We were impressed with your skills, experience, and the value
+                                you will bring to our team.
+                            </p>
+
+                            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                                This offer is subject to the terms and conditions outlined below:
+                            </p>
+
+                            <!-- Employment Terms Box -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                style="background-color: #f0f9ff; border-left: 4px solid #6366f1; border-radius: 8px; margin: 30px 0;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <h2
+                                            style="color: #1e293b; font-size: 18px; margin: 0 0 20px 0; font-weight: 600;">
+                                            📋 Employment Terms</h2>
+
+                                        <!-- Position Details -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            1. Position and Responsibilities</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            <strong>Job Title:</strong> {{JOB_TITLE}}<br>
+                                            <strong>Department:</strong> {{DEPARTMENT}}<br>
+                                            <strong>Reporting To:</strong> {{REPORTING_MANAGER}}<br>
+                                            <strong>Location:</strong> {{WORK_LOCATION}}
+                                        </p>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            Your primary responsibilities will include {{JOB_RESPONSIBILITIES}}
+                                        </p>
+
+                                        <!-- Start Date -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            2. Start Date</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            Your employment will commence on <strong>{{START_DATE}}</strong>, or such
+                                            other date as mutually agreed upon in writing.
+                                        </p>
+
+                                        <!-- Employment Type -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            3. Employment Type</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            This is a <strong>{{EMPLOYMENT_TYPE}}</strong> position.
+                                            {{PROBATION_PERIOD}}
+                                        </p>
+
+                                        <!-- Compensation -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            4. Compensation</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 10px 0;">
+                                            Your annual gross salary (Cost to Company - CTC) will be
+                                            <strong>{{ANNUAL_CTC}}</strong>, payable monthly in arrears.
+                                        </p>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            <strong>Salary Breakdown:</strong><br>
+                                            • Basic Salary: {{BASIC_SALARY}}<br>
+                                            • House Rent Allowance: {{HRA}}<br>
+                                            • Special Allowance: {{SPECIAL_ALLOWANCE}}<br>
+                                            • Performance Bonus: {{PERFORMANCE_BONUS}}<br>
+                                            • Other Benefits: {{OTHER_BENEFITS}}
+                                        </p>
+
+                                        <!-- Benefits -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            5. Benefits and Perks</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 5px 0;">
+                                            You will be entitled to the following benefits:
+                                        </p>
+                                        <ul
+                                            style="color: #374151; font-size: 15px; line-height: 1.8; margin: 0 0 15px 0; padding-left: 20px;">
+                                            <li>{{BENEFIT_1}}</li>
+                                            <li>{{BENEFIT_2}}</li>
+                                            <li>{{BENEFIT_3}}</li>
+                                            <li>{{BENEFIT_4}}</li>
+                                            <li>{{BENEFIT_5}}</li>
+                                        </ul>
+
+                                        <!-- Working Hours -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            6. Working Hours</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            Your normal working hours will be {{WORKING_HOURS}} per week,
+                                            {{WORK_SCHEDULE}}. We offer flexible working arrangements as per company
+                                            policy.
+                                        </p>
+
+                                        <!-- Leave Policy -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            7. Leave Entitlement</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            You will be entitled to <strong>{{ANNUAL_LEAVE}}</strong> days of paid
+                                            annual leave, <strong>{{SICK_LEAVE}}</strong> days of sick leave, and
+                                            <strong>{{CASUAL_LEAVE}}</strong> days of casual leave per year, in addition
+                                            to public holidays.
+                                        </p>
+
+                                        <!-- Notice Period -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            8. Notice Period</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            Either party may terminate this employment by providing
+                                            <strong>{{NOTICE_PERIOD}}</strong> days' written notice or payment in lieu
+                                            of notice.
+                                        </p>
+
+                                        <!-- Confidentiality -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            9. Confidentiality and Non-Disclosure</h3>
+                                        <p
+                                            style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 15px 0;">
+                                            You will be required to sign a separate Non-Disclosure Agreement (NDA) and
+                                            agree to maintain confidentiality of all proprietary information, trade
+                                            secrets, and client data.
+                                        </p>
+
+                                        <!-- Code of Conduct -->
+                                        <h3
+                                            style="color: #1f2937; font-size: 16px; margin: 20px 0 10px 0; font-weight: 600;">
+                                            10. Code of Conduct</h3>
+                                        <p style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0;">
+                                            You will be expected to adhere to CogniVectra's Code of Conduct, policies,
+                                            and procedures as communicated from time to time.
+                                        </p>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Conditions -->
+                            <h3 style="color: #1e293b; font-size: 18px; margin: 30px 0 15px 0; font-weight: 600;">
+                                Conditions of Offer</h3>
+                            <p style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 10px 0;">
+                                This offer is contingent upon:
+                            </p>
+                            <ul
+                                style="color: #374151; font-size: 15px; line-height: 1.8; margin: 0 0 20px 0; padding-left: 20px;">
+                                <li>Satisfactory verification of your educational qualifications and employment history
+                                </li>
+                                <li>Successful completion of background checks</li>
+                                <li>Submission of required documents (ID proof, address proof, educational certificates,
+                                    etc.)</li>
+                                <li>{{ADDITIONAL_CONDITION}}</li>
+                            </ul>
+
+                            <!-- Acceptance -->
+                            <h3 style="color: #1e293b; font-size: 18px; margin: 30px 0 15px 0; font-weight: 600;">
+                                Acceptance of Offer</h3>
+                            <p style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Please confirm your acceptance of this offer by signing and returning this letter by
+                                <strong>{{ACCEPTANCE_DEADLINE}}</strong>. You may scan and email the signed copy to <a
+                                    href="mailto:info@cognivectra.com"
+                                    style="color: #6366f1; text-decoration: none;">info@cognivectra.com</a>.
+                            </p>
+
+                            <!-- Closing -->
+                            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 30px 0 10px 0;">
+                                We are excited to welcome you to the CogniVectra team and look forward to a mutually
+                                rewarding association.
+                            </p>
+
+                            <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 40px 0;">
+                                Sincerely,
+                            </p>
+
+                            <!-- Signature Block -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 60px;">
+                                        <p style="color: #1f2937; font-size: 16px; margin: 0;">
+                                            <strong>{{SIGNATORY_NAME}}</strong><br>
+                                            <span
+                                                style="color: #6b7280; font-size: 14px;">{{SIGNATORY_TITLE}}</span><br>
+                                            <span style="color: #6b7280; font-size: 14px;">CogniVectra
+                                                Innovations</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Acceptance Section -->
+                            <div style="border-top: 2px dashed #e5e7eb; padding-top: 30px; margin-top: 30px;">
+                                <h3 style="color: #1e293b; font-size: 18px; margin: 0 0 20px 0; font-weight: 600;">
+                                    Acceptance</h3>
+                                <p style="color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                                    I, <strong>{{CANDIDATE_NAME}}</strong>, hereby accept the above offer of employment
+                                    with CogniVectra Innovations on the terms and conditions stated.
+                                </p>
+
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td style="width: 50%; padding-right: 10px;">
+                                            <p style="color: #6b7280; font-size: 14px; margin: 0 0 5px 0;">Signature:
+                                            </p>
+                                            <div
+                                                style="border-bottom: 1px solid #d1d5db; padding-bottom: 30px; margin-bottom: 15px;">
+                                            </div>
+                                        </td>
+                                        <td style="width: 50%; padding-left: 10px;">
+                                            <p style="color: #6b7280; font-size: 14px; margin: 0 0 5px 0;">Date:</p>
+                                            <div
+                                                style="border-bottom: 1px solid #d1d5db; padding-bottom: 30px; margin-bottom: 15px;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td
+                            style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px; text-align: center; border-radius: 0 0 12px 12px;">
+                            <p style="color: #9ca3af; font-size: 13px; margin: 0 0 5px 0;">
+                                <strong style="color: #ffffff;">CogniVectra Innovations</strong>
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0 0 10px 0;">
+                                Enterprise-grade Technology for Startups
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0 0 5px 0;">
+                                📧 info@cognivectra.com | 📱 +91 8825492600
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+                                🌐 <a href="https://cognivectra.org"
+                                    style="color: #6366f1; text-decoration: none;">cognivectra.org</a>
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

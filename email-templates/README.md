@@ -1,227 +1,219 @@
-# Interview Invitation Email Template
+# 📧 Email Templates & Compensation Management System
 
 ## Overview
-Professional email template for scheduling interviews with job candidates. Includes CogniVectra branding, logo, and all necessary interview details.
+Complete system for managing recruitment communications and competitive compensation packages.
 
-## Template Location
-`email-templates/interview-invitation.html`
+## 📁 Files Created
 
-## Template Variables
+### Email Templates
+1. **`interview-invitation.html`** - Professional interview scheduling email
+2. **`offer-letter.html`** - Comprehensive employment offer letter
+3. **`README.md`** - Interview template documentation
+4. **`OFFER-LETTER-README.md`** - Offer letter documentation
 
-Replace these placeholders with actual values when sending the email:
+### Database
+1. **`supabase/compensation_setup.sql`** - Compensation management schema
 
-### Candidate Information
-- `{{CANDIDATE_NAME}}` - Full name of the candidate (e.g., "John Smith")
+## 🎯 Features
 
-### Job Details
-- `{{JOB_TITLE}}` - Position title (e.g., "Senior DevOps Engineer")
+### 1. Interview Invitation Template
+✅ Professional design with CogniVectra branding  
+✅ Interview details box (date, time, duration, format)  
+✅ Video meeting link button  
+✅ Preparation tips for candidates  
+✅ Contact information for rescheduling  
 
-### Interview Details
-- `{{INTERVIEW_DATE}}` - Date of interview (e.g., "Monday, January 27, 2026")
-- `{{INTERVIEW_TIME}}` - Time with timezone (e.g., "2:00 PM IST (8:30 AM UTC)")
-- `{{DURATION}}` - Interview duration in minutes (e.g., "45" or "60")
-- `{{INTERVIEW_FORMAT}}` - Format type (e.g., "Video Call (Google Meet)", "In-Person at Office", "Phone Call")
-- `{{INTERVIEWER_NAMES}}` - Names of interviewers (e.g., "Selvakumar B, Principal Architect")
-- `{{MEETING_LINK}}` - Video meeting URL (e.g., "https://meet.google.com/abc-defg-hij")
+**Variables**: 11 placeholders for personalization
 
-### Sender Information
-- `{{SENDER_NAME}}` - Name of person sending email (e.g., "Selvakumar B")
-- `{{SENDER_TITLE}}` - Sender's job title (e.g., "Principal Architect" or "Hiring Manager")
+### 2. Offer Letter Template
+✅ Formal offer letter format  
+✅ Comprehensive employment terms  
+✅ Detailed compensation breakdown  
+✅ Benefits listing (5 customizable)  
+✅ Leave policy details  
+✅ Legal terms (confidentiality, notice period)  
+✅ Acceptance section with signature lines  
 
-## How to Use
+**Variables**: 35+ placeholders for complete customization
 
-### Option 1: Manual Email (Gmail, Outlook, etc.)
+### 3. Compensation Management System
+✅ Database table for role-based compensation  
+✅ Salary ranges by role and level  
+✅ Automatic CTC breakdown calculation  
+✅ Benefits management (JSON storage)  
+✅ Leave policy per role  
+✅ Working conditions configuration  
+✅ Sample data for 9 common roles  
 
-1. **Open the template file** in a browser or text editor
-2. **Copy the HTML code**
-3. **Replace all variables** with actual values
-4. **Paste into email client**:
-   - Gmail: Use "Insert HTML" or compose in HTML mode
-   - Outlook: Paste as HTML
-5. **Send the email**
+## 📊 Sample Compensation Data Included
 
-### Option 2: Automated Email (Recommended)
+### Engineering Roles
+- **Junior Software Engineer**: ₹6-9 LPA
+- **Software Engineer**: ₹12-18 LPA
+- **Senior Software Engineer**: ₹20-30 LPA
+- **DevOps Engineer**: ₹15-22 LPA
+- **Senior DevOps Engineer**: ₹25-35 LPA
 
-#### Using Web3Forms (like your contact form)
+### Other Roles
+- **Product Manager**: ₹18-25 LPA
+- **UX/UI Designer**: ₹12-18 LPA
+- **Sales Executive**: ₹8-12 LPA
+- **Marketing Manager**: ₹15-22 LPA
 
+## 🚀 Next Steps
+
+### 1. Set Up Database (Required)
+```sql
+-- Run in Supabase SQL Editor
+-- File: supabase/compensation_setup.sql
+```
+
+This creates:
+- `compensation_packages` table
+- `compensation_breakdown` view (auto-calculates salary components)
+- Sample data for 9 roles
+- RLS policies for admin access
+
+### 2. Build Admin Interface (Recommended)
+Create `/admin/compensation` page to:
+- View all compensation packages
+- Add/edit/delete packages
+- Set competitive salary ranges
+- Manage benefits per role
+- Generate offer letters automatically
+
+### 3. Build Offer Generator (Recommended)
+Create `/admin/offers` page to:
+- Select candidate from applications
+- Choose role (auto-fills compensation)
+- Customize offer details
+- Preview offer letter
+- Generate PDF
+- Send via email
+
+## 💡 How It Works
+
+### Manual Process (Current)
+1. Open `offer-letter.html`
+2. Replace all `{{VARIABLES}}` with actual values
+3. Save as PDF or send as email
+
+### Automated Process (To Build)
+1. Admin selects candidate from applications
+2. Choose role → compensation auto-fills from database
+3. Customize any details
+4. Click "Generate Offer"
+5. System creates PDF and sends email
+
+## 📋 Template Variables
+
+### Interview Invitation (11 variables)
+- Candidate name, email
+- Job title
+- Interview date, time, duration
+- Format, interviewers
+- Meeting link
+- Sender name, title
+
+### Offer Letter (35+ variables)
+- **Candidate**: Name, address (5 fields)
+- **Offer**: Date, reference, deadline (3 fields)
+- **Position**: Title, department, manager, location, responsibilities (5 fields)
+- **Employment**: Start date, type, probation (3 fields)
+- **Compensation**: CTC, basic, HRA, allowances, bonus (5 fields)
+- **Benefits**: 5 customizable benefits
+- **Working**: Hours, schedule, leave days (6 fields)
+- **Terms**: Notice period, conditions (2 fields)
+- **Signatory**: Name, title (2 fields)
+
+## 🎨 Design Features
+
+### Professional Branding
+✅ CogniVectra logo in header  
+✅ Brand colors (purple/blue gradient)  
+✅ Consistent with website design  
+✅ Mobile-responsive layout  
+
+### Email Client Compatible
+✅ Gmail, Outlook, Apple Mail  
+✅ Desktop and mobile  
+✅ HTML tables for compatibility  
+✅ Inline CSS for reliability  
+
+## 📖 Documentation
+
+### For Interview Template
+See: `email-templates/README.md`
+- Complete variable reference
+- Usage examples
+- Integration options (Web3Forms, Supabase Edge Functions)
+
+### For Offer Letter
+See: `email-templates/OFFER-LETTER-README.md`
+- Complete variable reference
+- Example offer data
+- Legal notes and customization
+- PDF generation options
+
+## 🔧 Integration Options
+
+### Option 1: Manual
+- Copy HTML
+- Replace variables
+- Send via email client
+
+### Option 2: Web3Forms (Like Contact Page)
 ```javascript
-const emailHTML = `
-  // Paste the template HTML here
-  // Replace {{VARIABLES}} with actual values
-`;
-
+const emailHTML = template.replace(/{{VAR}}/g, value);
 await fetch("https://api.web3forms.com/submit", {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     access_key: process.env.VITE_WEB3FORMS_ACCESS_KEY,
-    subject: "Interview Invitation - {{JOB_TITLE}} Position",
-    from_name: "CogniVectra Careers",
     to: candidateEmail,
+    subject: "Interview Invitation",
     html: emailHTML
   })
 });
 ```
 
-#### Using Supabase Edge Function
-
-Create a function in `supabase/functions/send-interview-email/index.ts`:
-
+### Option 3: Supabase Edge Function
 ```typescript
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+// Create function: send-offer-email
+import { Resend } from 'resend';
 
-serve(async (req) => {
-  const {
-    candidateName,
-    candidateEmail,
-    jobTitle,
-    interviewDate,
-    interviewTime,
-    duration,
-    format,
-    interviewers,
-    meetingLink,
-    senderName,
-    senderTitle
-  } = await req.json()
+const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
 
-  // Read template file
-  const template = await Deno.readTextFile('./interview-invitation.html')
-  
-  // Replace variables
-  const emailHTML = template
-    .replace(/{{CANDIDATE_NAME}}/g, candidateName)
-    .replace(/{{JOB_TITLE}}/g, jobTitle)
-    .replace(/{{INTERVIEW_DATE}}/g, interviewDate)
-    .replace(/{{INTERVIEW_TIME}}/g, interviewTime)
-    .replace(/{{DURATION}}/g, duration)
-    .replace(/{{INTERVIEW_FORMAT}}/g, format)
-    .replace(/{{INTERVIEWER_NAMES}}/g, interviewers)
-    .replace(/{{MEETING_LINK}}/g, meetingLink)
-    .replace(/{{SENDER_NAME}}/g, senderName)
-    .replace(/{{SENDER_TITLE}}/g, senderTitle)
-
-  // Send email using Resend or similar service
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`
-    },
-    body: JSON.stringify({
-      from: 'CogniVectra Careers <careers@cognivectra.com>',
-      to: [candidateEmail],
-      subject: `Interview Invitation - ${jobTitle} Position`,
-      html: emailHTML
-    })
-  })
-
-  return new Response(JSON.stringify({ success: true }), {
-    headers: { 'Content-Type': 'application/json' }
-  })
-})
-```
-
-### Option 3: Using Email Marketing Tools
-
-1. **Mailchimp, SendGrid, or similar**:
-   - Import the HTML template
-   - Set up merge tags for variables
-   - Send personalized emails
-
-## Example Usage
-
-```javascript
-// Example values
-const emailData = {
-  candidateName: "Priya Sharma",
-  candidateEmail: "priya.sharma@example.com",
-  jobTitle: "Senior DevOps Engineer",
-  interviewDate: "Monday, January 27, 2026",
-  interviewTime: "2:00 PM IST (8:30 AM UTC)",
-  duration: "60",
-  interviewFormat: "Video Call (Google Meet)",
-  interviewerNames: "Selvakumar B (Principal Architect) and Tech Team Lead",
-  meetingLink: "https://meet.google.com/abc-defg-hij",
-  senderName: "Selvakumar B",
-  senderTitle: "Principal Architect"
-};
-
-// Replace variables in template
-let emailHTML = templateHTML;
-Object.keys(emailData).forEach(key => {
-  const placeholder = `{{${key.toUpperCase()}}}`;
-  emailHTML = emailHTML.replace(new RegExp(placeholder, 'g'), emailData[key]);
+await resend.emails.send({
+  from: 'CogniVectra <careers@cognivectra.com>',
+  to: candidateEmail,
+  subject: 'Employment Offer - CogniVectra',
+  html: offerHTML
 });
-
-// Send email
-sendEmail(emailData.candidateEmail, emailHTML);
 ```
 
-## Template Features
+## 🎯 Recommended Build Order
 
-### Design Elements
-✅ **Professional Header** - CogniVectra logo and gradient background  
-✅ **Clear Interview Details** - Highlighted info box with all details  
-✅ **Call-to-Action Button** - "Join Video Interview" button  
-✅ **Preparation Tips** - Helps candidates prepare  
-✅ **Contact Information** - Easy rescheduling options  
-✅ **Branded Footer** - Company info and social links  
+1. ✅ **Email Templates** (Done)
+2. ✅ **Compensation Database** (Done)
+3. ⏳ **Admin Compensation Page** (To build)
+   - Manage salary packages
+   - Add/edit roles
+   - Set competitive ranges
+4. ⏳ **Offer Generator Page** (To build)
+   - Select candidate
+   - Choose role
+   - Auto-fill compensation
+   - Generate PDF
+   - Send email
 
-### Responsive Design
-✅ Works on desktop, tablet, and mobile  
-✅ Email client compatible (Gmail, Outlook, Apple Mail, etc.)  
-✅ Professional appearance across all devices  
+## 📞 Support
 
-### Branding
-✅ CogniVectra logo (hosted at cognivectra.org)  
-✅ Brand colors (purple/blue gradient)  
-✅ Consistent with website design  
-
-## Customization
-
-### Changing Colors
-Find and replace these color codes:
-- **Primary Purple**: `#6366f1` → Your color
-- **Dark Background**: `#1e293b` → Your color
-- **Text Color**: `#1f2937` → Your color
-
-### Adding Sections
-Add new content between the `<tr>` tags in the main content area.
-
-### Removing Sections
-Delete unwanted `<tr>` sections (e.g., "What to Expect" or "How to Prepare").
-
-## Testing
-
-### Before Sending:
-1. ✅ Replace ALL `{{VARIABLES}}` with real values
-2. ✅ Test the meeting link
-3. ✅ Send a test email to yourself
-4. ✅ Check on mobile and desktop
-5. ✅ Verify all links work
-
-### Email Clients to Test:
-- Gmail (web and mobile)
-- Outlook (web and desktop)
-- Apple Mail
-- Mobile email apps
-
-## Notes
-
-- **Logo URL**: Uses `https://cognivectra.org/cognivectra-dark-crop.png`
-- **Meeting Link**: Remove this section if interview is in-person
-- **Time Zones**: Always include timezone (e.g., IST, UTC)
-- **Confirmation**: Template asks candidate to confirm attendance
-
-## Support
-
-For questions about using this template:
+For questions:
 - Email: info@cognivectra.com
 - WhatsApp: +91 8825492600
 
 ---
 
-**Template Version**: 1.0  
-**Last Updated**: January 24, 2026  
-**Created for**: CogniVectra Innovations
+**Version**: 1.0  
+**Created**: January 24, 2026  
+**Status**: Templates ready, Admin UI pending
