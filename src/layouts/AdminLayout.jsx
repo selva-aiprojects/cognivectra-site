@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
     FaHome,
     FaUsers,
@@ -13,6 +14,7 @@ import {
     FaChartLine,
     FaSignOutAlt
 } from 'react-icons/fa';
+import logo from '../assets/Logo-new.png';
 
 export default function AdminLayout({ children }) {
     const navigate = useNavigate();
@@ -52,41 +54,45 @@ export default function AdminLayout({ children }) {
     return (
         <div className="admin-layout">
             <aside className="admin-sidebar glass-panel">
-                <div className="sidebar-brand" style={{ padding: '2.5rem 1.5rem', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'white', letterSpacing: '-0.03em', background: 'linear-gradient(to right, #fff, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                        CogniVectra
-                    </h2>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700' }}>
-                        Admin Console
+                <div className="sidebar-brand">
+                    <motion.img
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        src={logo}
+                        alt="CogniVectra"
+                        style={{ height: '32px', marginBottom: '0.5rem' }}
+                    />
+                    <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginTop: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '800', opacity: 0.6 }}>
+                        Command Center
                     </div>
                 </div>
 
-                <nav className="sidebar-nav" style={{ flex: 1, padding: '0 1rem', overflowY: 'auto' }}>
-                    <div className="nav-group-label" style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', padding: '0 1.25rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', opacity: 0.5 }}>Business</div>
+                <nav className="sidebar-nav" style={{ flex: 1, padding: '1rem 0', overflowY: 'auto' }}>
+                    <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Operations</div>
                     <Link to="/admin" className={isActive('/admin')}>
                         <FaHome /> Dashboard
                     </Link>
                     <Link to="/admin/clients" className={isActive('/admin/clients')}>
-                        <FaUsers /> CRM
+                        <FaUsers /> Relationships
                     </Link>
                     <Link to="/admin/projects" className={isActive('/admin/projects')}>
-                        <FaTasks /> Projects
+                        <FaTasks /> Roadmap
                     </Link>
 
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '1.5rem 1.25rem' }}></div>
-                    <div className="nav-group-label" style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', padding: '0 1.25rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', opacity: 0.5 }}>Talent</div>
+                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
+                    <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Resources</div>
                     <Link to="/admin/jobs" className={isActive('/admin/jobs')}>
-                        <FaBriefcase /> Careers
+                        <FaBriefcase /> Talent Pipeline
                     </Link>
                     <Link to="/admin/compensation" className={isActive('/admin/compensation')}>
-                        <FaGem /> Salary
+                        <FaGem /> Compensation
                     </Link>
                     <Link to="/admin/offers" className={isActive('/admin/offers')}>
-                        <FaEnvelopeOpenText /> Offers
+                        <FaEnvelopeOpenText /> Offer Mesh
                     </Link>
 
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '1.5rem 1.25rem' }}></div>
-                    <div className="nav-group-label" style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', padding: '0 1.25rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', opacity: 0.5 }}>Insights</div>
+                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
+                    <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Intelligence</div>
                     <Link to="/admin/blog" className={isActive('/admin/blog')}>
                         <FaPenNib /> Editorial
                     </Link>
@@ -94,22 +100,28 @@ export default function AdminLayout({ children }) {
                         <FaRocket /> Omni-Channel
                     </Link>
                     <Link to="/admin/reports" className={isActive('/admin/reports')}>
-                        <FaChartLine /> Reports
+                        <FaChartLine /> Telemetry
                     </Link>
                 </nav>
 
                 <div className="sidebar-footer" style={{ padding: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'rgba(239, 68, 68, 0.05)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
-                        <FaSignOutAlt /> Sign Out
+                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: 'calc(100% - 2rem)', background: 'rgba(239, 68, 68, 0.05)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
+                        <FaSignOutAlt /> Terminate Session
                     </button>
                 </div>
             </aside>
 
             <main className="admin-main-content">
-                <div className="admin-container">
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="admin-container"
+                >
                     {children}
-                </div>
+                </motion.div>
             </main>
         </div>
     );
 }
+

@@ -65,8 +65,10 @@ export default function App() {
       <CursorTrail />
       <div className="ambient-glow" />
 
-      {/* Navbar */}
-      <Navbar setIsChatOpen={setIsChatOpen} />
+      {/* Navbar - Only show on non-admin routes */}
+      {!location.pathname.startsWith('/admin') && !location.pathname.startsWith('/login') && (
+        <Navbar setIsChatOpen={setIsChatOpen} />
+      )}
 
       {/* Main Content */}
       <main className="appShell">
@@ -99,13 +101,15 @@ export default function App() {
       {/* Floating Chat Icon */}
 
 
-      {/* Chat Panel */}
-      {showChatbot && (
+      {/* Chat Panel - Only show on non-admin routes */}
+      {showChatbot && !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/login') && (
         <Chatbot isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
       )}
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer - Only show on non-admin routes */}
+      {!location.pathname.startsWith('/admin') && !location.pathname.startsWith('/login') && (
+        <Footer />
+      )}
 
       {/* Analytics */}
       <Analytics />

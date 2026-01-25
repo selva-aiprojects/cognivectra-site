@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import logo from '../assets/logo-clean.png';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaLock, FaEnvelope, FaSpinner, FaChevronRight } from 'react-icons/fa';
+import logo from '../assets/Logo-new.png';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -16,92 +17,111 @@ export default function Login() {
         setLoading(true);
         setMessage({ type: '', text: '' });
 
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        try {
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
-        if (error) {
-            setMessage({ type: 'error', text: error.message });
-        } else {
+            if (error) throw error;
             navigate('/admin');
+        } catch (error) {
+            setMessage({ type: 'error', text: error.message });
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     async function handleForgotPassword() {
         if (!email) {
-            setMessage({ type: 'error', text: 'Please enter your email address first.' });
+            setMessage({ type: 'error', text: 'Operational error: Identifier required.' });
             return;
         }
 
         setLoading(true);
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/admin',
-        });
-
-        if (error) {
+        try {
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/admin',
+            });
+            if (error) throw error;
+            setMessage({ type: 'success', text: 'Recovery packet dispatched to your terminal.' });
+        } catch (error) {
             setMessage({ type: 'error', text: error.message });
-        } else {
-            setMessage({ type: 'success', text: 'Password reset email sent! Please check your inbox.' });
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-slate-900">
-            {/* Ambient Background */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-indigo-900/20 via-slate-900 to-slate-900" />
-            <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="login-page">
+            <div className="login-grid" />
+            <div className="login-glow" style={{ top: '10%', left: '10%' }} />
+            <div className="login-glow" style={{ bottom: '10%', right: '10%', background: '#3b82f6' }} />
 
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-md p-8 glass-panel relative z-10 mx-4 border border-slate-700/50 shadow-2xl"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="login-card glass-panel"
             >
-                <div className="text-center mb-8">
-                    <img src={logo} alt="CogniVectra" className="h-10 mx-auto mb-6" />
-                    <h2 className="text-2xl font-bold text-white mb-2">Admin Portal</h2>
-                    <p className="text-slate-400 text-sm">Enter your credentials to manage CogniVectra</p>
+                <div className="login-header">
+                    <motion.img
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        src={logo}
+                        alt="CogniVectra"
+                    />
+                    <h2>Command Portal</h2>
+                    <p>Authorization required to access CogniVectra core.</p>
                 </div>
 
-                {message.text && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className={`p-3 rounded-lg mb-6 text-sm border ${message.type === 'error'
-                                ? 'bg-red-500/10 text-red-400 border-red-500/20'
-                                : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            }`}
-                    >
-                        {message.text}
-                    </motion.div>
-                )}
+                <AnimatePresence mode="wait">
+                    {message.text && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            style={{
+                                padding: '1rem',
+                                borderRadius: '12px',
+                                marginBottom: '2rem',
+                                fontSize: '0.85rem',
+                                background: message.type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                                color: message.type === 'error' ? '#f87171' : '#34d399',
+                                border: `1px solid ${message.type === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.75rem'
+                            }}
+                        >
+                            <span style={{ fontSize: '1rem' }}>{message.type === 'error' ? '⚠️' : '✅'}</span>
+                            {message.text}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
-                <form onSubmit={handleLogin} className="space-y-5">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1.5">Email Address</label>
+                <form onSubmit={handleLogin} className="login-form">
+                    <div className="form-group">
+                        <label><FaEnvelope style={{ marginRight: '0.5rem', fontSize: '0.7rem' }} /> Identifier</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder="admin@cognivectra.com"
-                            className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
+                            placeholder="operator@cognivectra.com"
                         />
                     </div>
 
-                    <div>
-                        <div className="flex justify-between items-center mb-1.5">
-                            <label className="block text-sm font-medium text-slate-300">Password</label>
+                    <div className="form-group">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+                            <label style={{ margin: 0 }}><FaLock style={{ marginRight: '0.5rem', fontSize: '0.7rem' }} /> Access Code</label>
                             <button
                                 type="button"
                                 onClick={handleForgotPassword}
-                                className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                                style={{ background: 'none', border: 'none', color: 'var(--accent-light)', fontSize: '0.7rem', cursor: 'pointer', fontWeight: 600 }}
                             >
-                                Forgot password?
+                                Lost Access?
                             </button>
                         </div>
                         <input
@@ -110,33 +130,23 @@ export default function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             placeholder="••••••••"
-                            className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-medium py-3 rounded-lg shadow-lg hover:shadow-indigo-500/25 transition-all transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                        className="btn"
+                        style={{ width: '100%', marginTop: '1rem', height: '50px', fontSize: '1rem' }}
                     >
-                        {loading ? (
-                            <>
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                Authenticating...
-                            </>
-                        ) : (
-                            'Sign In'
+                        {loading ? <FaSpinner className="spin" /> : (
+                            <>Initialize Session <FaChevronRight style={{ marginLeft: '0.75rem', fontSize: '0.8rem' }} /></>
                         )}
                     </button>
                 </form>
 
-                <div className="mt-8 text-center">
-                    <p className="text-xs text-slate-500 flex items-center justify-center gap-1">
-                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                        Secured by Supabase Infrastructure
-                    </p>
+                <div className="login-footer">
+                    <FaLock style={{ fontSize: '0.7rem' }} /> Encrypted via Supabase High-Trust Mesh
                 </div>
             </motion.div>
         </div>

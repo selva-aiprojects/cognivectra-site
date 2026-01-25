@@ -1,38 +1,41 @@
 import { supabase } from "./supabase";
 
 /**
- * Tracks a page view event to Supabase.
- * This runs alongside professional tools like Vercel Analytics
- * to provide custom data for the Admin Dashboard.
+ * Tracks a page view event to Supabase using the RPC pattern.
+ * This is the modern standard for secure server-side telemetry.
  */
 export async function trackPageView(path) {
     try {
-        // Generate/Retrieve a simple session ID
         let sessionId = sessionStorage.getItem("cognivectra_session");
         if (!sessionId) {
             sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             sessionStorage.setItem("cognivectra_session", sessionId);
         }
 
-        const analyticsData = {
-            path: path || window.location.pathname,
-            referrer: document.referrer || null,
-            session_id: sessionId,
-            user_agent: navigator.userAgent,
-            language: navigator.language,
-            screen_resolution: `${window.screen.width}x${window.screen.height}`
-        };
-
-        const { error } = await supabase
-            .from("web_analytics")
-            .insert([analyticsData]);
+        // Call the database RPC function for high-performance tracking
+        const { error } = await supabase.rpc('track_event', {
+            p_path: path || window.location.pathname,
+            p_session_id: sessionId,
+            p_metadata: {
+                user_agent: navigator.userAgent,
+                language: navigator.language,
+                screen_resolution: `${window.screen.width}x${window.screen.height}`,
+                referrer: document.referrer || null
+            }
+        });
 
         if (error) {
-            // Fail silently in production, but log in development
-            if (import.meta.env.DEV) console.warn("Analytics error:", error.message);
+            if (import.meta.env.DEV) console.warn("Analytics RPC Error:", error.message);
         }
     } catch (err) {
-        // Analytics should never crash the app
-        console.error("Tracking failed:", err);
+        console.error("Tracking telemetry failed:", err);
     }
+}
+
+/**
+ * Custom event tracking for specific user actions.
+ */
+export async function trackEvent(name, data = {}) {
+    // Shared event tracking logic
+    return trackPageView(`${window.location.pathname}#event:${name}`);
 }
