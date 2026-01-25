@@ -14,7 +14,6 @@ import {
     FaChartLine,
     FaSignOutAlt
 } from 'react-icons/fa';
-import logo from '../assets/Logo-new.png';
 
 export default function AdminLayout({ children }) {
     const navigate = useNavigate();
@@ -58,9 +57,9 @@ export default function AdminLayout({ children }) {
                     <motion.img
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        src={logo}
+                        src="/cognivectra-dark-crop.png"
                         alt="CogniVectra"
-                        style={{ height: '32px', marginBottom: '0.5rem' }}
+                        style={{ height: '32px', width: 'auto', marginBottom: '0.5rem' }}
                     />
                     <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginTop: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '800', opacity: 0.6 }}>
                         Command Center

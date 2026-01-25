@@ -3,7 +3,6 @@ import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaLock, FaEnvelope, FaSpinner, FaChevronRight } from 'react-icons/fa';
-import logo from '../assets/Logo-new.png';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -69,8 +68,9 @@ export default function Login() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        src={logo}
+                        src="/cognivectra-dark-crop.png"
                         alt="CogniVectra"
+                        style={{ height: '32px', width: 'auto', margin: '0 auto 1.5rem' }}
                     />
                     <h2>Command Portal</h2>
                     <p>Authorization required to access CogniVectra core.</p>
