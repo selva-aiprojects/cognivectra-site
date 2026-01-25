@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
+import AdminLayout from '../layouts/AdminLayout';
 
 export default function AdminOffers() {
     const navigate = useNavigate();
@@ -305,156 +306,157 @@ export default function AdminOffers() {
         }
     }
 
-    const handleSignOut = async () => {
-        await supabase.auth.signOut();
-        navigate('/login');
-    };
-
-    if (loading) return <div className="admin-layout"><div className="admin-main-content">Loading...</div></div>;
+    if (loading) return <AdminLayout>Loading...</AdminLayout>;
 
     return (
-        <div className="admin-layout">
-            <aside className="admin-sidebar">
-                <Link to="/admin" className="sidebar-link">🏠 Dashboard</Link>
-                <Link to="/admin/clients" className="sidebar-link">👥 Clients & CRM</Link>
-                <Link to="/admin/projects" className="sidebar-link">🚀 Projects</Link>
-                <Link to="/admin/jobs" className="sidebar-link">💼 Careers & Jobs</Link>
-                <Link to="/admin/compensation" className="sidebar-link">💰 Compensation</Link>
-                <Link to="/admin/offers" className="sidebar-link active">📄 Offer Letters</Link>
-                <Link to="/admin/blog" className="sidebar-link">✍️ Blog Posts</Link>
-                <div style={{ marginTop: 'auto', padding: '1rem 0' }}>
-                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        🚪 Sign Out
+        <AdminLayout>
+            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+                <div className="admin-title-area">
+                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Hiring</span>
+                    </div>
+                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Offer Console</h1>
+                    <p style={{ opacity: 0.7 }}>Design and issue employment agreements with standardized packages.</p>
+                </div>
+                <div className="admin-actions">
+                    <button onClick={() => setShowGenerator(true)} className="btn" style={{ padding: '0.6rem 1.5rem' }}>
+                        <span>✨</span> Generate New Offer
                     </button>
                 </div>
-            </aside>
+            </header>
 
-            <main className="admin-main-content">
-                <div className="admin-header">
-                    <div className="admin-title-area">
-                        <div className="admin-breadcrumbs">
-                            <Link to="/admin">Dashboard</Link> <span>/</span> <span>Offers</span>
+            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
+            {error && <div className="error-message" style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>{error}</div>}
+
+            {/* Offer Generator Modal */}
+            {showGenerator && !showPreview && (
+                <div className="modal-overlay" onClick={() => setShowGenerator(false)}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1000px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="modal-header">
+                            <div>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Offer Construction</h2>
+                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Step 1: Link to candidate and compensation</p>
+                            </div>
+                            <button className="modal-close" onClick={() => setShowGenerator(false)}>×</button>
                         </div>
-                        <h1>Offer Letters</h1>
-                        <p>Generate and manage employment offers.</p>
-                    </div>
-                    <div className="admin-actions">
-                        <button onClick={() => setShowGenerator(true)} className="btn">+ Generate Offer</button>
+                        <form className="application-form">
+                            <h3 style={{ fontSize: '1rem', marginBottom: '1.25rem', opacity: 0.9 }}>Profile Matching</h3>
+                            <div className="form-group">
+                                <label>Shortlisted Application</label>
+                                <select onChange={(e) => {
+                                    const app = applications.find(a => a.id === parseInt(e.target.value));
+                                    if (app) selectApplication(app);
+                                }} value={selectedApplication?.id || ''}>
+                                    <option value="">-- Associate with Application --</option>
+                                    {applications.map(app => (
+                                        <option key={app.id} value={app.id}>{app.full_name} | {app.position}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Candidate Full Name</label>
+                                    <input type="text" name="candidateName" value={offerData.candidateName} onChange={handleInputChange} required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Business Email</label>
+                                    <input type="email" name="candidateEmail" value={offerData.candidateEmail} onChange={handleInputChange} required />
+                                </div>
+                            </div>
+
+                            <h3 style={{ fontSize: '1rem', marginTop: '2rem', marginBottom: '1.25rem', opacity: 0.9 }}>Equity & Compensation</h3>
+                            <div className="form-group">
+                                <label>Standardized Package</label>
+                                <select value={offerData.compensationPackageId} onChange={(e) => selectCompensationPackage(e.target.value)}>
+                                    <option value="">-- Load Template Package --</option>
+                                    {compensationPackages.map(pkg => (
+                                        <option key={pkg.id} value={pkg.id}>{pkg.role_title} ({pkg.role_level})</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Final Annual CTC</label>
+                                    <input type="text" name="annualCtc" value={offerData.annualCtc} onChange={handleInputChange} required placeholder="e.g. ₹18,00,000" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Target Joining Date</label>
+                                    <input type="date" name="startDate" value={offerData.startDate} onChange={handleInputChange} required />
+                                </div>
+                            </div>
+                            <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                                <button type="button" onClick={() => setShowGenerator(false)} className="btn-outline" style={{ flex: 1 }}>Cancel</button>
+                                <button type="button" onClick={generatePreview} className="btn" style={{ flex: 2 }}>
+                                    Generate Draft Preview
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            )}
 
-                {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>{success}</div>}
-                {error && <div className="error-message" style={{ marginBottom: '2rem' }}>{error}</div>}
-
-                {/* Offer Generator Modal */}
-                {showGenerator && !showPreview && (
-                    <div className="modal-overlay" onClick={() => setShowGenerator(false)}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1000px', maxHeight: '90vh', overflowY: 'auto' }}>
-                            <div className="modal-header">
-                                <h2>Generate Offer</h2>
-                                <button className="modal-close" onClick={() => setShowGenerator(false)}>×</button>
+            {/* Preview Modal */}
+            {showPreview && (
+                <div className="modal-overlay" onClick={() => setShowPreview(false)}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="modal-header">
+                            <div>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Review Agreement</h2>
+                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Step 2: Legal validation and sign-off</p>
                             </div>
-                            <form className="application-form">
-                                <h3>1. Select Candidate</h3>
-                                <div className="form-group">
-                                    <select onChange={(e) => {
-                                        const app = applications.find(a => a.id === parseInt(e.target.value));
-                                        if (app) selectApplication(app);
-                                    }} value={selectedApplication?.id || ''}>
-                                        <option value="">-- Choose Application --</option>
-                                        {applications.map(app => (
-                                            <option key={app.id} value={app.id}>{app.full_name} - {app.position}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Full Name</label>
-                                        <input type="text" name="candidateName" value={offerData.candidateName} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Email</label>
-                                        <input type="email" name="candidateEmail" value={offerData.candidateEmail} onChange={handleInputChange} required />
-                                    </div>
-                                </div>
-                                <h3>2. Compensation</h3>
-                                <div className="form-group">
-                                    <select value={offerData.compensationPackageId} onChange={(e) => selectCompensationPackage(e.target.value)}>
-                                        <option value="">-- Select Compensation Package --</option>
-                                        {compensationPackages.map(pkg => (
-                                            <option key={pkg.id} value={pkg.id}>{pkg.role_title} ({pkg.role_level})</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Annual CTC</label>
-                                        <input type="text" name="annualCtc" value={offerData.annualCtc} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Start Date</label>
-                                        <input type="date" name="startDate" value={offerData.startDate} onChange={handleInputChange} required />
-                                    </div>
-                                </div>
-                                <div className="form-actions">
-                                    <button type="button" onClick={() => setShowGenerator(false)} className="btn-outline">Cancel</button>
-                                    <button type="button" onClick={generatePreview} className="btn">Preview Offer</button>
-                                </div>
-                            </form>
+                            <button className="modal-close" onClick={() => setShowPreview(false)}>×</button>
+                        </div>
+                        <div style={{ background: 'white', padding: '3rem', borderRadius: '12px', marginBottom: '2rem', color: '#111827', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.05)', overflowX: 'auto' }}>
+                            <div dangerouslySetInnerHTML={{ __html: previewHTML }} />
+                        </div>
+                        <div className="form-actions" style={{ display: 'flex', gap: '1rem' }}>
+                            <button onClick={() => setShowPreview(false)} className="btn-outline" style={{ flex: 1 }}>Modify Details</button>
+                            <button onClick={saveOffer} className="btn" disabled={saving} style={{ flex: 2 }}>
+                                {saving ? 'Finalizing...' : 'Issue Offer Letter'}
+                            </button>
                         </div>
                     </div>
-                )}
+                </div>
+            )}
 
-                {/* Preview Modal */}
-                {showPreview && (
-                    <div className="modal-overlay" onClick={() => setShowPreview(false)}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', maxHeight: '90vh', overflowY: 'auto' }}>
-                            <div className="modal-header">
-                                <h2>Offer Preview</h2>
-                                <button className="modal-close" onClick={() => setShowPreview(false)}>×</button>
-                            </div>
-                            <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', marginBottom: '1rem', color: '#111827' }} dangerouslySetInnerHTML={{ __html: previewHTML }} />
-                            <div className="form-actions">
-                                <button onClick={() => setShowPreview(false)} className="btn-outline">Back</button>
-                                <button onClick={saveOffer} className="btn" disabled={saving}>{saving ? 'Saving...' : 'Save Offer'}</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                <div className="admin-table-container">
-                    <table className="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Candidate</th>
-                                <th>Role</th>
-                                <th>Annual CTC</th>
-                                <th>Status</th>
-                                <th>Date</th>
+            <div className="admin-table-container glass-panel">
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Recipient Name</th>
+                            <th>Target Role</th>
+                            <th>Total Compensation</th>
+                            <th>Lifecycle Status</th>
+                            <th>Date Issued</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {offers.map(offer => (
+                            <tr key={offer.id}>
+                                <td>
+                                    <div style={{ fontWeight: '700', color: '#fff' }}>{offer.candidate_name}</div>
+                                    <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{offer.candidate_email}</div>
+                                </td>
+                                <td>
+                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{offer.job_title}</div>
+                                    <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>{offer.department}</div>
+                                </td>
+                                <td style={{ color: 'var(--accent-light)', fontWeight: '700' }}>
+                                    {offer.annual_ctc}
+                                </td>
+                                <td>
+                                    <span className={`status-pill ${offer.offer_status === 'accepted' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
+                                        {offer.offer_status === 'accepted' ? '🟢 Accepted' : (offer.offer_status === 'draft' ? '📝 Draft' : offer.offer_status)}
+                                    </span>
+                                </td>
+                                <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                                    {new Date(offer.created_at).toLocaleDateString()}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {offers.map(offer => (
-                                <tr key={offer.id}>
-                                    <td style={{ fontWeight: '600' }}>{offer.candidate_name}</td>
-                                    <td>{offer.job_title}</td>
-                                    <td style={{ color: 'var(--accent-primary)', fontWeight: '500' }}>{offer.annual_ctc}</td>
-                                    <td>
-                                        <span style={{
-                                            padding: '0.25rem 0.75rem',
-                                            borderRadius: '999px',
-                                            fontSize: '0.75rem',
-                                            background: offer.offer_status === 'accepted' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255,255,255,0.05)',
-                                            color: offer.offer_status === 'accepted' ? '#10b981' : '#9ca3af'
-                                        }}>{offer.offer_status}</span>
-                                    </td>
-                                    <td>{new Date(offer.created_at).toLocaleDateString()}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </main>
-        </div>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </AdminLayout>
     );
 }

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
+import blogHero from "../assets/generated/hero-blog-8k.png";
 
 export default function Blog() {
   const [posts, setPosts] = useState([]);
@@ -19,7 +21,6 @@ export default function Blog() {
       }
       setLoading(false);
     }
-
     fetchPosts();
   }, []);
 
@@ -28,11 +29,13 @@ export default function Blog() {
 
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">📝 Insights</span>
 
             <h1>
@@ -45,34 +48,30 @@ export default function Blog() {
               and applied AI — written for founders building scalable startups.
             </p>
 
-            <p>
-              Learn how to design lean, reliable platforms and automate what slows
-              you down — from day zero through Series B.
-            </p>
-
             <div className="hero-cta">
               <Link to="/contact" className="btn">
                 Talk to an Architect
               </Link>
-              <Link to="/services" className="btn-outline">
+              <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
             </div>
 
-            <p className="hero-subtext">
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
               Cloud · Automation · SaaS · AI · Startup Engineering
             </p>
-          </div>
+          </motion.div>
 
-          {/* Visual Card */}
-          <div className="hero-visual">
-            <img
-              src="/hero_results.png"
-              alt="Technology Insights & Data"
-              className="hero-image-modern"
-            />
-          </div>
-
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={blogHero} alt="Blog & Insights" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -98,28 +97,32 @@ export default function Blog() {
           <div className="services-modern-grid">
 
             {posts.map((post) => (
-              <article key={post.slug} className="service-modern-card blog-card">
+              <Link
+                key={post.slug}
+                to={`/blog/${post.slug}`}
+                style={{ textDecoration: 'none', display: 'block' }}
+              >
+                <article className="service-modern-card blog-card">
+                  <div className="blog-meta">
+                    <span>📅</span>
+                    {new Date(
+                      post.published_at || post.created_at
+                    ).toLocaleDateString()}
+                  </div>
 
-                <div className="blog-meta">
-                  <span>📅</span>
-                  {new Date(
-                    post.published_at || post.created_at
-                  ).toLocaleDateString()}
-                </div>
+                  <h4 className="blog-title" style={{ transition: 'color 0.2s' }}>{post.title}</h4>
 
-                <h4 className="blog-title">{post.title}</h4>
+                  <p className="blog-excerpt">
+                    {post.excerpt}
+                  </p>
 
-                <p className="blog-excerpt">
-                  {post.excerpt}
-                </p>
-
-                <div className="blog-cta">
-                  <Link to={`/blog/${post.slug}`} className="btn-outline">
-                    Read Article →
-                  </Link>
-                </div>
-
-              </article>
+                  <div className="blog-cta">
+                    <span className="btn-outline" style={{ display: 'inline-flex', pointerEvents: 'none' }}>
+                      Read Article →
+                    </span>
+                  </div>
+                </article>
+              </Link>
             ))}
 
           </div>
@@ -171,8 +174,8 @@ export default function Blog() {
           Share your current platform challenges and we’ll suggest
           the smallest useful starting point.
         </p>
-        <Link to="/contact" className="btn">
-          Talk to Us
+        <Link to="/#services" className="btn">
+          Explore Our Services
         </Link>
       </section>
 

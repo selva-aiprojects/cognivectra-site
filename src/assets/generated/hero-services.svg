@@ -1,0 +1,20 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#1e293b"/>
+  
+  <!-- Abstract Cloud/Server Structure -->
+  <rect x="200" y="200" width="120" height="120" rx="16" stroke="#6366f1" stroke-width="2" fill="rgba(99, 102, 241, 0.1)"/>
+  <rect x="340" y="200" width="120" height="120" rx="16" stroke="#6366f1" stroke-width="2" fill="rgba(99, 102, 241, 0.1)"/>
+  <rect x="480" y="200" width="120" height="120" rx="16" stroke="#6366f1" stroke-width="2" fill="rgba(99, 102, 241, 0.1)"/>
+  
+  <rect x="270" y="340" width="120" height="120" rx="16" stroke="#818cf8" stroke-width="2" fill="rgba(129, 140, 248, 0.1)"/>
+  <rect x="410" y="340" width="120" height="120" rx="16" stroke="#818cf8" stroke-width="2" fill="rgba(129, 140, 248, 0.1)"/>
+  
+  <!-- Connecting Lines -->
+  <path d="M260 260H540" stroke="#6366f1" stroke-opacity="0.5" stroke-dasharray="8 8"/>
+  <path d="M330 400H470" stroke="#818cf8" stroke-opacity="0.5" stroke-dasharray="8 8"/>
+  
+  <!-- Floating Icons/Particles -->
+  <circle cx="200" cy="150" r="4" fill="#cbd5e1"/>
+  <circle cx="600" cy="150" r="6" fill="#6366f1"/>
+  <circle cx="400" cy="500" r="5" fill="#818cf8"/>
+</svg>

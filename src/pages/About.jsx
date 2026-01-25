@@ -1,166 +1,144 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import aboutHero from "../assets/illustrations/about-expertise.svg";
+import { motion } from "framer-motion";
+import heroAbout from "../assets/generated/hero-about.svg";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6 }
+};
 
 export default function About() {
   return (
-    <section className="section ai-neutral">
-      <div className="container">
-
-        {/* HERO */}
-        <div className="card hero-card about-hero">
-          <div className="hero-copy">
+    <main>
+      {/* HERO */}
+      <section className="hero-modern">
+        <div className="hero-modern-inner">
+          <motion.div 
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">About CogniVectra</span>
-            <h2>Building Foundations for Modern Startups</h2>
+            <h1>Building Foundations <br /> for Modern Startups</h1>
 
-            <p className="stack lead">
+            <p>
               We are a team of experienced engineers and platform specialists
               helping startups build reliable, scalable foundations without
               the overhead of large teams.
             </p>
 
-            <p className="stack">
-              We combine deep technical expertise with practical business
-              understanding to deliver solutions that truly matter for your
-              startup’s long-term success.
+            <div className="hero-cta">
+              <Link to="/contact" className="btn">
+                Talk to an Architect
+              </Link>
+              <Link to="/services" className="btn-outline">
+                Explore Services
+              </Link>
+            </div>
+
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
+              Deep Technical Expertise · Practical Business Impact · Startup Speed
             </p>
-          </div>
+          </motion.div>
 
-          <div className="hero-visual-image">
-            <img
-              src={aboutHero}
-              alt="CogniVectra expertise and platform engineering"
-              className="hero-image"
-            />
-          </div>
+          <motion.div 
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={heroAbout} alt="About CogniVectra" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
+      </section>
 
-        {/* VISUAL BREAK */}
-        <div className="highlight-pill">
-          💡 Deep Technical Expertise · Practical Business Impact · Startup Speed
-        </div>
-
-        {/* EXPERTISE GRID */}
-        <div className="grid2 about-expertise">
-          <section className="card">
-            <div className="industry-header">
-              <span className="emoji">🏗️</span>
-              <h3>Platform Engineering</h3>
-            </div>
-
-            <p className="stack">
-              We design and build the foundational platforms that power modern
-              SaaS applications — from authentication to billing and beyond.
-            </p>
-
-            <ul className="stack">
-              <li>Multi-tenant architecture design</li>
-              <li>Scalable data models and APIs</li>
-              <li>Performance optimization and monitoring</li>
-            </ul>
-          </section>
-
-          <section className="card">
-            <div className="industry-header">
-              <span className="emoji">☁️</span>
-              <h3>Cloud Infrastructure</h3>
-            </div>
-
-            <p className="stack">
-              We help you navigate cloud complexity while keeping your
-              infrastructure secure, cost-efficient, and scalable.
-            </p>
-
-            <ul className="stack">
-              <li>Multi-cloud and hybrid strategies</li>
-              <li>Security and compliance frameworks</li>
-              <li>Cost optimization and governance</li>
-            </ul>
-          </section>
-        </div>
-
-        <div className="grid2 about-expertise">
-          <section className="card">
-            <div className="industry-header">
-              <span className="emoji">🤖</span>
-              <h3>Process Automation</h3>
-            </div>
-
-            <p className="stack">
-              We automate repetitive workflows, freeing your team to focus
-              on building great products and serving customers.
-            </p>
-
-            <ul className="stack">
-              <li>No-code and low-code solutions</li>
-              <li>API integrations and data pipelines</li>
-              <li>Workflow orchestration and monitoring</li>
-            </ul>
-          </section>
-
-          <section className="card">
-            <div className="industry-header">
-              <span className="emoji">📊</span>
-              <h3>Data & Analytics</h3>
-            </div>
-
-            <p className="stack">
-              We help you make data-driven decisions with robust analytics
-              platforms and real-time business insights.
-            </p>
-
-            <ul className="stack">
-              <li>Data warehouse and pipeline design</li>
-              <li>Real-time analytics and dashboards</li>
-              <li>Business intelligence and reporting</li>
-            </ul>
-          </section>
-        </div>
-
-        {/* VALUES */}
-        <div className="card about-values">
-          <div className="industry-header">
-            <span className="emoji">🌟</span>
-            <h3>Our Values</h3>
-          </div>
-
-          <div className="grid2 values-grid">
-            <div>
-              <h4>🎯 Excellence</h4>
-              <p>Enterprise-grade quality with startup speed and agility.</p>
-            </div>
-
-            <div>
-              <h4>🤝 Partnership</h4>
-              <p>We work as an extension of your team, not just consultants.</p>
-            </div>
-
-            <div>
-              <h4>🚀 Innovation</h4>
-              <p>Cutting-edge solutions for unique business challenges.</p>
-            </div>
-
-            <div>
-              <h4>💎 Simplicity</h4>
-              <p>We make complex technology simple and accessible.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="card cta-card">
-          <h3>Let’s Build Something Amazing Together</h3>
-
-          <p className="stack lead">
-            Ready to discuss how we can help you build the technical foundation
-            for your startup’s success?
+      {/* EXPERTISE GRID */}
+      <section className="services-modern">
+        <motion.div 
+          className="section-header" 
+          style={{ textAlign: "center", marginBottom: "5rem" }}
+          {...fadeInUp}
+        >
+          <h3>Our Strategic Expertise</h3>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
+            We combine deep technical mastery with startup-specific execution to ensure
+            your platform supports your growth from MVP to scale.
           </p>
+        </motion.div>
 
-          <Link to="/contact" className="btn">
-            Get in Touch →
-          </Link>
+        <div className="services-modern-grid">
+          {[
+            { icon: "🏗️", title: "Platform Engineering", desc: "We build the foundational platforms that power modern SaaS applications — from auth to billing.", highlights: ["Multi-tenant architecture", "Scalable Data Models", "Observability & Monitoring"] },
+            { icon: "☁️", title: "Cloud Infrastructure", desc: "Secure, cost-efficient, and scalable infrastructure designed for growth without complexity.", highlights: ["Hybrid Cloud Strategy", "Security Foundations", "Cost Optimization"] },
+            { icon: "🤖", title: "Process Automation", desc: "Automating repetitive workflows to allow your team to focus on building great products.", highlights: ["Low-code / No-code Solutions", "Custom Data Pipelines", "Workflow Orchestration"] },
+            { icon: "📊", title: "Data & Analytics", desc: "Robust analytics platforms providing real-time business insights for data-driven decisions.", highlights: ["Data Warehouse Design", "Real-time Dashboards", "Business Intelligence"] }
+          ].map((service, i) => (
+            <motion.div 
+              key={i}
+              className="service-modern-card glass-panel"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="service-icon-wrapper">{service.icon}</div>
+              <h4>{service.title}</h4>
+              <p>{service.desc}</p>
+              <ul className="service-highlights">
+                {service.highlights.map((h, j) => <li key={j}>{h}</li>)}
+              </ul>
+            </motion.div>
+          ))}
         </div>
+      </section>
 
-      </div>
-    </section>
+      {/* VALUES */}
+      <section className="why-modern relative overflow-hidden py-24">
+        <div className="why-modern-inner relative z-10">
+          <motion.h3 {...fadeInUp}>Our Core Values</motion.h3>
+          <div className="why-modern-grid">
+            {[
+              { icon: "🎯", title: "Excellence", desc: "Enterprise-grade quality with startup speed and agility." },
+              { icon: "🤝", title: "Partnership", desc: "We work as an extension of your team, not just consultants." },
+              { icon: "🚀", title: "Innovation", desc: "Cutting-edge solutions for unique business challenges." }
+            ].map((value, i) => (
+              <motion.div 
+                key={i}
+                className="service-modern-card glass-panel"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <h4>{value.icon} {value.title}</h4>
+                <p>{value.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-modern relative overflow-hidden">
+        <div className="container relative z-10 text-center">
+          <motion.div {...fadeInUp}>
+            <h3>Let’s Build Something Amazing Together</h3>
+            <p className="mb-8">
+              Ready to discuss how we can help you build the technical foundation
+              for your startup’s success?
+            </p>
+            <Link to="/contact" className="btn">
+              Get in Touch
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+    </main>
   );
 }

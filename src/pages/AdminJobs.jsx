@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import AdminLayout from '../layouts/AdminLayout';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AdminJobs() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingJob, setEditingJob] = useState(null);
     const [saving, setSaving] = useState(false);
@@ -31,25 +32,15 @@ export default function AdminJobs() {
         meta_description: ''
     });
 
-    useEffect(() => {
-        checkAuth();
-    }, []);
+    const location = useLocation();
 
     useEffect(() => {
-        if (user) {
-            fetchJobs();
+        fetchJobs();
+        const params = new URLSearchParams(location.search);
+        if (params.get('new') === '1') {
+            openNewJobForm();
         }
-    }, [user]);
-
-    async function checkAuth() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-            navigate('/login');
-            return;
-        }
-        setUser(session.user);
-        setLoading(false);
-    }
+    }, [location.search]);
 
     async function fetchJobs() {
         try {
@@ -63,6 +54,8 @@ export default function AdminJobs() {
         } catch (error) {
             console.error('Error fetching jobs:', error);
             setError('Failed to load job postings');
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -115,11 +108,11 @@ export default function AdminJobs() {
             experience_level: job.experience_level || 'mid',
             summary: job.summary || '',
             description: job.description || '',
-            responsibilities: Array.isArray(job.responsibilities) ? job.responsibilities.join('\n') : '',
-            requirements: Array.isArray(job.requirements) ? job.requirements.join('\n') : '',
-            nice_to_have: Array.isArray(job.nice_to_have) ? job.nice_to_have.join('\n') : '',
+            responsibilities: Array.isArray(job.responsibilities) ? job.responsibilities.join('\n') : (job.responsibilities || ''),
+            requirements: Array.isArray(job.requirements) ? job.requirements.join('\n') : (job.requirements || ''),
+            nice_to_have: Array.isArray(job.nice_to_have) ? job.nice_to_have.join('\n') : (job.nice_to_have || ''),
             salary_range: job.salary_range || '',
-            benefits: Array.isArray(job.benefits) ? job.benefits.join('\n') : '',
+            benefits: Array.isArray(job.benefits) ? job.benefits.join('\n') : (job.benefits || ''),
             status: job.status || 'draft',
             meta_description: job.meta_description || ''
         });
@@ -205,27 +198,25 @@ export default function AdminJobs() {
 
         } catch (error) {
             console.error('Error saving job:', error);
-            setError(error.message || 'Failed to save job posting');
+            setError(error.message);
         } finally {
             setSaving(false);
         }
     }
 
-    async function handleDelete(jobId) {
-        if (!confirm('Are you sure you want to delete this job posting?')) {
-            return;
-        }
+    async function handleDelete(id) {
+        if (!confirm('Are you sure you want to delete this job posting?')) return;
 
         try {
             const { error } = await supabase
                 .from('job_postings')
                 .delete()
-                .eq('id', jobId);
+                .eq('id', id);
 
             if (error) throw error;
 
-            setSuccess('Job posting deleted successfully!');
-            await fetchJobs();
+            setJobs(prev => prev.filter(job => job.id !== id));
+            setSuccess('Job posting deleted successfully');
 
             setTimeout(() => setSuccess(''), 3000);
         } catch (error) {
@@ -234,186 +225,163 @@ export default function AdminJobs() {
         }
     }
 
-    async function handleStatusChange(jobId, newStatus) {
-        try {
-            const { error } = await supabase
-                .from('job_postings')
-                .update({ status: newStatus, updated_at: new Date().toISOString() })
-                .eq('id', jobId);
-
-            if (error) throw error;
-
-            await fetchJobs();
-            setSuccess(`Job status updated to ${newStatus}!`);
-            setTimeout(() => setSuccess(''), 3000);
-        } catch (error) {
-            console.error('Error updating status:', error);
-            setError('Failed to update job status');
-        }
+    if (loading) {
+        return <AdminLayout>Loading jobs...</AdminLayout>;
     }
 
-    const handleSignOut = async () => {
-        await supabase.auth.signOut();
-        navigate('/login');
-    };
-
-    if (loading) return <div className="admin-layout"><div className="admin-main-content">Loading...</div></div>;
-
     return (
-        <div className="admin-layout">
-            <aside className="admin-sidebar">
-                <Link to="/admin" className="sidebar-link">🏠 Dashboard</Link>
-                <Link to="/admin/clients" className="sidebar-link">👥 Clients & CRM</Link>
-                <Link to="/admin/projects" className="sidebar-link">🚀 Projects</Link>
-                <Link to="/admin/jobs" className="sidebar-link active">💼 Careers & Jobs</Link>
-                <Link to="/admin/compensation" className="sidebar-link">💰 Compensation</Link>
-                <Link to="/admin/offers" className="sidebar-link">📄 Offer Letters</Link>
-                <Link to="/admin/blog" className="sidebar-link">✍️ Blog Posts</Link>
-                <div style={{ marginTop: 'auto', padding: '1rem 0' }}>
-                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        🚪 Sign Out
-                    </button>
-                </div>
-            </aside>
-
-            <main className="admin-main-content">
-                <div className="admin-header">
-                    <div className="admin-title-area">
-                        <div className="admin-breadcrumbs">
-                            <Link to="/admin">Dashboard</Link> <span>/</span> <span>Careers</span>
-                        </div>
-                        <h1>Job Management</h1>
-                        <p>Create and manage job listings for the careers page.</p>
+        <AdminLayout>
+            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+                <div className="admin-title-area">
+                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Talent</span>
                     </div>
+                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Job Listings</h1>
+                    <p style={{ opacity: 0.7 }}>Manage open positions and career opportunities.</p>
+                </div>
+                {!showForm && (
                     <div className="admin-actions">
-                        <button onClick={openNewJobForm} className="btn">+ New Job Posting</button>
-                    </div>
-                </div>
-
-                {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>{success}</div>}
-                {error && <div className="error-message" style={{ marginBottom: '2rem' }}>{error}</div>}
-
-                {/* Job Form Modal */}
-                {showForm && (
-                    <div className="modal-overlay" onClick={() => setShowForm(false)}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px' }}>
-                            <div className="modal-header">
-                                <h2>{editingJob ? 'Edit Job Posting' : 'New Job Posting'}</h2>
-                                <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
-                            </div>
-
-                            <form onSubmit={handleSubmit} className="application-form">
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Job Title *</label>
-                                        <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Slug (URL) *</label>
-                                        <input type="text" name="slug" value={formData.slug} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Department *</label>
-                                        <input type="text" name="department" value={formData.department} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Location *</label>
-                                        <input type="text" name="location" value={formData.location} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Job Type *</label>
-                                        <select name="job_type" value={formData.job_type} onChange={handleInputChange} required>
-                                            <option value="full-time">Full-time</option>
-                                            <option value="part-time">Part-time</option>
-                                            <option value="contract">Contract</option>
-                                            <option value="internship">Internship</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Experience Level *</label>
-                                        <select name="experience_level" value={formData.experience_level} onChange={handleInputChange} required>
-                                            <option value="entry">Entry Level</option>
-                                            <option value="mid">Mid Level</option>
-                                            <option value="senior">Senior</option>
-                                            <option value="lead">Lead</option>
-                                            <option value="executive">Executive</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label>Summary * (Brief description for job card)</label>
-                                    <textarea name="summary" value={formData.summary} onChange={handleInputChange} required rows="2" />
-                                </div>
-                                <div className="form-group">
-                                    <label>Responsibilities * (one per line)</label>
-                                    <textarea name="responsibilities" value={formData.responsibilities} onChange={handleInputChange} required rows="4" />
-                                </div>
-                                <div className="form-group">
-                                    <label>Requirements * (one per line)</label>
-                                    <textarea name="requirements" value={formData.requirements} onChange={handleInputChange} required rows="4" />
-                                </div>
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Salary Range (optional)</label>
-                                        <input type="text" name="salary_range" value={formData.salary_range} onChange={handleInputChange} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Status *</label>
-                                        <select name="status" value={formData.status} onChange={handleInputChange} required>
-                                            <option value="draft">Draft</option>
-                                            <option value="active">Active</option>
-                                            <option value="paused">Paused</option>
-                                            <option value="closed">Closed</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="form-actions">
-                                    <button type="button" onClick={() => setShowForm(false)} className="btn-outline">Cancel</button>
-                                    <button type="submit" className="btn" disabled={saving}>{saving ? 'Saving...' : 'Save Job'}</button>
-                                </div>
-                            </form>
-                        </div>
+                        <button onClick={openNewJobForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>
+                            <span>✨</span> Post Strategic Role
+                        </button>
                     </div>
                 )}
+            </header>
 
-                <div className="admin-table-container">
-                    <table className="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Job Title</th>
-                                <th>Department</th>
-                                <th>Status</th>
-                                <th>Applications</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {jobs.map(job => (
-                                <tr key={job.id}>
-                                    <td style={{ fontWeight: '600' }}>{job.title}</td>
-                                    <td>{job.department}</td>
-                                    <td>
-                                        <span style={{
-                                            padding: '0.25rem 0.75rem',
-                                            borderRadius: '999px',
-                                            fontSize: '0.75rem',
-                                            background: job.status === 'active' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255,255,255,0.05)',
-                                            color: job.status === 'active' ? '#10b981' : '#9ca3af'
-                                        }}>{job.status}</span>
-                                    </td>
-                                    <td style={{ textAlign: 'center' }}>{job.applications_count || 0}</td>
-                                    <td>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button onClick={() => openEditJobForm(job)} className="sidebar-link" style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.05)' }}>Edit</button>
-                                            <button onClick={() => handleDelete(job.id)} className="sidebar-link" style={{ padding: '0.4rem', color: '#ef4444', background: 'rgba(239,68,68,0.05)' }}>Delete</button>
-                                        </div>
-                                    </td>
+            {error && <div className="error-message" style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>{error}</div>}
+            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
+
+            <AnimatePresence mode="wait">
+                {!showForm ? (
+                    <motion.div
+                        key="list"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="admin-table-container glass-panel"
+                    >
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Strategic Role</th>
+                                    <th>Department</th>
+                                    <th>Location</th>
+                                    <th>Job Type</th>
+                                    <th>Status</th>
+                                    <th style={{ textAlign: 'center' }}>Management</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </main>
-        </div>
+                            </thead>
+                            <tbody>
+                                {jobs.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" style={{ textAlign: 'center', padding: '4rem', opacity: 0.5 }}>No active job profiles found.</td>
+                                    </tr>
+                                ) : (
+                                    jobs.map((job) => (
+                                        <tr key={job.id}>
+                                            <td>
+                                                <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{job.title}</div>
+                                                <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>ID: {job.slug}</div>
+                                            </td>
+                                            <td>{job.department}</td>
+                                            <td>{job.location}</td>
+                                            <td>
+                                                <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>{job.job_type}</span>
+                                            </td>
+                                            <td>
+                                                <span className={`status-pill ${job.status === 'active' || job.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
+                                                    {job.status === 'active' || job.status === 'published' ? '🟢 Recruitment Open' : '📝 Internal Draft'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                                                    <button onClick={() => openEditJobForm(job)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Update</button>
+                                                    <button onClick={() => handleDelete(job.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="form"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="module-card glass-panel"
+                        style={{ maxWidth: '1000px', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                        <div className="modal-header" style={{ marginBottom: '2.5rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingJob ? 'Refine Role Profile' : 'Design Job Architect'}</h2>
+                            <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="application-form">
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Job Designation *</label>
+                                    <input type="text" name="title" value={formData.title} onChange={handleInputChange} required placeholder="e.g. Principal AI Engineer" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Public Slug (URL)</label>
+                                    <input type="text" name="slug" value={formData.slug} onChange={handleInputChange} required placeholder="principal-ai-engineer" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Corporate Department</label>
+                                    <input type="text" name="department" value={formData.department} onChange={handleInputChange} required placeholder="e.g. Research & Development" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Primary Location</label>
+                                    <input type="text" name="location" value={formData.location} onChange={handleInputChange} required placeholder="e.g. Remote (Global)" />
+                                </div>
+                            </div>
+
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Engagement Model</label>
+                                    <select name="job_type" value={formData.job_type} onChange={handleInputChange}>
+                                        <option value="full-time">Full-time Permanent</option>
+                                        <option value="part-time">Part-time Engagement</option>
+                                        <option value="contract">Professional Contract</option>
+                                        <option value="freelance">Freelance/Consultant</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Publication Status</label>
+                                    <select name="status" value={formData.status} onChange={handleInputChange}>
+                                        <option value="draft">Save as Internal Draft</option>
+                                        <option value="published">Deploy to Careers Page</option>
+                                        <option value="closed">Archive Post</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="form-group" style={{ marginTop: '1.5rem' }}>
+                                <label>Executive Summary</label>
+                                <textarea name="summary" value={formData.summary} onChange={handleInputChange} rows="3" placeholder="A compelling 2-sentence hook for candidates."></textarea>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Core Responsibilities (One per line)</label>
+                                <textarea name="responsibilities" value={formData.responsibilities} onChange={handleInputChange} rows="5" placeholder="- Lead architecture design&#10;- Manage stakeholder alignment"></textarea>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Technical Requirements (One per line)</label>
+                                <textarea name="requirements" value={formData.requirements} onChange={handleInputChange} rows="5" placeholder="- 10+ years of distributed systems&#10;- Expert Python/Go experience"></textarea>
+                            </div>
+
+                            <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2.5rem' }}>
+                                <button type="button" onClick={() => setShowForm(false)} className="btn-outline" style={{ flex: 1 }}>Discard</button>
+                                <button type="submit" className="btn" style={{ flex: 2 }} disabled={saving}>{saving ? 'Syncing...' : (editingJob ? 'Update Deployment' : 'Launch Recruitment')}</button>
+                            </div>
+                        </form>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </AdminLayout>
     );
 }

@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { useNavigate, Link } from 'react-router-dom';
+import AdminLayout from '../layouts/AdminLayout';
+import { Link } from 'react-router-dom';
 
 export default function AdminCompensation() {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [packages, setPackages] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -38,24 +37,8 @@ export default function AdminCompensation() {
     });
 
     useEffect(() => {
-        checkAuth();
+        fetchPackages();
     }, []);
-
-    useEffect(() => {
-        if (user) {
-            fetchPackages();
-        }
-    }, [user]);
-
-    async function checkAuth() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-            navigate('/login');
-            return;
-        }
-        setUser(session.user);
-        setLoading(false);
-    }
 
     async function fetchPackages() {
         try {
@@ -70,6 +53,8 @@ export default function AdminCompensation() {
         } catch (error) {
             console.error('Error fetching packages:', error);
             setError('Failed to load compensation packages');
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -237,151 +222,154 @@ export default function AdminCompensation() {
         }
     }
 
-    const handleSignOut = async () => {
-        await supabase.auth.signOut();
-        navigate('/login');
-    };
-
-    const formatCurrency = (amount, currency) => {
-        return new Intl.NumberFormat('en-IN', {
+    function formatCurrency(amount, currency = 'INR') {
+        return new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en-US', {
             style: 'currency',
             currency: currency,
             maximumFractionDigits: 0
-        }).format(amount);
-    };
+        }).format(amount || 0);
+    }
 
-    if (loading) return <div className="admin-layout"><div className="admin-main-content">Loading...</div></div>;
+    if (loading) return <AdminLayout>Loading...</AdminLayout>;
 
     return (
-        <div className="admin-layout">
-            <aside className="admin-sidebar">
-                <Link to="/admin" className="sidebar-link">🏠 Dashboard</Link>
-                <Link to="/admin/clients" className="sidebar-link">👥 Clients & CRM</Link>
-                <Link to="/admin/projects" className="sidebar-link">🚀 Projects</Link>
-                <Link to="/admin/jobs" className="sidebar-link">💼 Careers & Jobs</Link>
-                <Link to="/admin/compensation" className="sidebar-link active">💰 Compensation</Link>
-                <Link to="/admin/offers" className="sidebar-link">📄 Offer Letters</Link>
-                <Link to="/admin/blog" className="sidebar-link">✍️ Blog Posts</Link>
-                <div style={{ marginTop: 'auto', padding: '1rem 0' }}>
-                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        🚪 Sign Out
-                    </button>
+        <AdminLayout>
+            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+                <div className="admin-title-area">
+                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Compensation</span>
+                    </div>
+                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Salary Benchmarking</h1>
+                    <p style={{ opacity: 0.7 }}>Standardize compensation and benefits across organizational roles.</p>
                 </div>
-            </aside>
+                <div className="admin-actions">
+                    <button onClick={openNewPackageForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>+ Create Package</button>
+                </div>
+            </header>
 
-            <main className="admin-main-content">
-                <div className="admin-header">
-                    <div className="admin-title-area">
-                        <div className="admin-breadcrumbs">
-                            <Link to="/admin">Dashboard</Link> <span>/</span> <span>Compensation</span>
+            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
+            {error && <div className="error-message" style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>{error}</div>}
+
+            {/* Package Form Modal */}
+            {showForm && (
+                <div className="modal-overlay" onClick={() => setShowForm(false)}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="modal-header">
+                            <div>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingPackage ? 'Update Package' : 'Design New Package'}</h2>
+                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Define market-aligned compensation for selected role.</p>
+                            </div>
+                            <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
                         </div>
-                        <h1>Salary Packages</h1>
-                        <p>Standardize compensation and benefits for roles.</p>
-                    </div>
-                    <div className="admin-actions">
-                        <button onClick={openNewPackageForm} className="btn">+ New Package</button>
-                    </div>
-                </div>
 
-                {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>{success}</div>}
-                {error && <div className="error-message" style={{ marginBottom: '2rem' }}>{error}</div>}
-
-                {/* Package Form Modal */}
-                {showForm && (
-                    <div className="modal-overlay" onClick={() => setShowForm(false)}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px' }}>
-                            <div className="modal-header">
-                                <h2>{editingPackage ? 'Edit Package' : 'New Package'}</h2>
-                                <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
+                        <form onSubmit={handleSubmit} className="application-form">
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Role Job Title *</label>
+                                    <input type="text" name="role_title" value={formData.role_title} onChange={handleInputChange} required placeholder="e.g. Senior Software Engineer" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Organization Level *</label>
+                                    <select name="role_level" value={formData.role_level} onChange={handleInputChange} required>
+                                        <option value="entry">Entry (L1-L2)</option>
+                                        <option value="mid">Mid-Career (L3-L4)</option>
+                                        <option value="senior">Senior (L5-L6)</option>
+                                        <option value="lead">Lead/Principal (L7+)</option>
+                                        <option value="executive">Executive</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Department / Team Code *</label>
+                                    <input type="text" name="department" value={formData.department} onChange={handleInputChange} required placeholder="e.g. Engineering, Architecture" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Currency Localisation *</label>
+                                    <select name="currency" value={formData.currency} onChange={handleInputChange} required>
+                                        <option value="INR">INR (₹) - Indian Rupee</option>
+                                        <option value="USD">USD ($) - US Dollar</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="application-form">
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Role Title *</label>
-                                        <input type="text" name="role_title" value={formData.role_title} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Role Level *</label>
-                                        <select name="role_level" value={formData.role_level} onChange={handleInputChange} required>
-                                            <option value="entry">Entry</option>
-                                            <option value="mid">Mid</option>
-                                            <option value="senior">Senior</option>
-                                            <option value="lead">Lead</option>
-                                            <option value="executive">Executive</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Department *</label>
-                                        <input type="text" name="department" value={formData.department} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Currency *</label>
-                                        <select name="currency" value={formData.currency} onChange={handleInputChange} required>
-                                            <option value="INR">INR (₹)</option>
-                                            <option value="USD">USD ($)</option>
-                                        </select>
-                                    </div>
+                            <h3 style={{ fontSize: '1rem', marginTop: '2rem', marginBottom: '1.25rem', opacity: 0.9 }}>CTC Range (Annual)</h3>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Minimum Expected CTC</label>
+                                    <input type="number" name="annual_ctc_min" value={formData.annual_ctc_min} onChange={handleInputChange} required placeholder="Baseline" />
                                 </div>
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Min Annual CTC</label>
-                                        <input type="number" name="annual_ctc_min" value={formData.annual_ctc_min} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Max Annual CTC</label>
-                                        <input type="number" name="annual_ctc_max" value={formData.annual_ctc_max} onChange={handleInputChange} required />
-                                    </div>
+                                <div className="form-group">
+                                    <label>Maximum Ceiling CTC</label>
+                                    <input type="number" name="annual_ctc_max" value={formData.annual_ctc_max} onChange={handleInputChange} required placeholder="Ceiling" />
                                 </div>
-                                <h3>Benefits</h3>
-                                <div className="form-grid">
-                                    {[0, 1, 2, 3].map(index => (
-                                        <div key={index} className="form-group">
-                                            <input type="text" value={formData.benefits[index]} onChange={(e) => handleBenefitChange(index, e.target.value)} placeholder={`Benefit ${index + 1}`} />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="form-actions">
-                                    <button type="button" onClick={() => setShowForm(false)} className="btn-outline">Cancel</button>
-                                    <button type="submit" className="btn" disabled={saving}>{saving ? 'Saving...' : 'Save Package'}</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                )}
+                            </div>
 
-                <div className="admin-table-container">
-                    <table className="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Role</th>
-                                <th>Department</th>
-                                <th>Level</th>
-                                <th>Salary Range (Annual)</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {packages.map(pkg => (
-                                <tr key={pkg.id}>
-                                    <td style={{ fontWeight: '600' }}>{pkg.role_title}</td>
-                                    <td>{pkg.department}</td>
-                                    <td style={{ textTransform: 'capitalize' }}>{pkg.role_level}</td>
-                                    <td style={{ color: 'var(--accent-primary)', fontWeight: '500' }}>
-                                        {formatCurrency(pkg.annual_ctc_min, pkg.currency)} - {formatCurrency(pkg.annual_ctc_max, pkg.currency)}
-                                    </td>
-                                    <td>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <button onClick={() => openEditPackageForm(pkg)} className="sidebar-link" style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.05)' }}>Edit</button>
-                                            <button onClick={() => handleDelete(pkg.id)} className="sidebar-link" style={{ padding: '0.4rem', color: '#ef4444', background: 'rgba(239,68,68,0.05)' }}>Delete</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            <h3 style={{ fontSize: '1rem', marginTop: '2rem', marginBottom: '1.25rem', opacity: 0.9 }}>Supplementary Benefits</h3>
+                            <div className="form-grid">
+                                {[0, 1, 2, 3].map(index => (
+                                    <div key={index} className="form-group">
+                                        <input type="text" value={formData.benefits[index]} onChange={(e) => handleBenefitChange(index, e.target.value)} placeholder={`Benefit Perk ${index + 1}`} />
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2.5rem' }}>
+                                <button type="button" onClick={() => setShowForm(false)} className="btn-outline" style={{ flex: 1 }}>Dismiss</button>
+                                <button type="submit" className="btn" disabled={saving} style={{ flex: 2 }}>
+                                    {saving ? 'Syncing...' : (editingPackage ? 'Update Architecture' : 'Deploy Package')}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </main>
-        </div>
+            )}
+
+            <div className="admin-table-container glass-panel">
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Role Specification</th>
+                            <th>Parent Domain</th>
+                            <th>Seniority Tier</th>
+                            <th>Compensation Range (LPA)</th>
+                            <th style={{ textAlign: 'center' }}>Management</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {packages.map(pkg => (
+                            <tr key={pkg.id}>
+                                <td>
+                                    <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{pkg.role_title}</div>
+                                    <div style={{ fontSize: '0.7rem', opacity: 0.4, marginTop: '2px' }}>ID: CP-{pkg.id.toString().padStart(4, '0')}</div>
+                                </td>
+                                <td>
+                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{pkg.department}</div>
+                                </td>
+                                <td>
+                                    <span style={{
+                                        textTransform: 'uppercase',
+                                        fontSize: '0.7rem',
+                                        fontWeight: '700',
+                                        letterSpacing: '0.1em',
+                                        padding: '0.3rem 0.6rem',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        borderRadius: '4px',
+                                        color: '#fff'
+                                    }}>{pkg.role_level}</span>
+                                </td>
+                                <td style={{ color: 'var(--accent-light)', fontWeight: '700' }}>
+                                    {formatCurrency(pkg.annual_ctc_min, pkg.currency)} - {formatCurrency(pkg.annual_ctc_max, pkg.currency)}
+                                </td>
+                                <td>
+                                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                                        <button onClick={() => openEditPackageForm(pkg)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Modify</button>
+                                        <button onClick={() => handleDelete(pkg.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Terminate</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </AdminLayout>
     );
 }

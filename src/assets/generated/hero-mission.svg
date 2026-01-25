@@ -1,0 +1,17 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#1e293b"/>
+  
+  <!-- Target / Vision -->
+  <circle cx="400" cy="300" r="200" stroke="#6366f1" stroke-width="2" stroke-opacity="0.2"/>
+  <circle cx="400" cy="300" r="150" stroke="#6366f1" stroke-width="4" stroke-opacity="0.5"/>
+  <circle cx="400" cy="300" r="100" stroke="#6366f1" stroke-width="6"/>
+  <circle cx="400" cy="300" r="20" fill="#ffffff"/>
+  
+  <!-- Arrow Trajectory -->
+  <path d="M100 500 Q 250 450 400 300" stroke="#818cf8" stroke-width="4" stroke-dasharray="10 10"/>
+  
+  <!-- Sparkles -->
+  <path d="M600 100L610 120L630 130L610 140L600 160L590 140L570 130L590 120L600 100Z" fill="#fbbf24"/>
+  <path d="M150 150L155 160L165 165L155 170L150 180L145 170L135 165L145 160L150 150Z" fill="#fbbf24" fill-opacity="0.6"/>
+
+</svg>

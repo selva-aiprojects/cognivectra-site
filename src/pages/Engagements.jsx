@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import engagementModels from "../assets/generated/hero-engagements-8k.png";
 
 export default function Engagements() {
   return (
@@ -6,11 +8,13 @@ export default function Engagements() {
 
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">🤝 Flexible Partnerships</span>
 
             <h1>
@@ -28,25 +32,26 @@ export default function Engagements() {
               <Link to="/contact" className="btn">
                 Book Strategy Call
               </Link>
-              <Link to="/services" className="btn-outline">
+              <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
             </div>
 
-            <p className="hero-subtext">
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
               Complimentary consultation · Cost-effective solutions · No long-term lock-in
             </p>
-          </div>
+          </motion.div>
 
-          {/* Visual Card Instead of Image */}
-          <div className="hero-visual">
-            <img
-              src="/hero_engagements.png"
-              alt="Flexible Partnerships & Meeting"
-              className="hero-image-modern"
-            />
-          </div>
-
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={engagementModels} alt="Engagement Models" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -134,8 +139,8 @@ export default function Engagements() {
           Not sure which engagement model is right for you?
           Let’s discuss your goals and find the perfect fit.
         </p>
-        <Link to="/contact" className="btn">
-          Explore Options
+        <Link to="/#services" className="btn">
+          Explore All Services
         </Link>
       </section>
 

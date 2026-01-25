@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Chatbot from "./components/Chatbot.jsx";
+import CursorTrail from "./components/CursorTrail.jsx";
 
 import Home from "./pages/Home.jsx";
 import Mission from "./pages/Mission.jsx";
@@ -25,24 +26,43 @@ import AdminOffers from "./pages/AdminOffers.jsx";
 import AdminBlog from "./pages/AdminBlog.jsx";
 import AdminClients from "./pages/AdminClients.jsx";
 import AdminProjects from "./pages/AdminProjects.jsx";
+import AdminEnhanced from "./pages/AdminEnhanced.jsx";
 import Careers from "./pages/Careers.jsx";
 
 import chatIcon from "./assets/chat-icon.svg";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { trackPageView } from "./lib/analytics";
 import "./index.css";
 
 export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const location = useLocation();
 
-  /* Optional: Auto-close chat on route change */
+  /* Scroll to top/section on route change */
   useEffect(() => {
     setIsChatOpen(false);
-  }, [location.pathname]);
+
+    // Track Page View
+    trackPageView(location.pathname);
+
+    if (location.hash) {
+      const el = document.getElementById(location.hash.substring(1));
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname, location.hash]);
 
   const showChatbot = true;
 
   return (
     <div className="app-layout">
+      <CursorTrail />
       <div className="ambient-glow" />
 
       {/* Navbar */}
@@ -71,21 +91,13 @@ export default function App() {
           <Route path="/admin/blog" element={<AdminBlog />} />
           <Route path="/admin/clients" element={<AdminClients />} />
           <Route path="/admin/projects" element={<AdminProjects />} />
+          <Route path="/admin/omni" element={<AdminEnhanced />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>
 
       {/* Floating Chat Icon */}
-      {showChatbot && (
-        <div
-          className="chat-widget-icon"
-          onClick={() => setIsChatOpen(true)}
-          aria-label="Chat with AI Assistant"
-          role="button"
-        >
-          <img src={chatIcon} alt="Chat" />
-        </div>
-      )}
+
 
       {/* Chat Panel */}
       {showChatbot && (
@@ -94,6 +106,10 @@ export default function App() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Analytics */}
+      <Analytics />
+      <SpeedInsights />
     </div>
   );
 }

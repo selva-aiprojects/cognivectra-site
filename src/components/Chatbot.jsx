@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../lib/supabase";
+import chatIcon from "../assets/chat-icon.svg";
 
 const STORAGE_KEY = "cv_chat_state_v3";
 
@@ -338,7 +339,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   return (
     <>
       <button className="chat-fab" onClick={() => setIsOpen(!isOpen)}>
-        💬
+        <img src={chatIcon} alt="Chat" />
       </button>
 
       {showResumeBanner && !isOpen && (
@@ -381,7 +382,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
 
               {msg.calendly && (
                 <div className="chat-options">
-                  <button onClick={() => (window.location.href = "/contact")}>
+                  <button onClick={() => (window.location.href = "/contact?tab=call")}>
                     📅 Book Strategy Call
                   </button>
                   <button onClick={() => setIsOpen(false)}>No, thanks</button>

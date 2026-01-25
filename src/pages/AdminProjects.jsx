@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import AdminLayout from '../layouts/AdminLayout';
 
 export default function AdminProjects() {
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [projects, setProjects] = useState([]);
     const [clients, setClients] = useState([]);
@@ -28,17 +28,8 @@ export default function AdminProjects() {
     });
 
     useEffect(() => {
-        checkAuth();
-    }, []);
-
-    async function checkAuth() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-            navigate('/login');
-            return;
-        }
         fetchData();
-    }
+    }, []);
 
     async function fetchData() {
         try {
@@ -124,155 +115,137 @@ export default function AdminProjects() {
         }
     }
 
-    const handleSignOut = async () => {
-        await supabase.auth.signOut();
-        navigate('/login');
-    };
-
-    if (loading) return <div className="admin-layout"><div className="admin-main-content">Loading...</div></div>;
+    if (loading) return <AdminLayout>Loading projects...</AdminLayout>;
 
     return (
-        <div className="admin-layout">
-            <aside className="admin-sidebar">
-                <Link to="/admin" className="sidebar-link">🏠 Dashboard</Link>
-                <Link to="/admin/clients" className="sidebar-link">👥 Clients & CRM</Link>
-                <Link to="/admin/projects" className="sidebar-link active">🚀 Projects</Link>
-                <Link to="/admin/jobs" className="sidebar-link">💼 Careers & Jobs</Link>
-                <Link to="/admin/compensation" className="sidebar-link">💰 Compensation</Link>
-                <Link to="/admin/offers" className="sidebar-link">📄 Offer Letters</Link>
-                <Link to="/admin/blog" className="sidebar-link">✍️ Blog Posts</Link>
-                <div style={{ marginTop: 'auto', padding: '1rem 0' }}>
-                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        🚪 Sign Out
-                    </button>
-                </div>
-            </aside>
-
-            <main className="admin-main-content">
-                <div className="admin-header">
-                    <div className="admin-title-area">
-                        <div className="admin-breadcrumbs">
-                            <Link to="/admin">Dashboard</Link> <span>/</span> <span>Projects</span>
-                        </div>
-                        <h1>Project Delivery Board</h1>
-                        <p>Track delivery status, health metrics, and client deliverables.</p>
+        <AdminLayout>
+            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+                <div className="admin-title-area">
+                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Projects</span>
                     </div>
-                    <div className="admin-actions">
-                        <button onClick={openNewProjectForm} className="btn">+ New Project</button>
-                    </div>
+                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Delivery Board</h1>
+                    <p style={{ opacity: 0.7 }}>Track execution, health metrics, and client deliverables.</p>
                 </div>
+                <div className="admin-actions">
+                    <button onClick={openNewProjectForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>+ New Project</button>
+                </div>
+            </header>
 
-                {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>{success}</div>}
+            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
 
-                <div className="admin-table-container">
-                    <table className="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Project</th>
-                                <th>Client</th>
-                                <th>Status</th>
-                                <th>Health</th>
-                                <th>Progress</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {projects.map(project => (
-                                <tr key={project.id} onClick={() => { setEditingProject(project); setFormData(project); setShowForm(true); }} style={{ cursor: 'pointer' }}>
-                                    <td>
-                                        <div style={{ fontWeight: '600' }}>{project.project_name}</div>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{project.project_type}</div>
-                                    </td>
-                                    <td>
-                                        <div style={{ fontSize: '0.9rem' }}>{project.client_name}</div>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{project.client_code}</div>
-                                    </td>
-                                    <td>
-                                        <span style={{
-                                            padding: '0.2rem 0.5rem',
-                                            borderRadius: '4px',
-                                            fontSize: '0.7rem',
-                                            background: 'rgba(255,255,255,0.05)',
-                                            color: '#fff',
-                                            textTransform: 'capitalize'
-                                        }}>{project.project_status.replace('_', ' ')}</span>
-                                    </td>
-                                    <td>
-                                        <span style={{
-                                            padding: '0.2rem 0.5rem',
-                                            borderRadius: '4px',
-                                            fontSize: '0.7rem',
-                                            background: project.health_status === 'on_track' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-                                            color: project.health_status === 'on_track' ? '#10b981' : '#ef4444'
-                                        }}>{project.health_status.replace('_', ' ')}</span>
-                                    </td>
-                                    <td>
-                                        <div style={{ width: '100px', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
-                                            <div style={{ width: `${project.completion_percentage}%`, height: '100%', background: 'var(--accent-primary)' }} />
+            <div className="admin-table-container glass-panel">
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Project Details</th>
+                            <th>Parent Client</th>
+                            <th>Current Status</th>
+                            <th>Delivery Health</th>
+                            <th>Execution Progress</th>
+                            <th>Contract Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {projects.map(project => (
+                            <tr key={project.id} onClick={() => { setEditingProject(project); setFormData(project); setShowForm(true); }} style={{ cursor: 'pointer' }}>
+                                <td>
+                                    <div style={{ fontWeight: '700', color: '#fff', fontSize: '0.95rem' }}>{project.project_name}</div>
+                                    <div style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '2px' }}>{project.project_type}</div>
+                                </td>
+                                <td>
+                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{project.client_name}</div>
+                                    <div style={{ fontSize: '0.7rem', opacity: 0.5 }}>{project.client_code}</div>
+                                </td>
+                                <td>
+                                    <span style={{
+                                        padding: '0.3rem 0.6rem',
+                                        borderRadius: '4px',
+                                        fontSize: '0.7rem',
+                                        fontWeight: '700',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        color: '#fff',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em'
+                                    }}>{project.project_status.replace('_', ' ')}</span>
+                                </td>
+                                <td>
+                                    <span className={`status-pill ${project.health_status === 'on_track' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
+                                        {project.health_status === 'on_track' ? '🟢 ON TRACK' : '🔴 DELAYED'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden', minWidth: '80px' }}>
+                                            <div style={{ width: `${project.completion_percentage}%`, height: '100%', background: 'linear-gradient(to right, var(--accent-primary), var(--accent-light))' }} />
                                         </div>
-                                        <div style={{ fontSize: '0.7rem', marginTop: '0.25rem' }}>{project.completion_percentage}%</div>
-                                    </td>
-                                    <td style={{ fontWeight: '500' }}>₹{(project.project_value / 100000).toFixed(1)}L</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                        <span style={{ fontSize: '0.75rem', fontWeight: '700', opacity: 0.8 }}>{project.completion_percentage}%</span>
+                                    </div>
+                                </td>
+                                <td style={{ fontWeight: '700', color: 'var(--accent-light)' }}>
+                                    ₹{(project.project_value / 100000).toFixed(1)}L
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-                {/* PROJECT FORM MODAL */}
-                {showForm && (
-                    <div className="modal-overlay" onClick={() => setShowForm(false)}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px' }}>
-                            <div className="modal-header">
-                                <h2>{editingProject ? 'Edit Project' : 'New Project'}</h2>
-                                <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
-                            </div>
-                            <form onSubmit={handleSubmit} className="application-form">
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Project Name *</label>
-                                        <input type="text" name="project_name" value={formData.project_name} onChange={handleInputChange} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Client *</label>
-                                        <select name="client_id" value={formData.client_id} onChange={handleInputChange} required>
-                                            <option value="">-- Select Client --</option>
-                                            {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Project Type</label>
-                                        <input type="text" name="project_type" value={formData.project_type} onChange={handleInputChange} placeholder="e.g. Cloud Migraton" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Status</label>
-                                        <select name="project_status" value={formData.project_status} onChange={handleInputChange}>
-                                            <option value="planning">Planning</option>
-                                            <option value="in_progress">In Progress</option>
-                                            <option value="on_hold">On Hold</option>
-                                            <option value="completed">Completed</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Start Date</label>
-                                        <input type="date" name="start_date" value={formData.start_date} onChange={handleInputChange} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Project Value (INR)</label>
-                                        <input type="number" name="project_value" value={formData.project_value} onChange={handleInputChange} />
-                                    </div>
-                                </div>
-                                <div className="form-actions">
-                                    <button type="button" onClick={() => setShowForm(false)} className="btn-outline">Cancel</button>
-                                    <button type="submit" className="btn" disabled={saving}>{saving ? 'Saving...' : 'Save Project'}</button>
-                                </div>
-                            </form>
+            {/* PROJECT FORM MODAL */}
+            {showForm && (
+                <div className="modal-overlay" onClick={() => setShowForm(false)}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="modal-header">
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingProject ? 'Modify Project' : 'Initialize New Project'}</h2>
+                            <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
                         </div>
+                        <form onSubmit={handleSubmit} className="application-form">
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Project Name *</label>
+                                    <input type="text" name="project_name" value={formData.project_name} onChange={handleInputChange} required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Client Partner *</label>
+                                    <select name="client_id" value={formData.client_id} onChange={handleInputChange} required>
+                                        <option value="">-- Link to Client --</option>
+                                        {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Worksteam Type</label>
+                                    <input type="text" name="project_type" value={formData.project_type} onChange={handleInputChange} placeholder="e.g. Cloud Migraton" />
+                                </div>
+                                <div className="form-group">
+                                    <label>Lifecycle Status</label>
+                                    <select name="project_status" value={formData.project_status} onChange={handleInputChange}>
+                                        <option value="planning">Initial Planning</option>
+                                        <option value="in_progress">In Progress</option>
+                                        <option value="on_hold">On Hold</option>
+                                        <option value="completed">Delivery Completed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Project Kick-off</label>
+                                    <input type="date" name="start_date" value={formData.start_date} onChange={handleInputChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Contract Value (INR)</label>
+                                    <input type="number" name="project_value" value={formData.project_value} onChange={handleInputChange} placeholder="Total Budget" />
+                                </div>
+                            </div>
+                            <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                                <button type="button" onClick={() => setShowForm(false)} className="btn-outline" style={{ flex: 1 }}>Discard</button>
+                                <button type="submit" className="btn" disabled={saving} style={{ flex: 2 }}>
+                                    {saving ? 'Syncing...' : (editingProject ? 'Submit Updates' : 'Launch Project')}
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                )}
-            </main>
-        </div>
+                </div>
+            )}
+        </AdminLayout>
     );
 }

@@ -1,0 +1,27 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#1e293b"/>
+  
+  <!-- Interlocking Circles -->
+  <circle cx="300" cy="300" r="120" stroke="#6366f1" stroke-width="8" stroke-opacity="0.6"/>
+  <circle cx="500" cy="300" r="120" stroke="#818cf8" stroke-width="8" stroke-opacity="0.6"/>
+  
+  <!-- Overlap Area -->
+  <path d="M400 220 A100 100 0 0 1 400 380" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.3"/>
+  
+  <!-- Gears/Mechanical Elements -->
+  <circle cx="300" cy="300" r="40" fill="#6366f1" fill-opacity="0.2"/>
+  <circle cx="500" cy="300" r="40" fill="#818cf8" fill-opacity="0.2"/>
+
+  <!-- Connecting Lines -->
+  <line x1="300" y1="300" x2="500" y2="300" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="10 10"/>
+  
+  <!-- Satellites -->
+  <circle cx="300" cy="150" r="15" fill="#475569"/>
+  <line x1="300" y1="180" x2="300" y2="165" stroke="#475569"/>
+  
+  <circle cx="500" cy="450" r="15" fill="#475569"/>
+  <line x1="500" y1="420" x2="500" y2="435" stroke="#475569"/>
+
+  <!-- Glow -->
+  <circle cx="400" cy="300" r="50" fill="#ffffff" fill-opacity="0.1"/>
+</svg>

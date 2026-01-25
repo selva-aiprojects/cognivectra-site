@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "/cognivectra-dark-crop.png";
+const logo = "/cognivectra-dark-crop.png";
 
 export default function SimpleNavbar({ setIsChatOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,12 +42,11 @@ export default function SimpleNavbar({ setIsChatOpen }) {
             aria-label="CogniVectra Home"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <img src={logo} alt="CogniVectra Logo" className="brand-logo" />
+            <img src={logo} alt="CogniVectra Logo" className="brand-logo" style={{ height: '32px', width: 'auto' }} />
           </NavLink>
 
           {/* Desktop Navigation */}
           <nav className="links desktop-links" aria-label="Desktop Navigation">
-
             <NavLink to="/services">Services</NavLink>
             <NavLink to="/engagements">Engagements</NavLink>
             <NavLink to="/results">Results</NavLink>
@@ -70,7 +69,6 @@ export default function SimpleNavbar({ setIsChatOpen }) {
               AI Assistant
               <span className="ai-status-dot"></span>
             </button>
-
           </nav>
 
           {/* Mobile Hamburger */}

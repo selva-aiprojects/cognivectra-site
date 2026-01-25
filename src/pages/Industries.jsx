@@ -1,4 +1,10 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import heroVideo from "../assets/hero-video.mp4";
+import missionVideo from "../assets/mission-video.mp4";
+import whyUsVideo from "../assets/why-us-video.mp4";
+import ctaVideo from "../assets/cta-video.mp4";
 
 /* High-quality industry visuals */
 import saasImage from "../assets/illustrations/industries-saas.svg";
@@ -8,8 +14,12 @@ import ecommerceImage from "../assets/illustrations/industries-ecommerce.svg";
 import edtechImage from "../assets/illustrations/industries-edtech.svg";
 import logisticsImage from "../assets/illustrations/industries-ecommerce.svg"; // fallback
 
+import industriesHero from "../assets/generated/hero-industries-ultra-8k.png";
+import saasHero from "../assets/illustrations/industries-saas.svg";
+
 export default function Industries() {
   const industries = [
+    // ... data ...
     {
       title: "SaaS & Product Startups",
       description:
@@ -83,11 +93,13 @@ export default function Industries() {
 
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">🏭 Industry Expertise</span>
 
             <h1>
@@ -105,25 +117,26 @@ export default function Industries() {
               <Link to="/contact" className="btn">
                 Book Strategy Call
               </Link>
-              <Link to="/services" className="btn-outline">
+              <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
             </div>
 
-            <p className="hero-subtext">
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
               SaaS · FinTech · HealthTech · E-commerce · EdTech · Logistics
             </p>
-          </div>
+          </motion.div>
 
-          {/* Visual Summary Card */}
-          <div className="hero-visual">
-            <img
-              src="/hero_tech_services.png"
-              alt="Industry-Specific Tech Solutions"
-              className="hero-image-modern"
-            />
-          </div>
-
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={industriesHero} alt="Industry Expertise" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -135,7 +148,6 @@ export default function Industries() {
 
           {industries.map((industry) => (
             <div key={industry.title} className="service-modern-card">
-
               <div className="industry-header">
                 <img
                   src={industry.image}
@@ -184,14 +196,16 @@ export default function Industries() {
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Your Industry Not Listed?</h3>
-        <p>
-          Even if your domain is not listed, if you are building a
-          software or data-driven product, we can help you.
-        </p>
-        <Link to="/contact" className="btn">
-          Discuss Your Industry
-        </Link>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h3>Your Industry Not Listed?</h3>
+          <p>
+            Even if your domain is not listed, if you are building a
+            software or data-driven product, we can help you.
+          </p>
+          <Link to="/#services" className="btn">
+            Explore Our Expertise
+          </Link>
+        </div>
       </section>
 
     </main>

@@ -1,180 +1,138 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import heroServices from "../assets/generated/hero-services-ultra-8k.png";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6 }
+};
 
 export default function Services() {
   return (
     <main>
-
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">⚙️ Startup-Grade Engineering</span>
-
-            <h1>
-              Services Built for <br />
-              Speed, Scale & Stability
-            </h1>
-
+            <h1>Services Built for <br />Speed, Scale & Stability</h1>
             <p>
               CogniVectra delivers modular, enterprise-grade services that help
               startups build intelligent platforms, automate operations, and
               scale without technical debt.
             </p>
-
             <div className="hero-cta">
-              <Link to="/contact" className="btn">
-                Book Strategy Call
-              </Link>
-              <Link to="/engagements" className="btn-outline">
-                View Engagement Models
-              </Link>
+              <Link to="/contact" className="btn">Book Strategy Call</Link>
+              <Link to="/engagements" className="btn-outline">View Engagements</Link>
             </div>
 
-            <p className="hero-subtext">
-              Flexible delivery · Cost-effective solutions · Senior engineers only
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
+              Senior engineers only · Security built-in · AI-first architecture
             </p>
-          </div>
+          </motion.div>
 
-          {/* No image dependency — premium glass card instead */}
-          <div className="hero-visual">
-            <img
-              src="/hero_tech_services.png"
-              alt="Cloud Infrastructure & Services"
-              className="hero-image-modern"
-            />
-          </div>
-
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={heroServices} alt="Our Services" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CORE SERVICES */}
       <section className="services-modern">
-        <h3>Our Core Services</h3>
+        <motion.div
+          className="section-header"
+          style={{ textAlign: "center", marginBottom: "5rem" }}
+          {...fadeInUp}
+        >
+          <span className="hero-badge">Engineering Excellence</span>
+          <h3>Our Core Services</h3>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
+            Modular, scalable, and secure engineering services designed to help founders
+            bring their vision to life with enterprise-grade stability.
+          </p>
+        </motion.div>
 
         <div className="services-modern-grid">
-
-          <div className="service-modern-card">
-            <h4>☁️ Cloud Architecture</h4>
-            <p>
-              Scalable, secure cloud foundations on AWS, GCP, or Azure.
-            </p>
-            <ul>
-              <li>Landing zones & environment strategy</li>
-              <li>Infrastructure as Code (Terraform)</li>
-              <li>High-availability architecture</li>
-              <li>Security & compliance baseline</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>🚀 DevOps & Platform Engineering</h4>
-            <p>
-              CI/CD pipelines, reliability engineering, and platform automation.
-            </p>
-            <ul>
-              <li>CI/CD pipelines (GitHub, GitLab, Bitbucket)</li>
-              <li>Monitoring, logging & observability</li>
-              <li>Release automation</li>
-              <li>Performance optimization</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>🤖 AI & Workflow Automation</h4>
-            <p>
-              GenAI-powered automations across business and engineering.
-            </p>
-            <ul>
-              <li>AI workflow orchestration</li>
-              <li>Internal tools & bots</li>
-              <li>Customer support automation</li>
-              <li>Operations & finance automation</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>🏗 SaaS Foundations</h4>
-            <p>
-              Production-ready components for modern SaaS products.
-            </p>
-            <ul>
-              <li>Authentication & authorization</li>
-              <li>Billing & subscription systems</li>
-              <li>Notifications & messaging</li>
-              <li>API design & data modeling</li>
-            </ul>
-          </div>
-
+          {[
+            { icon: "☁️", title: "Cloud Architecture", desc: "Scalable, secure cloud foundations on AWS, GCP, or Azure with a focus on cost-optimization and resilience.", highlights: ["Landing Zone Construction", "Infrastructure as Code", "Disaster Recovery", "Security & Compliance"] },
+            { icon: "🚀", title: "DevOps & Platforms", desc: "Empowering your team with high-velocity CI/CD pipelines and high-reliability platform engineering.", highlights: ["Automated CI/CD Workflows", "Kubernetes Management", "Observability & Monitoring", "SRE Practices"] },
+            { icon: "🤖", title: "AI & Automation", desc: "Accelerating business processes and product features using state-of-the-art AI orchestration.", highlights: ["Custom LLM Integrations", "Automated Data Pipelines", "Internal Productivity Bots", "AI Strategy & Feasibility"] },
+            { icon: "🏗", title: "SaaS Foundations", desc: "Standardized, battle-tested components for authentication, billing, and core SaaS functionality.", highlights: ["RBAC & IAM Architecture", "Stripe & Billing Integration", "Multi-tenant Partitioning", "Scalable API Gateways"] }
+          ].map((service, i) => (
+            <motion.div
+              key={i}
+              className="service-modern-card glass-panel"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="service-icon-wrapper">{service.icon}</div>
+              <h4>{service.title}</h4>
+              <p>{service.desc}</p>
+              <ul className="service-highlights">
+                {service.highlights.map((h, j) => <li key={j}>{h}</li>)}
+              </ul>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* WHY US */}
-      <section className="why-modern">
-        <div className="why-modern-inner">
-          <h3>Why Startups Choose CogniVectra</h3>
-
-          <div className="why-modern-grid">
-            <div className="why-pill">Senior engineers only</div>
-            <div className="why-pill">Startup-speed execution</div>
-            <div className="why-pill">AI-first mindset</div>
-            <div className="why-pill">Cloud-native by default</div>
-            <div className="why-pill">Security built in</div>
-            <div className="why-pill">No vendor lock-in</div>
-          </div>
-        </div>
-      </section>
-
-      {/* DELIVERY PROCESS */}
-      <section className="services-modern">
-        <h3>How We Work</h3>
-
+      {/* HOW WE WORK */}
+      <section className="services-modern py-24">
+        <motion.h3 className="text-center mb-16" {...fadeInUp}>How We Work</motion.h3>
         <div className="services-modern-grid">
-
-          <div className="service-modern-card">
-            <h4>1. Discover</h4>
-            <p>
-              Deep dive into your product, architecture, goals, and constraints.
-            </p>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>2. Design</h4>
-            <p>
-              Define architecture, automation strategy, and delivery roadmap.
-            </p>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>3. Build</h4>
-            <p>
-              Implement infrastructure, pipelines, and workflows.
-            </p>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>4. Scale</h4>
-            <p>
-              Optimize performance, costs, and reliability as you grow.
-            </p>
-          </div>
-
+          {[
+            { step: "1", title: "Discovery", desc: "Deep dive into your product, architecture, goals, and constraints to build a 90-day roadmap." },
+            { step: "2", title: "Architecture", desc: "Define the blueprint for infrastructure, automation, and security tailored to your growth." },
+            { step: "3", title: "Execution", desc: "Rapid implementation of pipelines, workflows, and core SaaS foundations by senior engineers." },
+            { step: "4", title: "Optimization", desc: "Continuous refinement of performance, cost, and reliability as your user base expands." }
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              className="service-modern-card glass-panel"
+              initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="service-icon-wrapper">{item.step}</div>
+              <h4>{item.title}</h4>
+              <p>{item.desc}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Ready to build your startup foundation?</h3>
-        <p>
-          Book a free strategy session and get a 90-day execution plan.
-        </p>
-        <Link to="/contact" className="btn">
-          Start Free Strategy Call
-        </Link>
+        <div className="container text-center">
+          <motion.div {...fadeInUp}>
+            <h3>Ready to build your startup foundation?</h3>
+            <p className="mb-8">
+              Book a free strategy session and get a 90-day execution plan.
+            </p>
+            <Link to="/contact" className="btn">
+              Start Free Strategy Call
+            </Link>
+          </motion.div>
+        </div>
       </section>
-
     </main>
   );
 }

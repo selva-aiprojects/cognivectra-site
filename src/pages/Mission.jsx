@@ -1,197 +1,127 @@
 import { Link } from "react-router-dom";
-import missionHero from "../assets/mission-vision.png";
+import { motion } from "framer-motion";
+import heroMission from "../assets/generated/hero-mission.svg";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6 }
+};
 
 export default function Mission() {
   return (
     <main>
-
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div 
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">🎯 Mission & Vision</span>
-
-            <h1>
-              Empowering Founders <br />
-              Through Frictionless Technology
-            </h1>
-
+            <h1>Empowering Founders <br />Through Frictionless Technology</h1>
             <p>
               We help startups build reliable, automated platforms that scale
               with confidence. Our mission is to make enterprise-grade
               infrastructure accessible to every founder.
             </p>
-
-            <p>
-              Our vision is a world where technology enables innovation without
-              friction — invisible foundations that support bold ideas.
-            </p>
-
             <div className="hero-cta">
-              <Link to="/contact" className="btn">
-                Start a Conversation
-              </Link>
-              <Link to="/services" className="btn-outline">
-                Explore Services
-              </Link>
+              <Link to="/contact" className="btn">Start a Conversation</Link>
+              <Link to="/services" className="btn-outline">Explore Services</Link>
             </div>
 
-            <p className="hero-subtext">
-              Mission: Empower Founders · Vision: Frictionless Innovation · Values: Excellence & Simplicity
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
+              Mission: Empower Founders · Vision: Frictionless Innovation
             </p>
-          </div>
+          </motion.div>
 
-          {/* Visual */}
-          <div className="hero-visual">
-            <img
-              src={missionHero}
-              alt="Mission and vision: empowering founders with frictionless innovation"
-              className="hero-image"
-            />
-          </div>
-
-        </div>
-      </section>
-
-      {/* VALUE BREAK */}
-      <section className="why-modern">
-        <div className="why-modern-inner">
-          <h3>Enabling Innovation at Scale</h3>
-
-          <p>
-            We believe great technology should be invisible — allowing founders
-            to focus on what matters most: building amazing products and serving
-            their customers.
-          </p>
-
-          <div className="why-modern-grid">
-            <div className="why-pill">Founder-first thinking</div>
-            <div className="why-pill">Long-term architecture</div>
-            <div className="why-pill">Enterprise-grade reliability</div>
-            <div className="why-pill">Startup speed</div>
-            <div className="why-pill">Human-centered automation</div>
-            <div className="why-pill">Sustainable growth</div>
-          </div>
+          <motion.div 
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={heroMission} alt="Our Mission" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* PRINCIPLES */}
-      <section className="services-modern">
-        <h3>Our Guiding Principles</h3>
-
+      <section className="services-modern py-24">
+        <motion.h3 className="text-center mb-16" {...fadeInUp}>Our Guiding Principles</motion.h3>
         <div className="services-modern-grid">
-
-          <div className="service-modern-card">
-            <span className="service-icon">🎯</span>
-            <h4>Founder-First</h4>
-            <p>
-              We prioritize founder needs and business outcomes over technical
-              complexity. Everything we build is designed to accelerate growth.
-            </p>
-            <ul>
-              <li>Business outcomes over complexity</li>
-              <li>Rapid time-to-value</li>
-              <li>Scalable from day one</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <span className="service-icon">🔭</span>
-            <h4>Long-Term Thinking</h4>
-            <p>
-              We build foundations that support today’s needs and tomorrow’s
-              growth through future-proof architecture.
-            </p>
-            <ul>
-              <li>Future-ready technology choices</li>
-              <li>Managed technical debt</li>
-              <li>Growth-aligned systems</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <span className="service-icon">💎</span>
-            <h4>Excellence & Simplicity</h4>
-            <p>
-              We deliver sophisticated solutions that remain remarkably simple
-              to use and maintain.
-            </p>
-            <ul>
-              <li>Clean architecture</li>
-              <li>Enterprise-grade quality</li>
-              <li>Intuitive UX</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <span className="service-icon">🤝</span>
-            <h4>Partnership Approach</h4>
-            <p>
-              We work as an extension of your team. Your success becomes our
-              success.
-            </p>
-            <ul>
-              <li>Collaborative problem-solving</li>
-              <li>Knowledge transfer</li>
-              <li>Long-term mindset</li>
-            </ul>
-          </div>
-
+          {[
+            { icon: "🎯", title: "Founder-First", desc: "We prioritize founder needs and business outcomes over technical complexity.", highlights: ["Business outcomes first", "Rapid time-to-value", "Scalable foundations"] },
+            { icon: "🔭", title: "Long-Term Thinking", desc: "We build foundations that support today's needs and tomorrow's growth.", highlights: ["Future-ready choices", "Managed technical debt", "Growth-aligned systems"] },
+            { icon: "💎", title: "Excellence & Simplicity", desc: "Sophisticated solutions that remain remarkably simple to maintain.", highlights: ["Clean architecture", "Enterprise quality", "Intuitive interfaces"] },
+            { icon: "🤝", title: "Partnership Approach", desc: "We work as an extension of your team. Your success is our success.", highlights: ["Collaborative solving", "Knowledge transfer", "Long-term mindset"] }
+          ].map((item, i) => (
+            <motion.div 
+              key={i}
+              className="service-modern-card glass-panel"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="service-icon-wrapper">{item.icon}</div>
+              <h4>{item.title}</h4>
+              <p>{item.desc}</p>
+              <ul className="service-highlights">
+                {item.highlights.map((h, j) => <li key={j}>{h}</li>)}
+              </ul>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* WHO WE SERVE */}
-      <section className="services-modern">
-        <h3>Who We Serve</h3>
-
-        <div className="services-modern-grid">
-
-          <div className="service-modern-card">
-            <span className="service-icon">🚀</span>
-            <h4>Pre-Seed to Seed</h4>
-            <p>
-              Founders building their first product and teams needing MVP
-              infrastructure to reach customers faster.
-            </p>
-            <ul>
-              <li>First product launches</li>
-              <li>MVP infrastructure</li>
-              <li>Early customer readiness</li>
-            </ul>
-          </div>
-
-          <div className="service-modern-card">
-            <span className="service-icon">📈</span>
-            <h4>Series A to B</h4>
-            <p>
-              Scaling teams and platforms that need stronger reliability,
-              performance, and enterprise readiness.
-            </p>
-            <ul>
-              <li>Platform scalability</li>
-              <li>Reliability improvements</li>
-              <li>Enterprise readiness</li>
-            </ul>
-          </div>
-
+      <section className="services-modern py-24 bg-slate-800/20">
+        <motion.h3 className="text-center mb-16" {...fadeInUp}>Who We Serve</motion.h3>
+        <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
+          {[
+            { icon: "🚀", title: "Pre-Seed to Seed", desc: "Founders building their first product and teams needing MVP infrastructure to reach customers faster.", highlights: ["First product launches", "MVP infrastructure", "Early customer readiness"] },
+            { icon: "📈", title: "Series A to B", desc: "Scaling teams and platforms that need stronger reliability, performance, and enterprise readiness.", highlights: ["Platform scalability", "Reliability improvements", "Enterprise readiness"] }
+          ].map((item, i) => (
+            <motion.div 
+              key={i}
+              className="service-modern-card glass-panel"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="service-icon-wrapper">{item.icon}</div>
+              <h4>{item.title}</h4>
+              <p>{item.desc}</p>
+              <ul className="service-highlights">
+                {item.highlights.map((h, j) => <li key={j}>{h}</li>)}
+              </ul>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Ready to Build Your Foundation?</h3>
-        <p>
-          Let’s discuss how we can help you build the technical foundation for
-          your next stage of growth.
-        </p>
-        <Link to="/contact" className="btn">
-          Start the Conversation
-        </Link>
+        <div className="container text-center">
+          <motion.div {...fadeInUp}>
+            <h3>Ready to Build Your Foundation?</h3>
+            <p className="mb-8">
+              Let's discuss how we can help you build the technical foundation for
+              your next stage of growth.
+            </p>
+            <Link to="/services" className="btn">
+              Explore Our Services
+            </Link>
+          </motion.div>
+        </div>
       </section>
-
     </main>
   );
 }

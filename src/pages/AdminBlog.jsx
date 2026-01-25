@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { useNavigate, Link } from "react-router-dom";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import AdminLayout from '../layouts/AdminLayout';
+import { motion } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
 
 export default function AdminBlog() {
-    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingPost, setEditingPost] = useState(null);
@@ -23,18 +24,15 @@ export default function AdminBlog() {
         ],
     };
 
-    useEffect(() => {
-        checkAuth();
-    }, []);
+    const location = useLocation();
 
-    async function checkAuth() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-            navigate("/login");
-            return;
-        }
+    useEffect(() => {
         fetchPosts();
-    }
+        const params = new URLSearchParams(location.search);
+        if (params.get('new') === '1') {
+            setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] });
+        }
+    }, [location.search]);
 
     async function fetchPosts() {
         try {
@@ -85,123 +83,126 @@ export default function AdminBlog() {
         }
     }
 
-    if (loading) return <div className="admin-layout"><div className="admin-main-content">Loading...</div></div>;
+    if (loading) return <AdminLayout>Loading...</AdminLayout>;
 
     return (
-        <div className="admin-layout">
-            {/* SIDEBAR */}
-            <aside className="admin-sidebar">
-                <Link to="/admin" className="sidebar-link">🏠 Dashboard</Link>
-                <Link to="/admin/clients" className="sidebar-link">👥 Clients & CRM</Link>
-                <Link to="/admin/projects" className="sidebar-link">🚀 Projects</Link>
-                <Link to="/admin/jobs" className="sidebar-link">💼 Careers & Jobs</Link>
-                <Link to="/admin/compensation" className="sidebar-link">💰 Compensation</Link>
-                <Link to="/admin/offers" className="sidebar-link">📄 Offer Letters</Link>
-                <Link to="/admin/blog" className="sidebar-link active">✍️ Blog Posts</Link>
-                <Link to="/admin/reports" className="sidebar-link">📊 Reports</Link>
-            </aside>
-
-            <main className="admin-main-content">
-                <div className="admin-header">
-                    <div className="admin-title-area">
-                        <h1>Blog Management</h1>
-                        <p>Write and publish insights to CogniVectra Blog.</p>
+        <AdminLayout>
+            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+                <div className="admin-title-area">
+                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Content</span>
                     </div>
-                    {!editingPost && (
-                        <button className="btn" onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })}>
+                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Blog Management</h1>
+                    <p style={{ opacity: 0.7 }}>Write and publish insights to CogniVectra Blog.</p>
+                </div>
+                {!editingPost && (
+                    <div className="admin-actions">
+                        <button className="btn" style={{ padding: '0.6rem 1.5rem' }} onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })}>
                             + New Post
                         </button>
-                    )}
-                </div>
+                    </div>
+                )}
+            </header>
 
-                {editingPost ? (
-                    <div className="module-card" style={{ maxWidth: '1000px' }}>
-                        <h2>{editingPost.id ? "Edit Post" : "New Post"}</h2>
-                        <form onSubmit={handleSavePost} className="application-form">
-                            <div className="form-group">
-                                <label>Title</label>
-                                <input
-                                    type="text"
-                                    value={editingPost.title}
-                                    onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
-                                    required
+            {editingPost ? (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="module-card glass-panel"
+                    style={{ maxWidth: '1000px', border: '1px solid rgba(255,255,255,0.1)' }}
+                >
+                    <div className="modal-header" style={{ marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingPost.id ? "Edit Masterpiece" : "New Thought Leadership"}</h2>
+                        <button className="modal-close" onClick={() => setEditingPost(null)}>×</button>
+                    </div>
+                    <form onSubmit={handleSavePost} className="application-form">
+                        <div className="form-group">
+                            <label>Post Title *</label>
+                            <input
+                                type="text"
+                                value={editingPost.title}
+                                onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
+                                required
+                                placeholder="The Future of Agentic Workflows..."
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Short Abstract (Excerpt)</label>
+                            <textarea
+                                value={editingPost.excerpt}
+                                onChange={(e) => setEditingPost({ ...editingPost, excerpt: e.target.value })}
+                                rows="2"
+                                placeholder="A brief hook for the social cards and list views."
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Article Body</label>
+                            <div className="glass-panel" style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                <ReactQuill
+                                    theme="snow"
+                                    value={editingPost.body}
+                                    onChange={(val) => setEditingPost({ ...editingPost, body: val })}
+                                    modules={modules}
+                                    style={{ height: 'auto', minHeight: '300px' }}
                                 />
                             </div>
+                        </div>
+                        <div className="form-grid" style={{ marginTop: '4rem' }}>
                             <div className="form-group">
-                                <label>Excerpt</label>
-                                <textarea
-                                    value={editingPost.excerpt}
-                                    onChange={(e) => setEditingPost({ ...editingPost, excerpt: e.target.value })}
-                                    rows="2"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Content</label>
-                                <div style={{ background: 'white', borderRadius: '8px', overflow: 'hidden' }}>
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={editingPost.body}
-                                        onChange={(val) => setEditingPost({ ...editingPost, body: val })}
-                                        modules={modules}
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Status</label>
+                                <label>Publication Status</label>
                                 <select
                                     value={editingPost.status}
                                     onChange={(e) => setEditingPost({ ...editingPost, status: e.target.value })}
                                 >
-                                    <option value="draft">Draft</option>
-                                    <option value="published">Published</option>
+                                    <option value="draft">Draft (Save for later)</option>
+                                    <option value="published">Published (Go live)</option>
                                 </select>
                             </div>
-                            <div className="form-actions">
-                                <button type="button" className="btn-outline" onClick={() => setEditingPost(null)}>Cancel</button>
-                                <button type="submit" className="btn" disabled={saving}>{saving ? "Saving..." : "Save Post"}</button>
-                            </div>
-                        </form>
-                    </div>
-                ) : (
-                    <div className="admin-table-container">
-                        <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
+                        </div>
+                        <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                            <button type="button" className="btn-outline" style={{ flex: 1 }} onClick={() => setEditingPost(null)}>Discard Changes</button>
+                            <button type="submit" className="btn" style={{ flex: 2 }} disabled={saving}>{saving ? "Publishing..." : "Sync Article"}</button>
+                        </div>
+                    </form>
+                </motion.div>
+            ) : (
+                <div className="admin-table-container glass-panel">
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Article Profile</th>
+                                <th>Identity Status</th>
+                                <th>Deployment Date</th>
+                                <th style={{ textAlign: 'center' }}>Management</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {posts.map((post) => (
+                                <tr key={post.id}>
+                                    <td>
+                                        <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{post.title}</div>
+                                        <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>/{post.slug}</div>
+                                    </td>
+                                    <td>
+                                        <span className={`status-pill ${post.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
+                                            {post.status === 'published' ? '🟢 Published' : '📝 Draft'}
+                                        </span>
+                                    </td>
+                                    <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                                        {new Date(post.created_at).toLocaleDateString()}
+                                    </td>
+                                    <td>
+                                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                                            <button onClick={() => setEditingPost(post)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Edit Post</button>
+                                            <button onClick={() => handleDeletePost(post.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Purge</button>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {posts.map((post) => (
-                                    <tr key={post.id}>
-                                        <td style={{ fontWeight: '500' }}>{post.title}</td>
-                                        <td>
-                                            <span style={{
-                                                padding: '0.25rem 0.75rem',
-                                                borderRadius: '99px',
-                                                fontSize: '0.75rem',
-                                                background: post.status === 'published' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255,255,255,0.05)',
-                                                color: post.status === 'published' ? '#10b981' : '#9ca3af'
-                                            }}>
-                                                {post.status}
-                                            </span>
-                                        </td>
-                                        <td>{new Date(post.created_at).toLocaleDateString()}</td>
-                                        <td>
-                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                <button className="btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} onClick={() => setEditingPost(post)}>Edit</button>
-                                                <button className="btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', color: '#ef4444' }} onClick={() => handleDeletePost(post.id)}>Delete</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </main>
-        </div>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </AdminLayout>
     );
 }

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import logo from "/cognivectra-dark-crop.png";
 
 export default function Footer() {
@@ -47,17 +48,23 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Contact</h4>
           <div className="footer-contact">
-            <div>
-              <span>Email</span><br />
-              <a href="mailto:info@cognivectra.com">
-                info@cognivectra.com
-              </a>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+              <FaEnvelope style={{ color: 'var(--accent-light)', fontSize: '1rem', opacity: 0.8 }} />
+              <div>
+                <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.4, fontWeight: '700', letterSpacing: '0.05em' }}>Email</span><br />
+                <a href="mailto:info@cognivectra.com" style={{ fontSize: '0.85rem' }}>
+                  info@cognivectra.com
+                </a>
+              </div>
             </div>
-            <div>
-              <span>WhatsApp</span><br />
-              <a href="https://wa.me/918825492600">
-                +91 8825492600
-              </a>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
+              <FaWhatsapp style={{ color: '#25D366', fontSize: '1rem', opacity: 0.8 }} />
+              <div>
+                <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.4, fontWeight: '700', letterSpacing: '0.05em' }}>WhatsApp</span><br />
+                <a href="https://wa.me/918825492600" style={{ fontSize: '0.85rem' }}>
+                  +91 8825492600
+                </a>
+              </div>
             </div>
 
             <div className="footer-social">

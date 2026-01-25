@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { Link, useNavigate } from "react-router-dom";
+import AdminLayout from "../layouts/AdminLayout";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaRocket, FaLinkedin, FaInstagram, FaFacebook, FaEdit, FaCheckCircle, FaExclamationTriangle, FaSpinner, FaPlus, FaExternalLinkAlt } from "react-icons/fa";
 
 export default function AdminEnhanced() {
   const [posts, setPosts] = useState([]);
@@ -12,6 +15,7 @@ export default function AdminEnhanced() {
   const [showPlatformSelector, setShowPlatformSelector] = useState({}); // { postId: true/false }
   const [socialMediaStatus, setSocialMediaStatus] = useState({}); // { postId: { platform: { published_at, platform_post_id } } }
   const [activeTab, setActiveTab] = useState("drafts");
+  const [previewMode, setPreviewMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -32,13 +36,35 @@ export default function AdminEnhanced() {
 
   async function fetchPosts() {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
+    try {
+      // Fetch posts
+      const { data: postsData, error: postsError } = await supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (!error) setPosts(data || []);
-    setLoading(false);
+      if (postsError) throw postsError;
+      setPosts(postsData || []);
+
+      // Fetch social media publishing status
+      const { data: socialData, error: socialError } = await supabase
+        .from("social_media_posts")
+        .select("*");
+
+      if (socialError) throw socialError;
+
+      const statusMap = {};
+      socialData?.forEach(item => {
+        if (!statusMap[item.post_id]) statusMap[item.post_id] = {};
+        statusMap[item.post_id][item.platform] = item;
+      });
+      setSocialMediaStatus(statusMap);
+
+    } catch (err) {
+      console.error("Error fetching admin data:", err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const filteredPosts = posts.filter(post => {
@@ -50,21 +76,28 @@ export default function AdminEnhanced() {
 
   async function handleSave(e) {
     e.preventDefault();
-    const { error } = await supabase
-      .from("posts")
-      .update({
-        title: editingPost.title,
-        excerpt: editingPost.excerpt,
-        body: editingPost.body,
-        tags: editingPost.tags || [],
-        social_media_data: editingPost.social_media_data || {}
-      })
-      .eq("id", editingPost.id);
+    const slug = editingPost.slug || editingPost.title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+    const postData = {
+      title: editingPost.title,
+      excerpt: editingPost.excerpt,
+      body: editingPost.body,
+      slug,
+      tags: editingPost.tags || [],
+      social_media_data: editingPost.social_media_data || {},
+      status: editingPost.status || 'draft'
+    };
+
+    const { error } = editingPost.id
+      ? await supabase.from("posts").update(postData).eq("id", editingPost.id)
+      : await supabase.from("posts").insert([postData]);
 
     if (!error) {
-      alert("Changes saved.");
+      alert(editingPost.id ? "Changes synced." : "New packet registered.");
       setEditingPost(null);
+      setPreviewMode(false);
       fetchPosts();
+    } else {
+      alert("Error: " + error.message);
     }
   }
 
@@ -96,7 +129,7 @@ export default function AdminEnhanced() {
   async function publishPost(post, platforms = null) {
     // Use provided platforms or selected platforms
     const platformsToUse = platforms || selectedPlatforms[post.id] || ["blog"];
-    
+
     if (platformsToUse.length === 0) {
       alert("Please select at least one platform to publish to.");
       return;
@@ -104,7 +137,7 @@ export default function AdminEnhanced() {
 
     setPublishingTo(prev => ({ ...prev, [post.id]: true }));
     setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }));
-    
+
     // Initialize status tracking
     const socials = platformsToUse.filter(p => p !== "blog");
     const initialStatus = {};
@@ -132,7 +165,7 @@ export default function AdminEnhanced() {
 
       // Refresh posts and social media status
       await fetchPosts();
-      
+
       // Clear status after a delay
       setTimeout(() => {
         setPublishStatus(prev => {
@@ -206,289 +239,311 @@ export default function AdminEnhanced() {
     return null;
   }
 
-  if (loading) {
-    return (
-      <div className="container blog-loading">
-        <div className="blog-loading-icon">⏳</div>
-        <p>Loading admin dashboard...</p>
-      </div>
-    );
-  }
+
 
   return (
-    <section className="section ai-neutral">
-      <div className="container">
-
-        {/* HEADER */}
-        <div className="admin-header">
-          <div>
-            <h1>📊 Admin Dashboard</h1>
-            <p className="muted">
-              Manage, review, and publish content across platforms.
-            </p>
+    <AdminLayout>
+      <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+        <div className="admin-title-area">
+          <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+            <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Omni-Channel</span>
           </div>
-
-          <div className="admin-actions">
-            <Link to="/admin/reports" className="btn-outline">📈 Reports</Link>
-            <button onClick={handleSignOut} className="btn-outline">🚪 Sign Out</button>
-          </div>
+          <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Publisher Console</h1>
+          <p style={{ opacity: 0.7 }}>Distribute thought leadership across the CogniVectra ecosystem.</p>
         </div>
-
-        {/* TABS */}
-        <div className="admin-tabs">
-          {["drafts", "pending", "published"].map(tab => (
-            <button
-              key={tab}
-              className={`admin-tab ${activeTab === tab ? "active" : ""}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab === "drafts" && `✏️ Drafts (${posts.filter(p => p.status === "draft").length})`}
-              {tab === "pending" && `🔄 Pending (${posts.filter(p => p.status === "pending_review").length})`}
-              {tab === "published" && `✅ Published (${posts.filter(p => p.status === "published").length})`}
-            </button>
-          ))}
+        <div className="admin-actions" style={{ display: 'flex', gap: '1rem' }}>
+          <button onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })} className="btn">
+            <FaPlus style={{ marginRight: '0.5rem' }} /> New Packet
+          </button>
+          <button onClick={handleSignOut} className="btn-outline" style={{ fontSize: '0.8rem' }}>Terminate Session</button>
         </div>
+      </header>
 
-        {/* EDITOR */}
+      {/* TELEMETRY TABS */}
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        {["drafts", "pending", "published"].map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            style={{
+              padding: '0.75rem 1.5rem',
+              borderRadius: '12px',
+              background: activeTab === tab ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
+              border: '1px solid',
+              borderColor: activeTab === tab ? 'var(--accent-primary)' : 'rgba(255,255,255,0.1)',
+              color: activeTab === tab ? 'white' : 'var(--text-secondary)',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+          >
+            {tab} ({posts.filter(p => p.status === (tab === "drafts" ? "draft" : tab === "pending" ? "pending_review" : "published")).length})
+          </button>
+        ))}
+      </div>
+
+      {/* CENTRAL EDITOR ENGINE */}
+      <AnimatePresence>
         {editingPost && (
-          <div className="card admin-editor">
-            <h2>Edit Post</h2>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 20 }}
+            className="module-card glass-panel"
+            style={{ marginBottom: '3rem', border: '1px solid rgba(129, 140, 248, 0.3)', position: 'relative', zIndex: 10, maxWidth: '1200px' }}
+          >
+            <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', alignItems: 'center' }}>
+              <div>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Content Engineering</h2>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode(false)}
+                    style={{ padding: '0.3rem 0.8rem', borderRadius: '4px', fontSize: '0.7rem', border: '1px solid var(--accent-primary)', background: !previewMode ? 'var(--accent-primary)' : 'transparent', color: 'white', cursor: 'pointer' }}
+                  >Editor</button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode(true)}
+                    style={{ padding: '0.3rem 0.8rem', borderRadius: '4px', fontSize: '0.7rem', border: '1px solid var(--accent-primary)', background: previewMode ? 'var(--accent-primary)' : 'transparent', color: 'white', cursor: 'pointer' }}
+                  >Live Preview</button>
+                </div>
+              </div>
+              <button className="modal-close" onClick={() => { setEditingPost(null); setPreviewMode(false); }} style={{ background: 'transparent', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+            </div>
 
-            <form onSubmit={handleSave} className="form">
-              <label>
-                <span>Title</span>
-                <input
-                  value={editingPost.title}
-                  onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
-                />
-              </label>
+            <form onSubmit={handleSave} className="application-form">
+              <div style={{ display: 'grid', gridTemplateColumns: previewMode ? '1fr 1fr' : '1fr', gap: '2rem' }}>
+                <div className="editor-side">
+                  <div className="form-group">
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Strategic Title</label>
+                    <input
+                      value={editingPost.title}
+                      onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
+                      placeholder="The Singularity of Agentic Development..."
+                      style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                    />
+                  </div>
 
-              <label>
-                <span>Excerpt</span>
-                <textarea
-                  rows={3}
-                  value={editingPost.excerpt}
-                  onChange={e => setEditingPost({ ...editingPost, excerpt: e.target.value })}
-                />
-              </label>
+                  <div className="form-group" style={{ marginTop: '1.5rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Social Abstract</label>
+                    <input
+                      value={editingPost.excerpt}
+                      onChange={e => setEditingPost({ ...editingPost, excerpt: e.target.value })}
+                      placeholder="Short hook..."
+                      style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                    />
+                  </div>
 
-              <label>
-                <span>Body (Markdown)</span>
-                <textarea
-                  rows={10}
-                  value={editingPost.body}
-                  onChange={e => setEditingPost({ ...editingPost, body: e.target.value })}
-                />
-              </label>
+                  <div className="form-group" style={{ marginTop: '1.5rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Destination Slug (URL Link)</label>
+                    <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+                      <span style={{ padding: '0 0.8rem', opacity: 0.4, fontSize: '0.8rem' }}>/blog/</span>
+                      <input
+                        value={editingPost.slug || ""}
+                        onChange={e => setEditingPost({ ...editingPost, slug: e.target.value.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "") })}
+                        placeholder="custom-url-handle"
+                        style={{ flex: 1, padding: '0.8rem 0.8rem 0.8rem 0', background: 'transparent', border: 'none', color: 'var(--accent-light)', fontSize: '0.85rem' }}
+                      />
+                    </div>
+                  </div>
 
-              <label>
-                <span>Tags (comma-separated)</span>
-                <input
-                  value={editingPost.tags?.join(", ") || ""}
-                  onChange={e =>
-                    setEditingPost({
-                      ...editingPost,
-                      tags: e.target.value.split(",").map(t => t.trim())
-                    })
-                  }
-                />
-              </label>
+                  <div className="form-group" style={{ marginTop: '1.5rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Core Manuscript (Markdown)</label>
+                    <textarea
+                      rows={15}
+                      style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontFamily: 'monospace', fontSize: '0.9rem', lineHeight: '1.6' }}
+                      value={editingPost.body}
+                      onChange={e => setEditingPost({ ...editingPost, body: e.target.value })}
+                    />
+                  </div>
+                </div>
 
-              <div className="editor-actions">
-                <button type="submit" className="btn">💾 Save</button>
-                <button
-                  type="button"
-                  className="btn-outline"
-                  onClick={() => setEditingPost(null)}
-                >
-                  Cancel
-                </button>
+                {previewMode && (
+                  <div className="preview-side" style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '12px', padding: '2rem', border: '1px solid rgba(255,255,255,0.05)', maxHeight: '600px', overflowY: 'auto' }}>
+                    <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', opacity: 0.4, marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Production Preview</div>
+                    <h1 style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>{editingPost.title}</h1>
+                    <div className="markdown-render" style={{ fontSize: '1rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                      <ReactMarkdown>{editingPost.body}</ReactMarkdown>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                <button type="submit" className="btn" style={{ flex: 2 }}>Commit Changes</button>
+                <button type="button" className="btn-outline" style={{ flex: 1 }} onClick={() => { setEditingPost(null); setPreviewMode(false); }}>Abort</button>
               </div>
             </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* DEPLOYMENT FEED */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        {filteredPosts.length === 0 && (
+          <div style={{ padding: '5rem', textAlign: 'center', opacity: 0.4 }}>
+            <div style={{ fontSize: '3rem' }}>🛰️</div>
+            <p>No content packets detected in this sector.</p>
           </div>
         )}
 
-        {/* POSTS */}
-        <div className="admin-posts">
-          {filteredPosts.length === 0 && (
-            <div className="card blog-empty">
-              <div className="blog-empty-icon">📭</div>
-              <p>No posts in this category yet.</p>
-            </div>
-          )}
+        {filteredPosts.map((post, idx) => {
+          const selectorOpen = showPlatformSelector[post.id];
+          const isPublishing = publishingTo[post.id];
 
-          {filteredPosts.map(post => (
-            <div key={post.id} className="card admin-post-row">
+          return (
+            <motion.div
+              key={post.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.05 }}
+              className="glass-panel"
+              style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)' }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.8rem' }}>
+                  <span className={`status-pill ${post.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.65rem', textTransform: 'uppercase' }}>
+                    {post.status.replace('_', ' ')}
+                  </span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'white' }}>{post.title}</h3>
+                </div>
+                <p style={{ fontSize: '0.9rem', opacity: 0.6, marginBottom: '1.5rem', lineHeight: '1.6' }}>{post.excerpt || "No summary engineering provided."}</p>
 
-              <div className="admin-post-meta">
-                <span className={`status-pill ${post.status}`}>
-                  {post.status}
-                </span>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  {[
+                    { id: 'blog', icon: <FaRocket />, color: '#818cf8' },
+                    { id: 'linkedin', icon: <FaLinkedin />, color: '#0077b5' },
+                    { id: 'instagram', icon: <FaInstagram />, color: '#e4405f' },
+                    { id: 'facebook', icon: <FaFacebook />, color: '#1877f2' }
+                  ].map(platform => {
+                    const status = getPlatformStatus(post.id, platform.id);
+                    const isPublished = status?.type === "published" || (platform.id === 'blog' && post.status === 'published');
 
-                <h3>{post.title}</h3>
-                <p className="muted">{post.excerpt}</p>
-
-                <small className="muted">
-                  📅 {new Date(post.created_at).toLocaleDateString()}  
-                  &nbsp;•&nbsp; 🏷 {post.tags?.join(", ") || "No tags"}
-                </small>
+                    return (
+                      <div
+                        key={platform.id}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          fontSize: '0.75rem',
+                          padding: '0.4rem 0.8rem',
+                          borderRadius: '6px',
+                          background: isPublished ? `${platform.color}22` : 'rgba(255,255,255,0.03)',
+                          border: `1px solid ${isPublished ? platform.color + '44' : 'rgba(255,255,255,0.05)'}`,
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        <span style={{ color: isPublished ? platform.color : 'rgba(255,255,255,0.2)' }}>{platform.icon}</span>
+                        {isPublished && status?.platform_url ? (
+                          <a
+                            href={status.platform_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textTransform: 'capitalize', color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                          >
+                            {platform.id} <FaExternalLinkAlt style={{ fontSize: '0.6rem', opacity: 0.6 }} />
+                          </a>
+                        ) : (
+                          <span style={{ textTransform: 'capitalize', color: isPublished ? 'white' : 'rgba(255,255,255,0.2)' }}>{platform.id}</span>
+                        )}
+                        {isPublished && <FaCheckCircle style={{ fontSize: '0.6rem', color: '#10b981', marginLeft: '2px' }} />}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="admin-post-actions">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '220px' }}>
                 <button
-                  className="btn-outline"
+                  className="sidebar-link"
+                  style={{ justifyContent: 'center', padding: '0.7rem', background: 'rgba(255,255,255,0.03)' }}
                   onClick={() => setEditingPost(post)}
                 >
-                  ✏️ Edit
+                  <FaEdit style={{ marginRight: '0.5rem' }} /> Engineer Packet
                 </button>
 
-                {/* Platform Status Display */}
-                {(post.status === "published" || socialMediaStatus[post.id]) && (
-                  <div className="platform-status" style={{ marginTop: "0.5rem", fontSize: "0.85rem" }}>
-                    {["blog", "linkedin", "instagram", "facebook"].map(platform => {
-                      const status = getPlatformStatus(post.id, platform);
-                      if (!status) return null;
-                      
-                      if (status.type === "published") {
-                        return (
-                          <span key={platform} style={{ 
-                            marginRight: "0.5rem", 
-                            padding: "0.2rem 0.5rem", 
-                            background: "var(--bg-secondary)", 
-                            borderRadius: "4px",
-                            display: "inline-block"
-                          }}>
-                            ✅ {platform}
-                          </span>
-                        );
-                      }
-                      return null;
-                    })}
-                  </div>
+                {selectorOpen ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    style={{ background: 'rgba(0,0,0,0.5)', padding: '1.2rem', borderRadius: '12px', border: '1px solid var(--accent-primary)' }}
+                  >
+                    <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.5, marginBottom: '0.8rem', fontWeight: '800', letterSpacing: '0.05em' }}>Target Vectors</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.2rem' }}>
+                      {["blog", "linkedin", "instagram", "facebook"].map(p => (
+                        <button
+                          key={p}
+                          onClick={() => togglePlatform(post.id, p)}
+                          style={{
+                            padding: '0.4rem 0.6rem',
+                            fontSize: '0.7rem',
+                            borderRadius: '6px',
+                            background: (selectedPlatforms[post.id] || []).includes(p) ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'white',
+                            cursor: 'pointer',
+                            flex: '1 1 45%',
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      className="btn"
+                      style={{ width: '100%', fontSize: '0.8rem', padding: '0.6rem' }}
+                      onClick={() => publishPost(post)}
+                      disabled={isPublishing}
+                    >
+                      {isPublishing ? <FaSpinner className="spin" /> : "Initiate Deployment"}
+                    </button>
+                    <button
+                      onClick={() => setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }))}
+                      style={{ width: '100%', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem', marginTop: '0.5rem', cursor: 'pointer' }}
+                    >
+                      Cancel
+                    </button>
+                  </motion.div>
+                ) : (
+                  (post.status === "draft" || post.status === "pending_review") && (
+                    <button
+                      className="btn"
+                      style={{ padding: '0.7rem' }}
+                      onClick={() => togglePlatformSelector(post.id)}
+                      disabled={isPublishing}
+                    >
+                      {isPublishing ? "Synchronizing..." : "🚀 Deploy Packet"}
+                    </button>
+                  )
                 )}
 
-                {/* Publishing Actions */}
-                {(post.status === "draft" || post.status === "pending_review") && (
-                  <div style={{ marginTop: "0.5rem" }}>
-                    {!showPlatformSelector[post.id] ? (
-                      <button
-                        className="btn"
-                        disabled={publishingTo[post.id]}
-                        onClick={() => togglePlatformSelector(post.id)}
-                      >
-                        {publishingTo[post.id] ? "⏳ Publishing…" : "🚀 Publish"}
-                      </button>
-                    ) : (
-                      <div style={{ 
-                        background: "var(--bg-secondary)", 
-                        padding: "1rem", 
-                        borderRadius: "8px",
-                        marginTop: "0.5rem"
-                      }}>
-                        <div style={{ marginBottom: "0.75rem", fontWeight: "600" }}>
-                          Select Platforms:
-                        </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "0.75rem" }}>
-                          {["blog", "linkedin", "instagram", "facebook"].map(platform => {
-                            const isSelected = (selectedPlatforms[post.id] || []).includes(platform);
-                            const status = getPlatformStatus(post.id, platform);
-                            const isDisabled = publishingTo[post.id];
-                            
-                            return (
-                              <label
-                                key={platform}
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  padding: "0.5rem 0.75rem",
-                                  background: isSelected ? "var(--accent-primary)" : "transparent",
-                                  border: `1px solid ${isSelected ? "var(--accent-primary)" : "var(--border-color)"}`,
-                                  borderRadius: "6px",
-                                  cursor: isDisabled ? "not-allowed" : "pointer",
-                                  opacity: isDisabled ? 0.6 : 1,
-                                  fontSize: "0.9rem"
-                                }}
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={isSelected}
-                                  disabled={isDisabled}
-                                  onChange={() => togglePlatform(post.id, platform)}
-                                  style={{ marginRight: "0.5rem" }}
-                                />
-                                {platform === "blog" && "📰"}
-                                {platform === "linkedin" && "💼"}
-                                {platform === "instagram" && "📷"}
-                                {platform === "facebook" && "👥"}
-                                <span style={{ marginLeft: "0.25rem" }}>{platform}</span>
-                                {status?.type === "published" && " ✓"}
-                              </label>
-                            );
-                          })}
-                        </div>
-                        
-                        {/* Publishing Status */}
-                        {publishStatus[post.id] && (
-                          <div style={{ marginBottom: "0.75rem", fontSize: "0.85rem" }}>
-                            {Object.entries(publishStatus[post.id]).map(([platform, status]) => (
-                              <div key={platform} style={{ marginBottom: "0.25rem" }}>
-                                {status.status === "publishing" && `⏳ Publishing to ${platform}...`}
-                                {status.status === "success" && `✅ ${platform} published`}
-                                {status.status === "error" && (
-                                  <span style={{ color: "var(--error-color, #e74c3c)" }}>
-                                    ❌ {platform}: {status.error}
-                                  </span>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        <div style={{ display: "flex", gap: "0.5rem" }}>
-                          <button
-                            className="btn"
-                            disabled={publishingTo[post.id] || (selectedPlatforms[post.id] || []).length === 0}
-                            onClick={() => publishPost(post)}
-                          >
-                            {publishingTo[post.id] ? "⏳ Publishing…" : "✅ Publish Selected"}
-                          </button>
-                          <button
-                            className="btn-outline"
-                            disabled={publishingTo[post.id]}
-                            onClick={() => {
-                              setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }));
-                            }}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                {post.status === "published" && !selectorOpen && (
+                  <Link to={`/blog/${post.slug}`} target="_blank" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.8rem', padding: '0.7rem' }}>
+                    Verify Live Link
+                  </Link>
                 )}
 
-                {post.status === "published" && (
-                  <>
-                    <Link to={`/blog/${post.slug}`} target="_blank" className="btn-outline" style={{ marginTop: "0.5rem" }}>
-                      👁️ View Live
-                    </Link>
-                    {Object.keys(socialMediaStatus[post.id] || {}).length > 0 && (
-                      <button
-                        className="btn-outline"
-                        style={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}
-                        onClick={() => togglePlatformSelector(post.id)}
-                      >
-                        🔄 Republish
-                      </button>
-                    )}
-                  </>
+                {publishStatus[post.id] && (
+                  <div style={{ marginTop: '0.5rem' }}>
+                    {Object.entries(publishStatus[post.id]).map(([plat, stat]) => (
+                      stat.status === 'error' && (
+                        <div key={plat} style={{ fontSize: '0.7rem', color: '#f87171', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.2rem' }}>
+                          <FaExclamationTriangle /> {plat}: {stat.error?.slice(0, 30)}...
+                        </div>
+                      )
+                    ))}
+                  </div>
                 )}
               </div>
-
-            </div>
-          ))}
-        </div>
+            </motion.div>
+          );
+        })}
       </div>
-    </section>
+    </AdminLayout>
   );
 }

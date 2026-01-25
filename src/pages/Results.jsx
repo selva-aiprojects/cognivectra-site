@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import resultsHero from "../assets/generated/hero-results-8k.png";
 
 export default function Results() {
   return (
@@ -6,11 +8,13 @@ export default function Results() {
 
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">📈 Proven Outcomes</span>
 
             <h1>
@@ -28,25 +32,26 @@ export default function Results() {
               <Link to="/contact" className="btn">
                 Book Strategy Call
               </Link>
-              <Link to="/services" className="btn-outline">
+              <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
             </div>
 
-            <p className="hero-subtext">
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
               Faster releases · AI enablement · Automation wins
             </p>
-          </div>
+          </motion.div>
 
-          {/* Visual Card Instead of Image */}
-          <div className="hero-visual">
-            <img
-              src="/hero_results.png"
-              alt="Measurable Results & Outcomes"
-              className="hero-image-modern"
-            />
-          </div>
-
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={resultsHero} alt="Results & Case Snapshots" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -137,7 +142,7 @@ export default function Results() {
           useful starting point — Launch Pack, automation sprint, or advisory.
         </p>
         <Link to="/contact" className="btn">
-          Talk to Us
+          Start Your Free Strategy Session
         </Link>
       </section>
 

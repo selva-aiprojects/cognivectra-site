@@ -1,143 +1,150 @@
-import { Link } from "react-router-dom";
-import heroImage from "../assets/home-hero-automation.png";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import heroMain from "../assets/generated/hero-home-ultra-8k.png";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
 
 export default function Home() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    // Handle anchor scrolling
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [hash]);
+
   return (
     <main>
-
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
+          <motion.div
+            className="hero-copy"
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+          >
+            <motion.span variants={fadeInUp} className="hero-badge">Startup-Grade Engineering Excellence</motion.span>
+            <motion.h1 variants={fadeInUp}>Build Faster. <br />Scale Smarter. <br />Automate Everything.</motion.h1>
+            <motion.p variants={fadeInUp}>
+              CogniVectra helps startups design resilient cloud platforms,
+              automate workflows with AI, and execute technology strategy with Fractional CTO expertise.
+            </motion.p>
+            <motion.div variants={fadeInUp} className="hero-cta">
+              <Link to="/contact" className="btn">Start Strategy Session</Link>
+              <Link to="/services" className="btn-outline">Explore Services</Link>
+            </motion.div>
+          </motion.div>
 
-          <div className="hero-copy">
-            <span className="hero-badge">⚡ Startup-Grade Engineering</span>
-
-            <h1>
-              Build Faster. <br />
-              Scale Smarter. <br />
-              Automate Everything.
-            </h1>
-
-            <p>
-              CogniVectra helps startups and scaleups design resilient cloud platforms,
-              automate workflows with AI, and execute technology strategy without enterprise drag.
-            </p>
-
-            <div className="hero-cta">
-              <Link to="/contact" className="btn">
-                Book Strategy Call
-              </Link>
-              <Link to="/services" className="btn-outline">
-                View Services
-              </Link>
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={heroMain} alt="CogniVectra Engineering" className="w-full h-full object-cover rounded-xl" />
             </div>
-
-            <p className="hero-subtext">
-              Delivering cost-effective, enterprise-grade solutions · Direct engagement with our Principal Architect
-            </p>
-          </div>
-
-          <div className="hero-visual">
-            <img
-              src={heroImage}
-              alt="Startup Platform Architecture"
-              className="hero-image-modern"
-            />
-          </div>
-
+          </motion.div>
         </div>
       </section>
 
       {/* TRUST BAR */}
-      <section className="trust-modern">
+      <motion.section
+        className="trust-modern"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
         <div className="trust-modern-inner">
           <div><strong>25+</strong>Years Experience</div>
           <div><strong>40+</strong>Platforms Built</div>
           <div><strong>12+</strong>Countries Served</div>
           <div><strong>99.9%</strong>System Reliability</div>
         </div>
-      </section>
+      </motion.section>
 
       {/* SERVICES */}
-      <section className="services-modern">
-        <h3>What We Do</h3>
-
-        <div className="services-modern-grid">
-          <div className="service-modern-card">
-            <h4>Fractional CTO</h4>
-            <p>Executive-level technical leadership without full-time cost.</p>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>DevOps Automation</h4>
-            <p>Cloud infrastructure, CI/CD pipelines, and reliability engineering.</p>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>AI Orchestration</h4>
-            <p>GenAI-powered workflow automation and intelligent systems.</p>
-          </div>
-
-          <div className="service-modern-card">
-            <h4>SaaS Foundations</h4>
-            <p>Scalable, secure, and cloud-native product platforms.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* MISSION TEASER */}
-      <section className="why-modern" style={{ background: "rgba(255,255,255,0.02)" }}>
-        <div className="why-modern-inner">
-          <h3>Our Mission</h3>
-          <p style={{ maxWidth: "800px", margin: "0 auto 2rem", fontSize: "1.2rem", lineHeight: "1.6", color: "var(--text-secondary)" }}>
-            Empowering founders through frictionless technology. We help startups build
-            reliable, automated platforms that scale with confidence—making enterprise-grade
-            infrastructure accessible to every founder.
+      <section id="services" className="services-modern">
+        <motion.div
+          className="section-header"
+          style={{ textAlign: "center", marginBottom: "5rem" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="hero-badge">Strategic Engineering</span>
+          <h3>What We Do</h3>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
+            We provide high-impact engineering and strategic leadership to help your startup
+            outpace the competition with resilient, automated technology.
           </p>
+        </motion.div>
 
-          <div className="why-modern-grid">
-            <div className="why-pill">Founder Empowerment</div>
-            <div className="why-pill">Frictionless Innovation</div>
-            <div className="why-pill">Invisible Foundations</div>
-          </div>
-
-          <div style={{ marginTop: "2.5rem" }}>
-            <Link to="/who-we-are" className="btn-outline">
-              Read Our Full Vision
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY */}
-      <section className="why-modern">
-        <div className="why-modern-inner">
-          <h3>Why CogniVectra</h3>
-
-          <div className="why-modern-grid">
-            <div className="why-pill">Enterprise architecture discipline</div>
-            <div className="why-pill">Startup-speed execution</div>
-            <div className="why-pill">AI-first automation mindset</div>
-            <div className="why-pill">Cloud-native by default</div>
-            <div className="why-pill">Security & compliance built in</div>
-            <div className="why-pill">Battle-tested delivery frameworks</div>
-          </div>
-        </div>
+        <motion.div
+          className="services-modern-grid"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+        >
+          {[
+            { icon: "🚀", title: "Fractional CTO", desc: "Executive-level technical leadership and strategy to align technology with your business goals.", highlights: ["Technical Roadmap Planning", "Team Mentorship & Growth", "Technology Stack Selection"] },
+            { icon: "⛓️", title: "DevOps Automation", desc: "Infrastructure as Code and CI/CD pipelines that enable your team to ship code safely and at scale.", highlights: ["Cloud-Native Migration", "Kubernetes Orchestration", "Infrastructure Hardening"] },
+            { icon: "🧠", title: "AI Orchestration", desc: "Integrating advanced AI workflows to automate repetitive tasks and create intelligent products.", highlights: ["LLM Integration", "Process Automation", "AI-First User Experiences"] },
+            { icon: "💎", title: "SaaS Foundations", desc: "Building the core architecture for your SaaS product that is secure, multi-tenant, and highly scalable.", highlights: ["Multi-tenant Architecture", "API Design & Ecosystem", "Global Edge Distribution"] }
+          ].map((service, i) => (
+            <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel">
+              <div className="service-icon-wrapper">{service.icon}</div>
+              <h4>{service.title}</h4>
+              <p>{service.desc}</p>
+              <ul className="service-highlights">
+                {service.highlights.map((h, j) => <li key={j}>{h}</li>)}
+              </ul>
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Ready to accelerate your product roadmap?</h3>
-        <p>
-          Get a 90-day execution plan in a free strategy session.
-        </p>
-        <Link to="/contact" className="btn">
-          Start Free Strategy Call
-        </Link>
+        <motion.div
+          className="container"
+          style={{ textAlign: 'center' }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h3>Ready to accelerate your product roadmap?</h3>
+          <p className="mb-8">
+            Get a 90-day execution plan in a free strategy session.
+          </p>
+          <Link to="/contact" className="btn">
+            Start Free Strategy Call
+          </Link>
+        </motion.div>
       </section>
-
-    </main >
+    </main>
   );
 }

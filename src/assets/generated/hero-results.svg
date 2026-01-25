@@ -1,0 +1,29 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#1e293b"/>
+  
+  <!-- Background Grid -->
+  <path d="M50 550H750" stroke="#334155" stroke-width="2"/>
+  <path d="M50 50V550" stroke="#334155" stroke-width="2"/>
+  
+  <!-- Grid Lines -->
+  <path d="M50 450H750" stroke="#334155" stroke-width="1" stroke-dasharray="5 5"/>
+  <path d="M50 350H750" stroke="#334155" stroke-width="1" stroke-dasharray="5 5"/>
+  <path d="M50 250H750" stroke="#334155" stroke-width="1" stroke-dasharray="5 5"/>
+  <path d="M50 150H750" stroke="#334155" stroke-width="1" stroke-dasharray="5 5"/>
+
+  <!-- Bar Chart -->
+  <rect x="100" y="350" width="80" height="200" fill="#475569" opacity="0.5"/>
+  <rect x="250" y="250" width="80" height="300" fill="#64748b" opacity="0.6"/>
+  <rect x="400" y="150" width="80" height="400" fill="#6366f1" opacity="0.8"/>
+  <rect x="550" y="50" width="80" height="500" fill="#818cf8"/>
+
+  <!-- Trend Line -->
+  <path d="M140 350 L290 250 L440 150 L590 50" stroke="#c7d2fe" stroke-width="4" fill="none"/>
+  <circle cx="140" cy="350" r="6" fill="#c7d2fe"/>
+  <circle cx="290" cy="250" r="6" fill="#c7d2fe"/>
+  <circle cx="440" cy="150" r="6" fill="#c7d2fe"/>
+  <circle cx="590" cy="50" r="8" fill="#ffffff"/>
+
+  <!-- Decorative Glow -->
+  <circle cx="590" cy="50" r="30" fill="#ffffff" fill-opacity="0.2"/>
+</svg>

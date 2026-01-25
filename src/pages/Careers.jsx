@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import careersHero from '../assets/careers-hero.png';
+import { motion } from 'framer-motion';
+import careersHero from "../assets/careers-hero.png";
 
 export default function Careers() {
     const [jobPostings, setJobPostings] = useState([]);
@@ -186,10 +187,13 @@ export default function Careers() {
         <main>
             {/* HERO */}
             <section className="hero-modern">
-                <div className="hero-bg-gradient"></div>
-
                 <div className="hero-modern-inner">
-                    <div className="hero-copy">
+                    <motion.div 
+                        className="hero-copy"
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
                         <span className="hero-badge">💼 Join Our Team</span>
 
                         <h1>
@@ -212,18 +216,21 @@ export default function Careers() {
                             </a>
                         </div>
 
-                        <p className="hero-subtext">
+                        <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
                             Remote-first · Competitive compensation · Flexible hours
                         </p>
-                    </div>
+                    </motion.div>
 
-                    <div className="hero-visual">
-                        <img
-                            src={careersHero}
-                            alt="Join Our Team - Professional Handshake"
-                            className="hero-image-modern"
-                        />
-                    </div>
+                    <motion.div 
+                        className="hero-visual"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={careersHero} alt="Join Our Team" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -257,57 +264,60 @@ export default function Careers() {
                         </button>
                     </div>
                 ) : (
-                    <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+                    <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
                         {jobPostings.map(job => (
                             <div key={job.id} className="service-modern-card">
-                                <div style={{ marginBottom: '1rem' }}>
-                                    <span style={{
-                                        background: 'rgba(99, 102, 241, 0.15)',
-                                        color: 'var(--accent-primary)',
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: '600'
-                                    }}>
-                                        {job.department}
-                                    </span>
-                                </div>
 
-                                <h4>{job.title}</h4>
+                                <div style={{ position: 'relative', zIndex: 10 }}>
+                                    <div style={{ marginBottom: '1rem' }}>
+                                        <span style={{
+                                            background: 'rgba(99, 102, 241, 0.15)',
+                                            color: 'var(--accent-primary)',
+                                            padding: '0.25rem 0.75rem',
+                                            borderRadius: '999px',
+                                            fontSize: '0.75rem',
+                                            fontWeight: '600'
+                                        }}>
+                                            {job.department}
+                                        </span>
+                                    </div>
 
-                                <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>
-                                    {job.summary}
-                                </p>
+                                    <h4>{job.title}</h4>
 
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '1rem',
-                                    fontSize: '0.85rem',
-                                    color: 'var(--text-secondary)',
-                                    marginBottom: '1.5rem'
-                                }}>
-                                    <span>📍 {job.location}</span>
-                                    <span>⏰ {job.job_type}</span>
-                                </div>
-
-                                {job.salary_range && (
-                                    <p style={{
-                                        fontSize: '0.9rem',
-                                        color: 'var(--accent-primary)',
-                                        fontWeight: '600',
-                                        marginBottom: '1rem'
-                                    }}>
-                                        💰 {job.salary_range}
+                                    <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>
+                                        {job.summary}
                                     </p>
-                                )}
 
-                                <button
-                                    onClick={() => openApplicationForm(job)}
-                                    className="btn-outline"
-                                    style={{ width: '100%' }}
-                                >
-                                    Apply for this Position
-                                </button>
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: '1rem',
+                                        fontSize: '0.85rem',
+                                        color: 'var(--text-secondary)',
+                                        marginBottom: '1.5rem'
+                                    }}>
+                                        <span>📍 {job.location}</span>
+                                        <span>⏰ {job.job_type}</span>
+                                    </div>
+
+                                    {job.salary_range && (
+                                        <p style={{
+                                            fontSize: '0.9rem',
+                                            color: 'var(--accent-primary)',
+                                            fontWeight: '600',
+                                            marginBottom: '1rem'
+                                        }}>
+                                            💰 {job.salary_range}
+                                        </p>
+                                    )}
+
+                                    <button
+                                        onClick={() => openApplicationForm(job)}
+                                        className="btn-outline"
+                                        style={{ width: '100%' }}
+                                    >
+                                        Apply for this Position
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

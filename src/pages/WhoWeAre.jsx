@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import heroVideo from "../assets/hero-video.mp4";
+import missionVideo from "../assets/mission-video.mp4";
+import whyUsVideo from "../assets/why-us-video.mp4";
+import ctaVideo from "../assets/cta-video.mp4";
 
-/* High-resolution illustrations */
-import aboutHero from "../assets/illustrations/mission-vision.png";
-import cloudImage from "../assets/illustrations/industries-saas.svg";
-import automationImage from "../assets/illustrations/industries-fintech.svg";
-import aiImage from "../assets/illustrations/industries-healthcare.svg";
-import advisoryImage from "../assets/illustrations/industries-edtech.svg";
+/* High-resolution 3D illustrations */
+import cloudImage from "../assets/generated/cap-cloud-3d-8k.png";
+import automationImage from "../assets/generated/cap-ops-3d-8k.png";
+import aiImage from "../assets/generated/cap-ai-3d-8k.png";
+import advisoryImage from "../assets/generated/cap-advisory-3d-8k.png";
+
+import missionHero from "../assets/generated/hero-whoweare-ultra-8k.png";
+import engagementHero from "../assets/hero-engagement-ultra.png";
 
 export default function WhoWeAre() {
   return (
@@ -13,11 +21,13 @@ export default function WhoWeAre() {
 
       {/* HERO */}
       <section className="hero-modern">
-        <div className="hero-bg-gradient"></div>
-
         <div className="hero-modern-inner">
-
-          <div className="hero-copy">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="hero-badge">👥 About CogniVectra</span>
 
             <h1>
@@ -32,47 +42,42 @@ export default function WhoWeAre() {
               reliability.
             </p>
 
-            <p>
+            <p style={{ margin: "0 auto 3rem", opacity: 0.8 }}>
               We operate at the intersection of systems engineering, cloud,
               data, and applied intelligence — helping startups modernize
-              operations, streamline workflows, and build future-ready
-              digital platforms investors and customers can trust.
-            </p>
-
-            <p>
-              Our approach is pragmatic and outcome-driven: design lean,
-              robust foundations, automate what slows you down, and keep
-              your technology stack understandable as you scale.
+              operations and build digital platforms investors trust.
             </p>
 
             <div className="hero-cta">
               <Link to="/contact" className="btn">
                 Talk to Us
               </Link>
-              <Link to="/services" className="btn-outline">
+              <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
             </div>
 
-            <p className="hero-subtext">
+            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
               Pragmatic · Sustainable · Built for startups
             </p>
-          </div>
+          </motion.div>
 
-          {/* Visual */}
-          <div className="hero-visual">
-            <img
-              src={aboutHero}
-              alt="Startup-focused Engineering Team"
-              className="hero-image-modern"
-            />
-          </div>
-
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="industry-visual glass-panel">
+              <img src={missionHero} alt="Startup-Focused Technology Partners" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* VALUES + APPROACH */}
       <section className="services-modern">
+        <div className="grid-pattern"></div>
         <h3>What Guides Our Work</h3>
 
         <div className="services-modern-grid">
@@ -82,35 +87,31 @@ export default function WhoWeAre() {
             <ul>
               <li>Integrity in advice, estimates, and delivery</li>
               <li>Consistency in architecture and operations</li>
-              <li>Community ownership and team knowledge sharing</li>
+              <li>Community ownership and knowledge sharing</li>
               <li>Outcome-driven innovation, not hype</li>
-              <li>Pragmatic leadership balancing speed, cost, and risk</li>
+              <li>Pragmatic leadership balancing speed and risk</li>
             </ul>
           </div>
 
           <div className="service-modern-card">
             <h4>🎯 Our Approach</h4>
             <p>
-              We start with your business model, customers, and runway — then
+              We start with your business model and runway — then
               design automation and cloud foundations that match your current
               stage and future growth.
             </p>
             <p>
-              Every engagement blends architecture, hands-on implementation,
-              and mentoring for your in-house team, so you are never locked
-              into a black-box platform.
+              Every engagement blends architecture, implementation,
+              and mentoring, so you are never locked into a black-box platform.
             </p>
-            <div className="highlight-pill">
-              Pragmatic. Sustainable. Built for startups.
-            </div>
           </div>
 
         </div>
       </section>
 
       {/* OFFERINGS */}
-      <section className="services-modern">
-        <h3>What We Do</h3>
+      <section className="services-modern" style={{ background: 'rgba(5,7,12,0.6)' }}>
+        <h3>Capabilities</h3>
 
         <div className="services-modern-grid">
 
@@ -122,45 +123,73 @@ export default function WhoWeAre() {
             <ul>
               <li>Startup-ready cloud landing zones</li>
               <li>Cloud-native and hybrid SaaS architecture</li>
-              <li>Multi-environment setups with security baked in</li>
-              <li>Data, automation, and observability integration</li>
+              <li>Multi-environment setups with security</li>
+              <li>Data and observability integration</li>
             </ul>
+            <div className="industry-visual" style={{ marginTop: '1.5rem' }}>
+              <img
+                src={cloudImage}
+                alt="Cloud foundations"
+                className="rounded-xl shadow-lg"
+              />
+            </div>
           </div>
 
           <div className="service-modern-card">
             <div className="industry-header">
               <img src={automationImage} alt="Automation" className="industry-icon" />
-              <h4>Intelligent Operations & Automation</h4>
+              <h4>Intelligent Operations</h4>
             </div>
             <ul>
-              <li>Lean business & IT operations optimization</li>
-              <li>Workflow orchestration & event-driven automation</li>
-              <li>No-code, low-code, and API-based automation</li>
+              <li>Lean operations optimization</li>
+              <li>Workflow orchestration</li>
+              <li>API-based automation engines</li>
             </ul>
+            <div className="industry-visual" style={{ marginTop: '1.5rem' }}>
+              <img
+                src={automationImage}
+                alt="Intelligent Operations"
+                className="rounded-xl shadow-lg"
+              />
+            </div>
           </div>
 
           <div className="service-modern-card">
             <div className="industry-header">
               <img src={aiImage} alt="Applied AI" className="industry-icon" />
-              <h4>SaaS & Applied Intelligence</h4>
+              <h4>SaaS & Applied AI</h4>
             </div>
             <ul>
-              <li>Reusable SaaS components (auth, billing, notifications)</li>
-              <li>Practical AI embedded into products and operations</li>
-              <li>Human-in-the-loop automation patterns</li>
+              <li>Reusable SaaS components</li>
+              <li>Practical AI integration</li>
+              <li>Human-in-the-loop patterns</li>
             </ul>
+            <div className="industry-visual" style={{ marginTop: '1.5rem' }}>
+              <img
+                src={aiImage}
+                alt="Applied AI"
+                className="rounded-xl shadow-lg"
+              />
+            </div>
           </div>
 
           <div className="service-modern-card">
             <div className="industry-header">
               <img src={advisoryImage} alt="Advisory" className="industry-icon" />
-              <h4>Advisory & Fractional Leadership</h4>
+              <h4>Fractional CTO & Advisory</h4>
             </div>
             <ul>
-              <li>Technology strategy and runway-aware roadmaps</li>
-              <li>Architecture reviews & modernization planning</li>
-              <li>Fractional CTO and board-level advisory</li>
+              <li>Technology roadmap planning</li>
+              <li>Architecture reviews</li>
+              <li>Fractional CTO leadership</li>
             </ul>
+            <div className="industry-visual" style={{ marginTop: '1.5rem' }}>
+              <img
+                src={advisoryImage}
+                alt="Fractional CTO & Advisory"
+                className="rounded-xl shadow-lg"
+              />
+            </div>
           </div>
 
         </div>
@@ -168,16 +197,18 @@ export default function WhoWeAre() {
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Build Your Platform with Confidence</h3>
-        <p>
-          Whether you are launching, scaling, or modernizing,
-          we help you build technology foundations that last.
-        </p>
-        <Link to="/contact" className="btn">
-          Start the Conversation
-        </Link>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h3>Build Your Platform with Confidence</h3>
+          <p>
+            Whether you are launching, scaling, or modernizing,
+            we help you build technology foundations that last.
+          </p>
+          <Link to="/contact" className="btn">
+            Connect with an Architect
+          </Link>
+        </div>
       </section>
 
-    </main>
+    </main >
   );
 }
