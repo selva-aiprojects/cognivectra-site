@@ -2,7 +2,18 @@
 
 **Version:** 2.0 (Premium Command Center Update)  
 **Status:** Implementation Ready  
+**Baseline Tag:** `cognivectra-prd-baseline`  
 **Date:** January 25, 2026  
+
+---
+
+## 🚀 Baseline Version (v1.0)
+The following features are locked and validated in the current baseline:
+- **Core Marketing Suite**: Integrated React Router 7 + Framer Motion.
+- **Admin Command Center**: Fixed-mesh layout with Telemetry, CRM, and Content modules.
+- **Supabase Mesh**: Auth, PostgreSQL, and RPC Analytics integration.
+- **Vercel Performance**: Real-user Monitoring (RUM) and Speed Insights.
+- **Lead Intelligence**: Encrypted contact gateway with multi-tab session booking.
 
 ---
 
