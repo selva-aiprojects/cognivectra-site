@@ -1,0 +1,149 @@
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import heroProducts from "../assets/generated/hero-products-ultra-8k.png";
+import storeAIImg from "../assets/generated/product-storeai.png";
+
+const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.6 }
+};
+
+export default function Products() {
+    return (
+        <main>
+            {/* HERO */}
+            <section className="hero-modern">
+                <div className="hero-modern-inner">
+                    <motion.div
+                        className="hero-copy"
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <span className="hero-badge">🚀 Our Product Suite</span>
+                        <h1>Intelligence-Driven <br />Solutions for Business</h1>
+                        <p>
+                            CogniVectra develops cutting-edge products designed to solve complex
+                            challenges in retail, enterprise operations, and AI orchestration.
+                        </p>
+                        <div className="hero-cta">
+                            <a href="#featured" className="btn">Explore Products</a>
+                            <Link to="/contact" className="btn-outline">Inquire for Custom</Link>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        className="hero-visual"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={heroProducts} alt="CogniVectra Products" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* FEATURED PRODUCT - StoreAI */}
+            <section id="featured" className="services-modern">
+                <div className="hero-modern-inner" style={{ padding: 0 }}>
+                    <motion.div
+                        className="hero-copy"
+                        {...fadeInUp}
+                    >
+                        <span className="hero-badge">Featured Product</span>
+                        <h3>StoreAI</h3>
+                        <p>
+                            A revolutionary AI-powered retail management system that transforms how
+                            stores operate. From automated inventory tracking to predictive sales
+                            analytics and customer behavior insights.
+                        </p>
+                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
+                            <li>Real-time Inventory Optimization</li>
+                            <li>AI-Driven Sales Forecasting</li>
+                            <li>Customer Sentiment Analysis</li>
+                            <li>Automated Supply Chain Sync</li>
+                        </ul>
+                        <a
+                            href="https://store-ai-prd.onrender.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn"
+                        >
+                            Visit StoreAI Live ↗
+                        </a>
+                    </motion.div>
+
+                    <motion.div
+                        className="hero-visual"
+                        {...fadeInUp}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={storeAIImg} alt="StoreAI Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* COMING SOON / PLACEHOLDERS */}
+            <section className="services-modern py-24" style={{ background: 'rgba(5,7,12,0.4)' }}>
+                <motion.div
+                    className="section-header text-center"
+                    {...fadeInUp}
+                >
+                    <h3>More Products in Pipeline</h3>
+                    <p>We are constantly innovating to bring the power of AI to more industries.</p>
+                </motion.div>
+
+                <div className="services-modern-grid">
+                    {[
+                        {
+                            title: "OmniCore",
+                            desc: "Unified enterprise orchestration platform for cross-departmental AI automation and data flow management.",
+                            status: "Beta"
+                        },
+                        {
+                            title: "VectraFlow",
+                            desc: "Intelligent workflow engine for automated document processing and compliance checking using LLMs.",
+                            status: "Development"
+                        },
+                        {
+                            title: "NeuralOps",
+                            desc: "Machine learning operations (MLOps) toolkit for scaling AI models from prototype to enterprise-wide deployment.",
+                            status: "In Design"
+                        }
+                    ].map((product, i) => (
+                        <motion.div
+                            key={i}
+                            className="service-modern-card glass-panel"
+                            {...fadeInUp}
+                            transition={{ delay: i * 0.1 }}
+                        >
+                            <span className="hero-badge" style={{ marginBottom: '1rem' }}>{product.status}</span>
+                            <h4>{product.title}</h4>
+                            <p>{product.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+
+            {/* CTA */}
+            <section className="cta-modern">
+                <div className="container text-center">
+                    <motion.div {...fadeInUp}>
+                        <h3>Have a product idea you want to build?</h3>
+                        <p className="mb-8">
+                            We partner with founders to turn innovative concepts into market-ready products.
+                        </p>
+                        <Link to="/contact" className="btn">
+                            Discuss Your Project
+                        </Link>
+                    </motion.div>
+                </div>
+            </section>
+        </main>
+    );
+}

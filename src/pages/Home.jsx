@@ -126,8 +126,77 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* PRODUCTS PREVIEW */}
+      <section className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.5)' }}>
+        <motion.div
+          className="section-header text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <span className="hero-badge">Our Innovation</span>
+          <h3>Intelligence-Driven Products</h3>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
+            Beyond services, we build proprietary AI products that solve real-world business challenges.
+          </p>
+        </motion.div>
+
+        <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+          <motion.div
+            className="service-modern-card glass-panel"
+            whileHover={{ y: -5 }}
+          >
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Featured</span>
+            <h4>StoreAI</h4>
+            <p>AI-powered retail management system with predictive analytics and real-time inventory optimization.</p>
+            <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+          </motion.div>
+          <motion.div
+            className="service-modern-card glass-panel"
+            whileHover={{ y: -5 }}
+          >
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Beta</span>
+            <h4>OmniCore</h4>
+            <p>Unified enterprise orchestration platform for cross-departmental AI automation and data flow.</p>
+            <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* LEADERSHIP PREVIEW */}
+      <section className="services-modern">
+        <div className="hero-modern-inner" style={{ padding: 0 }}>
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="hero-badge">Expert Leadership</span>
+            <h3>25+ Years of Industry Excellence</h3>
+            <p>
+              Our leadership team brings decades of experience in building high-scale service
+              architectures and market-winning products.
+            </p>
+            <Link to="/leadership" className="btn">Meet Our Leadership</Link>
+          </motion.div>
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            <div className="service-modern-card glass-panel" style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '3rem', color: 'var(--accent-primary)', fontWeight: '800' }}>25+</div>
+              <p style={{ opacity: 0.8 }}>Years Experience</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="cta-modern">
+
         <motion.div
           className="container"
           style={{ textAlign: 'center' }}

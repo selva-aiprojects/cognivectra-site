@@ -7,19 +7,17 @@ import whyUsVideo from "../assets/why-us-video.mp4";
 import ctaVideo from "../assets/cta-video.mp4";
 
 /* High-quality industry visuals */
-import saasImage from "../assets/illustrations/industries-saas.svg";
-import fintechImage from "../assets/illustrations/industries-fintech.svg";
-import healthImage from "../assets/illustrations/industries-healthcare.svg";
-import ecommerceImage from "../assets/illustrations/industries-ecommerce.svg";
-import edtechImage from "../assets/illustrations/industries-edtech.svg";
-import logisticsImage from "../assets/illustrations/industries-ecommerce.svg"; // fallback
+import saas3d from "../assets/generated/ind-saas-3d.png";
+import fintech3d from "../assets/generated/ind-fintech-3d.png";
+import health3d from "../assets/generated/ind-health-3d.png";
+import ecommerce3d from "../assets/generated/ind-ecommerce-3d.png";
+import edtech3d from "../assets/generated/ind-edtech-3d.png";
+import logistics3d from "../assets/generated/ind-logistics-3d.png";
 
 import industriesHero from "../assets/generated/hero-industries-ultra-8k.png";
-import saasHero from "../assets/illustrations/industries-saas.svg";
 
 export default function Industries() {
   const industries = [
-    // ... data ...
     {
       title: "SaaS & Product Startups",
       description:
@@ -29,10 +27,10 @@ export default function Industries() {
         "Scalable data models and APIs",
         "Performance optimization and monitoring",
       ],
-      image: saasImage,
+      image: saas3d,
     },
     {
-      title: "FinTech & Regulated Industries",
+      title: "FinTech & Regulated",
       description:
         "Secure, compliant platforms with audit trails, encryption, and governance for financial services and regulated sectors.",
       features: [
@@ -40,7 +38,7 @@ export default function Industries() {
         "Multi-cloud and hybrid strategies",
         "Cost optimization and governance",
       ],
-      image: fintechImage,
+      image: fintech3d,
     },
     {
       title: "HealthTech & Life Sciences",
@@ -51,7 +49,7 @@ export default function Industries() {
         "Automation across clinical workflows",
         "Security and regulatory compliance",
       ],
-      image: healthImage,
+      image: health3d,
     },
     {
       title: "E-commerce & Retail Tech",
@@ -62,7 +60,7 @@ export default function Industries() {
         "Inventory and order management",
         "Customer analytics and personalization",
       ],
-      image: ecommerceImage,
+      image: ecommerce3d,
     },
     {
       title: "EdTech & Learning Platforms",
@@ -73,7 +71,7 @@ export default function Industries() {
         "User management and analytics",
         "Automation of learning workflows",
       ],
-      image: edtechImage,
+      image: edtech3d,
     },
     {
       title: "Logistics & Supply Chain",
@@ -84,9 +82,10 @@ export default function Industries() {
         "Optimization engines",
         "Integration platforms",
       ],
-      image: logisticsImage,
+      image: logistics3d,
     },
   ];
+
 
   return (
     <main>
@@ -147,33 +146,28 @@ export default function Industries() {
         <div className="services-modern-grid">
 
           {industries.map((industry) => (
-            <div key={industry.title} className="service-modern-card">
-              <div className="industry-header">
-                <img
-                  src={industry.image}
-                  alt={industry.title}
-                  className="industry-icon"
-                />
-                <h4>{industry.title}</h4>
+            <div key={industry.title} className="service-modern-card glass-panel" style={{ padding: '2rem' }}>
+              <div className="industry-content">
+                <h4 style={{ color: 'var(--accent-light)', marginBottom: '1.5rem' }}>{industry.title}</h4>
+                <p>{industry.description}</p>
+
+                <ul className="service-highlights" style={{ margin: '1.5rem 0' }}>
+                  {industry.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
               </div>
 
-              <p>{industry.description}</p>
-
-              <ul>
-                {industry.features.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-
-              <div className="industry-visual">
+              <div className="industry-visual" style={{ height: '240px', marginTop: '1rem' }}>
                 <img
                   src={industry.image}
-                  alt={`${industry.title} illustration`}
+                  alt={`${industry.title} 3D Visual`}
+                  className="w-full h-full object-cover rounded-xl"
                 />
               </div>
-
             </div>
           ))}
+
 
         </div>
       </section>

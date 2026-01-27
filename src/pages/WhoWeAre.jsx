@@ -104,6 +104,12 @@ export default function WhoWeAre() {
               Every engagement blends architecture, implementation,
               and mentoring, so you are never locked into a black-box platform.
             </p>
+            <div style={{ marginTop: '1.5rem' }}>
+              <Link to="/leadership" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                Meet Our Leadership →
+              </Link>
+            </div>
+
           </div>
 
         </div>

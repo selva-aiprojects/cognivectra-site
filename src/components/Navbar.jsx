@@ -48,12 +48,16 @@ export default function SimpleNavbar({ setIsChatOpen }) {
           {/* Desktop Navigation */}
           <nav className="links desktop-links" aria-label="Desktop Navigation">
             <NavLink to="/services">Services</NavLink>
+            <NavLink to="/products">Products</NavLink>
             <NavLink to="/engagements">Engagements</NavLink>
             <NavLink to="/results">Results</NavLink>
             <NavLink to="/industries">Industries</NavLink>
-            <NavLink to="/who-we-are">Who We Are</NavLink>
+            <NavLink to="/who-we-are">About Us</NavLink>
+            <NavLink to="/leadership">Leadership</NavLink>
             <NavLink to="/blog">Blog</NavLink>
             <NavLink to="/careers">Careers</NavLink>
+
+
 
             {/* Primary CTA */}
             <NavLink to="/contact" className="btn nav-cta">
@@ -114,13 +118,16 @@ export default function SimpleNavbar({ setIsChatOpen }) {
 
             <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
             <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>Services</NavLink>
+            <NavLink to="/products" onClick={() => setMobileMenuOpen(false)}>Products</NavLink>
             <NavLink to="/engagements" onClick={() => setMobileMenuOpen(false)}>Engagements</NavLink>
             <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>Results</NavLink>
             <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>Industries</NavLink>
             <NavLink to="/who-we-are" onClick={() => setMobileMenuOpen(false)}>Who We Are</NavLink>
+            <NavLink to="/leadership" onClick={() => setMobileMenuOpen(false)}>Leadership</NavLink>
             <NavLink to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</NavLink>
             <NavLink to="/careers" onClick={() => setMobileMenuOpen(false)}>Careers</NavLink>
             <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
+
 
           </nav>
 

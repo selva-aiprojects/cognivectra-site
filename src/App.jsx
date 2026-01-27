@@ -28,6 +28,9 @@ import AdminClients from "./pages/AdminClients.jsx";
 import AdminProjects from "./pages/AdminProjects.jsx";
 import AdminEnhanced from "./pages/AdminEnhanced.jsx";
 import Careers from "./pages/Careers.jsx";
+import Products from "./pages/Products.jsx";
+import Leadership from "./pages/Leadership.jsx";
+
 
 import chatIcon from "./assets/chat-icon.svg";
 import { Analytics } from "@vercel/analytics/react";
@@ -85,7 +88,10 @@ export default function App() {
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/careers" element={<Careers />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/leadership" element={<Leadership />} />
           <Route path="/admin" element={<Admin />} />
+
           <Route path="/admin/reports" element={<AdminReports />} />
           <Route path="/admin/jobs" element={<AdminJobs />} />
           <Route path="/admin/compensation" element={<AdminCompensation />} />

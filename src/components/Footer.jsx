@@ -26,11 +26,13 @@ export default function Footer() {
           <h4>Company</h4>
           <ul className="footer-links">
             <li><Link to="/who-we-are">Who We Are</Link></li>
+            <li><Link to="/leadership">Leadership</Link></li>
             <li><Link to="/mission">Mission</Link></li>
             <li><Link to="/results">Results</Link></li>
             <li><Link to="/careers">Careers</Link></li>
             <li><Link to="/blog">Blog</Link></li>
           </ul>
+
         </div>
 
         {/* Services */}
@@ -38,10 +40,12 @@ export default function Footer() {
           <h4>Services</h4>
           <ul className="footer-links">
             <li><Link to="/services">Services</Link></li>
+            <li><Link to="/products">Products</Link></li>
             <li><Link to="/engagements">Engagements</Link></li>
             <li><Link to="/industries">Industries</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
+
         </div>
 
         {/* Contact */}
