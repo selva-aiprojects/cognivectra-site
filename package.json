@@ -7,7 +7,8 @@
     "preview": "vite preview",
     "test:publish": "node scripts/test-publish-local.js",
     "test:edge": "node scripts/test-edge-function.js",
-    "check": "node scripts/check-setup.js"
+    "check": "node scripts/check-setup.js",
+    "generate-post:enhanced": "node scripts/ai_content_agent_enhanced.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.91.0",
