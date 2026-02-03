@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import heroProducts from "../assets/generated/hero-products-ultra-8k.png";
 import storeAIImg from "../assets/generated/product-storeai.png";
+import stewardImg from "../assets/generated/product-stocksteward.png";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -47,14 +48,64 @@ export default function Products() {
                 </div>
             </section>
 
-            {/* FEATURED PRODUCT - StoreAI */}
+            {/* FEATURED PRODUCT 1 - StockSteward AI */}
             <section id="featured" className="services-modern">
                 <div className="hero-modern-inner" style={{ padding: 0 }}>
                     <motion.div
                         className="hero-copy"
                         {...fadeInUp}
                     >
-                        <span className="hero-badge">Featured Product</span>
+                        <span className="hero-badge">AIEngine Platform</span>
+                        <h3>StockSteward AI</h3>
+                        <p>
+                            A sophisticated algorithmic trading and market intelligence platform.
+                            StockSteward leverages advanced LLMs and quantitative models to provide
+                            real-time insights, automated portfolio management, and predictive market analysis.
+                        </p>
+                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
+                            <li>Automated Algorithmic Trading</li>
+                            <li>AI-Powered Market Sentiment Analysis</li>
+                            <li>Real-time Portfolio Risk Assessment</li>
+                            <li>Interactive Financial Intelligence Chat</li>
+                        </ul>
+                        <a
+                            href="https://steward-platform.onrender.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn"
+                        >
+                            Explore StockSteward ↗
+                        </a>
+                    </motion.div>
+
+                    <motion.div
+                        className="hero-visual"
+                        {...fadeInUp}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={stewardImg} alt="StockSteward Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* FEATURED PRODUCT 2 - StoreAI */}
+            <section className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                <div className="hero-modern-inner" style={{ padding: 0 }}>
+                    <motion.div
+                        className="hero-visual"
+                        {...fadeInUp}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={storeAIImg} alt="StoreAI Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        className="hero-copy"
+                        {...fadeInUp}
+                    >
+                        <span className="hero-badge">Retail Intelligence</span>
                         <h3>StoreAI</h3>
                         <p>
                             A revolutionary AI-powered retail management system that transforms how
@@ -75,15 +126,6 @@ export default function Products() {
                         >
                             Visit StoreAI Live ↗
                         </a>
-                    </motion.div>
-
-                    <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
-                    >
-                        <div className="industry-visual glass-panel">
-                            <img src={storeAIImg} alt="StoreAI Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
                     </motion.div>
                 </div>
             </section>
