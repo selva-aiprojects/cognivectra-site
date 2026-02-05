@@ -1,0 +1,63 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const MegaMenu = ({ isOpen, section, items, image, onClose }) => {
+    return (
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    className="mega-menu-dropdown"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    onMouseLeave={onClose}
+                >
+                    <div className="mega-menu-inner">
+                        <div className="mega-menu-left">
+                            <div className="mega-menu-image-container">
+                                <img src={image} alt={section} className="mega-menu-image" />
+                                <div className="mega-menu-image-overlay"></div>
+                            </div>
+                        </div>
+                        <div className="mega-menu-right">
+                            <div className="mega-menu-header">
+                                <h3 className="mega-menu-title">{section}</h3>
+                            </div>
+                            <div className="mega-menu-grid">
+                                {items.map((item, index) => (
+                                    <Link
+                                        key={index}
+                                        to={item.path}
+                                        className="mega-menu-item"
+                                        onClick={onClose}
+                                    >
+                                        <div className="mega-menu-item-content">
+                                            <span className="mega-menu-item-label">{item.label}</span>
+                                            <svg
+                                                className="mega-menu-item-arrow"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="M5 12h14M12 5l7 7-7 7" />
+                                            </svg>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
+
+export default MegaMenu;
