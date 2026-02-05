@@ -356,7 +356,7 @@ a {
 
 .mega-menu-inner {
   display: grid;
-  grid-template-columns: 420px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: 3rem;
 }
 
@@ -365,7 +365,8 @@ a {
   border-radius: 12px;
   overflow: hidden;
   height: 100%;
-  min-height: 280px;
+  max-height: 250px;
+  align-self: flex-start;
 }
 
 .mega-menu-right {
@@ -375,11 +376,12 @@ a {
 }
 
 .mega-menu-title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: #fff;
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
+  opacity: 0.9;
 }
 
 .mega-menu-grid {
@@ -389,29 +391,45 @@ a {
 }
 
 .mega-menu-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1.5rem;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.25rem;
+  border-radius: 12px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mega-menu-item:hover {
-  background: rgba(99, 102, 241, 0.1);
-  border-color: var(--accent-primary);
-  transform: translateY(-4px);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
 }
 
 .mega-menu-item-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+}
+
+.mega-menu-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
 }
 
 .mega-menu-item-label {
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 700;
+  font-size: 1rem;
   color: #fff;
+}
+
+.mega-menu-item-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0.7;
 }
 
 .mega-menu-item-arrow {

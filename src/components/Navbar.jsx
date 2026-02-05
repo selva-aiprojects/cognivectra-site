@@ -6,6 +6,7 @@ import MegaMenu from "./MegaMenu";
 import servicesImg from "../assets/generated/hero-services-ultra-8k.png";
 import productsImg from "../assets/generated/hero-products-ultra-8k.png";
 import engagementsImg from "../assets/generated/hero-engagements-8k.png";
+import resultsImg from "../assets/generated/hero-results-8k.png";
 import industriesImg from "../assets/generated/hero-industries-ultra-8k.png";
 import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 
@@ -59,50 +60,60 @@ export default function SimpleNavbar({ setIsChatOpen }) {
       section: "Services",
       image: servicesImg,
       items: [
-        { label: "Cloud Foundations", path: "/services#cloud" },
-        { label: "Intelligent Operations", path: "/services#ops" },
-        { label: "SaaS & AI Blocks", path: "/services#saas" },
-        { label: "Fractional CTO", path: "/services#cto" },
+        { label: "Cloud Foundations", path: "/services#cloud", desc: "Startup-ready landing zones & SaaS architecture." },
+        { label: "Intelligent Operations", path: "/services#ops", desc: "Lean workflow orchestration & API automation." },
+        { label: "SaaS & AI Blocks", path: "/services#saas", desc: "Reusable components for rapid AI integration." },
+        { label: "Fractional CTO", path: "/services#cto", desc: "Strategic technology leadership & advisory." },
       ]
     },
     products: {
       section: "Products",
       image: productsImg,
       items: [
-        { label: "StockSteward AI", path: "/products#steward" },
-        { label: "StoreAI", path: "/products#storeai" },
-        { label: "OmniCore (Beta)", path: "/products#omnicore" },
-        { label: "VectraFlow", path: "/products#vectraflow" },
+        { label: "StockSteward AI", path: "/products#steward", desc: "Algorithmic trading & market intelligence." },
+        { label: "StoreAI", path: "/products#storeai", desc: "Transformative retail management analytics." },
+        { label: "OmniCore (Beta)", path: "/products#omnicore", desc: "Unified enterprise AI orchestration engine." },
+        { label: "VectraFlow", path: "/products#vectraflow", desc: "Intelligent document processing workflows." },
       ]
     },
     engagements: {
       section: "Engagements",
       image: engagementsImg,
       items: [
-        { label: "Startup Launch Pack", path: "/engagements#launch" },
-        { label: "Monthly Platform Support", path: "/engagements#support" },
-        { label: "Flexible Retainer", path: "/engagements#retainer" },
-        { label: "Fractional Advisory", path: "/engagements#advisory" },
+        { label: "Startup Launch Pack", path: "/engagements#launch", desc: "Guided 4-6 week cloud & automation setup." },
+        { label: "Monthly Platform Support", path: "/engagements#support", desc: "Ongoing reliability & performance management." },
+        { label: "Flexible Retainer", path: "/engagements#retainer", desc: "Pay-as-you-go expertise for growing teams." },
+        { label: "Fractional Advisory", path: "/engagements#advisory", desc: "Board-level strategic tech guidance." },
+      ]
+    },
+    results: {
+      section: "Results",
+      image: resultsImg,
+      items: [
+        { label: "SaaS Case Study", path: "/results#saas", desc: "Release cycles reduced from weeks to days." },
+        { label: "AI Cloud Stability", path: "/results#cloud", desc: "Predictable spend & improved platform stability." },
+        { label: "Ops Automation", path: "/results#ops", desc: "Reduced manual errors & saved founder time." },
+        { label: "Our Impact", path: "/results", desc: "Explore the measurable outcomes we deliver." },
       ]
     },
     industries: {
       section: "Industries",
       image: industriesImg,
       items: [
-        { label: "Fintech", path: "/industries#fintech" },
-        { label: "E-commerce", path: "/industries#ecommerce" },
-        { label: "Healthtech", path: "/industries#healthtech" },
-        { label: "Logistics & Supply Chain", path: "/industries#logistics" },
+        { label: "Fintech", path: "/industries#fintech", desc: "High-scale financial data & trading systems." },
+        { label: "E-commerce", path: "/industries#ecommerce", desc: "Predictive retail automation & inventory sync." },
+        { label: "Healthtech", path: "/industries#healthtech", desc: "Secure data platforms for health providers." },
+        { label: "Logistics", path: "/industries#logistics", desc: "Supply chain optimization & intelligent tracking." },
       ]
     },
     about: {
       section: "Company",
       image: aboutImg,
       items: [
-        { label: "Who We Are", path: "/who-we-are" },
-        { label: "Our Leadership", path: "/leadership" },
-        { label: "Insights & Blog", path: "/blog" },
-        { label: "Join Our Team", path: "/careers" },
+        { label: "Who We Are", path: "/who-we-are", desc: "Discover our mission & startup-focused approach." },
+        { label: "Our Leadership", path: "/leadership", desc: "Meet the experts steering our technical vision." },
+        { label: "Insights & Blog", path: "/blog", desc: "Technical deep-dives & industry perspectives." },
+        { label: "Join Our Team", path: "/careers", desc: "Build the future of AI technology with us." },
       ]
     }
   };
@@ -169,7 +180,20 @@ export default function SimpleNavbar({ setIsChatOpen }) {
               />
             </div>
 
-            <NavLink to="/results">Results</NavLink>
+            <div
+              className="nav-item-wrapper"
+              onMouseEnter={() => handleMouseEnter('results')}
+              onMouseLeave={handleMouseLeave}
+            >
+              <NavLink to="/results" className={`nav-link-with-arrow ${activeMenu === 'results' ? 'active-dropdown' : ''}`}>
+                Results
+              </NavLink>
+              <MegaMenu
+                isOpen={activeMenu === 'results'}
+                {...menuData.results}
+                onClose={() => setActiveMenu(null)}
+              />
+            </div>
 
             <div
               className="nav-item-wrapper"

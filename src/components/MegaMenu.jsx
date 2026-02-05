@@ -34,7 +34,10 @@ const MegaMenu = ({ isOpen, section, items, image, onClose }) => {
                                         onClick={onClose}
                                     >
                                         <div className="mega-menu-item-content">
-                                            <span className="mega-menu-item-label">{item.label}</span>
+                                            <div className="mega-menu-item-text">
+                                                <span className="mega-menu-item-label">{item.label}</span>
+                                                {item.desc && <p className="mega-menu-item-desc">{item.desc}</p>}
+                                            </div>
                                             <svg
                                                 className="mega-menu-item-arrow"
                                                 width="16"
