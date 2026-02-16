@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import heroMain from "../assets/generated/hero-home-ultra-8k.png";
+import clientEduImg from "../assets/generated/ind-edtech-3d.png";
+import clientKidzImg from "../assets/generated/ind-health-3d.png";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -159,6 +161,85 @@ export default function Home() {
             <h4>OmniCore</h4>
             <p>Unified enterprise orchestration platform for cross-departmental AI automation and data flow.</p>
             <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+          </motion.div>
+          <motion.div
+            className="service-modern-card glass-panel"
+            whileHover={{ y: -5 }}
+          >
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Rolling Out</span>
+            <h4>MedFlow EMR</h4>
+            <p>Multi-tenant EMR platform live with Kidz-Clinic. Rapidly onboarding new healthcare providers this week.</p>
+            <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SUCCESS STORIES / CLIENTS */}
+      <section className="services-modern" style={{ position: 'relative' }}>
+        {/* Optional background decoration */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, rgba(0,0,0,0) 70%)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }} />
+
+        <motion.div
+          className="section-header text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <span className="hero-badge">Proven Impact</span>
+          <h3>Success Stories</h3>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
+            Partnering with forward-thinking organizations to deliver transformative digital solutions.
+          </p>
+        </motion.div>
+
+        <div className="hero-modern-inner" style={{ padding: '0 1rem', gap: '3rem' }}>
+          {/* Client 1: EduPortal */}
+          <motion.div
+            className="glass-panel"
+            style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div style={{ height: '200px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '1rem' }}>
+              <img src={clientEduImg} alt="EduPortal" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <h4>EduPortal</h4>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
+              A next-generation education management platform empowering institutions with seamless digital learning and administration tools.
+            </p>
+            <a href="https://eduportal-new.onrender.com/" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
+              Visit Platform →
+            </a>
+          </motion.div>
+
+          {/* Client 2: Kidz-Clinic */}
+          <motion.div
+            className="glass-panel"
+            style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div style={{ height: '200px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '1rem' }}>
+              <img src={clientKidzImg} alt="Kidz Clinic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <h4>Kidz-Clinic</h4>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
+              A specialized pediatric healthcare platform offering digital appointment scheduling and patient resource management.
+            </p>
+            <a href="https://kidz-clinic-client.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
+              Visit Clinic →
+            </a>
           </motion.div>
         </div>
       </section>
