@@ -1,9 +1,14 @@
-<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.707 15.293C4.077 15.923 4.523 17 5.414 17H17M17 17C15.895 17 15 17.895 15 19C15 20.105 15.895 21 17 21C18.105 21 19 20.105 19 19C19 17.895 18.105 17 17 17ZM9 19C9 20.105 8.105 21 7 21C5.895 21 5 20.105 5 19C5 17.895 5.895 17 7 17C8.105 17 9 17.895 9 19Z" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <defs>
-        <linearGradient id="grad2" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#f59e0b" />
-            <stop offset="1" stop-color="#ef4444" />
-        </linearGradient>
-    </defs>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad_store" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d946ef" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  <path d="M36 12H30C30 8.69 27.31 6 24 6C20.69 6 18 8.69 18 12H12C9.79 12 8 13.79 8 16V38C8 40.21 9.79 42 12 42H36C38.21 42 40 40.21 40 38V16C40 13.79 38.21 12 36 12ZM24 8C26.21 8 28 9.79 28 12H20C20 9.79 21.79 8 24 8ZM36 38H12V16H18V20C18 20.55 18.45 21 19 21C19.55 21 20 20.55 20 20V16H28V20C28 20.55 28.45 21 29 21C29.55 21 30 20.55 30 20V16H36V38Z" fill="url(#grad_store)"/>
+  <circle cx="24" cy="28" r="3" fill="url(#grad_store)"/>
+  <circle cx="18" cy="34" r="2" fill="url(#grad_store)" opacity="0.7"/>
+  <circle cx="30" cy="34" r="2" fill="url(#grad_store)" opacity="0.7"/>
+  <line x1="24" y1="28" x2="18" y2="34" stroke="url(#grad_store)" stroke-width="1.5"/>
+  <line x1="24" y1="28" x2="30" y2="34" stroke="url(#grad_store)" stroke-width="1.5"/>
 </svg>

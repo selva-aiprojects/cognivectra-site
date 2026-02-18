@@ -1,10 +1,13 @@
-<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="2" y="3" width="20" height="18" rx="2" stroke="url(#grad1)" stroke-width="2" stroke-opacity="0.8"/>
-    <path d="M7 15L10 12L13 15L17 9" stroke="url(#grad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <defs>
-        <linearGradient id="grad1" x1="2" y1="3" x2="22" y2="21" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#3b82f6" />
-            <stop offset="1" stop-color="#8b5cf6" />
-        </linearGradient>
-    </defs>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad_steward" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+  <path d="M24 4C12.95 4 4 12.95 4 24C4 35.05 12.95 44 24 44C35.05 44 44 35.05 44 24C44 12.95 35.05 4 24 4ZM24 40C15.16 40 8 32.84 8 24C8 15.16 15.16 8 24 8C32.84 8 40 15.16 40 24C40 32.84 32.84 40 24 40Z" fill="url(#grad_steward)" opacity="0.2"/>
+  <path d="M34 16H28V32H34V16Z" fill="url(#grad_steward)"/>
+  <path d="M26 22H20V32H26V22Z" fill="url(#grad_steward)"/>
+  <path d="M18 26H12V32H18V26Z" fill="url(#grad_steward)"/>
+  <path d="M12 24L20 18L28 22L36 14" stroke="url(#grad_steward)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
