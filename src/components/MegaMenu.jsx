@@ -1,8 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MegaMenu = ({ isOpen, section, items, image, onClose }) => {
+    const location = useLocation();
+    
+    const isActive = (path) => {
+        if (path === '/') {
+            return location.pathname === '/';
+        }
+        return location.pathname.startsWith(path);
+    };
     return (
         <AnimatePresence>
             {isOpen && (
@@ -30,7 +38,7 @@ const MegaMenu = ({ isOpen, section, items, image, onClose }) => {
                                     <Link
                                         key={index}
                                         to={item.path}
-                                        className="mega-menu-item"
+                                        className={`mega-menu-item ${isActive(item.path) ? 'active' : ''}`}
                                         onClick={onClose}
                                     >
                                         <div className="mega-menu-item-content">
