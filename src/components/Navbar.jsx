@@ -141,7 +141,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
           {/* Desktop Navigation */}
           <nav className="links desktop-links" aria-label="Desktop Navigation">
             <div
-              className="nav-item-wrapper"
+              className={`nav-item-wrapper ${activeMenu === 'services' ? 'mega-menu-active' : ''}`}
               onMouseEnter={() => handleMouseEnter('services')}
               onMouseLeave={handleMouseLeave}
             >
@@ -156,7 +156,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             <div
-              className="nav-item-wrapper"
+              className={`nav-item-wrapper ${activeMenu === 'products' ? 'mega-menu-active' : ''}`}
               onMouseEnter={() => handleMouseEnter('products')}
               onMouseLeave={handleMouseLeave}
             >
@@ -171,7 +171,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             <div
-              className="nav-item-wrapper"
+              className={`nav-item-wrapper ${activeMenu === 'engagements' ? 'mega-menu-active' : ''}`}
               onMouseEnter={() => handleMouseEnter('engagements')}
               onMouseLeave={handleMouseLeave}
             >
@@ -186,7 +186,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             <div
-              className="nav-item-wrapper"
+              className={`nav-item-wrapper ${activeMenu === 'results' ? 'mega-menu-active' : ''}`}
               onMouseEnter={() => handleMouseEnter('results')}
               onMouseLeave={handleMouseLeave}
             >
@@ -201,7 +201,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             <div
-              className="nav-item-wrapper"
+              className={`nav-item-wrapper ${activeMenu === 'industries' ? 'mega-menu-active' : ''}`}
               onMouseEnter={() => handleMouseEnter('industries')}
               onMouseLeave={handleMouseLeave}
             >
@@ -216,7 +216,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             <div
-              className="nav-item-wrapper"
+              className={`nav-item-wrapper ${activeMenu === 'about' ? 'mega-menu-active' : ''}`}
               onMouseEnter={() => handleMouseEnter('about')}
               onMouseLeave={handleMouseLeave}
             >
