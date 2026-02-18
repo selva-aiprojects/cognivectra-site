@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import heroMain from "../assets/generated/hero-home-ultra-8k.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import clientKidzImg from "../assets/generated/ind-health-3d.png";
+import DemoRequestModal from "../components/DemoRequestModal";
+import { useState } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -21,6 +23,13 @@ const staggerContainer = {
 
 export default function Home() {
   const { hash } = useLocation();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [demoPlatform, setDemoPlatform] = useState('general');
+
+  const handleDemoRequest = (platform = 'general') => {
+    setDemoPlatform(platform);
+    setIsDemoModalOpen(true);
+  };
 
   useEffect(() => {
     // Handle anchor scrolling
@@ -151,7 +160,12 @@ export default function Home() {
             <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Featured</span>
             <h4>StoreAI</h4>
             <p>AI-powered retail management system with predictive analytics and real-time inventory optimization.</p>
-            <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <Link to="/contact?product=storeai" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }} onClick={(e) => { e.preventDefault(); handleDemoRequest('storeai'); }}>
+                Request Demo
+              </Link>
+            </div>
           </motion.div>
           <motion.div
             className="service-modern-card glass-panel"
@@ -160,7 +174,10 @@ export default function Home() {
             <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Beta</span>
             <h4>OmniCore</h4>
             <p>Unified enterprise orchestration platform for cross-departmental AI automation and data flow.</p>
-            <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <button onClick={() => handleDemoRequest('omnicore')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+            </div>
           </motion.div>
           <motion.div
             className="service-modern-card glass-panel"
@@ -169,7 +186,10 @@ export default function Home() {
             <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Rolling Out</span>
             <h4>MedFlow EMR</h4>
             <p>Multi-tenant EMR platform live with Kidz-Clinic. Rapidly onboarding new healthcare providers this week.</p>
-            <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <button onClick={() => handleDemoRequest('medflow')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -295,6 +315,12 @@ export default function Home() {
           </Link>
         </motion.div>
       </section>
+      {/* Demo Request Modal */}
+      <DemoRequestModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        platform={demoPlatform}
+      />
     </main>
   );
 }

@@ -12,7 +12,7 @@ import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 
 const logo = "/cognivectra-dark-crop.png";
 
-export default function SimpleNavbar({ setIsChatOpen }) {
+export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -50,9 +50,13 @@ export default function SimpleNavbar({ setIsChatOpen }) {
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveMenu(null);
-    }, 300);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setActiveMenu(null), 100);
+  };
+
+  const handleDemoRequest = (platform = 'general') => {
+    setDemoPlatform(platform);
+    setIsDemoModalOpen(true);
   };
 
   const menuData = {
@@ -230,6 +234,22 @@ export default function SimpleNavbar({ setIsChatOpen }) {
             <NavLink to="/contact" className="btn nav-cta">
               Book Strategy Call
             </NavLink>
+
+            {/* Request Demo Button */}
+            <button
+              onClick={() => handleDemoRequest('general')}
+              className="btn-outline"
+              style={{ 
+                background: 'var(--accent-secondary)', 
+                border: 'none',
+                color: 'white',
+                padding: '0.75rem 1.5rem',
+                fontSize: '0.9rem',
+                marginLeft: '0.5rem'
+              }}
+            >
+              Request Demo
+            </button>
 
             {/* AI Assistant */}
             <button

@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Chatbot from "./components/Chatbot.jsx";
 import CursorTrail from "./components/CursorTrail.jsx";
+import DemoRequestModal from "./components/DemoRequestModal.jsx";
 
 import Home from "./pages/Home.jsx";
 import Mission from "./pages/Mission.jsx";
@@ -30,6 +31,9 @@ import AdminEnhanced from "./pages/AdminEnhanced.jsx";
 import Careers from "./pages/Careers.jsx";
 import Products from "./pages/Products.jsx";
 import Leadership from "./pages/Leadership.jsx";
+import StockStewardDetail from "./pages/StockStewardDetail.jsx";
+import StoreAIDetail from "./pages/StoreAIDetail.jsx";
+import MedFlowDetail from "./pages/MedFlowDetail.jsx";
 
 
 import chatIcon from "./assets/chat-icon.svg";
@@ -40,6 +44,8 @@ import "./index.css";
 
 export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [demoPlatform, setDemoPlatform] = useState('general');
   const location = useLocation();
 
   /* Scroll to top/section on route change */
@@ -48,6 +54,14 @@ export default function App() {
 
     // Track Page View
     trackPageView(location.pathname);
+
+    // Check for demo request in URL
+    const urlParams = new URLSearchParams(location.search);
+    const product = urlParams.get('product');
+    if (product) {
+      setDemoPlatform(product);
+      setIsDemoModalOpen(true);
+    }
 
     if (location.hash) {
       const el = document.getElementById(location.hash.substring(1));
@@ -59,7 +73,7 @@ export default function App() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, location.search]);
 
   const showChatbot = true;
 
@@ -70,7 +84,7 @@ export default function App() {
 
       {/* Navbar - Only show on non-admin routes */}
       {!location.pathname.startsWith('/admin') && !location.pathname.startsWith('/login') && (
-        <Navbar setIsChatOpen={setIsChatOpen} />
+        <Navbar setIsChatOpen={setIsChatOpen} setIsDemoModalOpen={setIsDemoModalOpen} setDemoPlatform={setDemoPlatform} />
       )}
 
       {/* Main Content */}
@@ -89,6 +103,9 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/stocksteward" element={<StockStewardDetail />} />
+          <Route path="/products/storeai" element={<StoreAIDetail />} />
+          <Route path="/products/medflow" element={<MedFlowDetail />} />
           <Route path="/leadership" element={<Leadership />} />
           <Route path="/admin" element={<Admin />} />
 
@@ -116,6 +133,13 @@ export default function App() {
       {!location.pathname.startsWith('/admin') && !location.pathname.startsWith('/login') && (
         <Footer />
       )}
+
+      {/* Demo Request Modal */}
+      <DemoRequestModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        platform={demoPlatform}
+      />
 
       {/* Analytics */}
       <Analytics />

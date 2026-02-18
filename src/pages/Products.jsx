@@ -87,14 +87,22 @@ export default function Products() {
                             <li>Real-time Portfolio Risk Assessment</li>
                             <li>Interactive Financial Intelligence Chat</li>
                         </ul>
-                        <a
-                            href="https://steward-platform.onrender.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn"
-                        >
-                            Explore StockSteward ↗
-                        </a>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
+                            <a
+                                href="https://steward-platform.onrender.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn"
+                            >
+                                Explore StockSteward ↗
+                            </a>
+                            <Link to="/products/stocksteward" className="btn-outline">
+                                View Details & Pricing
+                            </Link>
+                            <Link to="/contact?product=stocksteward" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                                Request Demo
+                            </Link>
+                        </div>
                     </motion.div>
 
                     <motion.div
@@ -140,6 +148,7 @@ export default function Products() {
                             <li>Customer Sentiment Analysis</li>
                             <li>Automated Supply Chain Sync</li>
                         </ul>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
                         <a
                             href="https://store-ai-prd.onrender.com/"
                             target="_blank"
@@ -148,6 +157,13 @@ export default function Products() {
                         >
                             Visit StoreAI Live ↗
                         </a>
+                        <Link to="/products/storeai" className="btn-outline">
+                            View Details & Pricing
+                        </Link>
+                        <Link to="/contact?product=storeai" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            Request Demo
+                        </Link>
+                    </div>
                     </motion.div>
                 </div>
             </section>
@@ -175,7 +191,7 @@ export default function Products() {
                             <li>Rapid Provider Onboarding</li>
                             <li>Comprehensive Clinical Workflow Automation</li>
                         </ul>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
                             <a
                                 href="https://emr-app-0909.onrender.com/"
                                 target="_blank"
@@ -184,13 +200,19 @@ export default function Products() {
                             >
                                 Launch MedFlow ↗
                             </a>
+                            <Link to="/products/medflow" className="btn-outline">
+                                View Details & Pricing
+                            </Link>
+                            <Link to="/contact?product=medflow" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                                Request Demo
+                            </Link>
                             <a
                                 href="https://kidz-clinic-client.onrender.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
                             >
-                                View Live Implementation (Kidz-Clinic)
+                                View Live Implementation
                             </a>
                         </div>
                     </motion.div>
