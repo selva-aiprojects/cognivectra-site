@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import heroVideo from "../assets/hero-video.mp4";
-import missionVideo from "../assets/mission-video.mp4";
-import whyUsVideo from "../assets/why-us-video.mp4";
-import ctaVideo from "../assets/cta-video.mp4";
 
 /* High-resolution 3D illustrations */
 import cloudImage from "../assets/generated/cap-cloud-3d-8k.png";

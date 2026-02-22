@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroVideo from "../assets/hero-video.mp4";
-import missionVideo from "../assets/mission-video.mp4";
-import whyUsVideo from "../assets/why-us-video.mp4";
-import ctaVideo from "../assets/cta-video.mp4";
 
 /* High-quality industry visuals */
 import saas3d from "../assets/generated/ind-saas-3d.png";
