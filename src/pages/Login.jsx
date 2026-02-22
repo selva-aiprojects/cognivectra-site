@@ -40,7 +40,7 @@ export default function Login() {
         setLoading(true);
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/admin',
+                redirectTo: window.location.origin + '/reset-password',
             });
             if (error) throw error;
             setMessage({ type: 'success', text: 'Recovery packet dispatched to your terminal.' });
@@ -109,7 +109,7 @@ export default function Login() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder="operator@cognivectra.com"
+                            placeholder="admin@cognivectra.com"
                         />
                     </div>
 
