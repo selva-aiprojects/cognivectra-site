@@ -19,6 +19,7 @@ import Engagements from "./pages/Engagements.jsx";
 import Results from "./pages/Results.jsx";
 import Industries from "./pages/Industries.jsx";
 import Login from "./pages/Login.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 import Admin from "./pages/Admin.jsx";
 import AdminReports from "./pages/AdminReports.jsx";
 import AdminJobs from "./pages/AdminJobs.jsx";
@@ -118,6 +119,7 @@ export default function App() {
           <Route path="/admin/projects" element={<AdminProjects />} />
           <Route path="/admin/omni" element={<AdminEnhanced />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </main>
 

@@ -19,24 +19,24 @@ serve(async (req) => {
         const payload = await req.json()
         console.log("Payload received:", JSON.stringify(payload));
         const { postId, platforms } = payload
-        
+
         if (!postId) {
             throw new Error("postId is required");
         }
         if (!platforms || !Array.isArray(platforms)) {
             throw new Error("platforms array is required");
         }
-        
+
         console.log(`Processing post ${postId} for platforms: ${platforms.join(', ')}`);
 
         const supabaseUrl = Deno.env.get('SUPABASE_URL');
         const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-        
+
         if (!supabaseUrl || !supabaseKey) {
             console.error("❌ Missing Supabase credentials in Edge Function");
             throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
         }
-        
+
         const supabase = createClient(supabaseUrl, supabaseKey)
         console.log("✅ Supabase client created");
 
@@ -77,7 +77,7 @@ serve(async (req) => {
                     console.error("❌ LINKEDIN_ACCESS_TOKEN is missing from Edge Function secrets");
                     throw new Error("LINKEDIN_ACCESS_TOKEN is missing. Please add it in Supabase Dashboard → Project Settings → Edge Functions → Secrets");
                 }
-                
+
                 console.log("✅ LinkedIn token found");
 
                 // Strategy A: Identify Token Owner
@@ -98,7 +98,7 @@ serve(async (req) => {
                 async function tryPost(urn: string) {
                     console.log(`📡 Testing LinkedIn URN: [${urn}]`);
                     console.log(`📝 Post text length: ${shareText.length} characters`);
-                    
+
                     try {
                         const response = await fetch('https://api.linkedin.com/v2/ugcPosts', {
                             method: 'POST',
@@ -119,11 +119,11 @@ serve(async (req) => {
                                 }
                             })
                         });
-                        
+
                         console.log(`📊 LinkedIn API Response Status: ${response.status}`);
                         const body = await response.json();
                         console.log(`📊 LinkedIn API Response:`, JSON.stringify(body).substring(0, 200));
-                        
+
                         return { ok: response.ok, status: response.status, data: body, urnUsed: urn };
                     } catch (fetchError: any) {
                         console.error(`❌ LinkedIn API fetch error:`, fetchError.message);
@@ -147,29 +147,70 @@ serve(async (req) => {
                     trials.push(rawPersonUrn.replace("member", "person"));
                 }
 
-                // Deduplicate and filter empty
+                // Dedup and filter empty
                 const uniqueTrials = [...new Set(trials)].filter(t => t && t.startsWith("urn:li:"));
-                
-                console.log(`🔢 Will try ${uniqueTrials.length} URN(s):`, uniqueTrials);
 
-                if (uniqueTrials.length === 0) {
-                    throw new Error("No valid LinkedIn URN found. Please set LINKEDIN_PERSON_URN or LINKEDIN_COMPANY_URN in Edge Function secrets.");
-                }
+                console.log(`🔢 Will try ${uniqueTrials.length} URN(s):`, uniqueTrials);
 
                 let successResult = null;
                 const failureLogs = [];
 
-                for (const urn of uniqueTrials) {
-                    console.log(`🔄 Attempting to post with URN: ${urn}`);
-                    const res = await tryPost(urn);
-                    if (res.ok) {
-                        console.log(`✅ Success with URN: ${urn}`);
-                        successResult = res;
-                        break;
+                // TRY DIRECT API FIRST
+                if (uniqueTrials.length > 0) {
+                    for (const urn of uniqueTrials) {
+                        console.log(`🔄 Attempting to post with URN: ${urn}`);
+                        const res = await tryPost(urn);
+                        if (res.ok) {
+                            console.log(`✅ Success with URN: ${urn}`);
+                            successResult = res;
+                            break;
+                        } else {
+                            const errorMsg = res.data?.message || res.data?.error?.message || `HTTP ${res.status}`;
+                            console.log(`❌ Failed with URN ${urn}: ${errorMsg}`);
+                            failureLogs.push(`${urn}: ${errorMsg}`);
+                        }
+                    }
+                }
+
+                // STRATEGY B: WEBHOOK FALLBACK (If direct failed or no URNs)
+                if (!successResult) {
+                    console.log("🌐 Direct LinkedIn API failed or skipped. Attempting Webhook Bridge...");
+                    const webhookUrl = Deno.env.get('SOCIAL_WEBHOOK_URL');
+
+                    if (webhookUrl) {
+                        try {
+                            const webhookRes = await fetch(webhookUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    platform: 'linkedin',
+                                    action: 'publish',
+                                    post: {
+                                        id: post.id,
+                                        title: post.title,
+                                        slug: post.slug,
+                                        excerpt: post.excerpt,
+                                        content: post.content,
+                                        share_text: shareText,
+                                        url: blogUrl,
+                                        image_url: post.image_url
+                                    }
+                                })
+                            });
+
+                            if (webhookRes.ok) {
+                                console.log("✅ Webhook Bridge successful");
+                                successResult = { ok: true, data: { id: 'webhook-triggered', source: 'bridge' }, urnUsed: 'webhook' };
+                            } else {
+                                const errText = await webhookRes.text();
+                                failureLogs.push(`Webhook Bridge failed: ${errText}`);
+                            }
+                        } catch (webhookErr: any) {
+                            console.error("❌ Webhook Bridge network error:", webhookErr.message);
+                            failureLogs.push(`Webhook Bridge Network Error: ${webhookErr.message}`);
+                        }
                     } else {
-                        const errorMsg = res.data?.message || res.data?.error?.message || `HTTP ${res.status}`;
-                        console.log(`❌ Failed with URN ${urn}: ${errorMsg}`);
-                        failureLogs.push(`${urn}: ${errorMsg}`);
+                        console.warn("⚠️ SOCIAL_WEBHOOK_URL not set. Skipping fallback.");
                     }
                 }
 
@@ -185,7 +226,7 @@ serve(async (req) => {
                     results.push({
                         platform: 'linkedin',
                         success: false,
-                        error: `LinkedIn rejected all attempts. \n\nLog:\n${combinedError}\n\nTIP: Ensure you have 'w_member_social' or 'w_organization_social' scopes.`
+                        error: `LinkedIn direct API and Webhook Bridge both failed. \n\nLog:\n${combinedError}`
                     });
                 }
 
@@ -330,7 +371,7 @@ serve(async (req) => {
         }
 
         console.log("✅ Publishing complete. Results:", JSON.stringify(results));
-        
+
         return new Response(JSON.stringify({ results }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             status: 200,
@@ -340,10 +381,10 @@ serve(async (req) => {
         console.error("❌ Edge Function Error:", error);
         console.error("Error message:", error.message);
         console.error("Error stack:", error.stack);
-        
-        return new Response(JSON.stringify({ 
+
+        return new Response(JSON.stringify({
             error: error.message,
-            details: error.stack 
+            details: error.stack
         }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             status: 400,
