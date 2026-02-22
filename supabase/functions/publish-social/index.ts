@@ -64,119 +64,74 @@ serve(async (req) => {
 
         if (platforms.includes('linkedin')) {
             try {
-                console.log("🔍 Checking LinkedIn credentials...");
-                const token = Deno.env.get('LINKEDIN_ACCESS_TOKEN')?.replace(/["'`]/g, "").trim()
-                const rawCompanyUrn = Deno.env.get('LINKEDIN_COMPANY_URN')?.replace(/["'`]/g, "").trim()
-                const rawPersonUrn = Deno.env.get('LINKEDIN_PERSON_URN')?.replace(/["'`]/g, "").trim()
-
-                console.log(`Token present: ${!!token}`);
-                console.log(`Company URN present: ${!!rawCompanyUrn}`);
-                console.log(`Person URN present: ${!!rawPersonUrn}`);
-
-                if (!token) {
-                    console.error("❌ LINKEDIN_ACCESS_TOKEN is missing from Edge Function secrets");
-                    throw new Error("LINKEDIN_ACCESS_TOKEN is missing. Please add it in Supabase Dashboard → Project Settings → Edge Functions → Secrets");
-                }
-
-                console.log("✅ LinkedIn token found");
-
-                // Strategy A: Identify Token Owner
-                let tokenMemberId = null;
-                try {
-                    const meRes = await fetch('https://api.linkedin.com/v2/me', {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    })
-                    if (meRes.ok) {
-                        const meData = await meRes.json();
-                        tokenMemberId = meData.id;
-                        console.log(`✅ Token identity confirmed: urn:li:member:${tokenMemberId}`);
-                    }
-                } catch (e) {
-                    console.warn("⚠️ Could not verify token identity (likely missing profile scope)");
-                }
-
-                async function tryPost(urn: string) {
-                    console.log(`📡 Testing LinkedIn URN: [${urn}]`);
-                    console.log(`📝 Post text length: ${shareText.length} characters`);
-
-                    try {
-                        const response = await fetch('https://api.linkedin.com/v2/ugcPosts', {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
-                                'Content-Type': 'application/json',
-                                'X-Restli-Protocol-Version': '2.0.0'
-                            },
-                            body: JSON.stringify({
-                                author: urn,
-                                lifecycleState: 'PUBLISHED',
-                                visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
-                                specificContent: {
-                                    'com.linkedin.ugc.ShareContent': {
-                                        shareCommentary: { text: shareText },
-                                        shareMediaCategory: 'NONE'
-                                    }
-                                }
-                            })
-                        });
-
-                        console.log(`📊 LinkedIn API Response Status: ${response.status}`);
-                        const body = await response.json();
-                        console.log(`📊 LinkedIn API Response:`, JSON.stringify(body).substring(0, 200));
-
-                        return { ok: response.ok, status: response.status, data: body, urnUsed: urn };
-                    } catch (fetchError: any) {
-                        console.error(`❌ LinkedIn API fetch error:`, fetchError.message);
-                        return { ok: false, status: 0, data: { message: fetchError.message }, urnUsed: urn };
-                    }
-                }
-
-                // Generate trial list
-                const trials: string[] = [];
-
-                // 1. Company Trials
-                if (rawCompanyUrn) {
-                    trials.push(rawCompanyUrn.replace("organization", "company"));
-                    trials.push(rawCompanyUrn.replace("company", "organization"));
-                }
-
-                // 2. Person Trials
-                if (tokenMemberId) trials.push(`urn:li:member:${tokenMemberId}`);
-                if (rawPersonUrn) {
-                    trials.push(rawPersonUrn.replace("person", "member"));
-                    trials.push(rawPersonUrn.replace("member", "person"));
-                }
-
-                // Dedup and filter empty
-                const uniqueTrials = [...new Set(trials)].filter(t => t && t.startsWith("urn:li:"));
-
-                console.log(`🔢 Will try ${uniqueTrials.length} URN(s):`, uniqueTrials);
+                console.log("🔍 Evaluating LinkedIn publishing strategy...");
+                const token = Deno.env.get('LINKEDIN_ACCESS_TOKEN')?.replace(/["'`]/g, "").trim();
+                const rawCompanyUrn = Deno.env.get('LINKEDIN_COMPANY_URN')?.replace(/["'`]/g, "").trim();
+                const rawPersonUrn = Deno.env.get('LINKEDIN_PERSON_URN')?.replace(/["'`]/g, "").trim();
+                const webhookUrl = Deno.env.get('SOCIAL_WEBHOOK_URL');
 
                 let successResult = null;
                 const failureLogs = [];
 
-                // TRY DIRECT API FIRST
-                if (uniqueTrials.length > 0) {
-                    for (const urn of uniqueTrials) {
-                        console.log(`🔄 Attempting to post with URN: ${urn}`);
-                        const res = await tryPost(urn);
-                        if (res.ok) {
-                            console.log(`✅ Success with URN: ${urn}`);
-                            successResult = res;
-                            break;
-                        } else {
-                            const errorMsg = res.data?.message || res.data?.error?.message || `HTTP ${res.status}`;
-                            console.log(`❌ Failed with URN ${urn}: ${errorMsg}`);
-                            failureLogs.push(`${urn}: ${errorMsg}`);
+                // STRATEGY A: DIRECT API (Only if token is present)
+                if (token) {
+                    console.log("✅ LINKEDIN_ACCESS_TOKEN found. Attempting Direct API...");
+
+                    // Identify Token Owner (Optional optimization)
+                    let tokenMemberId = null;
+                    try {
+                        const meRes = await fetch('https://api.linkedin.com/v2/me', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (meRes.ok) {
+                            const meData = await meRes.json();
+                            tokenMemberId = meData.id;
+                            console.log(`✅ Token identity: urn:li:member:${tokenMemberId}`);
                         }
+                    } catch (e) {
+                        console.warn("⚠️ Could not verify token identity (profile scope might be missing)");
                     }
+
+                    // Build Trial List
+                    const trials: string[] = [];
+                    if (rawCompanyUrn) {
+                        trials.push(rawCompanyUrn.replace("organization", "company"));
+                        trials.push(rawCompanyUrn.replace("company", "organization"));
+                    }
+                    if (tokenMemberId) trials.push(`urn:li:member:${tokenMemberId}`);
+                    if (rawPersonUrn) {
+                        trials.push(rawPersonUrn.replace("person", "member"));
+                        trials.push(rawPersonUrn.replace("member", "person"));
+                    }
+                    const uniqueTrials = [...new Set(trials)].filter(t => t && t.startsWith("urn:li:"));
+
+                    if (uniqueTrials.length > 0) {
+                        console.log(`🔢 Trying ${uniqueTrials.length} URN(s):`, uniqueTrials);
+                        for (const urn of uniqueTrials) {
+                            console.log(`🔄 Posting with URN: ${urn}`);
+                            const res = await tryPost(urn, token, shareText);
+                            if (res.ok) {
+                                console.log(`✅ Direct success with URN: ${urn}`);
+                                successResult = res;
+                                break;
+                            } else {
+                                const errorMsg = res.data?.message || res.data?.error?.message || `HTTP ${res.status}`;
+                                console.log(`❌ Failed with URN ${urn}: ${errorMsg}`);
+                                failureLogs.push(`${urn}: ${errorMsg}`);
+                            }
+                        }
+                    } else {
+                        console.warn("⚠️ No URNs available for direct posting.");
+                        failureLogs.push("No URNs (Company/Person) configured for direct API.");
+                    }
+                } else {
+                    console.log("ℹ️ No LINKEDIN_ACCESS_TOKEN found. Skipping Direct API.");
+                    failureLogs.push("Direct API skipped: Missing LINKEDIN_ACCESS_TOKEN.");
                 }
 
-                // STRATEGY B: WEBHOOK FALLBACK (If direct failed or no URNs)
+                // STRATEGY B: WEBHOOK FALLBACK (If direct failed or was skipped)
                 if (!successResult) {
-                    console.log("🌐 Direct LinkedIn API failed or skipped. Attempting Webhook Bridge...");
-                    const webhookUrl = Deno.env.get('SOCIAL_WEBHOOK_URL');
-
+                    console.log("🌐 Attempting Webhook Bridge fallback...");
                     if (webhookUrl) {
                         try {
                             const webhookRes = await fetch(webhookUrl, {
@@ -203,14 +158,16 @@ serve(async (req) => {
                                 successResult = { ok: true, data: { id: 'webhook-triggered', source: 'bridge' }, urnUsed: 'webhook' };
                             } else {
                                 const errText = await webhookRes.text();
-                                failureLogs.push(`Webhook Bridge failed: ${errText}`);
+                                console.error(`❌ Webhook Bridge failed: ${errText}`);
+                                failureLogs.push(`Webhook Bridge Error: ${errText}`);
                             }
                         } catch (webhookErr: any) {
                             console.error("❌ Webhook Bridge network error:", webhookErr.message);
-                            failureLogs.push(`Webhook Bridge Network Error: ${webhookErr.message}`);
+                            failureLogs.push(`Webhook Network Error: ${webhookErr.message}`);
                         }
                     } else {
-                        console.warn("⚠️ SOCIAL_WEBHOOK_URL not set. Skipping fallback.");
+                        console.warn("⚠️ SOCIAL_WEBHOOK_URL not set in secrets.");
+                        failureLogs.push("Webhook fallback skipped: Missing SOCIAL_WEBHOOK_URL.");
                     }
                 }
 
@@ -222,16 +179,47 @@ serve(async (req) => {
                         target: successResult.urnUsed
                     });
                 } else {
-                    const combinedError = failureLogs.join('\n\n');
+                    const combinedError = failureLogs.join(' | ');
                     results.push({
                         platform: 'linkedin',
                         success: false,
-                        error: `LinkedIn direct API and Webhook Bridge both failed. \n\nLog:\n${combinedError}`
+                        error: `Both Direct and Bridge strategies failed. Log: ${combinedError}`
                     });
                 }
 
             } catch (err: any) {
-                results.push({ platform: 'linkedin', success: false, error: err.message });
+                console.error("❌ Unexpected LinkedIn logic error:", err);
+                results.push({ platform: 'linkedin', success: false, error: `Critical LinkedIn logic error: ${err.message}` });
+            }
+        }
+
+        // Helper function for LinkedIn posts
+        async function tryPost(urn: string, token: string, shareText: string) {
+            try {
+                const response = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'X-Restli-Protocol-Version': '2.0.0'
+                    },
+                    body: JSON.stringify({
+                        author: urn,
+                        lifecycleState: 'PUBLISHED',
+                        visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
+                        specificContent: {
+                            'com.linkedin.ugc.ShareContent': {
+                                shareCommentary: { text: shareText },
+                                shareMediaCategory: 'NONE'
+                            }
+                        }
+                    })
+                });
+
+                const body = await response.json();
+                return { ok: response.ok, status: response.status, data: body, urnUsed: urn };
+            } catch (error: any) {
+                return { ok: false, status: 0, data: { message: error.message }, urnUsed: urn };
             }
         }
 
