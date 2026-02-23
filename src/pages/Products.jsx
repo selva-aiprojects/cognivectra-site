@@ -19,7 +19,8 @@ export default function Products() {
 
     useEffect(() => {
         if (hash) {
-            const element = document.querySelector(hash);
+            const id = hash.replace("#", "");
+            const element = document.getElementById(id);
             if (element) {
                 element.scrollIntoView({ behavior: "smooth" });
             }
@@ -149,21 +150,21 @@ export default function Products() {
                             <li>Automated Supply Chain Sync</li>
                         </ul>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
-                        <a
-                            href="https://store-ai-prd.onrender.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn"
-                        >
-                            Visit StoreAI Live ↗
-                        </a>
-                        <Link to="/products/storeai" className="btn-outline">
-                            View Details & Pricing
-                        </Link>
-                        <Link to="/contact?product=storeai" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
-                            Request Demo
-                        </Link>
-                    </div>
+                            <a
+                                href="https://store-ai-prd.onrender.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn"
+                            >
+                                Visit StoreAI Live ↗
+                            </a>
+                            <Link to="/products/storeai" className="btn-outline">
+                                View Details & Pricing
+                            </Link>
+                            <Link to="/contact?product=storeai" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                                Request Demo
+                            </Link>
+                        </div>
                     </motion.div>
                 </div>
             </section>

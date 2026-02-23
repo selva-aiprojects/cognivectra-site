@@ -65,7 +65,8 @@ export default function StoreAIDetail() {
 
     useEffect(() => {
         if (hash) {
-            const element = document.querySelector(hash);
+            const id = hash.replace("#", "");
+            const element = document.getElementById(id);
             if (element) {
                 element.scrollIntoView({ behavior: "smooth" });
             }
@@ -224,8 +225,8 @@ export default function StoreAIDetail() {
                                     </li>
                                 ))}
                             </ul>
-                            <Link 
-                                to="/contact?product=storeai&plan=${plan.name.toLowerCase()}" 
+                            <Link
+                                to="/contact?product=storeai&plan=${plan.name.toLowerCase()}"
                                 className={`btn ${plan.highlighted ? '' : 'btn-outline'}`}
                                 style={{ width: '100%', textAlign: 'center' }}
                             >

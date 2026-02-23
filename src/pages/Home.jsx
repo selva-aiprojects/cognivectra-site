@@ -34,7 +34,8 @@ export default function Home() {
   useEffect(() => {
     // Handle anchor scrolling
     if (hash) {
-      const element = document.querySelector(hash);
+      const id = hash.replace("#", "");
+      const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
