@@ -188,7 +188,7 @@ export default function Careers() {
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">
-                    <motion.div 
+                    <motion.div
                         className="hero-copy"
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -198,13 +198,13 @@ export default function Careers() {
 
                         <h1>
                             Build the Future <br />
-                            of Startup Technology
+                            of Enterprise Platforms
                         </h1>
 
                         <p>
                             Join CogniVectra and work on cutting-edge cloud platforms, AI automation,
-                            and SaaS solutions that empower startups worldwide. We're looking for
-                            passionate technologists who thrive in fast-paced, innovative environments.
+                            and SaaS solutions that empower enterprises worldwide. We're looking for
+                            passionate technologists who thrive in creating scalable, enterprise-grade systems.
                         </p>
 
                         <div className="hero-cta">
@@ -221,7 +221,7 @@ export default function Careers() {
                         </p>
                     </motion.div>
 
-                    <motion.div 
+                    <motion.div
                         className="hero-visual"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -242,7 +242,7 @@ export default function Careers() {
                     <div className="why-modern-grid">
                         <div className="why-pill">Work with cutting-edge technology</div>
                         <div className="why-pill">Remote-first culture</div>
-                        <div className="why-pill">Direct impact on startups</div>
+                        <div className="why-pill">Direct impact on global platforms</div>
                         <div className="why-pill">Continuous learning opportunities</div>
                         <div className="why-pill">Flexible work arrangements</div>
                         <div className="why-pill">Competitive compensation</div>

@@ -69,7 +69,7 @@ export default function Contact() {
       }
 
       clearTimeout(timeoutId);
-      setMessage("Thank you! Your strategic request has been logged. Our Principal Architect will review it within 24 hours.");
+      setMessage("Thank you! Your platform request has been logged. Our Principal Architect will review your requirements within 24 hours.");
       e.target.reset();
     } catch (error) {
       console.error("Contact form error:", error);
@@ -98,7 +98,7 @@ export default function Contact() {
             </h1>
 
             <p>
-              Tell us about your startup architecture. No sales pressure — just direct access to Principal-level engineering insights.
+              Tell us about your platform requirements. No sales pressure — just direct access to Principal-level engineering insights and enterprise architecture strategy.
             </p>
 
             <div className="hero-cta">
@@ -141,7 +141,7 @@ export default function Contact() {
                 className={`contact-tab ${activeTab === "call" ? "active" : ""}`}
                 onClick={() => setActiveTab("call")}
               >
-                <FaCalendarAlt /> Secure a Session
+                <FaCalendarAlt /> Secure a Demo
               </button>
             </div>
 
@@ -172,7 +172,7 @@ export default function Contact() {
                         <input
                           type="email"
                           name="email"
-                          placeholder="you@startup.com"
+                          placeholder="you@company.com"
                           required
                           className="contact-input"
                         />
@@ -181,12 +181,12 @@ export default function Contact() {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
                       <div className="form-group">
-                        <label className="contact-label">Venture Stage</label>
+                        <label className="contact-label">Organization Type</label>
                         <select name="stage" className="contact-input" defaultValue="">
                           <option value="" disabled>Status</option>
-                          <option value="Idea">Idea Phase</option>
-                          <option value="Seed">Seed / Pre-Revenue</option>
-                          <option value="Growth">Growth / Series A+</option>
+                          <option value="SaaS">SaaS / Product Company</option>
+                          <option value="Mid-Market">Mid-Market Enterprise</option>
+                          <option value="Enterprise">Global Enterprise / Healthcare</option>
                         </select>
                       </div>
 
@@ -194,9 +194,9 @@ export default function Contact() {
                         <label className="contact-label">Strategic Need</label>
                         <select name="need" className="contact-input" defaultValue="">
                           <option value="" disabled>Core Objective</option>
-                          <option value="Architecture">Architecture Review</option>
-                          <option value="Development">Full Development</option>
-                          <option value="Consulting">Fractional CTO</option>
+                          <option value="Architecture">Platform Architecture</option>
+                          <option value="Development">Production Deployment</option>
+                          <option value="Consulting">Strategic Advisory</option>
                         </select>
                       </div>
                     </div>
@@ -234,9 +234,9 @@ export default function Contact() {
                   className="contact-call-panel"
                 >
                   <FaInfoCircle style={{ fontSize: '3rem', color: 'var(--accent-light)', marginBottom: '1.5rem', opacity: 0.5 }} />
-                  <h4>Technical Strategy Session</h4>
+                  <h4>Platform Strategy & Demo</h4>
                   <p>
-                    Bypass the queue. Scheduled 30-minute deep dive with our lead architect to map your infrastructure roadmap.
+                    Bypass the queue. Scheduled 30-minute deep dive with our lead architect to map your platform roadmap and view production demos.
                   </p>
 
                   <a

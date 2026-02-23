@@ -23,15 +23,15 @@ export default function Results() {
             </h1>
 
             <p>
-              CogniVectra helps startups move from fragile setups to
-              reliable, automated platforms. Here are examples of the
-              tangible impact we deliver.
+              CogniVectra helps organizations transition from legacy systems to
+              high-performance, automated platforms. Here are examples of the
+              tangible impact we deliver at scale.
             </p>
 
             <div className="hero-cta">
-              <Link to="/contact" className="btn">
-                Book Strategy Call
-              </Link>
+              <button onClick={() => { }} className="btn">
+                Request Demo
+              </button>
               <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
@@ -63,10 +63,10 @@ export default function Results() {
 
           {/* CASE 1 */}
           <div className="service-modern-card">
-            <h4>🚀 SaaS Startup — Faster Releases</h4>
+            <h4>🚀 Enterprise SaaS — Rapid Deployment</h4>
             <p>
-              A B2B SaaS startup was deploying manually with frequent
-              production issues and slow release cycles.
+              A multi-tenant SaaS provider was struggling with manual
+              deployments and inconsistent environment stability across global regions.
             </p>
             <ul>
               <li>Implemented CI/CD pipelines and environment strategy</li>
@@ -81,10 +81,10 @@ export default function Results() {
 
           {/* CASE 2 */}
           <div className="service-modern-card">
-            <h4>🤖 AI-Native Startup — Cloud Stability</h4>
+            <h4>🤖 Healthcare AI — Platform Scalability</h4>
             <p>
-              An AI-native startup was scaling experiments fast but had
-              rising cloud costs and unstable environments.
+              A healthcare platform provider was scaling AI-assisted diagnostics
+              but required enhanced data governance and security hardening.
             </p>
             <ul>
               <li>Redesigned environments and governance</li>
@@ -99,10 +99,10 @@ export default function Results() {
 
           {/* CASE 3 */}
           <div className="service-modern-card">
-            <h4>💼 Non-Tech Founder — Operations Automation</h4>
+            <h4>💼 Enterprise Operations — Intelligent Automation</h4>
             <p>
-              A non-technical founder was managing onboarding,
-              invoicing, and support manually across tools.
+              A large-scale organization needed to automate complex clinical
+              and administrative workflows to improve physician efficiency.
             </p>
             <ul>
               <li>Mapped workflows across sales, onboarding, and billing</li>
@@ -125,21 +125,22 @@ export default function Results() {
 
           <div className="why-modern-grid">
             <div className="why-pill">Faster time-to-market</div>
-            <div className="why-pill">Lower cloud costs</div>
-            <div className="why-pill">Higher platform reliability</div>
+            <div className="why-pill">Optimized cloud governance</div>
+            <div className="why-pill">Enterprise platform reliability</div>
             <div className="why-pill">Reduced operational overhead</div>
-            <div className="why-pill">Improved developer velocity</div>
-            <div className="why-pill">Founder time saved</div>
+            <div className="why-pill">Improved engineering velocity</div>
+            <div className="why-pill">Strategic resource efficiency</div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Want similar outcomes for your startup?</h3>
+        <h3>Want similar outcomes for your organization?</h3>
         <p>
-          Share your current platform and we will suggest the smallest
-          useful starting point — Launch Pack, automation sprint, or advisory.
+          Share your platform goals and we will suggest the most
+          effective architectural strategy — Enterprise Launch Pack,
+          AI integration, or strategic advisory.
         </p>
         <Link to="/contact" className="btn">
           Start Your Free Strategy Session

@@ -64,14 +64,14 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       section: "Services",
       image: servicesImg,
       items: [
-        { label: "Cloud Foundations", path: "/services#cloud", desc: "Startup-ready landing zones & SaaS architecture." },
+        { label: "Cloud Foundations", path: "/services#cloud", desc: "Enterprise-ready landing zones & SaaS architecture." },
         { label: "Intelligent Operations", path: "/services#ops", desc: "Lean workflow orchestration & API automation." },
         { label: "SaaS & AI Blocks", path: "/services#saas", desc: "Reusable components for rapid AI integration." },
-        { label: "Fractional CTO", path: "/services#cto", desc: "Strategic technology leadership & advisory." },
+        { label: "Enterprise Strategy", path: "/services#cto", desc: "Strategic technology leadership & architecture." },
       ]
     },
     products: {
-      section: "Products",
+      section: "Platforms",
       image: productsImg,
       items: [
         { label: "StockSteward AI", path: "/products#steward", desc: "Algorithmic trading & market intelligence." },
@@ -85,10 +85,10 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       section: "Engagements",
       image: engagementsImg,
       items: [
-        { label: "Startup Launch Pack", path: "/engagements#launch", desc: "Guided 4-6 week cloud & automation setup." },
+        { label: "Enterprise Launch Pack", path: "/engagements#launch", desc: "Guided 4-6 week cloud & automation setup." },
         { label: "Monthly Platform Support", path: "/engagements#support", desc: "Ongoing reliability & performance management." },
         { label: "Flexible Retainer", path: "/engagements#retainer", desc: "Pay-as-you-go expertise for growing teams." },
-        { label: "Fractional Advisory", path: "/engagements#advisory", desc: "Board-level strategic tech guidance." },
+        { label: "Strategic Advisory", path: "/engagements#advisory", desc: "Board-level strategic tech guidance." },
       ]
     },
     results: {
@@ -115,7 +115,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       section: "Company",
       image: aboutImg,
       items: [
-        { label: "Who We Are", path: "/who-we-are", desc: "Discover our mission & startup-focused approach." },
+        { label: "Who We Are", path: "/who-we-are", desc: "Discover our mission & enterprise-grade approach." },
         { label: "Our Leadership", path: "/leadership", desc: "Meet the experts steering our technical vision." },
         { label: "Insights & Blog", path: "/blog", desc: "Technical deep-dives & industry perspectives." },
         { label: "Join Our Team", path: "/careers", desc: "Build the future of AI technology with us." },
@@ -161,7 +161,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               onMouseLeave={handleMouseLeave}
             >
               <NavLink to="/products" className={`nav-link-with-arrow ${activeMenu === 'products' ? 'active-dropdown' : ''}`}>
-                Products
+                Platforms
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'products'}
@@ -230,17 +230,11 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               />
             </div>
 
-            {/* Primary CTA */}
-            <NavLink to="/contact" className="btn nav-cta">
-              Book Strategy Call
-            </NavLink>
-
-            {/* Request Demo Button */}
+            {/* Request Demo Button (Primary CTA) */}
             <button
               onClick={() => handleDemoRequest('general')}
-              className="btn-outline"
-              style={{ 
-                background: 'var(--accent-secondary)', 
+              className="btn nav-cta"
+              style={{
                 border: 'none',
                 color: 'white',
                 padding: '0.75rem 1.5rem',
@@ -303,7 +297,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
           <nav className="mobile-nav" aria-label="Mobile Navigation Links">
             <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
             <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>Services</NavLink>
-            <NavLink to="/products" onClick={() => setMobileMenuOpen(false)}>Products</NavLink>
+            <NavLink to="/products" onClick={() => setMobileMenuOpen(false)}>Platforms</NavLink>
             <NavLink to="/engagements" onClick={() => setMobileMenuOpen(false)}>Engagements</NavLink>
             <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>Results</NavLink>
             <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>Industries</NavLink>
@@ -327,9 +321,13 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             <NavLink
               to="/contact"
               className="btn mobile-cta"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setDemoPlatform('general');
+                setIsDemoModalOpen(true);
+              }}
             >
-              Book Strategy Call
+              Request Demo
             </NavLink>
           </div>
         </div>

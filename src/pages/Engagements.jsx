@@ -19,19 +19,19 @@ export default function Engagements() {
 
             <h1>
               Engagement Models <br />
-              Built for Startups
+              Built for Enterprises
             </h1>
 
             <p>
-              Startups need flexibility. Our engagement models are designed to match
-              your stage, budget, and urgency — without locking you into heavy,
-              long-term commitments.
+              Modern enterprises need flexibility. Our engagement models are designed to match
+              your scale, complexity, and urgency — providing high-impact technical expertise
+              without long-term overhead.
             </p>
 
             <div className="hero-cta">
-              <Link to="/contact" className="btn">
-                Book Strategy Call
-              </Link>
+              <button onClick={() => { }} className="btn">
+                Request Demo
+              </button>
               <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
@@ -62,10 +62,10 @@ export default function Engagements() {
         <div className="services-modern-grid">
 
           <div className="service-modern-card">
-            <h4>🚀 Startup Launch Pack (4–6 weeks)</h4>
+            <h4>🚀 Enterprise Launch Pack (4–6 weeks)</h4>
             <p>
-              A focused engagement to set up your initial cloud, CI/CD,
-              observability, and a few high-impact automations.
+              A focused engagement to set up your mission-critical cloud, CI/CD,
+              observability, and core enterprise foundations.
             </p>
             <ul>
               <li>Cloud landing zone for dev, test, and prod</li>
@@ -90,8 +90,8 @@ export default function Engagements() {
           <div className="service-modern-card">
             <h4>🤝 Flexible Retainer</h4>
             <p>
-              Pay-as-you-go support for startups that need ongoing expertise
-              but want to control costs and scope.
+              Pay-as-you-go support for organizations that need ongoing expertise
+              to maintain and evolve their production platforms.
             </p>
             <ul>
               <li>Pre-purchased hours at discounted rates</li>
@@ -101,10 +101,10 @@ export default function Engagements() {
           </div>
 
           <div className="service-modern-card">
-            <h4>👔 Fractional CTO & Advisory</h4>
+            <h4>👔 Strategic Advisory & Architecture</h4>
             <p>
-              Strategic technology leadership without the full-time executive cost.
-              Perfect for non-technical founders or growing teams.
+              Executive-level technology leadership and architecture governance
+              to align your platform with global business goals.
             </p>
             <ul>
               <li>Technology roadmap and architecture reviews</li>
@@ -122,22 +122,22 @@ export default function Engagements() {
           <h3>Why Our Engagement Models Work</h3>
 
           <div className="why-modern-grid">
+            <div className="why-pill">Scalable partner models</div>
             <div className="why-pill">No long-term lock-in</div>
-            <div className="why-pill">Startup-friendly pricing</div>
             <div className="why-pill">Scale up or down anytime</div>
-            <div className="why-pill">Direct access to senior engineers</div>
+            <div className="why-pill">Direct access to senior architects</div>
             <div className="why-pill">Clear deliverables & milestones</div>
-            <div className="why-pill">Predictable monthly costs</div>
+            <div className="why-pill">Predictable monthly engagement</div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="cta-modern">
-        <h3>Which model fits your startup?</h3>
+        <h3>Which model fits your organization?</h3>
         <p>
           Not sure which engagement model is right for you?
-          Let’s discuss your goals and find the perfect fit.
+          Let’s discuss your platform goals and find the perfect architectural fit.
         </p>
         <Link to="/#services" className="btn">
           Explore All Services

@@ -40,15 +40,15 @@ export default function Products() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge">🚀 Our Product Suite</span>
-                        <h1>Intelligence-Driven <br />Solutions for Business</h1>
+                        <span className="hero-badge">🚀 Our Platform Suite</span>
+                        <h1>Intelligence-Driven <br />Enterprise Platforms</h1>
                         <p>
-                            CogniVectra develops cutting-edge products designed to solve complex
-                            challenges in retail, enterprise operations, and AI orchestration.
+                            CogniVectra develops production-ready platforms designed to solve
+                            complex challenges in healthcare, retail, and enterprise AI orchestration.
                         </p>
                         <div className="hero-cta">
-                            <a href="#steward" className="btn">Explore Products</a>
-                            <Link to="/contact" className="btn-outline">Inquire for Custom</Link>
+                            <a href="#steward" className="btn">Explore Platforms</a>
+                            <Link to="/contact" className="btn-outline">Inquire for Custom Deployment</Link>
                         </div>
                     </motion.div>
 
@@ -235,8 +235,8 @@ export default function Products() {
                     className="section-header text-center"
                     {...fadeInUp}
                 >
-                    <h3>More Products in Pipeline</h3>
-                    <p>We are constantly innovating to bring the power of AI to more industries.</p>
+                    <h3>Additional Enterprise Platforms</h3>
+                    <p>We are constantly innovating to bring production-ready AI to more sectors.</p>
                 </motion.div>
 
                 <div className="services-modern-grid">
@@ -275,9 +275,9 @@ export default function Products() {
             <section className="cta-modern">
                 <div className="container text-center">
                     <motion.div {...fadeInUp}>
-                        <h3>Have a product idea you want to build?</h3>
+                        <h3>Have a platform challenge you want to solve?</h3>
                         <p className="mb-8">
-                            We partner with founders to turn innovative concepts into market-ready products.
+                            We partner with technical leaders to turn complex requirements into market-leading enterprise platforms.
                         </p>
                         <Link to="/contact" className="btn">
                             Discuss Your Project

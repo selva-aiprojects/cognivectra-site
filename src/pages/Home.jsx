@@ -55,15 +55,15 @@ export default function Home() {
             animate="animate"
             variants={staggerContainer}
           >
-            <motion.span variants={fadeInUp} className="hero-badge">Startup-Grade Engineering Excellence</motion.span>
-            <motion.h1 variants={fadeInUp}>Build Faster. <br />Scale Smarter. <br />Automate Everything.</motion.h1>
+            <motion.span variants={fadeInUp} className="hero-badge">Enterprise-Grade Architecture</motion.span>
+            <motion.h1 variants={fadeInUp}>Enterprise GenAI and Healthcare Platforms <br />Ready for Deployment</motion.h1>
             <motion.p variants={fadeInUp}>
-              CogniVectra helps startups design resilient cloud platforms,
-              automate workflows with AI, and execute technology strategy with Fractional CTO expertise.
+              Cognivectra builds production-ready EMR systems, multi-tenant SaaS platforms,
+              and enterprise GenAI solutions designed for healthcare, education, and modern enterprises.
             </motion.p>
             <motion.div variants={fadeInUp} className="hero-cta">
-              <Link to="/contact" className="btn">Start Strategy Session</Link>
-              <Link to="/services" className="btn-outline">Explore Services</Link>
+              <button onClick={() => handleDemoRequest('general')} className="btn">Request Demo</button>
+              <Link to="/products" className="btn-outline">View Platforms</Link>
             </motion.div>
           </motion.div>
 
@@ -80,12 +80,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TRUST BAR */}
+      {/* PLATFORM CREDIBILITY STRIP */}
       <motion.section
         className="trust-modern"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(2, 6, 23, 0.8)' }}
+      >
+        <div className="container" style={{ textAlign: 'center', padding: '1.5rem 0' }}>
+          <h4 style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--accent-primary)', marginBottom: '1.5rem' }}>Production-Ready Enterprise Platforms</h4>
+          <div className="trust-modern-inner" style={{ justifyContent: 'space-around', gap: '2rem' }}>
+            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>MedFlow EMR</strong> AI-powered healthcare platform</div>
+            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>StoreAI</strong> Enterprise GenAI platform</div>
+            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>EduPortal</strong> AI-powered education platform</div>
+            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>StewardPlatform</strong> Multi-tenant SaaS foundation</div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* TRUST BAR (LEGACY STATS) */}
+      <motion.section
+        className="trust-modern"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        style={{ paddingTop: 0 }}
       >
         <div className="trust-modern-inner">
           <div><strong>25+</strong>Years Experience</div>
@@ -105,11 +125,11 @@ export default function Home() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="hero-badge">Strategic Engineering</span>
-          <h3>What We Do</h3>
+          <span className="hero-badge">Enterprise Strategy</span>
+          <h3>Engineering Excellence</h3>
           <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
-            We provide high-impact engineering and strategic leadership to help your startup
-            outpace the competition with resilient, automated technology.
+            We provide high-impact enterprise platform engineering and strategic leadership
+            to help organizations deploy resilient, GenAI-powered systems at scale.
           </p>
         </motion.div>
 
@@ -121,10 +141,10 @@ export default function Home() {
           viewport={{ once: true }}
         >
           {[
-            { icon: "🚀", title: "Fractional CTO", desc: "Executive-level technical leadership and strategy to align technology with your business goals.", highlights: ["Technical Roadmap Planning", "Team Mentorship & Growth", "Technology Stack Selection"] },
-            { icon: "⛓️", title: "DevOps Automation", desc: "Infrastructure as Code and CI/CD pipelines that enable your team to ship code safely and at scale.", highlights: ["Cloud-Native Migration", "Kubernetes Orchestration", "Infrastructure Hardening"] },
-            { icon: "🧠", title: "AI Orchestration", desc: "Integrating advanced AI workflows to automate repetitive tasks and create intelligent products.", highlights: ["LLM Integration", "Process Automation", "AI-First User Experiences"] },
-            { icon: "💎", title: "SaaS Foundations", desc: "Building the core architecture for your SaaS product that is secure, multi-tenant, and highly scalable.", highlights: ["Multi-tenant Architecture", "API Design & Ecosystem", "Global Edge Distribution"] }
+            { icon: "🚀", title: "Enterprise Strategy", desc: "Executive-level technical leadership and architecture to align technology with your enterprise goals.", highlights: ["Strategic Roadmap Planning", "Platform Governance", "Technology Stack Selection"] },
+            { icon: "⛓️", title: "Cloud Scale Architecture", desc: "Cloud-native infrastructure and CI/CD pipelines that enable your organization to scale safely.", highlights: ["Enterprise Cloud Migration", "Kubernetes Orchestration", "Security Hardening"] },
+            { icon: "🧠", title: "GenAI Integration", desc: "Integrating production-ready GenAI workflows to automate enterprise tasks and create intelligent systems.", highlights: ["Enterprise LLM Deployment", "Process Automation", "AI-First Architectures"] },
+            { icon: "💎", title: "Multi-tenant SaaS", desc: "Building the core foundation for your SaaS products that is secure, multi-tenant, and enterprise-grade.", highlights: ["Scalable SaaS Architecture", "API Ecosystem Design", "Global Edge Distribution"] }
           ].map((service, i) => (
             <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel">
               <div className="service-icon-wrapper">{service.icon}</div>
@@ -146,10 +166,10 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <span className="hero-badge">Our Innovation</span>
-          <h3>Intelligence-Driven Products</h3>
+          <span className="hero-badge">Enterprise Platforms</span>
+          <h3>Production-Ready Platforms</h3>
           <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
-            Beyond services, we build proprietary AI products that solve real-world business challenges.
+            We have already built and deployed enterprise-grade systems for healthcare, retail, and education.
           </p>
         </motion.div>
 
@@ -158,38 +178,50 @@ export default function Home() {
             className="service-modern-card glass-panel"
             whileHover={{ y: -5 }}
           >
-            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Featured</span>
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Production Ready</span>
             <h4>StoreAI</h4>
-            <p>AI-powered retail management system with predictive analytics and real-time inventory optimization.</p>
+            <p>Enterprise GenAI platform for retail management with predictive analytics and multi-tenant architecture.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-              <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <Link to="/contact?product=storeai" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }} onClick={(e) => { e.preventDefault(); handleDemoRequest('storeai'); }}>
+              <Link to="/products/storeai" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <button onClick={() => handleDemoRequest('storeai')} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
                 Request Demo
-              </Link>
+              </button>
             </div>
           </motion.div>
           <motion.div
             className="service-modern-card glass-panel"
             whileHover={{ y: -5 }}
           >
-            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Beta</span>
-            <h4>OmniCore</h4>
-            <p>Unified enterprise orchestration platform for cross-departmental AI automation and data flow.</p>
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Production Ready</span>
+            <h4>EduPortal</h4>
+            <p>AI-powered education platform designed for enterprise scale with multi-tenant deployment capabilities.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <button onClick={() => handleDemoRequest('omnicore')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+              <button onClick={() => handleDemoRequest('eduportal')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
             </div>
           </motion.div>
           <motion.div
             className="service-modern-card glass-panel"
             whileHover={{ y: -5 }}
           >
-            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Rolling Out</span>
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Live Deployment</span>
             <h4>MedFlow EMR</h4>
-            <p>Multi-tenant EMR platform live with Kidz-Clinic. Rapidly onboarding new healthcare providers this week.</p>
+            <p>Enterprise healthcare EMR platform with GenAI-enabled capabilities for production environments.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-              <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <Link to="/products/medflow" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
               <button onClick={() => handleDemoRequest('medflow')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+            </div>
+          </motion.div>
+          <motion.div
+            className="service-modern-card glass-panel"
+            whileHover={{ y: -5 }}
+          >
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Enterprise Core</span>
+            <h4>StewardPlatform</h4>
+            <p>Foundational multi-tenant SaaS architecture for building secure, scalable enterprise systems.</p>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Link to="/products/stocksteward" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <button onClick={() => handleDemoRequest('steward')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
             </div>
           </motion.div>
         </div>
@@ -265,7 +297,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* LEADERSHIP PREVIEW */}
+      {/* ENTERPRISE ARCHITECTURE SECTION */}
+      <section className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.3)' }}>
+        <motion.div
+          className="section-header text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <span className="hero-badge">Enterprise Standards</span>
+          <h3>Enterprise-Grade Architecture</h3>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
+            Our platforms are built on a foundation of security, scalability, and modern AI integration architecture.
+          </p>
+        </motion.div>
+
+        <div className="services-modern-grid">
+          {[
+            { title: "Multi-tenant SaaS Architecture", desc: "Securely scale to thousands of organizations with isolated data environments and unified management.", icon: "🏢" },
+            { title: "Secure Cloud-Native Deployment", desc: "Automated provisioning and orchestration across major cloud providers with zero-trust security.", icon: "🛡️" },
+            { title: "Enterprise Scalability", desc: "Systems designed to handle extreme transaction volumes and large-scale data processing effortlessly.", icon: "📈" },
+            { title: "GenAI Integration Architecture", desc: "Production-ready pipelines for LLM orchestration, RAG, and agentic workflows.", icon: "🤖" },
+            { title: "Healthcare Platform Expertise", desc: "HIPAA-compliant data handling and interoperability standards for reliable healthcare delivery.", icon: "🏥" }
+          ].map((item, i) => (
+            <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel" style={{ padding: '2rem' }}>
+              <div className="service-icon-wrapper" style={{ fontSize: '2rem', marginBottom: '1rem' }}>{item.icon}</div>
+              <h4>{item.title}</h4>
+              <p style={{ fontSize: '0.95rem' }}>{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ABOUT SECTION REWRITE */}
       <section className="services-modern">
         <div className="hero-modern-inner" style={{ padding: 0 }}>
           <motion.div
@@ -274,13 +338,18 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <span className="hero-badge">Expert Leadership</span>
-            <h3>25+ Years of Industry Excellence</h3>
+            <span className="hero-badge">Who We Are</span>
+            <h3>Enterprise AI & Healthcare Platform Engineering</h3>
             <p>
-              Our leadership team brings decades of experience in building high-scale service
-              architectures and market-winning products.
+              Cognivectra is an enterprise AI and healthcare platform engineering company
+              specializing in production-ready EMR systems, multi-tenant SaaS platforms,
+              and enterprise GenAI integration.
             </p>
-            <Link to="/leadership" className="btn">Meet Our Leadership</Link>
+            <p>
+              The company focuses on building secure, scalable platforms
+              designed for real-world enterprise deployment.
+            </p>
+            <Link to="/who-we-are" className="btn">Learn More About Us</Link>
           </motion.div>
           <motion.div
             className="hero-visual"
@@ -288,9 +357,9 @@ export default function Home() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            <div className="service-modern-card glass-panel" style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem', color: 'var(--accent-primary)', fontWeight: '800' }}>25+</div>
-              <p style={{ opacity: 0.8 }}>Years Experience</p>
+            <div className="service-modern-card glass-panel" style={{ textAlign: 'center', padding: '3rem' }}>
+              <div style={{ fontSize: '3.5rem', color: 'var(--accent-primary)', fontWeight: '800' }}>25+</div>
+              <p style={{ opacity: 0.8, fontSize: '1.1rem' }}>Years of Industry Leadership</p>
             </div>
           </motion.div>
         </div>
@@ -307,13 +376,18 @@ export default function Home() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h3>Ready to accelerate your product roadmap?</h3>
+          <h3>Ready to Deploy Enterprise GenAI or Healthcare Platform?</h3>
           <p className="mb-8">
-            Get a 90-day execution plan in a free strategy session.
+            Connect with our architects to discuss your production-ready deployment strategy.
           </p>
-          <Link to="/contact" className="btn">
-            Start Free Strategy Call
-          </Link>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={() => handleDemoRequest('general')} className="btn">
+              Request Demo
+            </button>
+            <Link to="/contact" className="btn-outline" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              Book Strategy Call
+            </Link>
+          </div>
         </motion.div>
       </section>
       {/* Demo Request Modal */}
