@@ -99,7 +99,8 @@ export default function Admin() {
           <p style={{ opacity: 0.7 }}>Business performance & Operational insights at a glance.</p>
         </div>
         <div className="admin-actions" style={{ display: 'flex', gap: '1rem' }}>
-          <Link to="/admin/blog?new=1" className="btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ Create Post</Link>
+          <Link to="/admin/omni" className="btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem', background: 'var(--accent-primary)' }}>🚀 Social Publisher</Link>
+          <Link to="/admin/blog?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ Create Post</Link>
           <Link to="/admin/jobs?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ New Job</Link>
         </div>
       </header>

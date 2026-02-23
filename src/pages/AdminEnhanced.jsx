@@ -135,6 +135,16 @@ export default function AdminEnhanced() {
       return;
     }
 
+    // Confirmation dialog
+    const confirmMsg = `Initiate deployment of "${post.title}" to: ${platformsToUse.join(', ')}?`;
+    if (!window.confirm(confirmMsg)) return;
+
+    // Instagram check
+    if (platformsToUse.includes('instagram') && !post.image_url) {
+      const proceed = window.confirm("⚠️ Instagram requires an image. No image URL detected for this post. A placeholder will be used. Proceed anyway?");
+      if (!proceed) return;
+    }
+
     setPublishingTo(prev => ({ ...prev, [post.id]: true }));
     setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }));
 
@@ -147,24 +157,28 @@ export default function AdminEnhanced() {
     setPublishStatus(prev => ({ ...prev, [post.id]: initialStatus }));
 
     try {
-      const { error } = await supabase
-        .from("posts")
-        .update({
-          status: "published",
-          published_at: new Date().toISOString(),
-          published_platforms: platformsToUse
-        })
-        .eq("id", post.id);
+      // 1. Publish to Blog (Database status change)
+      if (platformsToUse.includes('blog')) {
+        const { error } = await supabase
+          .from("posts")
+          .update({
+            status: "published",
+            published_at: new Date().toISOString(),
+            published_platforms: platformsToUse
+          })
+          .eq("id", post.id);
 
-      if (error) throw error;
-
-      // Publish to social media
-      if (socials.length > 0) {
-        await publishToSocialMedia(post, socials);
+        if (error) throw error;
       }
 
-      // Refresh posts and social media status
-      await fetchPosts();
+      // 2. Publish to social media
+      if (socials.length > 0) {
+        await publishToSocialMedia(post, socials);
+      } else {
+        // If only blog was selected, we are done
+        alert(`Successfully published "${post.title}" to Blog.`);
+        await fetchPosts();
+      }
 
       // Clear status after a delay
       setTimeout(() => {
@@ -173,7 +187,7 @@ export default function AdminEnhanced() {
           delete updated[post.id];
           return updated;
         });
-      }, 5000);
+      }, 8000);
     } catch (err) {
       alert("Publish failed: " + err.message);
     } finally {
