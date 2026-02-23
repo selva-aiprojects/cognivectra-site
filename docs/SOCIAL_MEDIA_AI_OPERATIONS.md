@@ -56,4 +56,20 @@ Since direct API approval was rejected, we use a **Make.com** bridge.
 
 ## 🛠️ Maintenance & Token Refresh
 - **LinkedIn Bridge**: No token refresh needed (Make.com handles it).
-- **Meta Tokens**: Expire every 60 days. Set a reminder to regenerate long-lived tokens via Facebook Developer portal.
+---
+
+## 🚀 Outreach & Growth Strategy (Omni-Channel)
+
+The platform is designed to reach customers across multiple touchpoints:
+
+### 📡 Active Channels
+*   **Tactical Blog**: High-trust thought leadership hosted on `cognivectra.com`.
+*   **LinkedIn Bridge**: Automated B2B reach using the "Smart Bridge" Make.com flow.
+*   **Meta Engine**: Automated B2C/Visual reach to Facebook and Instagram.
+
+### 📈 Future Expansion Options
+To further scale customer acquisition, the following integrations are recommended:
+1.  **Email Newsletters**: Connect the Demo Request database to **Resend** or **SendGrid** for automated blog digests.
+2.  **SEO Syndication**: Push posts to **Medium.com** or **Dev.to** with canonical links to build domain authority.
+3.  **Google Business**: Automate updates to Google Maps/Search results for local Consulting visibility.
+4.  **Community Webhooks**: Send automated alerts to Slack/Discord communities upon new publication.
