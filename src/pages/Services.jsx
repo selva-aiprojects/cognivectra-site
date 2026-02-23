@@ -22,12 +22,12 @@ export default function Services() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge">⚙️ Startup-Grade Engineering</span>
+            <span className="hero-badge">⚙️ Enterprise-Grade Architecture</span>
             <h1>Services Built for <br />Speed, Scale & Stability</h1>
             <p>
-              CogniVectra delivers modular, enterprise-grade services that help
-              startups build intelligent platforms, automate operations, and
-              scale without technical debt.
+              CogniVectra delivers modular, production-ready systems that help
+              enterprises build intelligent platforms, automate operations, and
+              scale with enterprise-grade reliability.
             </p>
             <div className="hero-cta">
               <Link to="/contact" className="btn">Book Strategy Call</Link>
@@ -62,8 +62,8 @@ export default function Services() {
           <span className="hero-badge">Engineering Excellence</span>
           <h3>Our Core Services</h3>
           <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
-            Modular, scalable, and secure engineering services designed to help founders
-            bring their vision to life with enterprise-grade stability.
+            Modular, scalable, and secure engineering services designed to help
+            organizations deploy their vision with enterprise-grade stability.
           </p>
         </motion.div>
 
@@ -123,13 +123,14 @@ export default function Services() {
       <section className="cta-modern">
         <div className="container text-center">
           <motion.div {...fadeInUp}>
-            <h3>Ready to build your startup foundation?</h3>
+            <h3>Ready to build your enterprise platform foundation?</h3>
             <p className="mb-8">
-              Book a free strategy session and get a 90-day execution plan.
+              Connect with our architects to discuss your production-ready deployment strategy.
             </p>
-            <Link to="/contact" className="btn">
-              Start Free Strategy Call
-            </Link>
+            <div className="hero-cta" style={{ justifyContent: 'center' }}>
+              <button onClick={() => { }} className="btn">Request Demo</button>
+              <Link to="/contact" className="btn-outline">Start Strategy Call</Link>
+            </div>
           </motion.div>
         </div>
       </section>

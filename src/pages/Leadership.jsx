@@ -144,9 +144,12 @@ export default function Leadership() {
                         <p className="mb-8">
                             Leverage our decades of experience to accelerate your journey.
                         </p>
-                        <Link to="/contact" className="btn">
-                            Get in Touch
-                        </Link>
+                        <div className="hero-cta" style={{ justifyContent: 'center' }}>
+                            <button onClick={() => { }} className="btn">Request Demo</button>
+                            <Link to="/contact" className="btn-outline">
+                                View Platforms
+                            </Link>
+                        </div>
                     </motion.div>
                 </div>
             </section>

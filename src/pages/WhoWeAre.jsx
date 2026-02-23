@@ -27,21 +27,21 @@ export default function WhoWeAre() {
             <span className="hero-badge">👥 About CogniVectra</span>
 
             <h1>
-              Startup-Focused <br />
-              Technology Partners
+              Enterprise Platform <br />
+              Engineering Partners
             </h1>
 
             <p>
-              CogniVectra Innovations is a startup-focused technology partner
-              specializing in automation, cloud foundations, and SaaS building
-              blocks that enable founders to move fast without compromising
-              reliability.
+              CogniVectra Innovations is an enterprise AI and healthcare platform
+              engineering partner specializing in production-ready systems,
+              multi-tenant foundations, and GenAI building blocks that enable
+              organizations to deploy at scale without compromising reliability.
             </p>
 
             <p style={{ margin: "0 auto 3rem", opacity: 0.8 }}>
               We operate at the intersection of systems engineering, cloud,
-              data, and applied intelligence — helping startups modernize
-              operations and build digital platforms investors trust.
+              data, and applied intelligence — helping enterprises modernize
+              operations and build digital platforms that drive production-ready results.
             </p>
 
             <div className="hero-cta">
@@ -54,7 +54,7 @@ export default function WhoWeAre() {
             </div>
 
             <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
-              Pragmatic · Sustainable · Built for startups
+              Pragmatic · Sustainable · Enterprise-Ready
             </p>
           </motion.div>
 
@@ -65,7 +65,7 @@ export default function WhoWeAre() {
             transition={{ duration: 0.8 }}
           >
             <div className="industry-visual glass-panel">
-              <img src={missionHero} alt="Startup-Focused Technology Partners" className="w-full h-full object-cover rounded-xl" />
+              <img src={missionHero} alt="Enterprise Platform Engineering Partners" className="w-full h-full object-cover rounded-xl" />
             </div>
           </motion.div>
         </div>
@@ -92,9 +92,9 @@ export default function WhoWeAre() {
           <div className="service-modern-card">
             <h4>🎯 Our Approach</h4>
             <p>
-              We start with your business model and runway — then
-              design automation and cloud foundations that match your current
-              stage and future growth.
+              We start with your enterprise architecture and business goals — then
+              design automation and cloud foundations that match your scale
+              and future growth.
             </p>
             <p>
               Every engagement blends architecture, implementation,
@@ -123,7 +123,7 @@ export default function WhoWeAre() {
               <h4>Cloud & Platform Foundations</h4>
             </div>
             <ul>
-              <li>Startup-ready cloud landing zones</li>
+              <li>Enterprise-grade cloud landing zones</li>
               <li>Cloud-native and hybrid SaaS architecture</li>
               <li>Multi-environment setups with security</li>
               <li>Data and observability integration</li>
@@ -178,12 +178,12 @@ export default function WhoWeAre() {
           <div className="service-modern-card">
             <div className="industry-header">
               <img src={advisoryImage} alt="Advisory" className="industry-icon" />
-              <h4>Fractional CTO & Advisory</h4>
+              <h4>Strategic Advisory & Architecture</h4>
             </div>
             <ul>
               <li>Technology roadmap planning</li>
               <li>Architecture reviews</li>
-              <li>Fractional CTO leadership</li>
+              <li>Strategic technology leadership</li>
             </ul>
             <div className="industry-visual" style={{ marginTop: '1.5rem' }}>
               <img

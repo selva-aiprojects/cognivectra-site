@@ -16,19 +16,19 @@ export default function About() {
       {/* HERO */}
       <section className="hero-modern">
         <div className="hero-modern-inner">
-          <motion.div 
+          <motion.div
             className="hero-copy"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
             <span className="hero-badge">About CogniVectra</span>
-            <h1>Building Foundations <br /> for Modern Startups</h1>
+            <h1>Building Foundations <br /> for Modern Enterprises</h1>
 
             <p>
               We are a team of experienced engineers and platform specialists
-              helping startups build reliable, scalable foundations without
-              the overhead of large teams.
+              helping organizations build reliable, scalable foundations with
+              production-ready enterprise systems.
             </p>
 
             <div className="hero-cta">
@@ -41,11 +41,11 @@ export default function About() {
             </div>
 
             <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
-              Deep Technical Expertise · Practical Business Impact · Startup Speed
+              Deep Technical Expertise · Practical Business Impact · Enterprise Quality
             </p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="hero-visual"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -60,15 +60,15 @@ export default function About() {
 
       {/* EXPERTISE GRID */}
       <section className="services-modern">
-        <motion.div 
-          className="section-header" 
+        <motion.div
+          className="section-header"
           style={{ textAlign: "center", marginBottom: "5rem" }}
           {...fadeInUp}
         >
           <h3>Our Strategic Expertise</h3>
           <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
-            We combine deep technical mastery with startup-specific execution to ensure
-            your platform supports your growth from MVP to scale.
+            We combine deep technical mastery with enterprise-grade execution to ensure
+            your platform supports your growth from deployment to global scale.
           </p>
         </motion.div>
 
@@ -79,7 +79,7 @@ export default function About() {
             { icon: "🤖", title: "Process Automation", desc: "Automating repetitive workflows to allow your team to focus on building great products.", highlights: ["Low-code / No-code Solutions", "Custom Data Pipelines", "Workflow Orchestration"] },
             { icon: "📊", title: "Data & Analytics", desc: "Robust analytics platforms providing real-time business insights for data-driven decisions.", highlights: ["Data Warehouse Design", "Real-time Dashboards", "Business Intelligence"] }
           ].map((service, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               className="service-modern-card glass-panel"
               initial={{ opacity: 0, y: 20 }}
@@ -104,11 +104,11 @@ export default function About() {
           <motion.h3 {...fadeInUp}>Our Core Values</motion.h3>
           <div className="why-modern-grid">
             {[
-              { icon: "🎯", title: "Excellence", desc: "Enterprise-grade quality with startup speed and agility." },
+              { icon: "🎯", title: "Excellence", desc: "Enterprise-grade quality with rapid deployment and scalability." },
               { icon: "🤝", title: "Partnership", desc: "We work as an extension of your team, not just consultants." },
               { icon: "🚀", title: "Innovation", desc: "Cutting-edge solutions for unique business challenges." }
             ].map((value, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 className="service-modern-card glass-panel"
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -131,7 +131,7 @@ export default function About() {
             <h3>Let’s Build Something Amazing Together</h3>
             <p className="mb-8">
               Ready to discuss how we can help you build the technical foundation
-              for your startup’s success?
+              for your organization’s success?
             </p>
             <Link to="/contact" className="btn">
               Get in Touch

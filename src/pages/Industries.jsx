@@ -15,9 +15,9 @@ import industriesHero from "../assets/generated/hero-industries-ultra-8k.png";
 export default function Industries() {
   const industries = [
     {
-      title: "SaaS & Product Startups",
+      title: "Enterprise SaaS & Platforms",
       description:
-        "From MVP to scale — cloud foundations, CI/CD, observability, and platform engineering for subscription businesses.",
+        "Scalable cloud foundations, CI/CD, observability, and platform engineering for mission-critical multi-tenant systems.",
       features: [
         "Multi-tenant architecture design",
         "Scalable data models and APIs",
@@ -103,15 +103,15 @@ export default function Industries() {
             </h1>
 
             <p>
-              CogniVectra works with SaaS, AI-native, and data-driven startups,
+              CogniVectra works with enterprises building AI-native and data-driven platforms,
               as well as regulated industries where reliability, security,
-              and compliance matter.
+              and compliance are non-negotiable.
             </p>
 
             <div className="hero-cta">
-              <Link to="/contact" className="btn">
-                Book Strategy Call
-              </Link>
+              <button onClick={() => { }} className="btn">
+                Request Demo
+              </button>
               <Link to="/#services" className="btn-outline">
                 View Services
               </Link>
@@ -179,7 +179,7 @@ export default function Industries() {
             <div className="why-pill">AI-native platforms</div>
             <div className="why-pill">Cloud-native foundations</div>
             <div className="why-pill">Scalable automation</div>
-            <div className="why-pill">Startup-speed execution</div>
+            <div className="why-pill">Rapid enterprise deployment</div>
           </div>
         </div>
       </section>
