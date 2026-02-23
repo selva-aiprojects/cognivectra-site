@@ -8,21 +8,35 @@ export default function ResetPassword() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [initializing, setInitializing] = useState(true);
     const [message, setMessage] = useState({ type: '', text: '' });
     const navigate = useNavigate();
 
+    const [isValidSession, setIsValidSession] = useState(false);
+
     useEffect(() => {
-        // Check if we have a recovery session
-        const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                // If no session, it might be an invalid or expired link
-                // But often Supabase handles the session via the hash fragment automatically
-                console.log("Checking for active recovery session...");
+        // Suppress session error messages for a few seconds to let Supabase process the hash
+        const timer = setTimeout(() => {
+            setInitializing(false);
+            if (!isValidSession && !window.location.hash.includes('access_token')) {
+                setMessage({ type: 'error', text: 'Operational error: No active recovery session. Please request a new link.' });
             }
+        }, 3000);
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log("🔑 Auth Event:", event);
+            if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
+                setIsValidSession(true);
+                setInitializing(false);
+                setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+            clearTimeout(timer);
         };
-        checkSession();
-    }, []);
+    }, [isValidSession]);
 
     async function handleReset(e) {
         e.preventDefault();
@@ -41,13 +55,19 @@ export default function ResetPassword() {
         setMessage({ type: '', text: '' });
 
         try {
+            // Re-verify session before update
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                throw new Error("Session expired or invalid. Please request a new recovery packet.");
+            }
+
             const { error } = await supabase.auth.updateUser({
                 password: password
             });
 
             if (error) throw error;
 
-            setMessage({ type: 'success', text: 'Access updated. Re-routing to Command Portal...' });
+            setMessage({ type: 'success', text: 'Access updated. Syncing with Command Portal...' });
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
@@ -56,6 +76,18 @@ export default function ResetPassword() {
         } finally {
             setLoading(false);
         }
+    }
+
+    if (initializing) {
+        return (
+            <div className="login-page">
+                <div className="login-grid" />
+                <div className="login-card glass-panel" style={{ textAlign: 'center', padding: '4rem' }}>
+                    <FaSpinner className="spin" style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--accent-primary)' }} />
+                    <p>Authenticating recovery session...</p>
+                </div>
+            </div>
+        );
     }
 
     return (

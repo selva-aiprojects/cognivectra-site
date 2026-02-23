@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { supabase } from "./lib/supabase";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
@@ -64,6 +65,14 @@ export default function App() {
       setIsDemoModalOpen(true);
     }
 
+    // Global Auth Logic: Handle Password Recovery redirections
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        console.log("🚀 Global Intercept: Password Recovery event detected.");
+        navigate("/reset-password");
+      }
+    });
+
     if (location.hash) {
       const el = document.getElementById(location.hash.substring(1));
       if (el) {
@@ -74,7 +83,10 @@ export default function App() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [location.pathname, location.hash, location.search]);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [location.pathname, location.hash, location.search, navigate]);
 
   const showChatbot = true;
 
