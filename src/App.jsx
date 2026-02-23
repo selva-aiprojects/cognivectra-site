@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 
@@ -49,6 +49,8 @@ export default function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [demoPlatform, setDemoPlatform] = useState('general');
   const location = useLocation();
+  const navigate = useNavigate();
+
 
   /* Scroll to top/section on route change */
   useEffect(() => {
