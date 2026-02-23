@@ -1,16 +1,20 @@
-# React + Vite
+# CogniVectra Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium B2B SaaS marketing website and business management platform for automated enterprise operations.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. `npm install`
+2. `npm run dev`
 
-## React Compiler
+## 📚 Documentation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+We have consolidated our documentation into three core manuals:
 
-## Expanding the ESLint configuration
+- [🤖 **Social Media & AI Operations**](./docs/SOCIAL_MEDIA_AI_OPERATIONS.md): How to use the AI content engine and manage social media bridges.
+- [🏗️ **Architecture & System Design**](./docs/ARCHITECTURE_SYSTEM_DESIGN.md): Technical stack, data models, and business module breakdowns.
+- [👨‍💻 **Developer Guide**](./docs/DEVELOPER_GUIDE.md): Local setup, testing commands, and troubleshooting.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+*This project uses React + Vite with Supabase backend.*
