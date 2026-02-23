@@ -15,11 +15,26 @@ export default function ResetPassword() {
     const [isValidSession, setIsValidSession] = useState(false);
 
     useEffect(() => {
+        // Immediate check for existing session (in case of redirect)
+        const checkInitialSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                console.log("✨ Initial active session detected.");
+                setIsValidSession(true);
+                setInitializing(false);
+                setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
+            }
+        };
+        checkInitialSession();
+
         // Suppress session error messages for a few seconds to let Supabase process the hash
         const timer = setTimeout(() => {
             setInitializing(false);
-            if (!isValidSession && !window.location.hash.includes('access_token')) {
-                setMessage({ type: 'error', text: 'Operational error: No active recovery session. Please request a new link.' });
+            if (!isValidSession) {
+                // Check if we are currently handling a hash to avoid premature error
+                if (!window.location.hash.includes('access_token')) {
+                    setMessage({ type: 'error', text: 'Operational error: No active recovery session. Please request a new link.' });
+                }
             }
         }, 3000);
 

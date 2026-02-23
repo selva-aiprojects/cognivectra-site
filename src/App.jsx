@@ -69,11 +69,20 @@ export default function App() {
 
     // Global Auth Logic: Handle Password Recovery redirections
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("🔔 App Auth Event:", event);
       if (event === "PASSWORD_RECOVERY") {
-        console.log("🚀 Global Intercept: Password Recovery event detected.");
+        console.log("🚀 Global Intercept: Password Recovery event detected via Event.");
         navigate("/reset-password");
       }
     });
+
+    // Manual Hash Intercept (Sometimes Snappier)
+    if (window.location.hash.includes('type=recovery') || window.location.hash.includes('access_token')) {
+      if (location.pathname !== '/reset-password') {
+        console.log("🚀 Global Intercept: Password Recovery detected via Hash.");
+        navigate("/reset-password");
+      }
+    }
 
     if (location.hash) {
       const el = document.getElementById(location.hash.substring(1));
