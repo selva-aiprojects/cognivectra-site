@@ -43,12 +43,16 @@ export default function Mission() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
+            style={{ paddingTop: 0 }} /* Align with the top of the text block */
           >
-            <div className="industry-visual glass-panel">
+            <div className="industry-visual glass-panel" style={{ background: 'transparent', border: 'none' }}>
               <img
                 src={missionVision}
                 alt="CogniVectra Mission"
-                className="w-full h-full object-cover rounded-xl"
+                className="w-full h-full object-contain rounded-xl"
+                style={{
+                  filter: 'drop-shadow(0 10px 30px rgba(99, 102, 241, 0.3))'
+                }}
               />
             </div>
           </motion.div>
