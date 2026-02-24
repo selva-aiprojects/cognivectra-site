@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
+import { FaSpinner } from 'react-icons/fa';
 import careersHero from "../assets/careers-hero.png";
 
 export default function Careers() {
@@ -175,8 +176,11 @@ export default function Careers() {
         return (
             <main>
                 <section className="hero-modern">
-                    <div className="hero-modern-inner" style={{ textAlign: 'center' }}>
-                        <h1>Loading Opportunities...</h1>
+                    <div className="hero-modern-inner">
+                        <div className="loading-container">
+                            <FaSpinner className="loading-spinner spin" />
+                            <p className="loading-text">Loading opportunities...</p>
+                        </div>
                     </div>
                 </section>
             </main>

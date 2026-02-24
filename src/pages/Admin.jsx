@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaBuilding, FaUserCheck, FaCode, FaChartBar, FaRocket, FaBriefcase, FaUsers, FaTasks, FaClock } from 'react-icons/fa';
+import { FaBuilding, FaUserCheck, FaCode, FaChartBar, FaRocket, FaBriefcase, FaUsers, FaTasks, FaClock, FaSpinner } from 'react-icons/fa';
 import AdminLayout from '../layouts/AdminLayout';
 
 export default function Admin() {
@@ -84,8 +84,9 @@ export default function Admin() {
   if (loading) {
     return (
       <AdminLayout>
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-          <div className="loader"></div>
+        <div className="loading-container">
+          <FaSpinner className="loading-spinner spin" />
+          <p className="loading-text">Loading dashboard...</p>
         </div>
       </AdminLayout>
     );

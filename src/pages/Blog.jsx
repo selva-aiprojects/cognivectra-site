@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { FaSpinner } from "react-icons/fa";
 import { supabase } from "../lib/supabase";
 import blogHero from "../assets/generated/hero-blog-8k.png";
 
@@ -79,12 +80,10 @@ export default function Blog() {
       {loading && (
         <section className="services-modern">
           <div className="services-modern-grid">
-
-            <div className="service-modern-card blog-loading">
-              <div className="blog-loading-icon">⏳</div>
-              <p>Loading insights…</p>
+            <div className="loading-card">
+              <FaSpinner className="loading-card-icon spin" />
+              <p className="loading-card-text">Loading insights...</p>
             </div>
-
           </div>
         </section>
       )}

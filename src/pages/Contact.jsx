@@ -114,7 +114,7 @@ export default function Contact() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="industry-visual glass-panel" style={{ padding: '1rem', border: '1px solid rgba(99, 102, 241, 0.2)' }}>
+            <div className="industry-visual glass-panel">
               <img src={heroContact} alt="Contact Us" className="w-full h-full object-cover rounded-xl" />
             </div>
           </motion.div>
