@@ -7,15 +7,26 @@ This document details the technical architecture and business management modules
 ## 🏛️ Core Architecture
 
 ### Tech Stack
-- **Frontend**: React (Vite) + Vanilla CSS
+- **Frontend**: React (Vite) + Vanilla CSS + Framer Motion
 - **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
-- **AI**: OpenAI GPT-4 (Content Generation)
+- **AI**: OpenAI GPT-4 & LangGraph/CrewAI (Agentic RAG)
 - **Bridge**: Make.com Webhooks (Social Media)
 
 ### System Components
+- **Neural Search (RAG)**: Global intelligent search engine using Supabase Edge Functions and local context fallbacks.
 - **Admin Dashboard**: Central hub for content review, social publishing, and business ops.
 - **Edge Functions**: Node.js/Deno functions for handling secure social media API calls.
 - **Client App**: High-performance landing pages and blog listing.
+
+---
+
+## 🛡️ Engineering Philosophy
+
+CogniVectra adheres to "Elite Growth" principles:
+- **Production-Ready Foundations**: Zero technical debt. Every component is senior-architected using modern, scalable patterns.
+- **IP Ownership**: Clients own 100% of the intellectual property. No black-box vendor lock-in.
+- **Security-First**: Integrated HIPAA-ready guardrails (MedFlow) and enterprise-grade authentication (Supabase).
+- **Agentic Efficiency**: Leveraging multi-agent AI (CrewAI/LangGraph) to automate complex operational workflows.
 
 ---
 

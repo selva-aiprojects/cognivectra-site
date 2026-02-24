@@ -14,8 +14,12 @@ const NeuralSearch = ({ isOpen, onClose }) => {
     const logo = "/cognivectra-dark-crop.png";
 
     useEffect(() => {
-        if (isOpen && inputRef.current) {
-            inputRef.current.focus();
+        if (isOpen) {
+            setQuery('');
+            setResult(null);
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
         }
     }, [isOpen]);
 
@@ -36,8 +40,11 @@ const NeuralSearch = ({ isOpen, onClose }) => {
             if (error) throw error;
 
             setResult(data.answer);
+            setHistory(prev => {
+                const newHistory = [query, ...prev.filter(q => q !== query).slice(0, 4)];
+                return newHistory;
+            });
             setIsSearching(false);
-            setHistory(prev => [query, ...prev.slice(0, 4)]);
         } catch (error) {
             console.warn('Neural Search Live Link unavailable, switching to Local Intelligence...', error);
 
@@ -48,7 +55,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic. Unlike legacy systems like Epic/Cerner, MedFlow is agile, cloud-native, and reduces provider onboarding from weeks to hours.',
                     'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence. It analyzes deep sentiment and liquidity, providing a higher fidelity of insight than standard trading bots.',
                     'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring—solving the latency and personalization issues typical of older LMS platforms.',
-                    'better': 'CogniVectra delivers senior-architected IP that YOU own. Most competitors provide black-box solutions or high-maintenance offshore code. We provide production-ready foundations with no technical debt and zero vendor lock-in.',
+                    'better': 'CogniVectra is better because we deliver senior-architected IP that YOU own. Most competitors provide black-box solutions or high-maintenance offshore code. We provide production-ready foundations with no technical debt and zero vendor lock-in.',
                     'price': 'Our modular Launch Packs for startups and Enterprise Retainers for scale save clients 30-50% on long-term operational costs by building correctly from day one. Inquire for a custom Quote.',
                     'customers': 'We partner with technical leaders at Kidz-Clinic and various North American EdTech/FinTech startups who require elite engineering foundations.',
                     'products': 'Our production-ready platforms include MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), and EduPortal (Education).'
@@ -59,10 +66,14 @@ const NeuralSearch = ({ isOpen, onClose }) => {
 
                 if (lowerQuery.includes('compare') || lowerQuery.includes('better') || lowerQuery.includes('competitor') || lowerQuery.includes('why')) {
                     bestContext = siteContext['better'] + " " + siteContext['price'];
-                } else if (lowerQuery.includes('tech') || lowerQuery.includes('stack')) {
+                } else if (lowerQuery.includes('fintech') || lowerQuery.includes('steward') || lowerQuery.includes('trading')) {
+                    bestContext = siteContext['steward'];
+                } else if (lowerQuery.includes('health') || lowerQuery.includes('medflow') || lowerQuery.includes('medical') || lowerQuery.includes('emr')) {
+                    bestContext = siteContext['medflow'];
+                } else if (lowerQuery.includes('edu') || lowerQuery.includes('learn') || lowerQuery.includes('portal')) {
+                    bestContext = siteContext['eduportal'];
+                } else if (lowerQuery.includes('cloud') || lowerQuery.includes('deployment') || lowerQuery.includes('infrastructure')) {
                     bestContext = siteContext['techstack'];
-                } else if (lowerQuery.includes('customer') || lowerQuery.includes('user') || lowerQuery.includes('who')) {
-                    bestContext = siteContext['customers'];
                 } else {
                     for (const [key, value] of Object.entries(siteContext)) {
                         if (lowerQuery.includes(key)) {
@@ -73,8 +84,11 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                 }
 
                 setResult(`[Local Analysis] ${bestContext}`);
+                setHistory(prev => {
+                    const newHistory = [query, ...prev.filter(q => q !== query).slice(0, 4)];
+                    return newHistory;
+                });
                 setIsSearching(false);
-                setHistory(prev => [query, ...prev.slice(0, 4)]);
             }, 800);
         }
     };
@@ -105,6 +119,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                 }}
             >
                 <motion.div
+                    id="neural-search-modal"
                     className="glass-panel"
                     initial={{ opacity: 0, y: -20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -121,8 +136,30 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     }}
                 >
                     {/* Brand Header */}
-                    <div style={{ padding: '1rem', display: 'flex', justifyContent: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                        <img src={logo} alt="CogniVectra" style={{ height: '24px', opacity: 0.8 }} />
+                    <div style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div style={{ width: '40px' }} /> {/* Spacer */}
+                        <img src={logo} alt="CogniVectra" style={{ height: '20px', opacity: 0.8 }} />
+                        <button
+                            id="neural-search-close"
+                            onClick={onClose}
+                            style={{
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                color: 'rgba(255,255,255,0.5)',
+                                height: '32px',
+                                width: '32px',
+                                borderRadius: '8px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={(e) => { e.target.style.background = 'rgba(255,255,255,0.1)'; e.target.style.color = 'white'; }}
+                            onMouseLeave={(e) => { e.target.style.background = 'rgba(255,255,255,0.05)'; e.target.style.color = 'rgba(255,255,255,0.5)'; }}
+                        >
+                            <FaTimes />
+                        </button>
                     </div>
 
                     {/* Search Area */}
@@ -130,6 +167,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                         <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                             <FaSearch style={{ color: 'var(--accent-primary)', fontSize: '1.2rem' }} />
                             <input
+                                id="neural-search-input"
                                 ref={inputRef}
                                 type="text"
                                 value={query}
@@ -186,15 +224,17 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                     <FaMagic style={{ color: 'var(--accent-primary)' }} />
                                     <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>AI Intelligence Brief</span>
                                 </div>
-                                <div style={{
-                                    fontSize: '1.1rem',
-                                    lineHeight: '1.7',
-                                    color: 'rgba(255,255,255,0.9)',
-                                    padding: '1.5rem',
-                                    background: 'rgba(99, 102, 241, 0.05)',
-                                    borderRadius: '16px',
-                                    border: '1px solid rgba(99, 102, 241, 0.1)'
-                                }}>
+                                <div
+                                    id="neural-search-result"
+                                    style={{
+                                        fontSize: '1.1rem',
+                                        lineHeight: '1.7',
+                                        color: 'rgba(255,255,255,0.9)',
+                                        padding: '1.5rem',
+                                        background: 'rgba(99, 102, 241, 0.05)',
+                                        borderRadius: '16px',
+                                        border: '1px solid rgba(99, 102, 241, 0.1)'
+                                    }}>
                                     {result}
                                 </div>
                                 <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>

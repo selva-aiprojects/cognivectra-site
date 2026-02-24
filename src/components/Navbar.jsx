@@ -280,6 +280,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
 
             {/* Neural Search Trigger */}
             <button
+              id="neural-search-trigger"
               onClick={() => {
                 trackEvent('cta_click', { cta_name: 'Neural Search', location: 'Navbar' });
                 setIsSearchOpen(true);
