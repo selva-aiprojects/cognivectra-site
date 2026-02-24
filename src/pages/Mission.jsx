@@ -45,13 +45,24 @@ export default function Mission() {
             transition={{ duration: 0.8 }}
             style={{ paddingTop: 0 }} /* Align with the top of the text block */
           >
-            <div className="industry-visual glass-panel" style={{ background: 'transparent', border: 'none' }}>
+            <div
+              className="industry-visual glass-panel"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                height: 'auto',        /* Override fixed height to prevent cropping */
+                minHeight: 'unset',    /* Clear global min-height */
+                maxHeight: 'unset',    /* Clear global max-height */
+                aspectRatio: '1 / 1'   /* Ensure square aspect ratio for the illustration */
+              }}
+            >
               <img
                 src={missionVision}
                 alt="CogniVectra Mission"
-                className="w-full h-full object-contain rounded-xl"
+                className="w-full h-auto object-contain rounded-xl"
                 style={{
-                  filter: 'drop-shadow(0 10px 30px rgba(99, 102, 241, 0.3))'
+                  filter: 'drop-shadow(0 10px 40px rgba(99, 102, 241, 0.4))',
+                  maxHeight: '100%'
                 }}
               />
             </div>
