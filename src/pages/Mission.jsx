@@ -40,20 +40,15 @@ export default function Mission() {
 
           <motion.div
             className="hero-visual"
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="industry-visual glass-panel" style={{ padding: '0.5rem', overflow: 'hidden' }}>
+            <div className="industry-visual glass-panel">
               <img
                 src={missionVision}
                 alt="CogniVectra Mission"
                 className="w-full h-full object-cover rounded-xl"
-                style={{
-                  filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.2))',
-                  maxWidth: '100%',
-                  display: 'block'
-                }}
               />
             </div>
           </motion.div>
