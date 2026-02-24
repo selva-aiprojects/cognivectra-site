@@ -7,6 +7,7 @@ import Footer from "./components/Footer.jsx";
 import Chatbot from "./components/Chatbot.jsx";
 import CursorTrail from "./components/CursorTrail.jsx";
 import DemoRequestModal from "./components/DemoRequestModal.jsx";
+import NeuralSearch from "./components/NeuralSearch.jsx";
 
 import Home from "./pages/Home.jsx";
 import Mission from "./pages/Mission.jsx";
@@ -47,6 +48,7 @@ import "./index.css";
 export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [demoPlatform, setDemoPlatform] = useState('general');
   const location = useLocation();
   const navigate = useNavigate();
@@ -108,7 +110,12 @@ export default function App() {
 
       {/* Navbar - Only show on non-admin routes */}
       {!location.pathname.startsWith('/admin') && !location.pathname.startsWith('/login') && (
-        <Navbar setIsChatOpen={setIsChatOpen} setIsDemoModalOpen={setIsDemoModalOpen} setDemoPlatform={setDemoPlatform} />
+        <Navbar
+          setIsChatOpen={setIsChatOpen}
+          setIsDemoModalOpen={setIsDemoModalOpen}
+          setDemoPlatform={setDemoPlatform}
+          setIsSearchOpen={setIsSearchOpen}
+        />
       )}
 
       {/* Main Content */}
@@ -164,6 +171,12 @@ export default function App() {
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
         platform={demoPlatform}
+      />
+
+      {/* Neural Search RAG Modal */}
+      <NeuralSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
       />
 
       {/* Analytics */}

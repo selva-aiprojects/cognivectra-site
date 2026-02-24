@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
+import { FaSearch } from "react-icons/fa";
+import { trackEvent } from "../lib/analytics";
 
 // Images
 import servicesImg from "../assets/generated/hero-services-ultra-8k.png";
@@ -12,7 +14,7 @@ import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 
 const logo = "/cognivectra-dark-crop.png";
 
-export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform }) {
+export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform, setIsSearchOpen }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -148,7 +150,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <NavLink to="/services" className={`nav-link-with-arrow ${activeMenu === 'services' ? 'active-dropdown' : ''}`}>
                 Services
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
@@ -166,7 +168,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <NavLink to="/products" className={`nav-link-with-arrow ${activeMenu === 'products' ? 'active-dropdown' : ''}`}>
                 Platforms
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
@@ -184,7 +186,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <NavLink to="/engagements" className={`nav-link-with-arrow ${activeMenu === 'engagements' ? 'active-dropdown' : ''}`}>
                 Engagements
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
@@ -202,7 +204,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <NavLink to="/results" className={`nav-link-with-arrow ${activeMenu === 'results' ? 'active-dropdown' : ''}`}>
                 Results
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
@@ -220,7 +222,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <NavLink to="/industries" className={`nav-link-with-arrow ${activeMenu === 'industries' ? 'active-dropdown' : ''}`}>
                 Industries
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
@@ -238,7 +240,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <NavLink to="/who-we-are" className={`nav-link-with-arrow ${activeMenu === 'about' ? 'active-dropdown' : ''}`}>
                 About
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
@@ -265,12 +267,43 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
 
             {/* AI Assistant */}
             <button
-              onClick={() => setIsChatOpen(true)}
+              onClick={() => {
+                trackEvent('cta_click', { cta_name: 'AI Assistant', location: 'Navbar' });
+                setIsChatOpen(true);
+              }}
               className="ai-chat-button"
               aria-label="Chat with AI Assistant"
             >
               AI Assistant
               <span className="ai-status-dot"></span>
+            </button>
+
+            {/* Neural Search Trigger */}
+            <button
+              onClick={() => {
+                trackEvent('cta_click', { cta_name: 'Neural Search', location: 'Navbar' });
+                setIsSearchOpen(true);
+              }}
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                height: '40px',
+                width: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: '0.5rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              className="nav-search-trigger"
+              aria-label="Open AI Neural Search"
+              onMouseEnter={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+              onMouseLeave={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
+            >
+              <FaSearch size={14} />
             </button>
           </nav>
 

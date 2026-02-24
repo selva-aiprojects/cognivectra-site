@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../lib/supabase";
 import chatIcon from "../assets/chat-icon.svg";
+import { trackEvent } from "../lib/analytics";
 
 const STORAGE_KEY = "cv_chat_state_v3";
 
@@ -92,6 +93,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   useEffect(() => {
     if (isOpen && !hasGreetedRef.current && messages.length === 0) {
       hasGreetedRef.current = true;
+      trackEvent('chat_initialized', { location: window.location.pathname });
       addBotMessage(
         "👋 Hello! I'm your virtual assistant. I can help you choose the right technology solution. What’s your name?"
       );
@@ -250,6 +252,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
         lead_score: score,
         source: "chatbot",
         messages,
+        referrer_info: document.referrer || "direct",
         updated_at: new Date().toISOString(),
       };
 
@@ -265,6 +268,11 @@ export default function Chatbot({ isOpen, setIsOpen }) {
         console.warn("Supabase Save Warning (Safe to ignore in demo):", error);
       } else {
         console.log("✅ Lead saved");
+        trackEvent('lead_generated', {
+          type: 'chatbot',
+          lead_score: score,
+          platform: data.platform || 'general'
+        }, 'CONVERSION');
       }
 
       // Safe Webhook
@@ -382,7 +390,10 @@ export default function Chatbot({ isOpen, setIsOpen }) {
 
               {msg.calendly && (
                 <div className="chat-options">
-                  <button onClick={() => (window.location.href = "/contact?tab=call")}>
+                  <button onClick={() => {
+                    trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Chatbot' });
+                    window.location.href = "/contact?tab=call";
+                  }}>
                     📅 Book Strategy Call
                   </button>
                   <button onClick={() => setIsOpen(false)}>No, thanks</button>

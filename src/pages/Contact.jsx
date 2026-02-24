@@ -142,14 +142,20 @@ export default function Contact() {
             <div className="contact-tabs">
               <button
                 className={`contact-tab ${activeTab === "message" ? "active" : ""}`}
-                onClick={() => setActiveTab("message")}
+                onClick={() => {
+                  setActiveTab("message");
+                  trackEvent('tab_switch', { tab: 'message', location: 'Contact' });
+                }}
               >
                 <FaPaperPlane /> Dispatch Message
               </button>
 
               <button
                 className={`contact-tab ${activeTab === "call" ? "active" : ""}`}
-                onClick={() => setActiveTab("call")}
+                onClick={() => {
+                  setActiveTab("call");
+                  trackEvent('tab_switch', { tab: 'call', location: 'Contact' });
+                }}
               >
                 <FaCalendarAlt /> Secure a Demo
               </button>
@@ -253,6 +259,7 @@ export default function Contact() {
                     href="https://calendly.com/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackEvent('cta_click', { cta_name: 'View Available Slots', platform: 'calendly', location: 'Contact' })}
                     className="btn"
                     style={{ padding: '1rem 3rem' }}
                   >
