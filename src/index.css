@@ -494,25 +494,17 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  position: relative;
 }
 
-.nav-link-with-arrow::after {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg) translateY(-1px);
+.nav-arrow {
+  opacity: 0.6;
   transition: transform 0.3s ease;
-  opacity: 0.5;
   flex-shrink: 0;
-  display: inline-block;
 }
 
-.nav-link-with-arrow.active-dropdown::after {
-  transform: rotate(-135deg) translateY(1px);
-  opacity: 0.8;
+.nav-link-with-arrow.active-dropdown .nav-arrow {
+  transform: rotate(180deg);
+  opacity: 0.9;
 }
 
 @media (max-width: 900px) {

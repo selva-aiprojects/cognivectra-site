@@ -147,6 +147,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <NavLink to="/services" className={`nav-link-with-arrow ${activeMenu === 'services' ? 'active-dropdown' : ''}`}>
                 Services
+                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'services'}
@@ -162,6 +165,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <NavLink to="/products" className={`nav-link-with-arrow ${activeMenu === 'products' ? 'active-dropdown' : ''}`}>
                 Platforms
+                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'products'}
@@ -177,6 +183,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <NavLink to="/engagements" className={`nav-link-with-arrow ${activeMenu === 'engagements' ? 'active-dropdown' : ''}`}>
                 Engagements
+                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'engagements'}
@@ -192,6 +201,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <NavLink to="/results" className={`nav-link-with-arrow ${activeMenu === 'results' ? 'active-dropdown' : ''}`}>
                 Results
+                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'results'}
@@ -207,6 +219,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <NavLink to="/industries" className={`nav-link-with-arrow ${activeMenu === 'industries' ? 'active-dropdown' : ''}`}>
                 Industries
+                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'industries'}
@@ -222,6 +237,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <NavLink to="/who-we-are" className={`nav-link-with-arrow ${activeMenu === 'about' ? 'active-dropdown' : ''}`}>
                 About
+                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </NavLink>
               <MegaMenu
                 isOpen={activeMenu === 'about'}
