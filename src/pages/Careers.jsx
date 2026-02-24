@@ -119,17 +119,15 @@ export default function Careers() {
 
             if (insertError) throw insertError;
 
-            // 4. Send acknowledgment email (via Edge Function)
+            // 4. Send acknowledgment email (via Supabase Edge Function)
             try {
-                await fetch('/api/send-application-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+                await supabase.functions.invoke('send-application-email', {
+                    body: {
                         applicant_email: formData.email,
                         applicant_name: formData.full_name,
                         position: formData.position,
                         job_title: selectedJob?.title || formData.position
-                    })
+                    }
                 });
             } catch (emailError) {
                 console.error('Email sending failed:', emailError);
