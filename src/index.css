@@ -491,9 +491,10 @@ a {
 
 /* Add dropdown arrow to nav links */
 .nav-link-with-arrow {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
 }
 
 .nav-link-with-arrow::after {
@@ -502,17 +503,15 @@ a {
   height: 5px;
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  margin-top: -3px;
-  align-self: center;
+  transform: rotate(45deg) translateY(-1px);
   transition: transform 0.3s ease;
   opacity: 0.5;
   flex-shrink: 0;
+  display: inline-block;
 }
 
 .nav-link-with-arrow.active-dropdown::after {
-  transform: rotate(-135deg);
-  margin-top: 0;
+  transform: rotate(-135deg) translateY(1px);
   opacity: 0.8;
 }
 
