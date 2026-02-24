@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroMission from "../assets/generated/hero-mission.svg";
+import missionVision from "../assets/mission-vision.png";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -40,12 +40,21 @@ export default function Mission() {
 
           <motion.div
             className="hero-visual"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="industry-visual glass-panel">
-              <img src={heroMission} alt="Our Mission" className="w-full h-full object-cover rounded-xl" />
+            <div className="industry-visual glass-panel" style={{ padding: '0.5rem', overflow: 'hidden' }}>
+              <img
+                src={missionVision}
+                alt="CogniVectra Mission"
+                className="w-full h-full object-cover rounded-xl"
+                style={{
+                  filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.2))',
+                  maxWidth: '100%',
+                  display: 'block'
+                }}
+              />
             </div>
           </motion.div>
         </div>
