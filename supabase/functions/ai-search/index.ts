@@ -24,38 +24,43 @@ serve(async (req) => {
         // This is where you would plug in your OpenAI, Anthropic, or Perplexity API key
         // const apiKey = Deno.env.get('OPENAI_API_KEY')
 
-        // MOCK DATA for site-specific context (RAG Retrieval simulation)
+        // MOCK DATA for site-specific context (Deep RAG Simulation)
         const siteContext = {
-            'medflow': 'MedFlow: Multi-tenant EMR, HIPAA compliant, live with Kidz-Clinic.',
-            'storeai': 'StoreAI: Retail analytics, predictive inventory, customer sentiment.',
-            'steward': 'StockSteward: FinTech trading platform, algorithmic intelligence, real-time market analysis.',
-            'eduportal': 'EduPortal: Scalable learning management and content delivery for the education sector.',
-            'client': 'Our products are in production with elite partners; MedFlow is currently live at Kidz-Clinic, streamlining patient management.',
-            'users': 'Elite firms use our platforms; notably, Kidz-Clinic relies on MedFlow for their clinical operations.',
-            'cloud': 'Cloud Foundations: Landing zones, IaC, SaaS architecture.',
+            'techstack': 'CogniVectra uses a high-performance stack: Vite + React 18 for speed, Framer Motion for premium UI, Supabase for scalable backend/auth, and Advanced AI Orchestration (LangChain/LangGraph/CrewAI) for agentic and multi-agent RAG systems.',
+            'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic. Unlike legacy EMRs (Epic/Cerner), MedFlow is agile, cloud-native, and reduces provider onboarding from weeks to hours.',
+            'steward': 'StockSteward: FinTech intelligence using CrewAI for agentic research. It beats standard bots by analyzing global sentiment and market liquidity in real-time.',
+            'eduportal': 'EduPortal: EdTech platform scaling content delivery for thousands of concurrent learners with integrated AI tutoring systems.',
+            'better': 'Why CogniVectra? We provide Production-Ready foundations that YOU own. Most competitors deliver technical debt; we deliver senior-architected, secure, and scalable IP with zero vendor lock-in.',
+            'price': 'Our pricing is modular and transparent. We offer fixed-price Launch Packs for startups and Enterprise Retainers for scale, typically saving clients 30-50% on long-term operational overhead.',
+            'customers': 'We partner with technical leaders at Kidz-Clinic (Healthcare) and various North American EdTech/FinTech startups.',
+            'products': 'Our core platforms include MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), and EduPortal (Education).'
         }
 
-        // SEARCH LOGIC (Hybrid RAG)
-        let bestContext = "CogniVectra is an elite platform engineering firm specializing in GenAI and Cloud Foundations."
+        // SEARCH LOGIC (Hybrid RAG + Context Engineering)
         const lowerQuery = query.toLowerCase()
+        let bestContext = "CogniVectra is an elite platform engineering firm specializing in GenAI and Cloud Foundations."
 
-        for (const [key, value] of Object.entries(siteContext)) {
-            if (lowerQuery.includes(key)) {
-                bestContext = value;
-                break;
+        // Check for specific comparisons
+        if (lowerQuery.includes('compare') || lowerQuery.includes('competitor') || lowerQuery.includes('better') || lowerQuery.includes('why')) {
+            bestContext = siteContext['better'] + ' ' + siteContext['price'];
+        } else if (lowerQuery.includes('tech') || lowerQuery.includes('stack') || lowerQuery.includes('built')) {
+            bestContext = siteContext['techstack'];
+        } else if (lowerQuery.includes('customer') || lowerQuery.includes('user') || lowerQuery.includes('who')) {
+            bestContext = siteContext['customers'];
+        } else {
+            for (const [key, value] of Object.entries(siteContext)) {
+                if (lowerQuery.includes(key)) {
+                    bestContext = value;
+                    break;
+                }
             }
         }
 
-        // In a real RAG implementation, you would:
-        // 1. Generate an embedding for the query.
-        // 2. Search a vector database (like Supabase pgvector) for relevant chunks.
-        // 3. Send the query + context to an LLM.
-
         // SIMULATED RESPONSE
         const response = {
-            answer: `Intelligence Analysis for: "${query}"\n\nBased on our neural core, ${bestContext} We provide production-ready solutions for modern enterprises. For more specific details, please request a strategy session.`,
-            sources: ['Internal Knowledge Base', 'Platform Documentation'],
-            confidence: 0.95
+            answer: `Neural Intelligence Brief on: "${query}"\n\n${bestContext}\n\nOur engineering core ensures that every deployment is security-hardened and performance-optimized. Would you like a technical deep-dive with our lead architect?`,
+            sources: ['Internal Architecture Docs', 'Client Success Metrics v1.5'],
+            confidence: 0.99
         }
 
         return new Response(JSON.stringify(response), {

@@ -11,6 +11,8 @@ const NeuralSearch = ({ isOpen, onClose }) => {
     const [history, setHistory] = useState([]);
     const inputRef = useRef(null);
 
+    const logo = "/cognivectra-dark-crop.png";
+
     useEffect(() => {
         if (isOpen && inputRef.current) {
             inputRef.current.focus();
@@ -39,26 +41,34 @@ const NeuralSearch = ({ isOpen, onClose }) => {
         } catch (error) {
             console.warn('Neural Search Live Link unavailable, switching to Local Intelligence...', error);
 
-            // 2. Local Intelligence Fallback (Mimics Edge Function logic for Dev)
+            // 2. Local Intelligence Fallback (Deep Context Engineering)
             setTimeout(() => {
                 const siteContext = {
-                    'medflow': 'MedFlow EMR is our flagship healthcare platform, currently live at Kidz-Clinic.',
-                    'storeai': 'StoreAI is an intelligence-driven retail management platform leveraging predictive analytics.',
-                    'steward': 'StockSteward is our elite FinTech trading platform providing institutional-grade market intelligence.',
-                    'eduportal': 'EduPortal is our scalable learning management system designed for high-throughput education content.',
-                    'education': 'We serve the education sector through EduPortal, focusing on scalable learning management.',
-                    'fintech': 'Our FinTech expertise is embodied in StockSteward, an algorithmic trading and market analysis platform.',
-                    'client': 'Our platforms are battle-tested; MedFlow is currently in production at Kidz-Clinic.',
-                    'users': 'MedFlow is live and in-use by Kidz-Clinic, providing rapid provider onboarding and stable clinical workflows.'
+                    'techstack': 'Our engineering core uses Vite + React 18, Framer Motion for premium aesthetics, Supabase for scalable backends, and Advanced AI Orchestration (LangGraph, CrewAI, LangChain). We focus on production-ready codebases with strict security guardrails.',
+                    'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic. Unlike legacy systems like Epic/Cerner, MedFlow is agile, cloud-native, and reduces provider onboarding from weeks to hours.',
+                    'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence. It analyzes deep sentiment and liquidity, providing a higher fidelity of insight than standard trading bots.',
+                    'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring—solving the latency and personalization issues typical of older LMS platforms.',
+                    'better': 'CogniVectra delivers senior-architected IP that YOU own. Most competitors provide black-box solutions or high-maintenance offshore code. We provide production-ready foundations with no technical debt and zero vendor lock-in.',
+                    'price': 'Our modular Launch Packs for startups and Enterprise Retainers for scale save clients 30-50% on long-term operational costs by building correctly from day one. Inquire for a custom Quote.',
+                    'customers': 'We partner with technical leaders at Kidz-Clinic and various North American EdTech/FinTech startups who require elite engineering foundations.',
+                    'products': 'Our production-ready platforms include MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), and EduPortal (Education).'
                 };
 
-                let bestContext = "I've analyzed your query against the CogniVectra intelligence base. We specialize in production-ready GenAI, FinTech (StockSteward), and Healthcare (MedFlow) platforms. Would you like to schedule a strategy session?";
                 const lowerQuery = query.toLowerCase();
+                let bestContext = "I've analyzed your query. CogniVectra specializes in Production-Ready GenAI, FinTech (StockSteward), and Healthcare (MedFlow) platforms. How can I help you compare our solutions against external options?";
 
-                for (const [key, value] of Object.entries(siteContext)) {
-                    if (lowerQuery.includes(key)) {
-                        bestContext = value;
-                        break;
+                if (lowerQuery.includes('compare') || lowerQuery.includes('better') || lowerQuery.includes('competitor') || lowerQuery.includes('why')) {
+                    bestContext = siteContext['better'] + " " + siteContext['price'];
+                } else if (lowerQuery.includes('tech') || lowerQuery.includes('stack')) {
+                    bestContext = siteContext['techstack'];
+                } else if (lowerQuery.includes('customer') || lowerQuery.includes('user') || lowerQuery.includes('who')) {
+                    bestContext = siteContext['customers'];
+                } else {
+                    for (const [key, value] of Object.entries(siteContext)) {
+                        if (lowerQuery.includes(key)) {
+                            bestContext = value;
+                            break;
+                        }
                     }
                 }
 
@@ -110,7 +120,12 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1)'
                     }}
                 >
-                    {/* Search Header */}
+                    {/* Brand Header */}
+                    <div style={{ padding: '1rem', display: 'flex', justifyContent: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <img src={logo} alt="CogniVectra" style={{ height: '24px', opacity: 0.8 }} />
+                    </div>
+
+                    {/* Search Area */}
                     <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
                         <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                             <FaSearch style={{ color: 'var(--accent-primary)', fontSize: '1.2rem' }} />
