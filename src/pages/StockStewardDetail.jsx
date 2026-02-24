@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import stewardImg from "../assets/generated/product-stocksteward.png";
 import ProductLogo from "../components/ProductLogo";
 
@@ -77,6 +78,15 @@ export default function StockStewardDetail() {
 
     return (
         <main>
+            <Helmet>
+                <title>StockSteward AI | Enterprise FinTech & Algorithmic Trading</title>
+                <meta name="description" content="StockSteward AI is a sophisticated enterprise FinTech platform for algorithmic trading, market intelligence, and AI-powered portfolio management." />
+                <meta name="keywords" content="FinTech Platform, Algorithmic Trading AI, Market Intelligence, Steward Platform, StockSteward, CogniVectra" />
+                <meta property="og:title" content="StockSteward AI | FinTech Intelligence at Scale" />
+                <meta property="og:description" content="Master the markets with our production-ready AI trading platform." />
+                <meta property="og:url" content="https://cognivectra.com/products/stocksteward" />
+                <meta property="og:type" content="website" />
+            </Helmet>
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">

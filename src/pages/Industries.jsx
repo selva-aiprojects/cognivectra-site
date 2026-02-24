@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 
 /* High-quality industry visuals */
 import saas3d from "../assets/generated/ind-saas-3d.png";
@@ -85,6 +86,16 @@ export default function Industries() {
 
   return (
     <main>
+      <Helmet>
+        <title>Industries & Use Cases | Enterprise Platform Engineering Solutions</title>
+        <meta name="description" content="CogniVectra provides specialized platform engineering for SaaS, FinTech, HealthTech, EdTech, and Retail. Secure, scalable, and AI-native solutions for modern industry challenges." />
+        <meta name="keywords" content="FinTech Platforms, HealthTech Infrastructure, EdTech Scalability, SaaS Platform Engineering, Retail Tech Automation, CogniVectra Industries, Enterprise AI Solutions, Regulated Industry SaaS" />
+        <meta property="og:title" content="CogniVectra | Industry-Specific Enterprise Engineering" />
+        <meta property="og:description" content="Deep technical expertise in SaaS, FinTech, and Healthcare platform engineering." />
+        <meta property="og:url" content="https://cognivectra.com/industries" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+      </Helmet>
 
       {/* HERO */}
       <section className="hero-modern">

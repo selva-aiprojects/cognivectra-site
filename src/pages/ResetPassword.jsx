@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaLock, FaSpinner, FaChevronRight, FaShieldAlt } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 
 export default function ResetPassword() {
     const [password, setPassword] = useState('');
@@ -117,7 +118,14 @@ export default function ResetPassword() {
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 className="login-card glass-panel"
             >
+                <Helmet>
+                    <title>Reset Access Code | CogniVectra</title>
+                    <meta name="description" content="Establish a new secure entry key for your CogniVectra terminal." />
+                    <meta property="og:url" content="https://cognivectra.com/reset-password" />
+                    <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+                </Helmet>
                 <div className="login-header">
+                    <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Reset Access Code Authorization</h1>
                     <motion.img
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import heroProducts from "../assets/generated/hero-products-ultra-8k.png";
 import storeAIImg from "../assets/generated/product-storeai.png";
 import stewardImg from "../assets/generated/product-stocksteward.png";
@@ -31,6 +32,13 @@ export default function Products() {
 
     return (
         <main>
+            <Helmet>
+                <title>Enterprise AI Platforms | Healthcare, Retail, FinTech & Education</title>
+                <meta name="description" content="Explore CogniVectra's suite of production-ready platforms: MedFlow (Healthcare), StoreAI (Retail), StockSteward (FinTech), and EduPortal (Education)." />
+                <meta name="keywords" content="Enterprise AI Platforms, Healthcare EMR, Retail AI, FinTech Trading, EdTech Solutions, CogniVectra Products" />
+                <meta property="og:title" content="CogniVectra | High-Impact Enterprise Platforms" />
+                <meta property="og:description" content="Deploy internal or customer-facing AI platforms at scale." />
+            </Helmet>
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">

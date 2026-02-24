@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import emrImg from "../assets/generated/ind-health-3d.png";
 import ProductLogo from "../components/ProductLogo";
 
@@ -81,6 +82,16 @@ export default function MedFlowDetail() {
 
     return (
         <main>
+            <Helmet>
+                <title>MedFlow EMR | Enterprise Healthcare Platform & Clinical AI</title>
+                <meta name="description" content="MedFlow EMR is a scalable, multi-tenant healthcare platform built for modern clinics. HIPAA compliant, GenAI-powered diagnostics, and intelligent clinical workflow automation." />
+                <meta name="keywords" content="Healthcare EMR, Multi-tenant EMR, HIPAA Compliant Software, AI Healthcare Diagnostics, MedFlow, CogniVectra, Clinical Workflow Automation, Secure Patient Records" />
+                <meta property="og:title" content="MedFlow EMR | Intelligent Healthcare Engineering" />
+                <meta property="og:description" content="Production-ready healthcare platform with GenAI diagnostics and HIPAA compliance." />
+                <meta property="og:url" content="https://cognivectra.com/products/medflow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+            </Helmet>
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">

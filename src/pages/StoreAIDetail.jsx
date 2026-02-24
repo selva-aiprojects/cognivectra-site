@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import storeAIImg from "../assets/generated/product-storeai.png";
 import ProductLogo from "../components/ProductLogo";
 
@@ -77,6 +78,16 @@ export default function StoreAIDetail() {
 
     return (
         <main>
+            <Helmet>
+                <title>StoreAI | Enterprise GenAI for Retail Management & Analytics</title>
+                <meta name="description" content="StoreAI is an enterprise-grade GenAI platform for retail management. Optimize inventory, predict sales trends, and gain customer insights with our scalable AI platform." />
+                <meta name="keywords" content="AI Retail Management, Retail Predictive Analytics, Smart Inventory, StoreAI, CogniVectra, Retail AI Platform, Automated Replenishment" />
+                <meta property="og:title" content="StoreAI | Retail Intelligence at Enterprise Scale" />
+                <meta property="og:description" content="Transform retail operations with our production-ready GenAI and predictive analytics platform." />
+                <meta property="og:url" content="https://cognivectra.com/products/storeai" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+            </Helmet>
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">

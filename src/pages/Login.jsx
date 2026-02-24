@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaLock, FaEnvelope, FaSpinner, FaChevronRight } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -63,7 +64,14 @@ export default function Login() {
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 className="login-card glass-panel"
             >
+                <Helmet>
+                    <title>Command Portal | CogniVectra</title>
+                    <meta name="description" content="Authorization required to access CogniVectra core infrastructure." />
+                    <meta property="og:url" content="https://cognivectra.com/login" />
+                    <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+                </Helmet>
                 <div className="login-header">
+                    <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Command Portal Activation</h1>
                     <motion.img
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
