@@ -26,21 +26,42 @@ const NeuralSearch = ({ isOpen, onClose }) => {
         trackEvent('neural_search_query', { query });
 
         try {
-            // Direct call to our Supabase Edge Function (Neural Core)
+            // 1. Try Live Edge Function
             const { data, error } = await supabase.functions.invoke('ai-search', {
                 body: { query }
             });
 
             if (error) throw error;
 
-            setResult(data.answer || "I've analyzed your query, but couldn't find a definitive answer in our neural core. Would you like to schedule a strategy session?");
+            setResult(data.answer);
             setIsSearching(false);
             setHistory(prev => [query, ...prev.slice(0, 4)]);
         } catch (error) {
-            console.error('Neural Search failed:', error);
-            // Fallback to minimal response if function isn't deployed yet
-            setResult("The Neural Core is currently recalibrating its edge nodes. Please request a direct strategy session for now.");
-            setIsSearching(false);
+            console.warn('Neural Search Live Link unavailable, switching to Local Intelligence...', error);
+
+            // 2. Local Intelligence Fallback (Mimics Edge Function logic for Dev)
+            setTimeout(() => {
+                const siteContext = {
+                    'medflow': 'MedFlow EMR is our flagship healthcare platform. It features multi-tenant architecture, HIPAA compliance, and AI-assisted clinical workflows. Currently live at several clinical sites.',
+                    'storeai': 'StoreAI is an intelligence-driven retail management platform leveraging predictive analytics for inventory optimization and customer sentiment.',
+                    'steward': 'StockSteward is our algorithmic trading platform providing institutional-grade market intelligence.',
+                    'cloud': 'CogniVectra specializes in Elite Cloud Foundations, using Landing Zones and IaC to build resilient, scalable SaaS platforms.'
+                };
+
+                let bestContext = "I've analyzed your query against the CogniVectra intelligence base. We specialize in production-ready GenAI and Cloud Platform Engineering. Would you like to schedule a strategy session to dive deeper?";
+                const lowerQuery = query.toLowerCase();
+
+                for (const [key, value] of Object.entries(siteContext)) {
+                    if (lowerQuery.includes(key)) {
+                        bestContext = value;
+                        break;
+                    }
+                }
+
+                setResult(`[Local Analysis] ${bestContext}`);
+                setIsSearching(false);
+                setHistory(prev => [query, ...prev.slice(0, 4)]);
+            }, 800);
         }
     };
 

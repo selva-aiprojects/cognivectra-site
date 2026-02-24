@@ -5,7 +5,7 @@ import heroMain from "../assets/generated/hero-home-ultra-8k.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import clientKidzImg from "../assets/generated/ind-health-3d.png";
 import DemoRequestModal from "../components/DemoRequestModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
 
 const fadeInUp = {
