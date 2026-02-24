@@ -16,43 +16,65 @@ export default function ResetPassword() {
     const [isValidSession, setIsValidSession] = useState(false);
 
     useEffect(() => {
-        // Immediate check for existing session (in case of redirect)
-        const checkInitialSession = async () => {
+        async function handlePasswordRecovery() {
+            // --- PKCE Flow (Supabase JS v2 default) ---
+            // The reset link arrives as: /reset-password?code=XXXX
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+
+            if (code) {
+                console.log('🔑 PKCE code detected. Exchanging for session...');
+                try {
+                    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+                    if (error) throw error;
+                    if (data.session) {
+                        console.log('✅ Session established via PKCE exchange.');
+                        setIsValidSession(true);
+                        setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
+                    }
+                } catch (err) {
+                    console.error('❌ PKCE exchange failed:', err.message);
+                    setMessage({ type: 'error', text: 'Invalid or expired reset link. Please request a new one.' });
+                } finally {
+                    setInitializing(false);
+                }
+                return;
+            }
+
+            // --- Fallback: Check for existing session (implicit flow or already-exchanged) ---
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-                console.log("✨ Initial active session detected.");
+                console.log('✨ Existing active session detected.');
                 setIsValidSession(true);
-                setInitializing(false);
                 setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
+                setInitializing(false);
+                return;
             }
-        };
-        checkInitialSession();
 
-        // Suppress session error messages for a few seconds to let Supabase process the hash
-        const timer = setTimeout(() => {
-            setInitializing(false);
-            if (!isValidSession) {
-                // Check if we are currently handling a hash to avoid premature error
-                if (!window.location.hash.includes('access_token')) {
-                    setMessage({ type: 'error', text: 'Operational error: No active recovery session. Please request a new link.' });
+            // --- Listen for PASSWORD_RECOVERY event (slight race condition fallback) ---
+            const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+                console.log('🔑 Auth Event:', event);
+                if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
+                    setIsValidSession(true);
+                    setInitializing(false);
+                    setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
                 }
-            }
-        }, 3000);
+            });
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log("🔑 Auth Event:", event);
-            if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
-                setIsValidSession(true);
+            // If nothing fires after 4s, show error
+            const timer = setTimeout(() => {
                 setInitializing(false);
-                setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
-            }
-        });
+                setMessage({ type: 'error', text: 'Invalid or expired reset link. Please request a new recovery link.' });
+            }, 4000);
 
-        return () => {
-            subscription.unsubscribe();
-            clearTimeout(timer);
-        };
-    }, [isValidSession]);
+            return () => {
+                subscription.unsubscribe();
+                clearTimeout(timer);
+            };
+        }
+
+        handlePasswordRecovery();
+    }, []);
 
     async function handleReset(e) {
         e.preventDefault();
