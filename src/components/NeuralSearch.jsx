@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent } from '../lib/analytics';
 import { supabase } from '../lib/supabase';
-import { FaSearch, FaSparkles, FaTimes, FaArrowRight } from 'react-icons/fa';
+import { FaSearch, FaMagic, FaTimes, FaArrowRight } from 'react-icons/fa';
 
 const NeuralSearch = ({ isOpen, onClose }) => {
     const [query, setQuery] = useState('');
@@ -133,7 +133,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                     transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
                                     style={{ fontSize: '2rem', color: 'var(--accent-primary)' }}
                                 >
-                                    <FaSparkles />
+                                    <FaMagic />
                                 </motion.div>
                                 <p style={{ color: 'rgba(255,255,255,0.5)', letterSpacing: '0.1em' }}>NEURAL SEEDING...</p>
                             </div>
@@ -143,7 +143,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                 animate={{ opacity: 1 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                                    <FaSparkles style={{ color: 'var(--accent-primary)' }} />
+                                    <FaMagic style={{ color: 'var(--accent-primary)' }} />
                                     <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>AI Intelligence Brief</span>
                                 </div>
                                 <div style={{
@@ -224,7 +224,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     {/* Footer */}
                     <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.2)', textAlign: 'center' }}>
                         <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
-                            <FaSparkles style={{ marginRight: '0.4rem' }} />
+                            <FaMagic style={{ marginRight: '0.4rem' }} />
                             Powered by CogniVectra Neural Core (RAG v1.0)
                         </p>
                     </div>
