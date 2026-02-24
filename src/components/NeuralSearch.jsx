@@ -42,13 +42,17 @@ const NeuralSearch = ({ isOpen, onClose }) => {
             // 2. Local Intelligence Fallback (Mimics Edge Function logic for Dev)
             setTimeout(() => {
                 const siteContext = {
-                    'medflow': 'MedFlow EMR is our flagship healthcare platform. It features multi-tenant architecture, HIPAA compliance, and AI-assisted clinical workflows. Currently live at several clinical sites.',
-                    'storeai': 'StoreAI is an intelligence-driven retail management platform leveraging predictive analytics for inventory optimization and customer sentiment.',
-                    'steward': 'StockSteward is our algorithmic trading platform providing institutional-grade market intelligence.',
-                    'cloud': 'CogniVectra specializes in Elite Cloud Foundations, using Landing Zones and IaC to build resilient, scalable SaaS platforms.'
+                    'medflow': 'MedFlow EMR is our flagship healthcare platform, currently live at Kidz-Clinic.',
+                    'storeai': 'StoreAI is an intelligence-driven retail management platform leveraging predictive analytics.',
+                    'steward': 'StockSteward is our elite FinTech trading platform providing institutional-grade market intelligence.',
+                    'eduportal': 'EduPortal is our scalable learning management system designed for high-throughput education content.',
+                    'education': 'We serve the education sector through EduPortal, focusing on scalable learning management.',
+                    'fintech': 'Our FinTech expertise is embodied in StockSteward, an algorithmic trading and market analysis platform.',
+                    'client': 'Our platforms are battle-tested; MedFlow is currently in production at Kidz-Clinic.',
+                    'users': 'MedFlow is live and in-use by Kidz-Clinic, providing rapid provider onboarding and stable clinical workflows.'
                 };
 
-                let bestContext = "I've analyzed your query against the CogniVectra intelligence base. We specialize in production-ready GenAI and Cloud Platform Engineering. Would you like to schedule a strategy session to dive deeper?";
+                let bestContext = "I've analyzed your query against the CogniVectra intelligence base. We specialize in production-ready GenAI, FinTech (StockSteward), and Healthcare (MedFlow) platforms. Would you like to schedule a strategy session?";
                 const lowerQuery = query.toLowerCase();
 
                 for (const [key, value] of Object.entries(siteContext)) {

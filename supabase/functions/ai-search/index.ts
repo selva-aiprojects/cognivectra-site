@@ -26,9 +26,12 @@ serve(async (req) => {
 
         // MOCK DATA for site-specific context (RAG Retrieval simulation)
         const siteContext = {
-            'medflow': 'MedFlow: Multi-tenant EMR, HIPAA compliant, AI-assisted workflows.',
+            'medflow': 'MedFlow: Multi-tenant EMR, HIPAA compliant, live with Kidz-Clinic.',
             'storeai': 'StoreAI: Retail analytics, predictive inventory, customer sentiment.',
-            'steward': 'StockSteward: Algorithmic trading, market intelligence.',
+            'steward': 'StockSteward: FinTech trading platform, algorithmic intelligence, real-time market analysis.',
+            'eduportal': 'EduPortal: Scalable learning management and content delivery for the education sector.',
+            'client': 'Our products are in production with elite partners; MedFlow is currently live at Kidz-Clinic, streamlining patient management.',
+            'users': 'Elite firms use our platforms; notably, Kidz-Clinic relies on MedFlow for their clinical operations.',
             'cloud': 'Cloud Foundations: Landing zones, IaC, SaaS architecture.',
         }
 
