@@ -120,6 +120,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
             >
                 <motion.div
                     id="neural-search-modal"
+                    data-testid="neural-search-modal"
                     className="glass-panel"
                     initial={{ opacity: 0, y: -20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -136,27 +137,37 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     }}
                 >
                     {/* Brand Header */}
-                    <div style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                        <div style={{ width: '40px' }} /> {/* Spacer */}
-                        <img src={logo} alt="CogniVectra" style={{ height: '20px', opacity: 0.8 }} />
+                    <div style={{ padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div style={{ width: '32px' }} /> {/* Balance Spacer */}
+                        <img
+                            src={logo}
+                            alt="CogniVectra"
+                            style={{
+                                height: '32px',
+                                opacity: 0.95,
+                                filter: 'drop-shadow(0 0 8px rgba(99, 102, 241, 0.3))'
+                            }}
+                        />
                         <button
                             id="neural-search-close"
+                            data-testid="neural-search-close"
                             onClick={onClose}
+                            className="glass-panel"
                             style={{
-                                background: 'rgba(255,255,255,0.05)',
+                                background: 'rgba(255,255,255,0.03)',
                                 border: '1px solid rgba(255,255,255,0.1)',
-                                color: 'rgba(255,255,255,0.5)',
+                                color: 'rgba(255,255,255,0.4)',
                                 height: '32px',
                                 width: '32px',
-                                borderRadius: '8px',
+                                borderRadius: '10px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 cursor: 'pointer',
-                                transition: 'all 0.2s'
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                             }}
-                            onMouseEnter={(e) => { e.target.style.background = 'rgba(255,255,255,0.1)'; e.target.style.color = 'white'; }}
-                            onMouseLeave={(e) => { e.target.style.background = 'rgba(255,255,255,0.05)'; e.target.style.color = 'rgba(255,255,255,0.5)'; }}
+                            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
                         >
                             <FaTimes />
                         </button>
@@ -168,6 +179,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                             <FaSearch style={{ color: 'var(--accent-primary)', fontSize: '1.2rem' }} />
                             <input
                                 id="neural-search-input"
+                                data-testid="neural-search-input"
                                 ref={inputRef}
                                 type="text"
                                 value={query}
@@ -220,26 +232,66 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                                    <FaMagic style={{ color: 'var(--accent-primary)' }} />
-                                    <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>AI Intelligence Brief</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem' }}>
+                                    <FaMagic style={{ color: 'var(--accent-primary)', filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
+                                    <span style={{
+                                        fontSize: '0.75rem',
+                                        fontWeight: '800',
+                                        color: 'var(--accent-primary)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.2em',
+                                        background: 'linear-gradient(90deg, var(--accent-primary), #a855f7)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent'
+                                    }}>
+                                        AI Intelligence Brief
+                                    </span>
                                 </div>
                                 <div
                                     id="neural-search-result"
                                     style={{
-                                        fontSize: '1.1rem',
-                                        lineHeight: '1.7',
-                                        color: 'rgba(255,255,255,0.9)',
-                                        padding: '1.5rem',
-                                        background: 'rgba(99, 102, 241, 0.05)',
-                                        borderRadius: '16px',
-                                        border: '1px solid rgba(99, 102, 241, 0.1)'
+                                        fontSize: '1.05rem',
+                                        lineHeight: '1.8',
+                                        color: 'rgba(255,255,255,0.95)',
+                                        padding: '1.75rem',
+                                        background: 'rgba(99, 102, 241, 0.03)',
+                                        borderRadius: '20px',
+                                        border: '1px solid rgba(99, 102, 241, 0.2)',
+                                        boxShadow: 'inset 0 0 20px rgba(99, 102, 241, 0.05), 0 10px 30px -10px rgba(0,0,0,0.5)'
                                     }}>
                                     {result}
                                 </div>
-                                <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-                                    <button onClick={onClose} className="btn-outline" style={{ fontSize: '0.9rem' }}>Dismiss</button>
-                                    <button onClick={() => window.location.href = '/contact'} className="btn" style={{ fontSize: '0.9rem' }}>Discuss Strategy</button>
+                                <div style={{ marginTop: '2.5rem', display: 'flex', gap: '1.25rem' }}>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={onClose}
+                                        className="btn-outline"
+                                        style={{
+                                            fontSize: '0.9rem',
+                                            padding: '0.75rem 1.5rem',
+                                            borderRadius: '12px'
+                                        }}
+                                    >
+                                        Dismiss
+                                    </motion.button>
+                                    <motion.button
+                                        whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.4)' }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => window.location.href = '/contact'}
+                                        className="btn"
+                                        style={{
+                                            fontSize: '0.9rem',
+                                            padding: '0.75rem 2rem',
+                                            borderRadius: '12px',
+                                            background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                                            border: 'none',
+                                            fontWeight: '600',
+                                            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.2)'
+                                        }}
+                                    >
+                                        Discuss Strategy
+                                    </motion.button>
                                 </div>
                             </motion.div>
                         ) : (
