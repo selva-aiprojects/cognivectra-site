@@ -500,6 +500,7 @@ a {
   opacity: 0.6;
   transition: transform 0.3s ease;
   flex-shrink: 0;
+  transform: rotate(0deg);
 }
 
 .nav-link-with-arrow.active-dropdown .nav-arrow {
