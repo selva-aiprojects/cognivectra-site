@@ -492,25 +492,27 @@ a {
 /* Add dropdown arrow to nav links */
 .nav-link-with-arrow {
   display: flex;
-  align-items: center;
-  gap: 5px;
-  position: relative;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .nav-link-with-arrow::after {
   content: '';
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg) translateY(-2px);
+  transform: rotate(45deg);
+  margin-top: -3px;
+  align-self: center;
   transition: transform 0.3s ease;
   opacity: 0.5;
   flex-shrink: 0;
 }
 
 .nav-link-with-arrow.active-dropdown::after {
-  transform: rotate(-135deg) translateY(1px);
+  transform: rotate(-135deg);
+  margin-top: 0;
   opacity: 0.8;
 }
 
