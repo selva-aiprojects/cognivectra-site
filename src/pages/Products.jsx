@@ -7,6 +7,7 @@ import storeAIImg from "../assets/generated/product-storeai.png";
 import stewardImg from "../assets/generated/product-stocksteward.png";
 import emrImg from "../assets/generated/ind-health-3d.png";
 import ProductLogo from "../components/ProductLogo";
+import { trackEvent } from "../lib/analytics";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -55,8 +56,8 @@ export default function Products() {
                             complex challenges in healthcare, retail, and enterprise AI orchestration.
                         </p>
                         <div className="hero-cta">
-                            <a href="#steward" className="btn">Explore Platforms</a>
-                            <Link to="/contact" className="btn-outline">Inquire for Custom Deployment</Link>
+                            <a href="#steward" onClick={() => trackEvent('cta_click', { cta_name: 'Explore Platforms', location: 'Products Hero' })} className="btn">Explore Platforms</a>
+                            <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Inquire for Custom Deployment', location: 'Products Hero' })} className="btn-outline">Inquire for Custom Deployment</Link>
                         </div>
                     </motion.div>
 
@@ -101,14 +102,15 @@ export default function Products() {
                                 href="https://steward-platform.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'stocksteward', location: 'Products Grid' })}
                                 className="btn"
                             >
                                 Explore StockSteward ↗
                             </a>
-                            <Link to="/products/stocksteward" className="btn-outline">
+                            <Link to="/products/stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'stocksteward' })} className="btn-outline">
                                 View Details & Pricing
                             </Link>
-                            <Link to="/contact?product=stocksteward" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            <Link to="/contact?product=stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'stocksteward' })} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
                                 Request Demo
                             </Link>
                         </div>
@@ -162,14 +164,15 @@ export default function Products() {
                                 href="https://store-ai-prd.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'storeai', location: 'Products Grid' })}
                                 className="btn"
                             >
                                 Visit StoreAI Live ↗
                             </a>
-                            <Link to="/products/storeai" className="btn-outline">
+                            <Link to="/products/storeai" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'storeai' })} className="btn-outline">
                                 View Details & Pricing
                             </Link>
-                            <Link to="/contact?product=storeai" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            <Link to="/contact?product=storeai" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'storeai' })} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
                                 Request Demo
                             </Link>
                         </div>
@@ -205,20 +208,22 @@ export default function Products() {
                                 href="https://emr-app-0909.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'medflow', location: 'Products Grid' })}
                                 className="btn"
                             >
                                 Launch MedFlow ↗
                             </a>
-                            <Link to="/products/medflow" className="btn-outline">
+                            <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'medflow' })} className="btn-outline">
                                 View Details & Pricing
                             </Link>
-                            <Link to="/contact?product=medflow" className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            <Link to="/contact?product=medflow" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'medflow' })} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
                                 Request Demo
                             </Link>
                             <a
                                 href="https://kidz-clinic-client.onrender.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid' })}
                                 className="btn-outline"
                             >
                                 View Live Implementation

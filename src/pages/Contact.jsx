@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPaperPlane, FaCalendarAlt, FaEnvelope, FaWhatsapp, FaInfoCircle } from "react-icons/fa";
 import heroContact from "../assets/generated/hero-contact-8k.png";
+import { trackEvent } from "../lib/analytics";
 
 export default function Contact() {
   const [searchParams] = useSearchParams();
@@ -41,6 +42,7 @@ export default function Contact() {
           ],
           source: "contact",
           lead_score: "warm",
+          referrer_info: document.referrer || "direct",
           updated_at: new Date().toISOString(),
         },
       ], { onConflict: "user_email" });
@@ -69,6 +71,14 @@ export default function Contact() {
       }
 
       clearTimeout(timeoutId);
+
+      // Track conversion event
+      trackEvent('lead_generated', {
+        type: 'contact_form',
+        stage: stage || 'Not specified',
+        need: need || 'Not specified'
+      }, 'CONVERSION');
+
       setMessage("Thank you! Your platform request has been logged. Our Principal Architect will review your requirements within 24 hours.");
       e.target.reset();
     } catch (error) {

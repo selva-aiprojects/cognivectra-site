@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -7,6 +6,7 @@ import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import clientKidzImg from "../assets/generated/ind-health-3d.png";
 import DemoRequestModal from "../components/DemoRequestModal";
 import { useState } from "react";
+import { trackEvent } from "../lib/analytics";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -28,6 +28,7 @@ export default function Home() {
   const [demoPlatform, setDemoPlatform] = useState('general');
 
   const handleDemoRequest = (platform = 'general') => {
+    trackEvent('cta_click', { platform, cta_name: 'Request Demo', location: 'Home' });
     setDemoPlatform(platform);
     setIsDemoModalOpen(true);
   };
@@ -77,7 +78,7 @@ export default function Home() {
             </motion.p>
             <motion.div variants={fadeInUp} className="hero-cta">
               <button onClick={() => handleDemoRequest('general')} className="btn">Request Demo</button>
-              <Link to="/products" className="btn-outline">View Platforms</Link>
+              <Link to="/products" onClick={() => trackEvent('cta_click', { cta_name: 'View Platforms', location: 'Hero' })} className="btn-outline">View Platforms</Link>
             </motion.div>
           </motion.div>
 

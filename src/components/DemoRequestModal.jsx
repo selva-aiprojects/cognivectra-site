@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { trackEvent } from '../lib/analytics';
 
 const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     organization: '',
     platform: platform,
-    companySize: '',
     timeline: '',
     message: ''
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -26,7 +25,7 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
 
   const companySizes = [
     '1-10 employees',
-    '11-50 employees', 
+    '11-50 employees',
     '51-200 employees',
     '201-500 employees',
     '500+ employees'
@@ -54,7 +53,7 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
     try {
       // Google Forms submission
       const googleFormURL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdX4YzXqJ7Qk8l9w6R3kLmNpOqRtSvWxBxYzZcVfNqLwKg/formResponse';
-      
+
       const formPayload = new FormData();
       formPayload.append('entry.2005620554', formData.name); // Name
       formPayload.append('entry.1045781291', formData.email); // Email
@@ -81,7 +80,15 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
       });
 
       setIsSubmitted(true);
-      
+
+      // Track conversion event
+      trackEvent('lead_generated', {
+        platform: formData.platform,
+        organization: formData.organization,
+        timeline: formData.timeline,
+        type: 'demo_request'
+      }, 'CONVERSION');
+
       // Reset form after 3 seconds and close modal
       setTimeout(() => {
         setIsSubmitted(false);
@@ -89,10 +96,8 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
         setFormData({
           name: '',
           email: '',
-          phone: '',
           organization: '',
           platform: platform,
-          companySize: '',
           timeline: '',
           message: ''
         });
@@ -226,28 +231,7 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
                   />
                 </div>
 
-                {/* Phone */}
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '0.5rem',
-                      color: 'var(--text-primary)',
-                      fontSize: '1rem'
-                    }}
-                  />
-                </div>
+
 
                 {/* Organization */}
                 <div>
@@ -298,32 +282,7 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
                   </select>
                 </div>
 
-                {/* Company Size */}
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Company Size *
-                  </label>
-                  <select
-                    name="companySize"
-                    value={formData.companySize}
-                    onChange={handleChange}
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '0.5rem',
-                      color: 'var(--text-primary)',
-                      fontSize: '1rem'
-                    }}
-                  >
-                    <option value="">Select company size</option>
-                    {companySizes.map(size => (
-                      <option key={size} value={size}>{size}</option>
-                    ))}
-                  </select>
-                </div>
+
 
                 {/* Timeline */}
                 <div>
@@ -404,12 +363,12 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
                 Thank You!
               </h3>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                Your demo request has been received. Our team will contact you within 24 hours 
+                Your demo request has been received. Our team will contact you within 24 hours
                 to schedule your personalized walkthrough.
               </p>
-              <div style={{ 
-                padding: '1rem', 
-                background: 'rgba(99, 102, 241, 0.1)', 
+              <div style={{
+                padding: '1rem',
+                background: 'rgba(99, 102, 241, 0.1)',
                 borderRadius: '0.5rem',
                 border: '1px solid rgba(99, 102, 241, 0.2)'
               }}>

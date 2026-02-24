@@ -4,7 +4,7 @@ import { supabase } from "./supabase";
  * Tracks a page view event to Supabase using the RPC pattern.
  * This is the modern standard for secure server-side telemetry.
  */
-export async function trackPageView(path) {
+export async function trackPageView(path, metadata = {}) {
     try {
         let sessionId = sessionStorage.getItem("cognivectra_session");
         if (!sessionId) {
@@ -20,7 +20,8 @@ export async function trackPageView(path) {
                 user_agent: navigator.userAgent,
                 language: navigator.language,
                 screen_resolution: `${window.screen.width}x${window.screen.height}`,
-                referrer: document.referrer || null
+                referrer: document.referrer || null,
+                ...metadata // Allow merging additional context like channel or lead_score
             }
         });
 
@@ -33,9 +34,12 @@ export async function trackPageView(path) {
 }
 
 /**
- * Custom event tracking for specific user actions.
+ * Custom event tracking for specific user actions (e.g., lead_gen, click, conversion).
  */
-export async function trackEvent(name, data = {}) {
+export async function trackEvent(name, data = {}, category = 'INTERACTION') {
     // Shared event tracking logic
-    return trackPageView(`${window.location.pathname}#event:${name}`);
+    return trackPageView(`${window.location.pathname}#event:${name}`, {
+        event_category: category,
+        ...data
+    });
 }
