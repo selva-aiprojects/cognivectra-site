@@ -31,8 +31,10 @@ function getEmailContent(payload: AuthHookPayload) {
   const { email_data, user } = payload
   const { email_action_type, token_hash, redirect_to } = email_data
 
-  const supabaseUrl = email_data.site_url || SITE_URL
-  const actionUrl = `${supabaseUrl}/auth/v1/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(redirect_to)}&apikey=${SUPABASE_ANON_KEY}`
+  // email_data.site_url = 'https://project.supabase.co/auth/v1' (already includes /auth/v1)
+  const supabaseAuthUrl = email_data.site_url || `${SITE_URL}/auth/v1`
+  const resetRedirectUrl = `${SITE_URL}/reset-password`
+  const actionUrl = `${supabaseAuthUrl}/verify?token=${token_hash}&type=${email_action_type}&redirect_to=${encodeURIComponent(resetRedirectUrl)}&apikey=${SUPABASE_ANON_KEY}`
 
   switch (email_action_type) {
     case 'recovery':
