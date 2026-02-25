@@ -88,7 +88,7 @@ END $$;
 -- This function sets the context for the current tenant during a request.
 -- In production, the Edge Function or Auth Hook sets 'app.tenant_id'.
 
-CREATE OR REPLACE FUNCTION auth.get_tenant_id() 
+CREATE OR REPLACE FUNCTION public.get_tenant_id() 
 RETURNS UUID AS $$
   SELECT NULLIF(current_setting('app.tenant_id', TRUE), '')::UUID;
 $$ LANGUAGE sql STABLE;
@@ -108,7 +108,7 @@ BEGIN
     LOOP
         EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY', t);
         EXECUTE format('DROP POLICY IF EXISTS "tenant_isolation" ON public.%I', t);
-        EXECUTE format('CREATE POLICY "tenant_isolation" ON public.%I FOR ALL USING (tenant_id = auth.get_tenant_id())', t);
+        EXECUTE format('CREATE POLICY "tenant_isolation" ON public.%I FOR ALL USING (tenant_id = public.get_tenant_id())', t);
     END LOOP;
 END $$;
 
@@ -125,4 +125,4 @@ UPDATE public.clients SET tenant_id = '00000000-0000-0000-0000-000000000000' WHE
 UPDATE public.projects SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;
 UPDATE public.employees SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;
 UPDATE public.job_postings SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;
-UPDATE public.ai_query_logs SET tenant_id = '00000000-0000-0000-0000-000000000000'::TEXT WHERE tenant_id IS NULL OR tenant_id = '';
+UPDATE public.ai_query_logs SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;

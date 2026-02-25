@@ -9,7 +9,7 @@
 
 CREATE TABLE IF NOT EXISTS ai_query_logs (
     id            UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
-    tenant_id     TEXT        NOT NULL,
+    tenant_id     UUID        NOT NULL,
     user_id       TEXT,
     query         TEXT        NOT NULL,
     intent        TEXT,                    -- e.g. PRODUCT_INFO, HELPDESK_QUERY
@@ -36,10 +36,7 @@ CREATE INDEX IF NOT EXISTS idx_ai_query_logs_intent
 ALTER TABLE ai_query_logs ENABLE ROW LEVEL SECURITY;
 
 -- Tenants can only read their own logs
-CREATE POLICY "tenant_can_read_own_logs"
-    ON ai_query_logs
-    FOR SELECT
-    USING (tenant_id = current_setting('app.tenant_id', TRUE));
+    USING (tenant_id = public.get_tenant_id());
 
 -- Only service role (backend) can insert
 -- (Edge Function uses service_role key to write logs)
