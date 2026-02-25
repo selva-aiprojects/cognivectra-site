@@ -23,9 +23,6 @@ Security: tenant_id is enforced in every Supabase query (WHERE tenant_id = ?)
 
 import logging
 import os
-import sys
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from supabase import create_client, Client
 from shared.secrets_manager import get_secret

@@ -13,14 +13,7 @@ Security:
   - Requests validated via Pydantic models
 """
 
-import time
-import logging
-import sys
-import os
-
-# Add shared module to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
+# ─── Imports ──────────────────────────────────────────────────────────────────
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
