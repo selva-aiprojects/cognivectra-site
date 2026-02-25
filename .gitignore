@@ -49,6 +49,7 @@ services/**/.env
 *secret*
 *_secret*
 *SECRET*
+!**/secrets_manager.py
 
 # ── Python Microservices ──────────────────────────────────────────────────────
 services/**/__pycache__/
