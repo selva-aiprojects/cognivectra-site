@@ -9,14 +9,16 @@ This document details the technical architecture and business management modules
 ### Tech Stack
 - **Frontend**: React (Vite) + Vanilla CSS + Framer Motion
 - **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
-- **AI**: OpenAI GPT-4 & LangGraph/CrewAI (Agentic RAG)
-- **Bridge**: Make.com Webhooks (Social Media)
+- **AI Core**: OpenAI GPT-4 + LangGraph + CrewAI (Multi-agent orchestration)
+- **Routing**: LoRA-enabled Intent Router (FastAPI) + deterministic orchestrator
+- **Security**: 3-layer encryption (Supabase Vault + Fernet + Environment injection)
 
 ### System Components
-- **Neural Search (RAG)**: Global intelligent search engine using Supabase Edge Functions and local context fallbacks.
+- **Neural Search (RAG)**: Global intelligent search engine using Supabase Edge Functions with keyword fallback and agentic routing.
+- **Intent Router**: Python microservice classifying user queries into specialized intents (Product Info, Helpdesk, Analytics, etc.).
+- **LangGraph Orchestrator**: Multi-agent state machine that routes intents to specific agent nodes for high-fidelity responses.
 - **Admin Dashboard**: Central hub for content review, social publishing, and business ops.
-- **Edge Functions**: Node.js/Deno functions for handling secure social media API calls.
-- **Client App**: High-performance landing pages and blog listing.
+- **Edge Functions**: Deno functions orchestrating requests between the frontend and AI microservices.
 
 ---
 

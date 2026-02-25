@@ -1,0 +1,63 @@
+# CogniVectra — Docker Compose (Local Development)
+# =====================================================
+# Orchestrates both new Python microservices locally for development.
+# Supabase and the React frontend continue to run independently.
+#
+# Start:  docker-compose up --build
+# Stop:   docker-compose down
+#
+# SECURITY: Never use this file in production.
+# Production services should be deployed via Railway/Render/Fly.io
+# with secrets injected through their platform secret managers.
+# =====================================================
+
+version: '3.9'
+
+services:
+
+  # ── Intent Router ─────────────────────────────────────────────
+  intent-router:
+    build:
+      context: ./services
+      dockerfile: intent-router/Dockerfile
+    container_name: cognivectra-intent-router
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./services/intent-router/.env # LOCAL ONLY — never commit with real values
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # ── LangGraph Orchestrator ────────────────────────────────────
+  langgraph-orchestrator:
+    build:
+      context: ./services
+      dockerfile: langgraph-orchestrator/Dockerfile
+    container_name: cognivectra-langgraph-orchestrator
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./services/langgraph-orchestrator/.env # LOCAL ONLY
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    depends_on:
+      intent-router:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  default:
+    name: cognivectra-ai-network

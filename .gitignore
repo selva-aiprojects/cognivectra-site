@@ -29,3 +29,35 @@ playwright-report/
 blob-report/
 playwright-artifacts/
 
+# ── Security: Secrets & Keys ──────────────────────────────────────────────────
+# NEVER commit real secrets. .env.example files (placeholders only) are allowed.
+.env
+.env.local
+.env.production
+.env.staging
+services/**/.env
+
+# Cryptographic keys
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Files accidentally named with "secret"
+*secret*
+*_secret*
+*SECRET*
+
+# ── Python Microservices ──────────────────────────────────────────────────────
+services/**/__pycache__/
+services/**/*.pyc
+services/**/*.pyo
+services/**/venv/
+services/**/.venv/
+services/**/*.egg-info/
+services/**/.pytest_cache/
+services/**/adapters/        # LoRA model adapter files (large binary assets)
+services/**/*.safetensors
+services/**/*.bin
