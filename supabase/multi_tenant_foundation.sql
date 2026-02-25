@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS public.tenants (
 
 -- Add tenant_id to core tables if missing
 DO $$ 
+DECLARE
+    r RECORD;
 BEGIN 
     -- Posts
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='posts' AND column_name='tenant_id') THEN
@@ -80,6 +82,18 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='job_applications' AND column_name='tenant_id') THEN
         ALTER TABLE public.job_applications ADD COLUMN tenant_id UUID REFERENCES public.tenants(id);
     END IF;
+
+    -- FIX TYPE MISMATCHES (e.g. if ai_query_logs was previously created as TEXT)
+    -- We convert TEXT to UUID safely for any table having a tenant_id column.
+    FOR r IN 
+        SELECT table_name 
+        FROM information_schema.columns 
+        WHERE column_name = 'tenant_id' 
+          AND table_schema = 'public' 
+          AND data_type = 'text'
+    LOOP
+        EXECUTE format('ALTER TABLE public.%I ALTER COLUMN tenant_id TYPE UUID USING tenant_id::uuid', r.table_name);
+    END LOOP;
 END $$;
 
 -- =============================================
