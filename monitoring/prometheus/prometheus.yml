@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'intent-router'
+    static_configs:
+      - targets: ['intent-router:8001']
+
+  - job_name: 'langgraph-orchestrator'
+    static_configs:
+      - targets: ['langgraph-orchestrator:8002']

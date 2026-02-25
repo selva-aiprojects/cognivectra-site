@@ -5,6 +5,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRocket, FaLinkedin, FaInstagram, FaFacebook, FaEdit, FaCheckCircle, FaExclamationTriangle, FaSpinner, FaPlus, FaExternalLinkAlt, FaUsers, FaFileContract, FaTools, FaBriefcase, FaEnvelopeOpenText } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
+import { useTenant } from "../context/TenantContext";
 
 export default function AdminEnhanced() {
   const [posts, setPosts] = useState([]);
@@ -16,7 +17,8 @@ export default function AdminEnhanced() {
   const [showPlatformSelector, setShowPlatformSelector] = useState({}); // { postId: true/false }
   const [socialMediaStatus, setSocialMediaStatus] = useState({}); // { postId: { platform: { published_at, platform_post_id } } }
   const [activeTab, setActiveTab] = useState("drafts");
-  const [activeConsole, setActiveConsole] = useState("publisher"); // or "talent"
+  const { isModuleEnabled } = useTenant();
+  const [activeConsole, setActiveConsole] = useState(isModuleEnabled('BLOG') ? "publisher" : "talent"); // or "talent"
   const [applications, setApplications] = useState([]);
   const [compensationPackages, setCompensationPackages] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
@@ -349,38 +351,42 @@ export default function AdminEnhanced() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em', margin: 0 }}>{activeConsole === 'publisher' ? 'Publisher Console' : 'Talent Console'}</h1>
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '4px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <button
-                onClick={() => setActiveConsole('publisher')}
-                style={{
-                  padding: '6px 16px',
-                  borderRadius: '8px',
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  border: 'none',
-                  background: activeConsole === 'publisher' ? 'var(--accent-primary)' : 'transparent',
-                  color: activeConsole === 'publisher' ? 'white' : 'var(--text-secondary)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <FaRocket style={{ marginRight: '6px' }} /> Publisher
-              </button>
-              <button
-                onClick={() => setActiveConsole('talent')}
-                style={{
-                  padding: '6px 16px',
-                  borderRadius: '8px',
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  border: 'none',
-                  background: activeConsole === 'talent' ? 'var(--accent-primary)' : 'transparent',
-                  color: activeConsole === 'talent' ? 'white' : 'var(--text-secondary)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <FaUsers style={{ marginRight: '6px' }} /> Talent Ops
-              </button>
+              {isModuleEnabled('BLOG') && (
+                <button
+                  onClick={() => setActiveConsole('publisher')}
+                  style={{
+                    padding: '6px 16px',
+                    borderRadius: '8px',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    border: 'none',
+                    background: activeConsole === 'publisher' ? 'var(--accent-primary)' : 'transparent',
+                    color: activeConsole === 'publisher' ? 'white' : 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <FaRocket style={{ marginRight: '6px' }} /> Publisher
+                </button>
+              )}
+              {isModuleEnabled('TALENT') && (
+                <button
+                  onClick={() => setActiveConsole('talent')}
+                  style={{
+                    padding: '6px 16px',
+                    borderRadius: '8px',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    border: 'none',
+                    background: activeConsole === 'talent' ? 'var(--accent-primary)' : 'transparent',
+                    color: activeConsole === 'talent' ? 'white' : 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <FaUsers style={{ marginRight: '6px' }} /> Talent Ops
+                </button>
+              )}
             </div>
           </div>
           <p style={{ opacity: 0.7, marginTop: '0.5rem' }}>

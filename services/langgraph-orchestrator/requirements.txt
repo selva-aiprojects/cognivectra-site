@@ -7,3 +7,4 @@ langchain-openai==0.2.14
 supabase==2.11.0
 cryptography==44.0.0
 python-dotenv==1.0.1
+prometheus-fastapi-instrumentator==7.0.0

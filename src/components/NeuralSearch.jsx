@@ -83,7 +83,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     }
                 }
 
-                setResult(`[Local Analysis] ${bestContext}`);
+                setResult(bestContext);
                 setHistory(prev => {
                     const newHistory = [query, ...prev.filter(q => q !== query).slice(0, 4)];
                     return newHistory;
@@ -244,7 +244,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                         WebkitBackgroundClip: 'text',
                                         WebkitTextFillColor: 'transparent'
                                     }}>
-                                        AI Intelligence Brief
+                                        Intelligence Brief
                                     </span>
                                 </div>
                                 <div
@@ -322,7 +322,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
 
                                 {history.length > 0 && (
                                     <div style={{ marginTop: '3rem' }}>
-                                        <h5 style={{ color: 'rgba(255,255,255,0.3)', marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Recent Intelligence</h5>
+                                        <h4 style={{ fontSize: '0.65rem', fontWeight: '800', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '1rem' }}>Recent Inquiries</h4>
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                             {history.map((item, i) => (
                                                 <button

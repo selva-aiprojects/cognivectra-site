@@ -18,6 +18,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from contextlib import asynccontextmanager
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from orchestrator import orchestrate, get_graph
 
@@ -81,6 +82,9 @@ app.add_middleware(
     allow_methods=["POST", "GET", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# ─── Instrumentation ──────────────────────────────────────────────────────────
+Instrumentator().instrument(app).expose(app)
 
 
 # ─── Routes ────────────────────────────────────────────────────────────────────

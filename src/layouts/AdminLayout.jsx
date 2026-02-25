@@ -12,10 +12,13 @@ import {
     FaPenNib,
     FaRocket,
     FaChartLine,
-    FaSignOutAlt
+    FaSignOutAlt,
+    FaGlobe
 } from 'react-icons/fa';
+import { useTenant } from '../context/TenantContext';
 
 export default function AdminLayout({ children }) {
+    const { tenant, isModuleEnabled, loading: tenantLoading } = useTenant();
     const navigate = useNavigate();
     const location = useLocation();
     const [loading, setLoading] = useState(true);
@@ -30,6 +33,19 @@ export default function AdminLayout({ children }) {
             navigate('/login');
             return;
         }
+
+        // Module Protection: Redirect if trying to access a disabled module
+        const path = location.pathname;
+        if (path.startsWith('/admin/clients') || path.startsWith('/admin/projects')) {
+            if (!isModuleEnabled('CRM')) navigate('/admin');
+        } else if (path.startsWith('/admin/jobs') || path.startsWith('/admin/compensation') || path.startsWith('/admin/offers')) {
+            if (!isModuleEnabled('TALENT')) navigate('/admin');
+        } else if (path.startsWith('/admin/blog') || path.startsWith('/admin/omni')) {
+            if (!isModuleEnabled('BLOG')) navigate('/admin');
+        } else if (path.startsWith('/admin/reports')) {
+            if (!isModuleEnabled('AI_SEARCH')) navigate('/admin');
+        }
+
         setLoading(false);
     }
 
@@ -54,53 +70,78 @@ export default function AdminLayout({ children }) {
         <div className="admin-layout">
             <aside className="admin-sidebar glass-panel">
                 <div className="sidebar-brand">
-                    <motion.img
+                    <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        src="/cognivectra-dark-crop.png"
-                        alt="CogniVectra"
-                        style={{ height: '32px', width: 'auto', marginBottom: '0.5rem' }}
-                    />
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                    >
+                        {tenant?.branding?.logo_url ? (
+                            <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '32px', width: 'auto', marginBottom: '0.5rem' }} />
+                        ) : (
+                            <FaGlobe style={{ fontSize: '1.5rem', color: 'var(--accent-primary)', marginBottom: '0.5rem' }} />
+                        )}
+                        <div data-testid="tenant-name" style={{ fontSize: '0.9rem', fontWeight: '800', color: 'white', textAlign: 'center' }}>
+                            {tenant?.tenant_name || 'Operations OS'}
+                        </div>
+                    </motion.div>
                     <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginTop: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '800', opacity: 0.6 }}>
                         Command Center
                     </div>
                 </div>
 
                 <nav className="sidebar-nav" style={{ flex: 1, padding: '1rem 0', overflowY: 'auto' }}>
-                    <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Operations</div>
-                    <Link to="/admin" className={isActive('/admin')}>
-                        <FaHome /> Dashboard
-                    </Link>
-                    <Link to="/admin/clients" className={isActive('/admin/clients')}>
-                        <FaUsers /> Relationships
-                    </Link>
-                    <Link to="/admin/projects" className={isActive('/admin/projects')}>
-                        <FaTasks /> Roadmap
-                    </Link>
+                    {isModuleEnabled('CRM') && (
+                        <>
+                            <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Operations</div>
+                            <Link to="/admin" className={isActive('/admin')}>
+                                <FaHome /> Dashboard
+                            </Link>
+                            <Link to="/admin/clients" className={isActive('/admin/clients')}>
+                                <FaUsers /> Relationships
+                            </Link>
+                            <Link to="/admin/projects" className={isActive('/admin/projects')}>
+                                <FaTasks /> Roadmap
+                            </Link>
+                        </>
+                    )}
 
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
-                    <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Resources</div>
-                    <Link to="/admin/jobs" className={isActive('/admin/jobs')}>
-                        <FaBriefcase /> Talent Pipeline
-                    </Link>
-                    <Link to="/admin/compensation" className={isActive('/admin/compensation')}>
-                        <FaGem /> Compensation
-                    </Link>
-                    <Link to="/admin/offers" className={isActive('/admin/offers')}>
-                        <FaEnvelopeOpenText /> Offer Mesh
-                    </Link>
+                    {isModuleEnabled('TALENT') && (
+                        <>
+                            <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
+                            <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Resources</div>
+                            <Link to="/admin/jobs" className={isActive('/admin/jobs')}>
+                                <FaBriefcase /> Talent Pipeline
+                            </Link>
+                            <Link to="/admin/compensation" className={isActive('/admin/compensation')}>
+                                <FaGem /> Compensation
+                            </Link>
+                            <Link to="/admin/offers" className={isActive('/admin/offers')}>
+                                <FaEnvelopeOpenText /> Offer Mesh
+                            </Link>
+                        </>
+                    )}
 
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
-                    <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Intelligence</div>
-                    <Link to="/admin/blog" className={isActive('/admin/blog')}>
-                        <FaPenNib /> Editorial
-                    </Link>
-                    <Link to="/admin/omni" className={isActive('/admin/omni')}>
-                        <FaRocket /> Omni-Channel
-                    </Link>
-                    <Link to="/admin/reports" className={isActive('/admin/reports')}>
-                        <FaChartLine /> Telemetry
-                    </Link>
+                    {(isModuleEnabled('BLOG') || isModuleEnabled('AI_SEARCH')) && (
+                        <>
+                            <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
+                            <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Intelligence</div>
+                            {isModuleEnabled('BLOG') && (
+                                <>
+                                    <Link to="/admin/blog" className={isActive('/admin/blog')}>
+                                        <FaPenNib /> Editorial
+                                    </Link>
+                                    <Link to="/admin/omni" className={isActive('/admin/omni')}>
+                                        <FaRocket /> Omni-Channel
+                                    </Link>
+                                </>
+                            )}
+                            {isModuleEnabled('AI_SEARCH') && (
+                                <Link to="/admin/reports" className={isActive('/admin/reports')}>
+                                    <FaChartLine /> Telemetry
+                                </Link>
+                            )}
+                        </>
+                    )}
                 </nav>
 
                 <div className="sidebar-footer" style={{ padding: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>

@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaBuilding, FaUserCheck, FaCode, FaChartBar, FaRocket, FaBriefcase, FaUsers, FaTasks, FaClock, FaSpinner } from 'react-icons/fa';
 import AdminLayout from '../layouts/AdminLayout';
+import { useTenant } from '../context/TenantContext';
 
 export default function Admin() {
+  const { isModuleEnabled, tenant } = useTenant();
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState({
     total_active_clients: 0,
@@ -100,9 +102,15 @@ export default function Admin() {
           <p style={{ opacity: 0.7 }}>Business performance & Operational insights at a glance.</p>
         </div>
         <div className="admin-actions" style={{ display: 'flex', gap: '1rem' }}>
-          <Link to="/admin/omni" className="btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem', background: 'var(--accent-primary)' }}>🚀 Social Publisher</Link>
-          <Link to="/admin/blog?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ Create Post</Link>
-          <Link to="/admin/jobs?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ New Job</Link>
+          {isModuleEnabled('BLOG') && (
+            <>
+              <Link to="/admin/omni" className="btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem', background: 'var(--accent-primary)' }}>🚀 Social Publisher</Link>
+              <Link to="/admin/blog?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ Create Post</Link>
+            </>
+          )}
+          {isModuleEnabled('TALENT') && (
+            <Link to="/admin/jobs?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ New Job</Link>
+          )}
         </div>
       </header>
 
@@ -193,70 +201,76 @@ export default function Admin() {
       {/* DASHBOARD MODULES */}
       <div className="dashboard-grid">
         {/* CLIENTS MODULE */}
-        <div className="module-card glass-panel">
-          <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
-            <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaBuilding /></div>
-            <div>
-              <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Client Relations</h3>
-              <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>CRM & Interactions</p>
+        {isModuleEnabled('CRM') && (
+          <div className="module-card glass-panel">
+            <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
+              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaBuilding /></div>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Client Relations</h3>
+                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>CRM & Interactions</p>
+              </div>
+            </div>
+            <div className="module-content">
+              <div className="metric-row">
+                <span style={{ color: 'var(--text-secondary)' }}>Prospects</span>
+                <strong style={{ color: '#fff' }}>{metrics.total_prospects}</strong>
+              </div>
+              <div className="metric-row">
+                <span style={{ color: 'var(--text-secondary)' }}>Onboarding</span>
+                <strong style={{ color: '#fff' }}>2</strong>
+              </div>
+            </div>
+            <div className="module-actions" style={{ marginTop: '1rem' }}>
+              <Link to="/admin/clients" className="btn-outline" style={{ width: '100%', textAlign: 'center', fontSize: '0.9rem' }}>Open CRM</Link>
             </div>
           </div>
-          <div className="module-content">
-            <div className="metric-row">
-              <span style={{ color: 'var(--text-secondary)' }}>Prospects</span>
-              <strong style={{ color: '#fff' }}>{metrics.total_prospects}</strong>
-            </div>
-            <div className="metric-row">
-              <span style={{ color: 'var(--text-secondary)' }}>Onboarding</span>
-              <strong style={{ color: '#fff' }}>2</strong>
-            </div>
-          </div>
-          <div className="module-actions" style={{ marginTop: '1rem' }}>
-            <Link to="/admin/clients" className="btn-outline" style={{ width: '100%', textAlign: 'center', fontSize: '0.9rem' }}>Open CRM</Link>
-          </div>
-        </div>
+        )}
 
         {/* PROJECTS MODULE */}
-        <div className="module-card glass-panel">
-          <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
-            <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaTasks /></div>
-            <div>
-              <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Project Delivery</h3>
-              <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Milestones & Health</p>
+        {isModuleEnabled('CRM') && (
+          <div className="module-card glass-panel">
+            <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
+              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaTasks /></div>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Project Delivery</h3>
+                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Milestones & Health</p>
+              </div>
+            </div>
+            <div className="module-content">
+              <div className="metric-row">
+                <span style={{ color: 'var(--text-secondary)' }}>In Flight</span>
+                <strong style={{ color: '#fff' }}>{metrics.projects_in_progress}</strong>
+              </div>
+              <div className="metric-row">
+                <span style={{ color: 'var(--text-secondary)' }}>At Risk</span>
+                <strong style={{ color: '#f87171' }}>0</strong>
+              </div>
+            </div>
+            <div className="module-actions" style={{ marginTop: '1rem' }}>
+              <Link to="/admin/projects" className="btn-outline" style={{ width: '100%', textAlign: 'center', fontSize: '0.9rem' }}>Project Board</Link>
             </div>
           </div>
-          <div className="module-content">
-            <div className="metric-row">
-              <span style={{ color: 'var(--text-secondary)' }}>In Flight</span>
-              <strong style={{ color: '#fff' }}>{metrics.projects_in_progress}</strong>
-            </div>
-            <div className="metric-row">
-              <span style={{ color: 'var(--text-secondary)' }}>At Risk</span>
-              <strong style={{ color: '#f87171' }}>0</strong>
-            </div>
-          </div>
-          <div className="module-actions" style={{ marginTop: '1rem' }}>
-            <Link to="/admin/projects" className="btn-outline" style={{ width: '100%', textAlign: 'center', fontSize: '0.9rem' }}>Project Board</Link>
-          </div>
-        </div>
+        )}
 
         {/* RECRUITMENT MODULE */}
-        <div className="module-card glass-panel">
-          <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
-            <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaBriefcase /></div>
-            <div>
-              <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Hiring & Talent</h3>
-              <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Jobs & Offers</p>
+        {isModuleEnabled('TALENT') && (
+          <div className="module-card glass-panel">
+            <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
+              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaBriefcase /></div>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Hiring & Talent</h3>
+                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Jobs & Offers</p>
+              </div>
+            </div>
+            <div className="module-actions" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginTop: '1rem' }}>
+              <Link to="/admin/jobs" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.9rem' }}>Jobs</Link>
+              <Link to="/admin/offers" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.9rem' }}>Offers</Link>
+            </div>
+            <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+              <Link to="/admin/compensation" style={{ fontSize: '0.8rem', color: 'var(--accent-light)', hover: { textDecoration: 'underline' } }}>View Compensation Table →</Link>
             </div>
           </div>
-          <div className="module-actions" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginTop: '1rem' }}>
-            <Link to="/admin/jobs" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.9rem' }}>Jobs</Link>
-            <Link to="/admin/offers" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.9rem' }}>Offers</Link>
-          </div>
-          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link to="/admin/compensation" style={{ fontSize: '0.8rem', color: 'var(--accent-light)', hover: { textDecoration: 'underline' } }}>View Compensation Table →</Link>
-          </div>
-        </div>
+        )}
 
         {/* RECENT ACTIVITY */}
         <div className="module-card glass-panel">

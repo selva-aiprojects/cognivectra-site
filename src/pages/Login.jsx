@@ -2,15 +2,25 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaLock, FaEnvelope, FaSpinner, FaChevronRight } from 'react-icons/fa';
+import { FaLock, FaEnvelope, FaSpinner, FaChevronRight, FaGlobe } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
+import { useTenant } from '../context/TenantContext';
 
 export default function Login() {
+    const { tenant, loading: tenantLoading } = useTenant();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
     const navigate = useNavigate();
+
+    if (tenantLoading) {
+        return (
+            <div className="login-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="loader"></div>
+            </div>
+        );
+    }
 
     async function handleLogin(e) {
         e.preventDefault();
@@ -71,17 +81,25 @@ export default function Login() {
                     <meta property="og:image" content="https://cognivectra.com/og-image.png" />
                 </Helmet>
                 <div className="login-header">
-                    <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Command Portal Activation</h1>
-                    <motion.img
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        src="/cognivectra-dark-crop.png"
-                        alt="CogniVectra"
-                        style={{ height: '32px', width: 'auto', margin: '0 auto 1.5rem' }}
-                    />
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}
+                    >
+                        {tenant?.branding?.logo_url ? (
+                            <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '40px', width: 'auto' }} />
+                        ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <FaGlobe style={{ fontSize: '1.5rem', color: 'var(--accent-primary)' }} />
+                                <div data-testid="tenant-name" style={{ fontSize: '0.9rem', fontWeight: '800', color: 'white', textAlign: 'center' }}>
+                                    {tenant?.tenant_name || 'Operations OS'}
+                                </div>
+                            </div>
+                        )}
+                    </motion.div>
                     <h2>Command Portal</h2>
-                    <p>Authorization required to access CogniVectra core.</p>
+                    <p>Authorization required to access {tenant?.tenant_name || 'CogniVectra'} core.</p>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -156,7 +174,7 @@ export default function Login() {
                 <div className="login-footer">
                     <FaLock style={{ fontSize: '0.7rem' }} /> Encrypted via Supabase High-Trust Mesh
                 </div>
-            </motion.div>
-        </div>
+            </motion.div >
+        </div >
     );
 }
