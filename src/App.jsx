@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 
@@ -148,6 +148,7 @@ export default function App() {
           <Route path="/admin/clients" element={<AdminClients />} />
           <Route path="/admin/projects" element={<AdminProjects />} />
           <Route path="/admin/omni" element={<AdminEnhanced />} />
+          <Route path="/admin/*" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
