@@ -15,7 +15,7 @@ This document details the technical architecture and business management modules
 
 ### System Components
 - **Neural Search (RAG)**: Global intelligent search engine using Supabase Edge Functions with keyword fallback and agentic routing.
-- **Intent Router**: Python microservice classifying user queries into specialized intents (Product Info, Helpdesk, Analytics, etc.).
+- **Intent Router**: LoRA-enabled Python microservice classifying user queries into specialized intents.
 - **LangGraph Orchestrator**: Multi-agent state machine that routes intents to specific agent nodes for high-fidelity responses.
 - **Admin Dashboard**: Central hub for content review, social publishing, and business ops.
 - **Edge Functions**: Deno functions orchestrating requests between the frontend and AI microservices.
@@ -59,6 +59,8 @@ CogniVectra includes several internal management systems built on top of Supabas
 - **Clients**: CRM records (CL### format).
 - **Projects**: Engagement records (PRJ### format).
 - **Employees**: Personnel records (COGNI### format).
+- **AI Feature Flags**: Configuration for phased rollout of LLM routing (`ai_feature_flags` table).
+- **AI Query Logs**: Audit trail for AI query intent classification and agent selection (`ai_query_logs` table).
 
 ---
 

@@ -30,7 +30,7 @@ create policy "Admins can do everything"
   with check ( auth.role() = 'authenticated' );
 
 -- 4. Create a storage bucket for blog images (optional)
-insert into storage.buckets (id, name, public) values ('blog-images', 'blog-images', true);
+insert into storage.buckets (id, name, public) values ('blog-images', 'blog-images', true) on conflict (id) do nothing;
 
 create policy "Images are publicly accessible"
   on storage.objects for select
@@ -39,3 +39,38 @@ create policy "Images are publicly accessible"
 create policy "Admins can upload images"
   on storage.objects for insert
   with check ( bucket_id = 'blog-images' and auth.role() = 'authenticated' );
+
+-- 5. AI Intelligence Tables
+
+-- Feature Flags for routing and logging
+CREATE TABLE IF NOT EXISTS public.ai_feature_flags (
+    id          UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
+    flag_name   TEXT        UNIQUE NOT NULL,
+    is_enabled  BOOLEAN     DEFAULT FALSE,
+    description TEXT,
+    rollout_pct INTEGER     DEFAULT 0 CHECK (rollout_pct BETWEEN 0 AND 100),
+    updated_at  TIMESTAMPTZ DEFAULT NOW(),
+    updated_by  TEXT        DEFAULT 'system'
+);
+
+ALTER TABLE public.ai_feature_flags ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read flags" ON public.ai_feature_flags FOR SELECT USING (true);
+
+-- Centralized Query Logging for AI Intent Routing
+CREATE TABLE IF NOT EXISTS public.ai_query_logs (
+    id            UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
+    tenant_id     TEXT        NOT NULL,
+    user_id       TEXT,
+    query         TEXT        NOT NULL,
+    intent        TEXT,
+    confidence    FLOAT,
+    agent_selected TEXT,
+    response      TEXT,
+    latency_ms    FLOAT,
+    routing_path  TEXT DEFAULT 'keyword',
+    error_detail  TEXT,
+    created_at    TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.ai_query_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Service role can insert logs" ON public.ai_query_logs FOR INSERT WITH CHECK (true);

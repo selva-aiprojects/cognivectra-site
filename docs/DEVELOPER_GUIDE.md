@@ -24,6 +24,16 @@ This guide covers local environment setup, testing, and troubleshooting for the 
 
 ---
 
+## 🗄️ Database Migrations
+
+Before deploying the AI routing layer, the Supabase schema must be updated:
+1.  Open the **Supabase SQL Editor**.
+2.  Run `supabase/ai_query_logs_migration.sql` to create query audit logs.
+3.  Run `supabase/ai_feature_flags_migration.sql` to setup the LoRA routing toggle.
+4.  Verify tables appear in the Database Browser.
+
+---
+
 ## 🧪 Testing & Verification
 
 ### 1. Edge Function Testing
