@@ -24,6 +24,11 @@ CREATE TABLE IF NOT EXISTS public.tenants (
     enabled_modules TEXT[] DEFAULT '{"CRM", "AI_SEARCH", "BLOG"}'::TEXT[]
 );
 
+-- SEED INITIAL TENANT (CogniVectra Main) - Done early to provide a reference
+INSERT INTO public.tenants (id, tenant_name, subdomain)
+VALUES ('00000000-0000-0000-0000-000000000000', 'CogniVectra Global', 'admin')
+ON CONFLICT (id) DO NOTHING;
+
 -- =============================================
 -- 2. REINFORCE TENANT_ID ACROSS ALL TABLES
 -- =============================================
@@ -83,8 +88,7 @@ BEGIN
         ALTER TABLE public.job_applications ADD COLUMN tenant_id UUID REFERENCES public.tenants(id);
     END IF;
 
-    -- FIX TYPE MISMATCHES (e.g. if ai_query_logs was previously created as TEXT)
-    -- We convert TEXT to UUID safely for any table having a tenant_id column.
+    -- FIX TYPE MISMATCHES (Defensively handle invalid data like "public" strings)
     FOR r IN 
         SELECT table_name 
         FROM information_schema.columns 
@@ -92,6 +96,9 @@ BEGIN
           AND table_schema = 'public' 
           AND data_type = 'text'
     LOOP
+        -- Map anything that isn't a valid UUID string format to the Global Tenant
+        EXECUTE format('UPDATE public.%I SET tenant_id = ''00000000-0000-0000-0000-000000000000'' WHERE tenant_id !~ ''^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$''', r.table_name);
+        -- Cast and convert
         EXECUTE format('ALTER TABLE public.%I ALTER COLUMN tenant_id TYPE UUID USING tenant_id::uuid', r.table_name);
     END LOOP;
 END $$;
@@ -99,9 +106,6 @@ END $$;
 -- =============================================
 -- 3. GLOBAL RLS FUNCTION
 -- =============================================
--- This function sets the context for the current tenant during a request.
--- In production, the Edge Function or Auth Hook sets 'app.tenant_id'.
-
 CREATE OR REPLACE FUNCTION public.get_tenant_id() 
 RETURNS UUID AS $$
   SELECT NULLIF(current_setting('app.tenant_id', TRUE), '')::UUID;
@@ -110,10 +114,6 @@ $$ LANGUAGE sql STABLE;
 -- =============================================
 -- 4. APPLY UNIFIED RLS POLICIES
 -- =============================================
-
--- Apply to ALL tables (Standardized Policy)
--- Note: We drop existing policies first to centralize control.
-
 DO $$ 
 DECLARE 
     t TEXT;
@@ -127,13 +127,8 @@ BEGIN
 END $$;
 
 -- =============================================
--- 5. SEED INITIAL TENANT (CogniVectra Main)
+-- 5. FINAL DATA CLEANUP (Map orphans to Global Tenant)
 -- =============================================
-INSERT INTO public.tenants (id, tenant_name, subdomain)
-VALUES ('00000000-0000-0000-0000-000000000000', 'CogniVectra Global', 'admin')
-ON CONFLICT (id) DO NOTHING;
-
--- Assign all existing data to the global tenant
 UPDATE public.posts SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;
 UPDATE public.clients SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;
 UPDATE public.projects SET tenant_id = '00000000-0000-0000-0000-000000000000' WHERE tenant_id IS NULL;

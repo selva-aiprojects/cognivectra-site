@@ -49,7 +49,7 @@ export const TenantProvider = ({ children }) => {
                     font_family: 'Inter',
                     logo_url: null
                 },
-                enabled_modules: ['CRM', 'AI_SEARCH', 'BLOG']
+                enabled_modules: ['CRM', 'TALENT', 'AI_SEARCH', 'BLOG']
             };
 
             const finalTenant = data || globalTenant || failsafeTenant;

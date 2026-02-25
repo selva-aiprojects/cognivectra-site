@@ -36,10 +36,15 @@ CREATE INDEX IF NOT EXISTS idx_ai_query_logs_intent
 ALTER TABLE ai_query_logs ENABLE ROW LEVEL SECURITY;
 
 -- Tenants can only read their own logs
+DROP POLICY IF EXISTS "tenant_can_read_own_logs" ON ai_query_logs;
+CREATE POLICY "tenant_can_read_own_logs"
+    ON ai_query_logs
+    FOR SELECT
     USING (tenant_id = public.get_tenant_id());
 
 -- Only service role (backend) can insert
 -- (Edge Function uses service_role key to write logs)
+DROP POLICY IF EXISTS "service_role_can_insert_logs" ON ai_query_logs;
 CREATE POLICY "service_role_can_insert_logs"
     ON ai_query_logs
     FOR INSERT

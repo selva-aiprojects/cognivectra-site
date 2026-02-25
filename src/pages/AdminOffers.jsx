@@ -17,6 +17,7 @@ export default function AdminOffers() {
     const [success, setSuccess] = useState('');
     const [previewHTML, setPreviewHTML] = useState('');
     const [showPreview, setShowPreview] = useState(false);
+    const [viewingOffer, setViewingOffer] = useState(null);
 
     const [offerData, setOfferData] = useState({
         candidateName: '',
@@ -239,6 +240,68 @@ export default function AdminOffers() {
         }
     }
 
+    async function viewOfferLetter(offer) {
+        if (offer.offer_letter_html) {
+            setPreviewHTML(offer.offer_letter_html);
+            setViewingOffer(offer);
+            return;
+        }
+        // Generate from template for seeded offers without stored HTML
+        try {
+            const response = await fetch('/email-templates/offer-letter.html');
+            let template = await response.text();
+            const offerDate = new Date(offer.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+            const startDate = offer.start_date ? new Date(offer.start_date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD';
+            const addr = offer.candidate_address || {};
+            const benefits = Array.isArray(offer.benefits) ? offer.benefits : [];
+
+            template = template
+                .replace(/{{OFFER_DATE}}/g, offerDate)
+                .replace(/{{OFFER_REFERENCE}}/g, offer.offer_reference || 'N/A')
+                .replace(/{{CANDIDATE_NAME}}/g, offer.candidate_name)
+                .replace(/{{CANDIDATE_ADDRESS_LINE1}}/g, addr.line1 || '')
+                .replace(/{{CANDIDATE_ADDRESS_LINE2}}/g, addr.line2 || '')
+                .replace(/{{CANDIDATE_CITY}}/g, addr.city || '')
+                .replace(/{{CANDIDATE_STATE}}/g, addr.state || '')
+                .replace(/{{CANDIDATE_PINCODE}}/g, addr.pincode || '')
+                .replace(/{{JOB_TITLE}}/g, offer.job_title)
+                .replace(/{{DEPARTMENT}}/g, offer.department)
+                .replace(/{{REPORTING_MANAGER}}/g, offer.reporting_manager || 'Selvakumar B')
+                .replace(/{{WORK_LOCATION}}/g, offer.work_location || 'Remote')
+                .replace(/{{JOB_RESPONSIBILITIES}}/g, offer.job_responsibilities || '')
+                .replace(/{{START_DATE}}/g, startDate)
+                .replace(/{{EMPLOYMENT_TYPE}}/g, offer.employment_type || 'full-time permanent')
+                .replace(/{{PROBATION_PERIOD}}/g, offer.probation_period || '3 months')
+                .replace(/{{ANNUAL_CTC}}/g, offer.annual_ctc)
+                .replace(/{{BASIC_SALARY}}/g, offer.basic_salary || '')
+                .replace(/{{HRA}}/g, offer.hra || '')
+                .replace(/{{SPECIAL_ALLOWANCE}}/g, offer.special_allowance || '')
+                .replace(/{{PERFORMANCE_BONUS}}/g, offer.performance_bonus || '')
+                .replace(/{{OTHER_BENEFITS}}/g, offer.other_benefits || 'As per company policy')
+                .replace(/{{BENEFIT_1}}/g, benefits[0] || 'N/A')
+                .replace(/{{BENEFIT_2}}/g, benefits[1] || 'N/A')
+                .replace(/{{BENEFIT_3}}/g, benefits[2] || 'N/A')
+                .replace(/{{BENEFIT_4}}/g, benefits[3] || 'N/A')
+                .replace(/{{BENEFIT_5}}/g, benefits[4] || 'N/A')
+                .replace(/{{WORKING_HOURS}}/g, offer.working_hours || '40')
+                .replace(/{{WORK_SCHEDULE}}/g, offer.work_schedule || '')
+                .replace(/{{ANNUAL_LEAVE}}/g, offer.annual_leave_days || '21')
+                .replace(/{{SICK_LEAVE}}/g, offer.sick_leave_days || '12')
+                .replace(/{{CASUAL_LEAVE}}/g, offer.casual_leave_days || '7')
+                .replace(/{{NOTICE_PERIOD}}/g, offer.notice_period_days || '60')
+                .replace(/{{ADDITIONAL_CONDITION}}/g, offer.additional_conditions || '')
+                .replace(/{{ACCEPTANCE_DEADLINE}}/g, '')
+                .replace(/{{SIGNATORY_NAME}}/g, offer.signatory_name || 'Selvakumar B')
+                .replace(/{{SIGNATORY_TITLE}}/g, offer.signatory_title || 'Director of Technology');
+
+            setPreviewHTML(template);
+            setViewingOffer(offer);
+        } catch (err) {
+            console.error('Error generating view:', err);
+            setError('Failed to load offer letter template');
+        }
+    }
+
     async function saveOffer() {
         setSaving(true);
         setError('');
@@ -419,6 +482,28 @@ export default function AdminOffers() {
                 </div>
             )}
 
+            {/* View Existing Offer Modal */}
+            {viewingOffer && (
+                <div className="modal-overlay" onClick={() => setViewingOffer(null)}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="modal-header">
+                            <div>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Offer Letter — {viewingOffer.candidate_name}</h2>
+                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>{viewingOffer.offer_reference} | {viewingOffer.job_title} | Status: {viewingOffer.offer_status?.toUpperCase()}</p>
+                            </div>
+                            <button className="modal-close" onClick={() => setViewingOffer(null)}>×</button>
+                        </div>
+                        <div style={{ background: 'white', padding: '3rem', borderRadius: '12px', marginBottom: '2rem', color: '#111827', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.05)', overflowX: 'auto', maxHeight: '70vh', overflowY: 'auto' }}>
+                            <div dangerouslySetInnerHTML={{ __html: previewHTML }} />
+                        </div>
+                        <div className="form-actions" style={{ display: 'flex', gap: '1rem' }}>
+                            <button onClick={() => { const w = window.open('', '_blank'); w.document.write(previewHTML); w.document.close(); w.print(); }} className="btn-outline" style={{ flex: 1 }}>🖨️ Print / PDF</button>
+                            <button onClick={() => setViewingOffer(null)} className="btn" style={{ flex: 1 }}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="admin-table-container glass-panel">
                 <table className="admin-table">
                     <thead>
@@ -428,6 +513,7 @@ export default function AdminOffers() {
                             <th>Total Compensation</th>
                             <th>Lifecycle Status</th>
                             <th>Date Issued</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -451,6 +537,11 @@ export default function AdminOffers() {
                                 </td>
                                 <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>
                                     {new Date(offer.created_at).toLocaleDateString()}
+                                </td>
+                                <td>
+                                    <button onClick={() => viewOfferLetter(offer)} className="btn" style={{ padding: '0.35rem 1rem', fontSize: '0.75rem' }}>
+                                        📄 View
+                                    </button>
                                 </td>
                             </tr>
                         ))}

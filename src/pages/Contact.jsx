@@ -79,7 +79,23 @@ export default function Contact() {
         need: need || 'Not specified'
       }, 'CONVERSION');
 
-      setMessage("Thank you! Your platform request has been logged. Our Principal Architect will review your requirements within 24 hours.");
+      // Send acknowledgement email to the visitor
+      try {
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            type: 'contact_form',
+            name,
+            email,
+            stage: stage || 'Not specified',
+            need: need || 'Not specified',
+            message: msg
+          }
+        });
+      } catch (emailError) {
+        console.warn('Contact ack email failed (non-blocking):', emailError);
+      }
+
+      setMessage("Thank you! Your platform request has been logged. Our Principal Architect will review your requirements within 24 hours. A confirmation email has been sent to your inbox.");
       e.target.reset();
     } catch (error) {
       console.error("Contact form error:", error);

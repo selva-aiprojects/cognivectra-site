@@ -275,14 +275,22 @@ export default function Chatbot({ isOpen, setIsOpen }) {
         }, 'CONVERSION');
       }
 
-      // Safe Webhook
+      // Send acknowledgement email via Resend
       try {
-        await fetch("/api/crm-webhook", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            type: 'chatbot_lead',
+            name: data.name,
+            email: data.email,
+            stage: data.stage,
+            challenge: data.challenge,
+            timeline: data.timeline,
+            budget: data.budget
+          }
         });
-      } catch (e) { console.warn("Webhook warning:", e); }
+      } catch (emailError) {
+        console.warn('Chatbot ack email failed (non-blocking):', emailError);
+      }
 
       // ALWAYS Succeed for User
       setMessages((prev) => [

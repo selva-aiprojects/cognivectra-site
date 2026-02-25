@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 import { trackEvent } from '../lib/analytics';
 
 const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
@@ -70,14 +71,22 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
         mode: 'no-cors'
       });
 
-      // Also send to your backend for immediate processing
-      await fetch('/api/demo-request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+      // Also send acknowledgement email via Resend
+      try {
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            type: 'demo_request',
+            name: formData.name,
+            email: formData.email,
+            organization: formData.organization,
+            platform: platforms[formData.platform] || formData.platform,
+            timeline: formData.timeline,
+            message: formData.message
+          }
+        });
+      } catch (emailError) {
+        console.warn('Demo ack email failed (non-blocking):', emailError);
+      }
 
       setIsSubmitted(true);
 
