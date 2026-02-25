@@ -17,7 +17,39 @@ export default function ResetPassword() {
 
     useEffect(() => {
         async function handlePasswordRecovery() {
-            // --- PKCE Flow (Supabase JS v2 default) ---
+
+            // --- Strategy 1: URL Hash (Implicit flow from /auth/v1/verify redirect) ---
+            // Supabase server-side verify redirects back with: #access_token=...&type=recovery
+            if (window.location.hash) {
+                const hash = new URLSearchParams(window.location.hash.replace('#', ''))
+                const accessToken = hash.get('access_token')
+                const refreshToken = hash.get('refresh_token')
+                const tokenType = hash.get('type')
+
+                if (accessToken && tokenType === 'recovery') {
+                    console.log('🔑 Recovery tokens found in URL hash. Establishing session...')
+                    try {
+                        const { data, error } = await supabase.auth.setSession({
+                            access_token: accessToken,
+                            refresh_token: refreshToken || '',
+                        })
+                        if (error) throw error
+                        if (data.session) {
+                            console.log('✅ Session established via URL hash tokens.')
+                            setIsValidSession(true)
+                            setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' })
+                        }
+                    } catch (err) {
+                        console.error('❌ Hash session error:', err.message)
+                        setMessage({ type: 'error', text: 'Invalid or expired reset link. Please request a new one.' })
+                    } finally {
+                        setInitializing(false)
+                    }
+                    return
+                }
+            }
+
+            // --- Strategy 2: PKCE Flow (Supabase JS v2 default) ---
             // The reset link arrives as: /reset-password?code=XXXX
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
@@ -41,7 +73,7 @@ export default function ResetPassword() {
                 return;
             }
 
-            // --- Fallback: Check for existing session (implicit flow or already-exchanged) ---
+            // --- Strategy 3: Check for existing session ---
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
                 console.log('✨ Existing active session detected.');
@@ -51,7 +83,7 @@ export default function ResetPassword() {
                 return;
             }
 
-            // --- Listen for PASSWORD_RECOVERY event (slight race condition fallback) ---
+            // --- Strategy 4: Listen for PASSWORD_RECOVERY event (fallback) ---
             const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
                 console.log('🔑 Auth Event:', event);
                 if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
@@ -75,6 +107,7 @@ export default function ResetPassword() {
 
         handlePasswordRecovery();
     }, []);
+
 
     async function handleReset(e) {
         e.preventDefault();
