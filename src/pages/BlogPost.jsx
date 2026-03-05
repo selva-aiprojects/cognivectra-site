@@ -66,7 +66,7 @@ export default function BlogPost() {
       </Helmet>
 
       {/* HERO */}
-      <section className="hero-modern" style={{ padding: '8rem 2rem 6rem' }}>
+      <section className="hero-modern" style={{ padding: '6rem 2rem 4rem' }}>
         <div className="hero-modern-inner">
           <motion.div
             className="hero-copy"
@@ -78,7 +78,7 @@ export default function BlogPost() {
               <span>←</span>
               Expert Insights
             </Link>
-            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', maxWidth: '900px', margin: '1.5rem auto 1.5rem 0' }}>{post.title}</h1>
+            <h1 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)', maxWidth: '900px', margin: '1.25rem auto 1.25rem 0' }}>{post.title}</h1>
             <div className="blog-meta" style={{ justifyContent: 'flex-start', fontSize: '1rem', opacity: 0.8 }}>
               <span>📅</span>
               {new Date(post.published_at || post.created_at).toLocaleDateString(undefined, {

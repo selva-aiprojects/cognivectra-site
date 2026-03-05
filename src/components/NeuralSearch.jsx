@@ -2,94 +2,80 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent } from '../lib/analytics';
 import { supabase } from '../lib/supabase';
-import { FaSearch, FaMagic, FaTimes, FaArrowRight } from 'react-icons/fa';
+import { FaSearch, FaMagic, FaTimes, FaArrowRight, FaClock, FaBolt } from 'react-icons/fa';
+
+const TRENDING = [
+    { label: 'What is MedFlow?', icon: '🏥' },
+    { label: 'Retail AI solutions', icon: '🛒' },
+    { label: 'Cloud Landing Zones', icon: '☁️' },
+    { label: 'Healthcare EMR scalability', icon: '📈' },
+    { label: 'GenAI architecture', icon: '🤖' },
+];
 
 const NeuralSearch = ({ isOpen, onClose }) => {
     const [query, setQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [result, setResult] = useState(null);
     const [history, setHistory] = useState([]);
+    const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef(null);
 
-    const logo = "/cognivectra-dark-crop.png";
+    const logo = '/cognivectra-dark-crop.png';
 
     useEffect(() => {
         if (isOpen) {
             setQuery('');
             setResult(null);
-            if (inputRef.current) {
-                inputRef.current.focus();
-            }
+            setTimeout(() => inputRef.current?.focus(), 80);
         }
     }, [isOpen]);
 
-    const handleSearch = async (e) => {
-        if (e) e.preventDefault();
-        if (!query.trim()) return;
+    // Close on Escape
+    useEffect(() => {
+        const handler = (e) => { if (e.key === 'Escape' && isOpen) onClose(); };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [isOpen, onClose]);
 
+    const handleSearch = async (overrideQuery) => {
+        const q = (overrideQuery ?? query).trim();
+        if (!q) return;
+
+        if (overrideQuery) setQuery(overrideQuery);
         setIsSearching(true);
         setResult(null);
-        trackEvent('neural_search_query', { query });
+        trackEvent('neural_search_query', { query: q });
 
         try {
-            // 1. Try Live Edge Function
-            const { data, error } = await supabase.functions.invoke('ai-search', {
-                body: { query }
-            });
-
+            const { data, error } = await supabase.functions.invoke('ai-search', { body: { query: q } });
             if (error) throw error;
-
             setResult(data.answer);
-            setHistory(prev => {
-                const newHistory = [query, ...prev.filter(q => q !== query).slice(0, 4)];
-                return newHistory;
-            });
+            setHistory(prev => [q, ...prev.filter(x => x !== q).slice(0, 4)]);
             setIsSearching(false);
-        } catch (error) {
-            console.warn('Neural Search Live Link unavailable, switching to Local Intelligence...', error);
-
-            // 2. Local Intelligence Fallback (Deep Context Engineering)
+        } catch {
             setTimeout(() => {
                 const siteContext = {
-                    'techstack': 'Our engineering core uses Vite + React 18, Framer Motion for premium aesthetics, Supabase for scalable backends, and Advanced AI Orchestration (LangGraph, CrewAI, LangChain). We focus on production-ready codebases with strict security guardrails.',
-                    'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic. Unlike legacy systems like Epic/Cerner, MedFlow is agile, cloud-native, and reduces provider onboarding from weeks to hours.',
-                    'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence. It analyzes deep sentiment and liquidity, providing a higher fidelity of insight than standard trading bots.',
-                    'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring—solving the latency and personalization issues typical of older LMS platforms.',
-                    'better': 'CogniVectra is better because we deliver senior-architected IP that YOU own. Most competitors provide black-box solutions or high-maintenance offshore code. We provide production-ready foundations with no technical debt and zero vendor lock-in.',
-                    'price': 'Our modular Launch Packs for startups and Enterprise Retainers for scale save clients 30-50% on long-term operational costs by building correctly from day one. Inquire for a custom Quote.',
-                    'customers': 'We partner with technical leaders at Kidz-Clinic and various North American EdTech/FinTech startups who require elite engineering foundations.',
-                    'products': 'Our production-ready platforms include MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), and EduPortal (Education).'
+                    'techstack': 'Our engineering core uses Vite + React 18, Framer Motion, Supabase, and Advanced AI Orchestration (LangGraph, CrewAI, LangChain).',
+                    'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
+                    'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence with higher fidelity than standard trading bots.',
+                    'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring.',
+                    'better': 'CogniVectra delivers senior-architected IP that YOU own — production-ready, no technical debt, zero vendor lock-in.',
+                    'price': 'Our modular Launch Packs save clients 30–50% on long-term operational costs by building correctly from day one.',
+                    'customers': 'We partner with technical leaders at Kidz-Clinic and various North American EdTech/FinTech startups.',
+                    'products': 'Production-ready platforms: MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), EduPortal (Education).',
                 };
-
-                const lowerQuery = query.toLowerCase();
-                let bestContext = "I've analyzed your query. CogniVectra specializes in Production-Ready GenAI, FinTech (StockSteward), and Healthcare (MedFlow) platforms. How can I help you compare our solutions against external options?";
-
-                if (lowerQuery.includes('compare') || lowerQuery.includes('better') || lowerQuery.includes('competitor') || lowerQuery.includes('why')) {
-                    bestContext = siteContext['better'] + " " + siteContext['price'];
-                } else if (lowerQuery.includes('fintech') || lowerQuery.includes('steward') || lowerQuery.includes('trading')) {
-                    bestContext = siteContext['steward'];
-                } else if (lowerQuery.includes('health') || lowerQuery.includes('medflow') || lowerQuery.includes('medical') || lowerQuery.includes('emr')) {
-                    bestContext = siteContext['medflow'];
-                } else if (lowerQuery.includes('edu') || lowerQuery.includes('learn') || lowerQuery.includes('portal')) {
-                    bestContext = siteContext['eduportal'];
-                } else if (lowerQuery.includes('cloud') || lowerQuery.includes('deployment') || lowerQuery.includes('infrastructure')) {
-                    bestContext = siteContext['techstack'];
-                } else {
-                    for (const [key, value] of Object.entries(siteContext)) {
-                        if (lowerQuery.includes(key)) {
-                            bestContext = value;
-                            break;
-                        }
-                    }
-                }
-
-                setResult(bestContext);
-                setHistory(prev => {
-                    const newHistory = [query, ...prev.filter(q => q !== query).slice(0, 4)];
-                    return newHistory;
-                });
+                const lowerQ = q.toLowerCase();
+                let answer = "CogniVectra specializes in Production-Ready GenAI, FinTech, and Healthcare platforms. How can I help?";
+                if (lowerQ.includes('compare') || lowerQ.includes('better') || lowerQ.includes('why')) answer = siteContext['better'] + ' ' + siteContext['price'];
+                else if (lowerQ.includes('fintech') || lowerQ.includes('steward') || lowerQ.includes('trading')) answer = siteContext['steward'];
+                else if (lowerQ.includes('health') || lowerQ.includes('medflow') || lowerQ.includes('emr')) answer = siteContext['medflow'];
+                else if (lowerQ.includes('edu') || lowerQ.includes('learn')) answer = siteContext['eduportal'];
+                else if (lowerQ.includes('cloud') || lowerQ.includes('infrastructure')) answer = siteContext['techstack'];
+                else for (const [k, v] of Object.entries(siteContext)) { if (lowerQ.includes(k)) { answer = v; break; } }
+                setResult(answer);
+                setHistory(prev => [q, ...prev.filter(x => x !== q).slice(0, 4)]);
                 setIsSearching(false);
-            }, 800);
+            }, 900);
         }
     };
 
@@ -98,85 +84,104 @@ const NeuralSearch = ({ isOpen, onClose }) => {
     return (
         <AnimatePresence>
             <motion.div
-                className="modal-overlay"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={onClose}
                 style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'rgba(5, 7, 12, 0.9)',
-                    backdropFilter: 'blur(12px)',
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    paddingTop: '10vh',
-                    zIndex: 10000
+                    position: 'fixed', inset: 0,
+                    background: 'rgba(2, 4, 14, 0.88)',
+                    backdropFilter: 'blur(18px)',
+                    display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+                    paddingTop: '8vh',
+                    zIndex: 10000,
                 }}
             >
                 <motion.div
                     id="neural-search-modal"
                     data-testid="neural-search-modal"
-                    className="glass-panel"
-                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                    initial={{ opacity: 0, y: -24, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                    exit={{ opacity: 0, y: -16, scale: 0.97 }}
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     onClick={(e) => e.stopPropagation()}
                     style={{
-                        maxWidth: '800px',
-                        width: '100%',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        borderRadius: '24px',
+                        maxWidth: '680px',
+                        width: '94%',
+                        background: 'linear-gradient(145deg, rgba(20, 24, 48, 0.97) 0%, rgba(10, 12, 28, 0.99) 100%)',
+                        border: '1px solid rgba(99, 102, 241, 0.25)',
+                        borderRadius: '20px',
                         overflow: 'hidden',
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1)'
+                        boxShadow: '0 32px 64px -16px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.08), 0 0 60px rgba(99,102,241,0.08)',
                     }}
                 >
-                    {/* Brand Header */}
-                    <div style={{ padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                        <div style={{ width: '32px' }} /> {/* Balance Spacer */}
-                        <img
-                            src={logo}
-                            alt="CogniVectra"
-                            style={{
-                                height: '32px',
-                                opacity: 0.95,
-                                filter: 'drop-shadow(0 0 8px rgba(99, 102, 241, 0.3))'
-                            }}
-                        />
-                        <button
-                            id="neural-search-close"
-                            data-testid="neural-search-close"
-                            onClick={onClose}
-                            className="glass-panel"
-                            style={{
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                color: 'rgba(255,255,255,0.4)',
-                                height: '32px',
-                                width: '32px',
-                                borderRadius: '10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-                            }}
-                            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
-                        >
-                            <FaTimes />
-                        </button>
+                    {/* ── Header ── */}
+                    <div style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        padding: '1rem 1.25rem',
+                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        background: 'rgba(99,102,241,0.04)',
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                            <div style={{
+                                width: '28px', height: '28px', borderRadius: '8px',
+                                background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                boxShadow: '0 4px 12px rgba(99,102,241,0.4)',
+                            }}>
+                                <FaBolt style={{ color: 'white', fontSize: '0.75rem' }} />
+                            </div>
+                            <span style={{ fontSize: '0.85rem', fontWeight: '700', color: 'rgba(255,255,255,0.9)', letterSpacing: '0.02em' }}>
+                                CogniVectra AI Search
+                            </span>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <span style={{
+                                fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)',
+                                border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px',
+                                padding: '2px 7px', fontFamily: 'monospace', letterSpacing: '0.05em',
+                            }}>ESC</span>
+                            <button
+                                id="neural-search-close"
+                                data-testid="neural-search-close"
+                                onClick={onClose}
+                                style={{
+                                    background: 'rgba(255,255,255,0.04)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    color: 'rgba(255,255,255,0.4)',
+                                    height: '30px', width: '30px',
+                                    borderRadius: '8px',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    fontSize: '0.8rem',
+                                }}
+                                onMouseEnter={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.1)', color: 'white' })}
+                                onMouseLeave={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.4)' })}
+                            >
+                                <FaTimes />
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Search Area */}
-                    <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                        <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <FaSearch style={{ color: 'var(--accent-primary)', fontSize: '1.2rem' }} />
+                    {/* ── Search Input ── */}
+                    <div style={{
+                        padding: '1.1rem 1.25rem',
+                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        transition: 'background 0.3s',
+                        background: isFocused ? 'rgba(99,102,241,0.04)' : 'transparent',
+                    }}>
+                        <motion.form
+                            onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}
+                        >
+                            <FaSearch style={{
+                                color: isFocused ? 'var(--accent-primary)' : 'rgba(255,255,255,0.25)',
+                                fontSize: '1rem',
+                                flexShrink: 0,
+                                transition: 'color 0.3s',
+                            }} />
                             <input
                                 id="neural-search-input"
                                 data-testid="neural-search-input"
@@ -184,181 +189,251 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                 type="text"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder="Ask CogniVectra AI (e.g., 'What is MedFlow?', 'Cloud trends 2026')"
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => setIsFocused(false)}
+                                placeholder="Ask anything about CogniVectra, MedFlow, GenAI..."
                                 style={{
                                     flex: 1,
-                                    background: 'none',
-                                    border: 'none',
+                                    background: 'none', border: 'none',
                                     color: 'white',
-                                    fontSize: '1.2rem',
+                                    fontSize: '1.05rem',
                                     outline: 'none',
-                                    padding: '0.5rem 0'
+                                    padding: '0.35rem 0',
                                 }}
                             />
-                            {query && (
-                                <button
-                                    type="button"
-                                    onClick={() => setQuery('')}
-                                    style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}
-                                >
-                                    <FaTimes />
-                                </button>
-                            )}
-                            <button
+                            <AnimatePresence>
+                                {query && (
+                                    <motion.button
+                                        initial={{ opacity: 0, scale: 0.7 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.7 }}
+                                        type="button"
+                                        onClick={() => { setQuery(''); setResult(null); inputRef.current?.focus(); }}
+                                        style={{
+                                            background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                                            color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem',
+                                            height: '26px', width: '26px', borderRadius: '50%',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            cursor: 'pointer', flexShrink: 0, transition: 'all 0.2s',
+                                        }}
+                                        onMouseEnter={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.12)', color: 'white' })}
+                                        onMouseLeave={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' })}
+                                    >
+                                        <FaTimes />
+                                    </motion.button>
+                                )}
+                            </AnimatePresence>
+                            <motion.button
                                 type="submit"
-                                className="btn"
-                                style={{ height: '40px', width: '40px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                whileHover={{ scale: 1.06 }}
+                                whileTap={{ scale: 0.94 }}
+                                style={{
+                                    height: '38px', width: '38px', padding: 0, flexShrink: 0,
+                                    background: query ? 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' : 'rgba(255,255,255,0.06)',
+                                    border: 'none', borderRadius: '10px',
+                                    color: query ? 'white' : 'rgba(255,255,255,0.3)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    cursor: query ? 'pointer' : 'default',
+                                    boxShadow: query ? '0 4px 14px rgba(99,102,241,0.4)' : 'none',
+                                    transition: 'all 0.3s',
+                                }}
                             >
-                                <FaArrowRight />
-                            </button>
-                        </form>
+                                <FaArrowRight style={{ fontSize: '0.85rem' }} />
+                            </motion.button>
+                        </motion.form>
                     </div>
 
-                    {/* Results Area */}
-                    <div style={{ padding: '2rem', minHeight: '300px', maxHeight: '60vh', overflowY: 'auto' }}>
+                    {/* ── Body ── */}
+                    <div style={{ padding: '1.25rem 1.5rem', minHeight: '220px', maxHeight: '52vh', overflowY: 'auto' }}>
                         {isSearching ? (
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px', gap: '1rem' }}>
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                                    style={{ fontSize: '2rem', color: 'var(--accent-primary)' }}
-                                >
-                                    <FaMagic />
-                                </motion.div>
-                                <p style={{ color: 'rgba(255,255,255,0.5)', letterSpacing: '0.1em' }}>NEURAL SEEDING...</p>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '180px', gap: '1rem' }}>
+                                {/* Pulsing dots loader */}
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    {[0, 1, 2].map((i) => (
+                                        <motion.div
+                                            key={i}
+                                            animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
+                                            transition={{ repeat: Infinity, duration: 1.2, delay: i * 0.2, ease: 'easeInOut' }}
+                                            style={{
+                                                width: '8px', height: '8px', borderRadius: '50%',
+                                                background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                                                boxShadow: '0 0 8px rgba(99,102,241,0.6)',
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', letterSpacing: '0.12em', fontWeight: '600', textTransform: 'uppercase' }}>
+                                    Neural Processing...
+                                </p>
                             </div>
                         ) : result ? (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                            >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem' }}>
-                                    <FaMagic style={{ color: 'var(--accent-primary)', filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
-                                    <span style={{
-                                        fontSize: '0.75rem',
-                                        fontWeight: '800',
-                                        color: 'var(--accent-primary)',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.2em',
-                                        background: 'linear-gradient(90deg, var(--accent-primary), #a855f7)',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent'
+                            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+                                {/* Result label */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                                    <div style={{
+                                        width: '22px', height: '22px', borderRadius: '6px',
+                                        background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     }}>
-                                        Intelligence Brief
-                                    </span>
+                                        <FaMagic style={{ color: 'white', fontSize: '0.6rem' }} />
+                                    </div>
+                                    <span style={{
+                                        fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase',
+                                        letterSpacing: '0.15em',
+                                        background: 'linear-gradient(90deg, #6366f1, #a855f7)',
+                                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                                    }}>Intelligence Brief</span>
                                 </div>
+
+                                {/* Answer card */}
                                 <div
                                     id="neural-search-result"
                                     style={{
-                                        fontSize: '1.05rem',
-                                        lineHeight: '1.8',
-                                        color: 'rgba(255,255,255,0.95)',
-                                        padding: '1.75rem',
-                                        background: 'rgba(99, 102, 241, 0.03)',
-                                        borderRadius: '20px',
-                                        border: '1px solid rgba(99, 102, 241, 0.2)',
-                                        boxShadow: 'inset 0 0 20px rgba(99, 102, 241, 0.05), 0 10px 30px -10px rgba(0,0,0,0.5)'
-                                    }}>
+                                        fontSize: '0.98rem', lineHeight: '1.85',
+                                        color: 'rgba(255,255,255,0.9)',
+                                        padding: '1.25rem 1.5rem',
+                                        background: 'rgba(99,102,241,0.05)',
+                                        borderRadius: '14px',
+                                        border: '1px solid rgba(99,102,241,0.18)',
+                                        boxShadow: 'inset 0 0 30px rgba(99,102,241,0.04)',
+                                    }}
+                                >
                                     {result}
                                 </div>
-                                <div style={{ marginTop: '2.5rem', display: 'flex', gap: '1.25rem' }}>
+
+                                {/* Action row */}
+                                <div style={{ marginTop: '1.25rem', display: 'flex', gap: '0.75rem' }}>
                                     <motion.button
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        onClick={onClose}
-                                        className="btn-outline"
+                                        whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                                        onClick={() => { setResult(null); setQuery(''); inputRef.current?.focus(); }}
                                         style={{
-                                            fontSize: '0.9rem',
-                                            padding: '0.75rem 1.5rem',
-                                            borderRadius: '12px'
+                                            padding: '0.6rem 1.25rem', borderRadius: '10px',
+                                            border: '1px solid rgba(255,255,255,0.12)',
+                                            background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.7)',
+                                            fontSize: '0.85rem', cursor: 'pointer', fontWeight: '500',
                                         }}
+                                        onMouseEnter={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.08)' })}
+                                        onMouseLeave={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.04)' })}
                                     >
-                                        Dismiss
+                                        New Search
                                     </motion.button>
                                     <motion.button
-                                        whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.4)' }}
-                                        whileTap={{ scale: 0.95 }}
+                                        whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(99,102,241,0.45)' }}
+                                        whileTap={{ scale: 0.96 }}
                                         onClick={() => window.location.href = '/contact'}
-                                        className="btn"
                                         style={{
-                                            fontSize: '0.9rem',
-                                            padding: '0.75rem 2rem',
-                                            borderRadius: '12px',
-                                            background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                                            padding: '0.6rem 1.5rem', borderRadius: '10px',
                                             border: 'none',
-                                            fontWeight: '600',
-                                            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.2)'
+                                            background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                                            color: 'white', fontSize: '0.85rem', cursor: 'pointer',
+                                            fontWeight: '600', boxShadow: '0 4px 14px rgba(99,102,241,0.3)',
                                         }}
                                     >
-                                        Discuss Strategy
+                                        Discuss Strategy →
                                     </motion.button>
                                 </div>
                             </motion.div>
                         ) : (
                             <div>
-                                <h5 style={{ color: 'rgba(255,255,255,0.3)', marginBottom: '1rem', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Trending Inquiries</h5>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                                    {['What is MedFlow?', 'Retail AI solutions', 'Cloud Landing Zones', 'Healthcare EMR scalability', 'GenAI architecture'].map((item, i) => (
-                                        <button
+                                {/* Trending */}
+                                <p style={{
+                                    fontSize: '0.68rem', fontWeight: '700', textTransform: 'uppercase',
+                                    letterSpacing: '0.12em', color: 'rgba(255,255,255,0.25)',
+                                    marginBottom: '0.85rem',
+                                }}>
+                                    Trending Inquiries
+                                </p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {TRENDING.map((item, i) => (
+                                        <motion.button
                                             key={i}
-                                            onClick={() => { setQuery(item); handleSearch(); }}
+                                            whileHover={{ scale: 1.04 }}
+                                            whileTap={{ scale: 0.97 }}
+                                            onClick={() => handleSearch(item.label)}
                                             style={{
-                                                padding: '0.5rem 1rem',
-                                                background: 'rgba(255,255,255,0.05)',
-                                                border: '1px solid rgba(255,255,255,0.1)',
+                                                padding: '0.45rem 0.9rem',
+                                                background: 'rgba(255,255,255,0.04)',
+                                                border: '1px solid rgba(255,255,255,0.09)',
                                                 borderRadius: '100px',
-                                                color: 'rgba(255,255,255,0.7)',
-                                                fontSize: '0.9rem',
+                                                color: 'rgba(255,255,255,0.65)',
+                                                fontSize: '0.82rem',
                                                 cursor: 'pointer',
-                                                transition: 'all 0.2s'
+                                                display: 'flex', alignItems: 'center', gap: '0.4rem',
+                                                transition: 'all 0.2s',
+                                                fontWeight: '500',
                                             }}
-                                            onMouseEnter={(e) => { e.target.style.background = 'rgba(255,255,255,0.1)'; e.target.style.borderColor = 'var(--accent-primary)'; }}
-                                            onMouseLeave={(e) => { e.target.style.background = 'rgba(255,255,255,0.05)'; e.target.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                                            onMouseEnter={(e) => Object.assign(e.currentTarget.style, {
+                                                background: 'rgba(99,102,241,0.12)',
+                                                borderColor: 'rgba(99,102,241,0.4)',
+                                                color: 'white',
+                                            })}
+                                            onMouseLeave={(e) => Object.assign(e.currentTarget.style, {
+                                                background: 'rgba(255,255,255,0.04)',
+                                                borderColor: 'rgba(255,255,255,0.09)',
+                                                color: 'rgba(255,255,255,0.65)',
+                                            })}
                                         >
-                                            {item}
-                                        </button>
+                                            <span>{item.icon}</span>
+                                            {item.label}
+                                        </motion.button>
                                     ))}
                                 </div>
 
+                                {/* History */}
                                 {history.length > 0 && (
-                                    <div style={{ marginTop: '3rem' }}>
-                                        <h4 style={{ fontSize: '0.65rem', fontWeight: '800', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '1rem' }}>Recent Inquiries</h4>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    <motion.div
+                                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                                        style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}
+                                    >
+                                        <p style={{
+                                            fontSize: '0.68rem', fontWeight: '700', textTransform: 'uppercase',
+                                            letterSpacing: '0.12em', color: 'rgba(255,255,255,0.2)',
+                                            marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
+                                        }}>
+                                            <FaClock style={{ fontSize: '0.65rem' }} /> Recent
+                                        </p>
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
                                             {history.map((item, i) => (
                                                 <button
                                                     key={i}
-                                                    onClick={() => { setQuery(item); handleSearch(); }}
+                                                    onClick={() => handleSearch(item)}
                                                     style={{
-                                                        textAlign: 'left',
-                                                        padding: '0.75rem 1rem',
-                                                        background: 'none',
-                                                        border: 'none',
-                                                        color: 'rgba(255,255,255,0.5)',
-                                                        fontSize: '0.9rem',
-                                                        cursor: 'pointer',
-                                                        borderRadius: '8px',
-                                                        transition: 'background 0.2s'
+                                                        textAlign: 'left', padding: '0.55rem 0.75rem',
+                                                        background: 'none', border: 'none',
+                                                        color: 'rgba(255,255,255,0.45)',
+                                                        fontSize: '0.88rem', cursor: 'pointer',
+                                                        borderRadius: '8px', transition: 'all 0.2s',
+                                                        display: 'flex', alignItems: 'center', gap: '0.6rem',
                                                     }}
-                                                    onMouseEnter={(e) => e.target.style.background = 'rgba(255,255,255,0.03)'}
-                                                    onMouseLeave={(e) => e.target.style.background = 'none'}
+                                                    onMouseEnter={(e) => Object.assign(e.currentTarget.style, { background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.75)' })}
+                                                    onMouseLeave={(e) => Object.assign(e.currentTarget.style, { background: 'none', color: 'rgba(255,255,255,0.45)' })}
                                                 >
-                                                    <FaSearch style={{ marginRight: '0.75rem', fontSize: '0.8rem', opacity: 0.5 }} />
+                                                    <FaSearch style={{ fontSize: '0.7rem', opacity: 0.5, flexShrink: 0 }} />
                                                     {item}
                                                 </button>
                                             ))}
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 )}
                             </div>
                         )}
                     </div>
 
-                    {/* Footer */}
-                    <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.2)', textAlign: 'center' }}>
-                        <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
-                            <FaMagic style={{ marginRight: '0.4rem' }} />
-                            Powered by CogniVectra Neural Core (RAG v1.0)
-                        </p>
+                    {/* ── Footer ── */}
+                    <div style={{
+                        padding: '0.7rem 1.25rem',
+                        borderTop: '1px solid rgba(255,255,255,0.05)',
+                        background: 'rgba(0,0,0,0.18)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    }}>
+                        <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <FaMagic style={{ fontSize: '0.6rem' }} />
+                            Powered by CogniVectra Neural Core · RAG v1.0
+                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 5px #22c55e' }} />
+                            <span style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.25)', fontWeight: '600' }}>Live</span>
+                        </div>
                     </div>
                 </motion.div>
             </motion.div>
