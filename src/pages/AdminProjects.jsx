@@ -119,10 +119,10 @@ export default function AdminProjects() {
 
     return (
         <AdminLayout>
-            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+            <header className="admin-header glass-panel">
                 <div className="admin-title-area">
-                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Projects</span>
+                    <div className="admin-breadcrumbs">
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Projects</span>
                     </div>
                     <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Delivery Board</h1>
                     <p style={{ opacity: 0.7 }}>Track execution, health metrics, and client deliverables.</p>
@@ -132,7 +132,7 @@ export default function AdminProjects() {
                 </div>
             </header>
 
-            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
+            {success && <div className="success-message status-hot">{success}</div>}
 
             <div className="admin-table-container glass-panel">
                 <table className="admin-table">
@@ -170,7 +170,7 @@ export default function AdminProjects() {
                                     }}>{project.project_status.replace('_', ' ')}</span>
                                 </td>
                                 <td>
-                                    <span className={`status-pill ${project.health_status === 'on_track' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
+                                    <span className={`status-pill ${project.health_status === 'on_track' ? 'status-hot' : 'status-cold'}`}>
                                         {project.health_status === 'on_track' ? '🟢 ON TRACK' : '🔴 DELAYED'}
                                     </span>
                                 </td>

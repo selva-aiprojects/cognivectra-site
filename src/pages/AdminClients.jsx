@@ -120,10 +120,10 @@ export default function AdminClients() {
 
     return (
         <AdminLayout>
-            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+            <header className="admin-header glass-panel">
                 <div className="admin-title-area">
-                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>CRM</span>
+                    <div className="admin-breadcrumbs">
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>CRM</span>
                     </div>
                     <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Client Hub</h1>
                     <p style={{ opacity: 0.7 }}>Manage relationships, track leads, and view client health.</p>
@@ -133,7 +133,7 @@ export default function AdminClients() {
                 </div>
             </header>
 
-            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
+            {success && <div className="success-message status-hot">{success}</div>}
 
             <div className="admin-table-container glass-panel">
                 <table className="admin-table">
@@ -170,7 +170,7 @@ export default function AdminClients() {
                                     </span>
                                 </td>
                                 <td>
-                                    <span className={`status-pill ${client.relationship_status === 'healthy' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
+                                    <span className={`status-pill ${client.relationship_status === 'healthy' ? 'status-hot' : 'status-cold'}`}>
                                         {client.relationship_status === 'healthy' && <span>🟢</span>}
                                         {client.relationship_status === 'at_risk' && <span>🔴</span>}
                                         {client.relationship_status}

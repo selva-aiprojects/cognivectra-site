@@ -90,10 +90,10 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                 onClick={onClose}
                 style={{
                     position: 'fixed', inset: 0,
-                    background: 'rgba(2, 4, 14, 0.88)',
+                    background: 'rgba(2, 4, 14, 0.92)',
                     backdropFilter: 'blur(18px)',
                     display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
-                    paddingTop: '8vh',
+                    paddingTop: 'clamp(20px, 10vh, 100px)',
                     zIndex: 10000,
                 }}
             >
@@ -107,12 +107,15 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     onClick={(e) => e.stopPropagation()}
                     style={{
                         maxWidth: '680px',
-                        width: '94%',
-                        background: 'linear-gradient(145deg, rgba(20, 24, 48, 0.97) 0%, rgba(10, 12, 28, 0.99) 100%)',
-                        border: '1px solid rgba(99, 102, 241, 0.25)',
-                        borderRadius: '20px',
+                        width: '92%',
+                        maxHeight: '85vh',
+                        background: 'linear-gradient(145deg, rgba(20, 24, 48, 0.98) 0%, rgba(10, 12, 28, 1) 100%)',
+                        border: '1px solid rgba(99, 102, 241, 0.3)',
+                        borderRadius: '24px',
                         overflow: 'hidden',
-                        boxShadow: '0 32px 64px -16px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.08), 0 0 60px rgba(99,102,241,0.08)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        boxShadow: '0 32px 64px -16px rgba(0,0,0,0.8), 0 0 0 1px rgba(99,102,241,0.1), 0 0 80px rgba(99,102,241,0.1)',
                     }}
                 >
                     {/* ── Header ── */}
@@ -167,10 +170,10 @@ const NeuralSearch = ({ isOpen, onClose }) => {
 
                     {/* ── Search Input ── */}
                     <div style={{
-                        padding: '1.1rem 1.25rem',
+                        padding: '0.85rem 1rem',
                         borderBottom: '1px solid rgba(255,255,255,0.06)',
                         transition: 'background 0.3s',
-                        background: isFocused ? 'rgba(99,102,241,0.04)' : 'transparent',
+                        background: isFocused ? 'rgba(99,102,241,0.06)' : 'transparent',
                     }}>
                         <motion.form
                             onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
@@ -244,7 +247,13 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                     </div>
 
                     {/* ── Body ── */}
-                    <div style={{ padding: '1.25rem 1.5rem', minHeight: '220px', maxHeight: '52vh', overflowY: 'auto' }}>
+                    <div className="neural-search-body" style={{
+                        padding: '1.25rem 1rem',
+                        flex: 1,
+                        overflowY: 'auto',
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: 'rgba(99,102,241,0.2) transparent'
+                    }}>
                         {isSearching ? (
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '180px', gap: '1rem' }}>
                                 {/* Pulsing dots loader */}

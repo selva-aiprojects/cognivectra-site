@@ -22,10 +22,16 @@ export default function AdminLayout({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [loading, setLoading] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         checkAuth();
     }, []);
+
+    // Close sidebar on navigation (mobile)
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [location.pathname]);
 
     async function checkAuth() {
         const { data: { session } } = await supabase.auth.getSession();
@@ -67,8 +73,21 @@ export default function AdminLayout({ children }) {
     const isActive = (path) => location.pathname === path ? 'sidebar-link active' : 'sidebar-link';
 
     return (
-        <div className="admin-layout">
-            <aside className="admin-sidebar glass-panel">
+        <div className={`admin-layout ${sidebarOpen ? 'sidebar-open' : ''}`}>
+            {/* Mobile Header */}
+            <header className="admin-mobile-header">
+                <button className="admin-hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div className="admin-mobile-brand">
+                    {tenant?.tenant_name || 'Operations OS'}
+                </div>
+                <div style={{ width: '40px' }}></div> {/* Spacer */}
+            </header>
+
+            <aside className={`admin-sidebar glass-panel ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-brand">
                     <motion.div
                         initial={{ opacity: 0 }}

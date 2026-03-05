@@ -231,10 +231,10 @@ export default function AdminJobs() {
 
     return (
         <AdminLayout>
-            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+            <header className="admin-header glass-panel">
                 <div className="admin-title-area">
-                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Talent</span>
+                    <div className="admin-breadcrumbs">
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Talent</span>
                     </div>
                     <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Job Listings</h1>
                     <p style={{ opacity: 0.7 }}>Manage open positions and career opportunities.</p>
@@ -248,8 +248,8 @@ export default function AdminJobs() {
                 )}
             </header>
 
-            {error && <div className="error-message" style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>{error}</div>}
-            {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
+            {error && <div className="success-message status-cold">{error}</div>}
+            {success && <div className="success-message status-hot">{success}</div>}
 
             <AnimatePresence mode="wait">
                 {!showForm ? (

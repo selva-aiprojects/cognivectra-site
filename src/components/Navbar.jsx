@@ -308,17 +308,42 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </button>
           </nav>
 
-          {/* Mobile Hamburger */}
-          <button
-            className={`hamburger-menu-toggle ${mobileMenuOpen ? "active" : ""}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          {/* Mobile Actions (Search + Hamburger) */}
+          <div className="mobile-actions">
+            <button
+              onClick={() => {
+                trackEvent('cta_click', { cta_name: 'Neural Search', location: 'Mobile Header' });
+                setIsSearchOpen(true);
+              }}
+              className="nav-search-trigger mobile-only"
+              aria-label="Open AI Neural Search"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                height: '40px',
+                width: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              <FaSearch size={14} />
+            </button>
+
+            <button
+              className={`hamburger-menu-toggle ${mobileMenuOpen ? "active" : ""}`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -346,6 +371,23 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
         </div>
 
         <div className="mobile-menu-content">
+          {/* Mobile Neural Search Trigger */}
+          <div className="mobile-search-shortcut">
+            <button
+              className="mobile-search-btn"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsSearchOpen(true);
+              }}
+            >
+              <div className="search-icon-circle">
+                <FaSearch size={12} />
+              </div>
+              <span>Ask CogniVectra AI...</span>
+              <div className="ai-badge-tiny">AI</div>
+            </button>
+          </div>
+
           <nav className="mobile-nav" aria-label="Mobile Navigation Links">
             <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
             <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>Services</NavLink>

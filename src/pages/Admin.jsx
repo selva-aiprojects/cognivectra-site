@@ -96,12 +96,12 @@ export default function Admin() {
 
   return (
     <AdminLayout>
-      <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+      <header className="admin-header glass-panel">
         <div className="admin-title-area">
           <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Command Center</h1>
           <p style={{ opacity: 0.7 }}>Business performance & Operational insights at a glance.</p>
         </div>
-        <div className="admin-actions" style={{ display: 'flex', gap: '1rem' }}>
+        <div className="admin-actions">
           {isModuleEnabled('BLOG') && (
             <>
               <Link to="/admin/omni" className="btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem', background: 'var(--accent-primary)' }}>🚀 Social Publisher</Link>
