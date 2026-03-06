@@ -1,34 +1,36 @@
+declare const Deno: any;
+// @ts-ignore
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
 
 const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
 interface NotificationPayload {
-    type: 'demo_request' | 'contact_form' | 'chatbot_lead'
-    name: string
-    email: string
-    organization?: string
-    platform?: string
-    timeline?: string
-    message?: string
-    stage?: string
-    need?: string
-    challenge?: string
-    budget?: string
+  type: 'demo_request' | 'contact_form' | 'chatbot_lead'
+  name: string
+  email: string
+  organization?: string
+  platform?: string
+  timeline?: string
+  message?: string
+  stage?: string
+  need?: string
+  challenge?: string
+  budget?: string
 }
 
 function getEmailContent(payload: NotificationPayload) {
-    const { type, name, email } = payload
+  const { type, name, email } = payload
 
-    switch (type) {
-        case 'demo_request':
-            return {
-                subject: 'Your Demo Request Received — CogniVectra',
-                html: `
+  switch (type) {
+    case 'demo_request':
+      return {
+        subject: 'Your Demo Request Received — CogniVectra',
+        html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
             <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px; text-align: center;">
               <h1 style="color: #ffffff; font-size: 22px; margin: 0; font-weight: 600;">CogniVectra</h1>
@@ -66,12 +68,12 @@ function getEmailContent(payload: NotificationPayload) {
             </div>
           </div>
         `,
-            }
+      }
 
-        case 'contact_form':
-            return {
-                subject: 'We Received Your Message — CogniVectra',
-                html: `
+    case 'contact_form':
+      return {
+        subject: 'We Received Your Message — CogniVectra',
+        html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
             <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px; text-align: center;">
               <h1 style="color: #ffffff; font-size: 22px; margin: 0; font-weight: 600;">CogniVectra</h1>
@@ -108,12 +110,12 @@ function getEmailContent(payload: NotificationPayload) {
             </div>
           </div>
         `,
-            }
+      }
 
-        case 'chatbot_lead':
-            return {
-                subject: 'Thanks for Connecting — CogniVectra',
-                html: `
+    case 'chatbot_lead':
+      return {
+        subject: 'Thanks for Connecting — CogniVectra',
+        html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
             <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px; text-align: center;">
               <h1 style="color: #ffffff; font-size: 22px; margin: 0; font-weight: 600;">CogniVectra</h1>
@@ -149,100 +151,100 @@ function getEmailContent(payload: NotificationPayload) {
             </div>
           </div>
         `,
-            }
+      }
 
-        default:
-            return {
-                subject: 'Thank You — CogniVectra',
-                html: `
+    default:
+      return {
+        subject: 'Thank You — CogniVectra',
+        html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #6366f1;">Thank You!</h2>
             <p>We've received your message and will be in touch shortly.</p>
             <p>Best regards,<br><strong>CogniVectra Team</strong></p>
           </div>
         `,
-            }
-    }
+      }
+  }
 }
 
-serve(async (req) => {
-    if (req.method === 'OPTIONS') {
-        return new Response('ok', { headers: corsHeaders })
+serve(async (req: Request) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  // GET: health check
+  if (req.method === 'GET') {
+    return new Response(
+      JSON.stringify({
+        status: 'healthy',
+        types: ['demo_request', 'contact_form', 'chatbot_lead'],
+        resend_key_set: !!RESEND_API_KEY,
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      }
+    )
+  }
+
+  try {
+    const payload: NotificationPayload = await req.json()
+
+    if (!payload.email) {
+      throw new Error('Email is required')
     }
 
-    // GET: health check
-    if (req.method === 'GET') {
-        return new Response(
-            JSON.stringify({
-                status: 'healthy',
-                types: ['demo_request', 'contact_form', 'chatbot_lead'],
-                resend_key_set: !!RESEND_API_KEY,
-            }),
-            {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                status: 200,
-            }
-        )
+    if (!payload.type) {
+      throw new Error('Notification type is required (demo_request | contact_form | chatbot_lead)')
     }
 
-    try {
-        const payload: NotificationPayload = await req.json()
-
-        if (!payload.email) {
-            throw new Error('Email is required')
-        }
-
-        if (!payload.type) {
-            throw new Error('Notification type is required (demo_request | contact_form | chatbot_lead)')
-        }
-
-        if (!RESEND_API_KEY) {
-            throw new Error('RESEND_API_KEY environment variable not set')
-        }
-
-        const { subject, html } = getEmailContent(payload)
-
-        // Determine the sender based on type
-        const fromMap: Record<string, string> = {
-            demo_request: 'CogniVectra Solutions <solutions@cognivectra.com>',
-            contact_form: 'CogniVectra <hello@cognivectra.com>',
-            chatbot_lead: 'CogniVectra AI <ai@cognivectra.com>',
-        }
-
-        const from = fromMap[payload.type] || 'CogniVectra <noreply@cognivectra.com>'
-
-        const res = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${RESEND_API_KEY}`,
-            },
-            body: JSON.stringify({
-                from,
-                to: [payload.email],
-                reply_to: 'info@cognivectra.com',
-                subject,
-                html,
-            }),
-        })
-
-        const data = await res.json()
-        console.log(`[${payload.type}] Resend response:`, res.status, JSON.stringify(data))
-
-        if (!res.ok) {
-            throw new Error(`Resend error ${res.status}: ${data.message || JSON.stringify(data)}`)
-        }
-
-        return new Response(JSON.stringify({ success: true, id: data.id }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 200,
-        })
-    } catch (error) {
-        const msg = error instanceof Error ? error.message : String(error)
-        console.error('Error in send-notification-email:', msg)
-        return new Response(JSON.stringify({ error: msg }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 500,
-        })
+    if (!RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY environment variable not set')
     }
+
+    const { subject, html } = getEmailContent(payload)
+
+    // Determine the sender based on type
+    const fromMap: Record<string, string> = {
+      demo_request: 'CogniVectra Solutions <solutions@cognivectra.com>',
+      contact_form: 'CogniVectra <hello@cognivectra.com>',
+      chatbot_lead: 'CogniVectra AI <ai@cognivectra.com>',
+    }
+
+    const from = fromMap[payload.type] || 'CogniVectra <noreply@cognivectra.com>'
+
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from,
+        to: [payload.email],
+        reply_to: 'info@cognivectra.com',
+        subject,
+        html,
+      }),
+    })
+
+    const data = await res.json()
+    console.log(`[${payload.type}] Resend response:`, res.status, JSON.stringify(data))
+
+    if (!res.ok) {
+      throw new Error(`Resend error ${res.status}: ${data.message || JSON.stringify(data)}`)
+    }
+
+    return new Response(JSON.stringify({ success: true, id: data.id }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 200,
+    })
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error)
+    console.error('Error in send-notification-email:', msg)
+    return new Response(JSON.stringify({ error: msg }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 500,
+    })
+  }
 })

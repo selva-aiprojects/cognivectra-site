@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
-import { FaSearch } from "react-icons/fa";
+import {
+  FaSearch, FaHome, FaCogs, FaRocket, FaBriefcase,
+  FaChartBar, FaGlobe, FaUsers, FaRss, FaEnvelope,
+  FaLinkedin, FaTwitter, FaTimes
+} from "react-icons/fa";
 import { trackEvent } from "../lib/analytics";
 
 // Images
@@ -389,16 +393,42 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
           </div>
 
           <nav className="mobile-nav" aria-label="Mobile Navigation Links">
-            <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</NavLink>
-            <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>Services</NavLink>
-            <NavLink to="/products" onClick={() => setMobileMenuOpen(false)}>Platforms</NavLink>
-            <NavLink to="/engagements" onClick={() => setMobileMenuOpen(false)}>Engagements</NavLink>
-            <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>Results</NavLink>
-            <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>Industries</NavLink>
-            <NavLink to="/who-we-are" onClick={() => setMobileMenuOpen(false)}>About Us</NavLink>
-            <NavLink to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</NavLink>
-            <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
+            <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>
+              <FaHome className="mobile-icon" /> Home
+            </NavLink>
+            <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>
+              <FaCogs className="mobile-icon" /> Services
+            </NavLink>
+            <NavLink to="/products" onClick={() => setMobileMenuOpen(false)}>
+              <FaRocket className="mobile-icon" /> Platforms
+            </NavLink>
+            <NavLink to="/engagements" onClick={() => setMobileMenuOpen(false)}>
+              <FaBriefcase className="mobile-icon" /> Engagements
+            </NavLink>
+            <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>
+              <FaChartBar className="mobile-icon" /> Results
+            </NavLink>
+            <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>
+              <FaGlobe className="mobile-icon" /> Industries
+            </NavLink>
+            <NavLink to="/who-we-are" onClick={() => setMobileMenuOpen(false)}>
+              <FaUsers className="mobile-icon" /> About Us
+            </NavLink>
+            <NavLink to="/blog" onClick={() => setMobileMenuOpen(false)}>
+              <FaRss className="mobile-icon" /> Blog
+            </NavLink>
+            <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
+              <FaEnvelope className="mobile-icon" /> Contact
+            </NavLink>
           </nav>
+
+          <div className="mobile-social-wrap">
+            <span className="social-label">Join Our Network</span>
+            <div className="mobile-social-links">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+            </div>
+          </div>
 
           <div className="mobile-menu-footer">
             <button

@@ -125,17 +125,15 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                         borderBottom: '1px solid rgba(255,255,255,0.06)',
                         background: 'rgba(99,102,241,0.04)',
                     }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                            <div style={{
-                                width: '28px', height: '28px', borderRadius: '8px',
-                                background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                boxShadow: '0 4px 12px rgba(99,102,241,0.4)',
-                            }}>
-                                <FaBolt style={{ color: 'white', fontSize: '0.75rem' }} />
-                            </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                            <img
+                                src={logo}
+                                alt="CogniVectra"
+                                style={{ height: '24px', width: 'auto', filter: 'brightness(1.2)' }}
+                            />
+                            <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)', margin: '0 0.2rem' }} />
                             <span style={{ fontSize: '0.85rem', fontWeight: '700', color: 'rgba(255,255,255,0.9)', letterSpacing: '0.02em' }}>
-                                CogniVectra AI Search
+                                AI Search
                             </span>
                         </div>
 

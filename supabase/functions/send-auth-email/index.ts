@@ -1,3 +1,5 @@
+declare const Deno: any;
+// @ts-ignore
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
@@ -118,7 +120,7 @@ function getEmailContent(payload: AuthHookPayload) {
   }
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -136,7 +138,7 @@ serve(async (req) => {
         })
         const d = await r.json()
         resendStatus = r.ok ? `valid — ${d?.data?.length ?? 0} domains` : `invalid: ${d?.message}`
-      } catch (e) {
+      } catch (e: any) {
         resendStatus = `fetch error: ${e.message}`
       }
     }
@@ -190,7 +192,7 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
-  } catch (error) {
+  } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error)
     console.error('Error in send-auth-email:', msg)
     return new Response(JSON.stringify({ error: msg }), {
