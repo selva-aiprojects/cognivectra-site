@@ -16,9 +16,9 @@ import resultsImg from "../assets/generated/hero-results-8k.png";
 import industriesImg from "../assets/generated/hero-industries-ultra-8k.png";
 import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 
-const logo = "/cognivectra-dark-crop.png";
+import ThemeSwitcher from "./ThemeSwitcher";
 
-export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform, setIsSearchOpen }) {
+export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform, setIsSearchOpen, theme, setTheme }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -282,6 +282,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <span className="ai-status-dot"></span>
             </button>
 
+            {/* Theme Selector */}
+            <ThemeSwitcher theme={theme} setTheme={setTheme} />
+
             {/* Neural Search Trigger */}
             <button
               id="neural-search-trigger"
@@ -336,6 +339,8 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             >
               <FaSearch size={14} />
             </button>
+
+            <ThemeSwitcher theme={theme} setTheme={setTheme} />
 
             <button
               className={`hamburger-menu-toggle ${mobileMenuOpen ? "active" : ""}`}
@@ -459,7 +464,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </NavLink>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }

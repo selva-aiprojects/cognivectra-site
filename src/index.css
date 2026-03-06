@@ -7,26 +7,64 @@
    DESIGN TOKENS
    ====================== */
 :root {
-  /* Core Palette: Deep Modern Tech */
+  /* Default: Deep Tech Theme (Indigo) */
   --bg-primary: #0f172a;
-  /* Deep Slate */
   --bg-secondary: #1e293b;
-  /* Lighter Slate */
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
-
   --accent-primary: #6366f1;
-  /* Indigo 500 */
   --accent-secondary: #4f46e5;
-  /* Indigo 600 */
   --accent-light: #818cf8;
-
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'Inter', sans-serif;
-
   --border-light: rgba(255, 255, 255, 0.1);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --body-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 40%, #020617 100%);
+}
 
+[data-theme='vibrant-blue'] {
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-primary: #0ea5e9;
+  /* Sky 500 */
+  --accent-secondary: #0284c7;
+  /* Sky 600 */
+  --accent-light: #38bdf8;
+  /* Sky 400 */
+  --border-light: rgba(56, 189, 248, 0.15);
+  --body-gradient: radial-gradient(circle at 50% 0%, #0c4a6e 0%, #020617 60%, #000 100%);
+}
+
+[data-theme='space-dark'] {
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --accent-primary: #71717a;
+  /* Zinc 500 */
+  --accent-secondary: #52525b;
+  /* Zinc 600 */
+  --accent-light: #d4d4d8;
+  /* Zinc 300 */
+  --border-light: rgba(255, 255, 255, 0.05);
+  --body-gradient: radial-gradient(circle at 50% 0%, #18181b 0%, #09090b 50%, #000 100%);
+}
+
+[data-theme='technical-emerald'] {
+  --bg-primary: #020617;
+  --bg-secondary: #064e3b;
+  --text-primary: #ecfdf5;
+  --text-secondary: #a7f3d0;
+  --accent-primary: #10b981;
+  --accent-secondary: #059669;
+  --accent-light: #34d399;
+  --border-light: rgba(52, 211, 153, 0.15);
+  --body-gradient: radial-gradient(circle at 50% 0%, #064e3b 0%, #020617 60%, #000 100%);
+}
+
+:root {
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -73,7 +111,7 @@ html {
 body {
   font-family: var(--font-body);
   /* Modern Gradient Background */
-  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 40%, #020617 100%);
+  background: var(--body-gradient);
   background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;

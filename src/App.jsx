@@ -50,6 +50,12 @@ export default function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [demoPlatform, setDemoPlatform] = useState('general');
+  const [theme, setTheme] = useState(localStorage.getItem('cv-theme') || 'deep-tech');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('cv-theme', theme);
+  }, [theme]);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -115,6 +121,8 @@ export default function App() {
           setIsDemoModalOpen={setIsDemoModalOpen}
           setDemoPlatform={setDemoPlatform}
           setIsSearchOpen={setIsSearchOpen}
+          theme={theme}
+          setTheme={setTheme}
         />
       )}
 
