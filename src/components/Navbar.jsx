@@ -123,8 +123,8 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       items: [
         { label: "Who We Are", path: "/who-we-are", desc: "Discover our mission & enterprise-grade approach." },
         { label: "Our Leadership", path: "/leadership", desc: "Meet the experts steering our technical vision." },
-        { label: "Insights & Blog", path: "/blog", desc: "Technical deep-dives & industry perspectives." },
-        { label: "Join Our Team", path: "/careers", desc: "Build the future of AI technology with us." },
+        { label: "Insights & Blog", path: "/blog", desc: "Technical deep-dives & industry perspectives.", badge: "New" },
+        { label: "Join Our Team", path: "/careers", desc: "Build the future of AI technology with us.", badge: "Hiring" },
       ]
     }
   };
@@ -416,6 +416,10 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </NavLink>
             <NavLink to="/blog" onClick={() => setMobileMenuOpen(false)}>
               <FaRss className="mobile-icon" /> Blog
+            </NavLink>
+            <NavLink to="/careers" onClick={() => setMobileMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaBriefcase className="mobile-icon" /> Careers
+              <span style={{ fontSize: '0.6rem', background: 'var(--accent-primary)', padding: '2px 6px', borderRadius: '4px', fontWeight: '800' }}>Hiring</span>
             </NavLink>
             <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
               <FaEnvelope className="mobile-icon" /> Contact

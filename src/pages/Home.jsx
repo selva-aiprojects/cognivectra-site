@@ -7,6 +7,7 @@ import clientKidzImg from "../assets/generated/ind-health-3d.png";
 import DemoRequestModal from "../components/DemoRequestModal";
 import { useState, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
+import { supabase } from "../lib/supabase";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -26,6 +27,8 @@ export default function Home() {
   const { hash } = useLocation();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [demoPlatform, setDemoPlatform] = useState('general');
+  const [latestPosts, setLatestPosts] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const handleDemoRequest = (platform = 'general') => {
     trackEvent('cta_click', { platform, cta_name: 'Request Demo', location: 'Home' });
@@ -34,6 +37,20 @@ export default function Home() {
   };
 
   useEffect(() => {
+    async function fetchLatestPosts() {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("status", "published")
+        .order("published_at", { ascending: false })
+        .limit(3);
+
+      if (!error && data) {
+        setLatestPosts(data);
+      }
+      setLoadingPosts(false);
+    }
+    fetchLatestPosts();
     // Handle anchor scrolling
     if (hash) {
       const id = hash.replace("#", "");
@@ -239,6 +256,67 @@ export default function Home() {
               <button onClick={() => handleDemoRequest('steward')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* LATEST INSIGHTS (NEW) */}
+      {!loadingPosts && latestPosts.length > 0 && (
+        <section className="services-modern">
+          <motion.div
+            className="section-header text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="hero-badge">Technical Deep-Dives</span>
+            <h3>Latest from Our Blog</h3>
+            <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
+              Practical insights on cloud infrastructure, AI automation, and enterprise engineering.
+            </p>
+          </motion.div>
+
+          <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+            {latestPosts.map((post) => (
+              <Link
+                key={post.slug}
+                to={`/blog/${post.slug}`}
+                className="service-modern-card glass-panel blog-card-mini"
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={{ marginBottom: '1rem', fontSize: '0.8rem', opacity: 0.6 }}>
+                  {new Date(post.published_at || post.created_at).toLocaleDateString()}
+                </div>
+                <h4 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>{post.title}</h4>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                  {post.excerpt}
+                </p>
+                <div className="btn-text">Read Article →</div>
+              </Link>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+            <Link to="/blog" className="btn-outline">View All Insights</Link>
+          </div>
+        </section>
+      )}
+
+      {/* CAREER CALLOUT (NEW) */}
+      <section className="why-modern" style={{ background: 'linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, rgba(0,0,0,0) 100%)' }}>
+        <div className="why-modern-inner" style={{ textAlign: 'center' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <span className="hero-badge" style={{ background: 'var(--accent-primary)', color: 'white' }}>Strategic Hiring Open</span>
+          </div>
+          <h3>Join Our Technical Vision</h3>
+          <p style={{ maxWidth: '700px', margin: '1rem auto 3rem', color: 'var(--text-secondary)' }}>
+            We're building the infrastructure of the future. If you're passionate about GenAI,
+            cloud architecture, and startup speed, we want to hear from you.
+          </p>
+          <div className="why-modern-grid" style={{ justifyContent: 'center' }}>
+            <Link to="/careers" className="btn" style={{ padding: '1rem 2.5rem' }}>
+              View Career Opportunities
+            </Link>
+          </div>
         </div>
       </section>
 

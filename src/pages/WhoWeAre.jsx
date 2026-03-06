@@ -205,9 +205,14 @@ export default function WhoWeAre() {
             Whether you are launching, scaling, or modernizing,
             we help you build technology foundations that last.
           </p>
-          <Link to="/contact" className="btn">
-            Connect with an Architect
-          </Link>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
+            <Link to="/contact" className="btn">
+              Connect with an Architect
+            </Link>
+            <Link to="/careers" className="btn-outline">
+              Join Our Team
+            </Link>
+          </div>
         </div>
       </section>
 

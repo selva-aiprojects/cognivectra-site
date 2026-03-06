@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "../lib/supabase";
+import { FaCalendarAlt, FaClock, FaUser, FaArrowLeft, FaShareAlt } from "react-icons/fa";
 import { Helmet } from 'react-helmet-async';
 import blogHero from "../assets/hero-automation-new.png";
 
@@ -65,53 +66,120 @@ export default function BlogPost() {
         <meta property="twitter:description" content={post.excerpt} />
       </Helmet>
 
-      {/* HERO */}
-      <section className="hero-modern" style={{ padding: '6rem 2rem 4rem' }}>
-        <div className="hero-modern-inner">
+      {/* HERO / HEADER */}
+      <section className="hero-modern" style={{ padding: '8rem 2rem 6rem', background: 'radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.15) 0%, rgba(2, 6, 23, 1) 50%)' }}>
+        <div className="container" style={{ maxWidth: '1000px' }}>
           <motion.div
-            className="hero-copy"
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Link to="/blog" className="hero-badge" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-              <span>←</span>
-              Expert Insights
-            </Link>
-            <h1 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)', maxWidth: '900px', margin: '1.25rem auto 1.25rem 0' }}>{post.title}</h1>
-            <div className="blog-meta" style={{ justifyContent: 'flex-start', fontSize: '1rem', opacity: 0.8 }}>
-              <span>📅</span>
-              {new Date(post.published_at || post.created_at).toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginBottom: '2.5rem' }}>
+              <Link to="/blog" className="btn-outline" style={{
+                padding: '0.6rem 1.2rem',
+                fontSize: '0.85rem',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(255,255,255,0.03)'
+              }}>
+                <FaArrowLeft /> Back to Insights
+              </Link>
+              <span className="hero-badge" style={{ margin: 0 }}>Strategic Publication</span>
+            </div>
+
+            <h1 style={{
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              fontWeight: '800',
+              lineHeight: '1.1',
+              letterSpacing: '-0.04em',
+              marginBottom: '2.5rem',
+              color: '#fff'
+            }}>
+              {post.title}
+            </h1>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '2.5rem',
+              paddingTop: '2rem',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              fontSize: '0.95rem',
+              color: 'var(--text-secondary)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(99, 102, 241, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <FaUser style={{ color: 'var(--accent-light)' }} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: '700', color: '#fff' }}>Technical Architecture Team</div>
+                  <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>CogniVectra Innovations</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaCalendarAlt style={{ color: 'var(--accent-light)' }} />
+                {new Date(post.published_at || post.created_at).toLocaleDateString(undefined, {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaClock style={{ color: 'var(--accent-light)' }} />
+                {Math.ceil((post.body?.length || 500) / 1000) + 2} min read
+              </div>
+
+              <button
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({ title: post.title, url: window.location.href });
+                  }
+                }}
+                style={{ background: 'none', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem', fontWeight: '600', marginLeft: 'auto' }}
+              >
+                <FaShareAlt /> Share Insight
+              </button>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* CONTENT */}
-      <section className="services-modern" style={{ paddingTop: '0' }}>
-        <div className="container" style={{ maxWidth: '900px', transform: 'translateY(-60px)', position: 'relative', zIndex: 10 }}>
+      {/* ARTICLE CONTENT */}
+      <section style={{ padding: '0 2rem 8rem', marginTop: '-4rem' }}>
+        <div className="container" style={{ maxWidth: '1000px' }}>
           <motion.div
             className="glass-panel"
-            style={{ padding: '4rem' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            style={{
+              padding: 'clamp(2rem, 8vw, 5rem)',
+              background: 'rgba(15, 23, 42, 0.7)',
+              backdropFilter: 'blur(30px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '32px'
+            }}
           >
-
             {post.image_url && (
-              <img
-                src={post.image_url}
-                alt={post.title}
-                className="hero-image-modern"
-                style={{ width: '100%', borderRadius: '16px', marginBottom: '3rem', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}
-              />
+              <div style={{ marginBottom: '4rem', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)' }}>
+                <img
+                  src={post.image_url}
+                  alt={post.title}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </div>
             )}
 
-            <div className="blog-post-content">
+            <div className="blog-post-content premium-article" style={{
+              fontSize: '1.2rem',
+              lineHeight: '1.8',
+              color: 'var(--text-secondary)'
+            }}>
               {post.body && (post.body.includes('</') || post.body.includes('/>')) ? (
                 <div dangerouslySetInnerHTML={{ __html: post.body }} />
               ) : (
@@ -119,11 +187,23 @@ export default function BlogPost() {
               )}
             </div>
 
-            <div className="post-footer" style={{ marginTop: '4rem', paddingTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
-              <p style={{ marginBottom: '2rem', color: 'var(--text-secondary)' }}>Ready to implement these insights in your startup?</p>
-              <div className="hero-cta" style={{ justifyContent: 'center' }}>
-                <Link to="/contact" className="btn">Book Strategy Call</Link>
-                <Link to="/#services" className="btn-outline">Our Services</Link>
+            <div className="post-footer" style={{
+              marginTop: '6rem',
+              paddingTop: '4rem',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}>
+              <span className="hero-badge" style={{ marginBottom: '1.5rem' }}>Engagement</span>
+              <h3 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '1rem' }}>Deploy These Strategies</h3>
+              <p style={{ maxWidth: '600px', marginBottom: '3rem', color: 'var(--text-secondary)' }}>
+                Every startup journey is unique. Let's discuss how these technical foundations apply to your specific product roadmap.
+              </p>
+              <div style={{ display: 'flex', gap: '1.25rem' }}>
+                <Link to="/contact" className="btn" style={{ padding: '1rem 2.5rem' }}>Discuss Architecture</Link>
+                <Link to="/blog" className="btn-outline" style={{ padding: '1rem 2.5rem' }}>Explore More Insights</Link>
               </div>
             </div>
           </motion.div>

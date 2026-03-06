@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { motion } from 'framer-motion';
-import { FaSpinner } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaSpinner, FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaArrowRight, FaCheckCircle } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 import careersHero from "../assets/careers-hero.png";
 
 export default function Careers() {
@@ -187,6 +188,14 @@ export default function Careers() {
 
     return (
         <main>
+            <Helmet>
+                <title>Build the Future of Enterprise AI | Careers at CogniVectra</title>
+                <meta name="description" content="Join CogniVectra and work on cutting-edge cloud platforms, AI automation, and SaaS solutions. Remote-first, competitive compensation, and high-impact work." />
+                <meta name="keywords" content="Software Engineering Jobs, AI Jobs, Cloud Architecture Careers, Remote Tech Jobs, CogniVectra Careers" />
+                <meta property="og:title" content="Join Our Technical Vision | CogniVectra Careers" />
+                <meta property="og:description" content="Build transformative AI and cloud platforms with our elite engineering team." />
+                <meta property="og:url" content="https://cognivectra.com/careers" />
+            </Helmet>
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">
@@ -266,61 +275,99 @@ export default function Careers() {
                         </button>
                     </div>
                 ) : (
-                    <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
-                        {jobPostings.map(job => (
-                            <div key={job.id} className="service-modern-card">
-
-                                <div style={{ position: 'relative', zIndex: 10 }}>
-                                    <div style={{ marginBottom: '1rem' }}>
-                                        <span style={{
-                                            background: 'rgba(99, 102, 241, 0.15)',
-                                            color: 'var(--accent-primary)',
-                                            padding: '0.25rem 0.75rem',
-                                            borderRadius: '999px',
-                                            fontSize: '0.75rem',
-                                            fontWeight: '600'
-                                        }}>
-                                            {job.department}
-                                        </span>
-                                    </div>
-
-                                    <h4>{job.title}</h4>
-
-                                    <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>
-                                        {job.summary}
-                                    </p>
-
-                                    <div style={{
-                                        display: 'flex',
-                                        gap: '1rem',
-                                        fontSize: '0.85rem',
-                                        color: 'var(--text-secondary)',
-                                        marginBottom: '1.5rem'
+                    <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+                        {jobPostings.map((job, idx) => (
+                            <motion.div
+                                key={job.id}
+                                className="service-modern-card glass-panel"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    padding: '2.5rem',
+                                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                                    background: 'rgba(255, 255, 255, 0.02)',
+                                    borderRadius: '20px',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}
+                            >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                                    <span style={{
+                                        background: 'rgba(99, 102, 241, 0.1)',
+                                        color: 'var(--accent-light)',
+                                        padding: '0.4rem 0.8rem',
+                                        borderRadius: '6px',
+                                        fontSize: '0.7rem',
+                                        fontWeight: '800',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em'
                                     }}>
-                                        <span>📍 {job.location}</span>
-                                        <span>⏰ {job.job_type}</span>
-                                    </div>
-
-                                    {job.salary_range && (
-                                        <p style={{
-                                            fontSize: '0.9rem',
-                                            color: 'var(--accent-primary)',
-                                            fontWeight: '600',
-                                            marginBottom: '1rem'
-                                        }}>
-                                            💰 {job.salary_range}
-                                        </p>
-                                    )}
-
-                                    <button
-                                        onClick={() => openApplicationForm(job)}
-                                        className="btn-outline"
-                                        style={{ width: '100%' }}
-                                    >
-                                        Apply for this Position
-                                    </button>
+                                        {job.department}
+                                    </span>
+                                    <span style={{ fontSize: '0.7rem', opacity: 0.4, fontWeight: '600', letterSpacing: '0.05em' }}>
+                                        REF: {job.slug?.split('-').pop()?.toUpperCase() || 'ROLE'}
+                                    </span>
                                 </div>
-                            </div>
+
+                                <h4 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em', color: '#fff' }}>
+                                    {job.title}
+                                </h4>
+
+                                <p style={{ fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '2.5rem', color: 'var(--text-secondary)', flex: 1 }}>
+                                    {job.summary}
+                                </p>
+
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr',
+                                    gap: '1.25rem',
+                                    marginBottom: '2.5rem',
+                                    padding: '1.5rem',
+                                    background: 'rgba(255,255,255,0.03)',
+                                    borderRadius: '16px',
+                                    border: '1px solid rgba(255,255,255,0.05)'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                                        <FaMapMarkerAlt style={{ color: 'var(--accent-light)', opacity: 0.7 }} />
+                                        <span>{job.location}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                                        <FaClock style={{ color: 'var(--accent-light)', opacity: 0.7 }} />
+                                        <span style={{ textTransform: 'capitalize' }}>{job.job_type.replace('-', ' ')}</span>
+                                    </div>
+                                    {job.salary_range && (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem', color: 'var(--accent-light)', fontWeight: '600', gridColumn: 'span 2', marginTop: '8px', opacity: 0.9 }}>
+                                            <FaMoneyBillWave style={{ opacity: 0.6 }} />
+                                            <span>Est. Compensation: {job.salary_range}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button
+                                    onClick={() => openApplicationForm(job)}
+                                    className="btn"
+                                    style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '12px',
+                                        background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)',
+                                        boxShadow: '0 4px 15px rgba(99, 102, 241, 0.2)',
+                                        border: 'none',
+                                        color: '#fff',
+                                        padding: '1.1rem',
+                                        fontWeight: '700',
+                                        borderRadius: '12px'
+                                    }}
+                                >
+                                    View Full Description <FaArrowRight style={{ fontSize: '0.8rem', opacity: 0.8 }} />
+                                </button>
+                            </motion.div>
                         ))}
                     </div>
                 )}

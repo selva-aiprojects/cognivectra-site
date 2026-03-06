@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const MegaMenu = ({ isOpen, section, items, image, onClose }) => {
     const location = useLocation();
-    
+
     const isActive = (path) => {
         if (path === '/') {
             return location.pathname === '/';
@@ -43,7 +43,25 @@ const MegaMenu = ({ isOpen, section, items, image, onClose }) => {
                                     >
                                         <div className="mega-menu-item-content">
                                             <div className="mega-menu-item-text">
-                                                <span className="mega-menu-item-label">{item.label}</span>
+                                                <div className="mega-menu-item-label-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <span className="mega-menu-item-label">{item.label}</span>
+                                                    {item.badge && (
+                                                        <span className="hiring-badge-tiny" style={{
+                                                            background: 'var(--accent-primary)',
+                                                            color: 'white',
+                                                            fontSize: '0.65rem',
+                                                            padding: '2px 6px',
+                                                            borderRadius: '4px',
+                                                            fontWeight: '800',
+                                                            textTransform: 'uppercase',
+                                                            letterSpacing: '0.05em',
+                                                            boxShadow: '0 0 10px rgba(99, 102, 241, 0.4)',
+                                                            animation: 'pulse 2s infinite'
+                                                        }}>
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 {item.desc && <p className="mega-menu-item-desc">{item.desc}</p>}
                                             </div>
                                             <svg

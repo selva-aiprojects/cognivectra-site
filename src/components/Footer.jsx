@@ -29,7 +29,11 @@ export default function Footer() {
             <li><Link to="/leadership">Leadership</Link></li>
             <li><Link to="/mission">Mission</Link></li>
             <li><Link to="/results">Results</Link></li>
-            <li><Link to="/careers">Careers</Link></li>
+            <li>
+              <Link to="/careers" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                Careers <span style={{ fontSize: '0.65rem', color: 'var(--accent-primary)', fontWeight: '700' }}>• 1 Open Role</span>
+              </Link>
+            </li>
             <li><Link to="/blog">Blog</Link></li>
           </ul>
 
