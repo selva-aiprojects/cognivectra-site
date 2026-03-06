@@ -16,6 +16,8 @@ import resultsImg from "../assets/generated/hero-results-8k.png";
 import industriesImg from "../assets/generated/hero-industries-ultra-8k.png";
 import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 
+const logo = "/cognivectra-dark-crop.png";
+
 import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform, setIsSearchOpen, theme, setTheme }) {
