@@ -23,6 +23,7 @@ import {
   LuLogOut
 } from "react-icons/lu";
 import ReactMarkdown from "react-markdown";
+import { FaFileContract } from "react-icons/fa";
 import { useTenant } from "../context/TenantContext";
 
 export default function AdminEnhanced() {
