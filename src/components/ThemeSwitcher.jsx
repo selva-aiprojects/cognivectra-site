@@ -9,6 +9,9 @@ export default function ThemeSwitcher({ theme, setTheme }) {
         { id: 'deep-tech', label: 'Deep Tech', color: '#6366f1' },
         { id: 'vibrant-blue', label: 'Vibrant Blue', color: '#0ea5e9' },
         { id: 'technical-emerald', label: 'Tech Emerald', color: '#10b981' },
+        { id: 'sunset-glow', label: 'Sunset Glow', color: '#f59e0b' },
+        { id: 'royal-amethyst', label: 'Royal Amethyst', color: '#8b5cf6' },
+        { id: 'cyber-oasis', label: 'Cyber Oasis', color: '#d946ef' },
         { id: 'space-dark', label: 'Space Dark', color: '#71717a' },
     ];
 
