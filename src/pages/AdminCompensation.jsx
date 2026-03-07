@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import AdminLayout from '../layouts/AdminLayout';
+import { LuPlus } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 export default function AdminCompensation() {
@@ -243,7 +244,7 @@ export default function AdminCompensation() {
                     <p style={{ opacity: 0.7 }}>Standardize compensation and benefits across organizational roles.</p>
                 </div>
                 <div className="admin-actions">
-                    <button onClick={openNewPackageForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>+ Create Package</button>
+                    <button onClick={openNewPackageForm} className="btn"><LuPlus /> Create Package</button>
                 </div>
             </header>
 

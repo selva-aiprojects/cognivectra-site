@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  LuTrendingUp,
+  LuRocket,
+  LuCpu,
+  LuBuilding2,
+  LuCircleCheck
+} from "react-icons/lu";
 import resultsHero from "../assets/generated/hero-results-8k.png";
 
 export default function Results() {
@@ -7,7 +14,7 @@ export default function Results() {
     <main>
 
       {/* HERO */}
-      <section className="hero-modern">
+      <section className="hero-modern bg-visual-energy">
         <div className="hero-modern-inner">
           <motion.div
             className="hero-copy"
@@ -15,7 +22,7 @@ export default function Results() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge">📈 Proven Outcomes</span>
+            <span className="hero-badge"><LuTrendingUp style={{ marginRight: '0.4rem' }} /> Proven Outcomes</span>
 
             <h1>
               Results & <br />
@@ -63,7 +70,7 @@ export default function Results() {
 
           {/* CASE 1 */}
           <div className="service-modern-card">
-            <h4>🚀 Enterprise SaaS — Rapid Deployment</h4>
+            <h4><LuRocket style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Enterprise SaaS — Rapid Deployment</h4>
             <p>
               A multi-tenant SaaS provider was struggling with manual
               deployments and inconsistent environment stability across global regions.
@@ -81,7 +88,7 @@ export default function Results() {
 
           {/* CASE 2 */}
           <div className="service-modern-card">
-            <h4>🤖 Healthcare AI — Platform Scalability</h4>
+            <h4><LuCpu style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Healthcare AI — Platform Scalability</h4>
             <p>
               A healthcare platform provider was scaling AI-assisted diagnostics
               but required enhanced data governance and security hardening.
@@ -99,7 +106,7 @@ export default function Results() {
 
           {/* CASE 3 */}
           <div className="service-modern-card">
-            <h4>💼 Enterprise Operations — Intelligent Automation</h4>
+            <h4><LuBuilding2 style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Enterprise Operations — Intelligent Automation</h4>
             <p>
               A large-scale organization needed to automate complex clinical
               and administrative workflows to improve physician efficiency.
@@ -124,12 +131,12 @@ export default function Results() {
           <h3>Measurable Impact</h3>
 
           <div className="why-modern-grid">
-            <div className="why-pill">Faster time-to-market</div>
-            <div className="why-pill">Optimized cloud governance</div>
-            <div className="why-pill">Enterprise platform reliability</div>
-            <div className="why-pill">Reduced operational overhead</div>
-            <div className="why-pill">Improved engineering velocity</div>
-            <div className="why-pill">Strategic resource efficiency</div>
+            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Faster time-to-market</div>
+            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Optimized cloud governance</div>
+            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Enterprise platform reliability</div>
+            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Reduced operational overhead</div>
+            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Improved engineering velocity</div>
+            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Strategic resource efficiency</div>
           </div>
         </div>
       </section>

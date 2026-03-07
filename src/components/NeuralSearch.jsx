@@ -56,12 +56,12 @@ const NeuralSearch = ({ isOpen, onClose }) => {
             setTimeout(() => {
                 const siteContext = {
                     'techstack': 'Our engineering core uses Vite + React 18, Framer Motion, Supabase, and Advanced AI Orchestration (LangGraph, CrewAI, LangChain).',
-                    'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
+                    'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic and Dr. S.T. Pushpa. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
                     'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence with higher fidelity than standard trading bots.',
                     'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring.',
                     'better': 'CogniVectra delivers senior-architected IP that YOU own — production-ready, no technical debt, zero vendor lock-in.',
                     'price': 'Our modular Launch Packs save clients 30–50% on long-term operational costs by building correctly from day one.',
-                    'customers': 'We partner with technical leaders at Kidz-Clinic and various North American EdTech/FinTech startups.',
+                    'customers': 'We partner with technical leaders at Kidz-Clinic, Dr. S.T. Pushpa, and various North American EdTech/FinTech startups.',
                     'products': 'Production-ready platforms: MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), EduPortal (Education).',
                 };
                 const lowerQ = q.toLowerCase();

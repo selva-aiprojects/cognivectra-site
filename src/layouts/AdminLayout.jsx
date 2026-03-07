@@ -3,18 +3,18 @@ import { supabase } from '../lib/supabase';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-    FaHome,
-    FaUsers,
-    FaTasks,
-    FaBriefcase,
-    FaGem,
-    FaEnvelopeOpenText,
-    FaPenNib,
-    FaRocket,
-    FaChartLine,
-    FaSignOutAlt,
-    FaGlobe
-} from 'react-icons/fa';
+    LuHouse,
+    LuUsers,
+    LuListTodo,
+    LuBriefcase,
+    LuGem,
+    LuMailOpen,
+    LuPenTool,
+    LuRocket,
+    LuTrendingUp,
+    LuLogOut,
+    LuGlobe
+} from 'react-icons/lu';
 import { useTenant } from '../context/TenantContext';
 
 export default function AdminLayout({ children }) {
@@ -97,7 +97,7 @@ export default function AdminLayout({ children }) {
                         {tenant?.branding?.logo_url ? (
                             <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '32px', width: 'auto', marginBottom: '0.5rem' }} />
                         ) : (
-                            <FaGlobe style={{ fontSize: '1.5rem', color: 'var(--accent-primary)', marginBottom: '0.5rem' }} />
+                            <LuGlobe style={{ fontSize: '1.5rem', color: 'var(--accent-primary)', marginBottom: '0.5rem' }} />
                         )}
                         <div data-testid="tenant-name" style={{ fontSize: '0.9rem', fontWeight: '800', color: 'white', textAlign: 'center' }}>
                             {tenant?.tenant_name || 'Operations OS'}
@@ -113,13 +113,13 @@ export default function AdminLayout({ children }) {
                         <>
                             <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Operations</div>
                             <Link to="/admin" className={isActive('/admin')}>
-                                <FaHome /> Dashboard
+                                <LuHouse /> Dashboard
                             </Link>
                             <Link to="/admin/clients" className={isActive('/admin/clients')}>
-                                <FaUsers /> Relationships
+                                <LuUsers /> Relationships
                             </Link>
                             <Link to="/admin/projects" className={isActive('/admin/projects')}>
-                                <FaTasks /> Roadmap
+                                <LuListTodo /> Roadmap
                             </Link>
                         </>
                     )}
@@ -129,13 +129,13 @@ export default function AdminLayout({ children }) {
                             <div style={{ height: '1px', background: 'rgba(255,255,255,0.03)', margin: '1.5rem 1.75rem' }}></div>
                             <div className="nav-group-label" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', padding: '0 2.25rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', opacity: 0.4 }}>Resources</div>
                             <Link to="/admin/jobs" className={isActive('/admin/jobs')}>
-                                <FaBriefcase /> Talent Pipeline
+                                <LuBriefcase /> Talent Pipeline
                             </Link>
                             <Link to="/admin/compensation" className={isActive('/admin/compensation')}>
-                                <FaGem /> Compensation
+                                <LuGem /> Compensation
                             </Link>
                             <Link to="/admin/offers" className={isActive('/admin/offers')}>
-                                <FaEnvelopeOpenText /> Offer Mesh
+                                <LuMailOpen /> Offer Mesh
                             </Link>
                         </>
                     )}
@@ -147,16 +147,16 @@ export default function AdminLayout({ children }) {
                             {isModuleEnabled('BLOG') && (
                                 <>
                                     <Link to="/admin/blog" className={isActive('/admin/blog')}>
-                                        <FaPenNib /> Editorial
+                                        <LuPenTool /> Editorial
                                     </Link>
                                     <Link to="/admin/omni" className={isActive('/admin/omni')}>
-                                        <FaRocket /> Omni-Channel
+                                        <LuRocket /> Omni-Channel
                                     </Link>
                                 </>
                             )}
                             {isModuleEnabled('AI_SEARCH') && (
                                 <Link to="/admin/reports" className={isActive('/admin/reports')}>
-                                    <FaChartLine /> Telemetry
+                                    <LuTrendingUp /> Telemetry
                                 </Link>
                             )}
                         </>
@@ -164,8 +164,8 @@ export default function AdminLayout({ children }) {
                 </nav>
 
                 <div className="sidebar-footer" style={{ padding: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: 'calc(100% - 2rem)', background: 'rgba(239, 68, 68, 0.05)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
-                        <FaSignOutAlt /> Terminate Session
+                    <button onClick={handleSignOut} className="sidebar-link" style={{ width: 'calc(100% - 2rem)', background: 'rgba(239, 68, 68, 0.05)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.1)', transition: 'all 0.3s ease' }}>
+                        <LuLogOut /> Terminate Session
                     </button>
                 </div>
             </aside>

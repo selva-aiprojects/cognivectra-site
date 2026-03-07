@@ -90,7 +90,8 @@ export default function MedFlowDetail() {
                 <meta property="og:description" content="Production-ready healthcare platform with GenAI diagnostics and HIPAA compliance." />
                 <meta property="og:url" content="https://cognivectra.com/products/medflow" />
                 <meta property="og:type" content="website" />
-                <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+                <meta property="og:image" content={emrImg} />
+                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/medflow-logo.svg" />
             </Helmet>
             {/* HERO */}
             <section className="hero-modern">
@@ -108,7 +109,7 @@ export default function MedFlowDetail() {
                         </div>
                         <p>
                             Scalable, multi-tenant Electronic Medical Record system built for modern clinics.
-                            Currently live with Kidz-Clinic, MedFlow streamlines clinical workflows and patient management.
+                            Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, MedFlow streamlines clinical workflows and patient management.
                         </p>
                         <div className="hero-cta">
                             <a
@@ -208,14 +209,14 @@ export default function MedFlowDetail() {
                     </p>
                 </motion.div>
 
-                <div className="hero-modern-inner" style={{ padding: '0 1rem' }}>
+                <div className="hero-modern-inner" style={{ padding: '0 1rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                     <motion.div
                         className="glass-panel"
-                        style={{ flex: 1, padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}
+                        style={{ padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}
                         {...fadeInUp}
                     >
                         <h4 style={{ marginBottom: '1rem' }}>Kidz-Clinic Implementation</h4>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flex: 1 }}>
                             A specialized pediatric healthcare platform using MedFlow EMR for digital appointment scheduling,
                             patient resource management, and comprehensive clinical workflows.
                         </p>
@@ -227,6 +228,36 @@ export default function MedFlowDetail() {
                                 className="btn"
                             >
                                 Visit Kidz-Clinic ↗
+                            </a>
+                            <a
+                                href="https://emr-app-0909.onrender.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-outline"
+                            >
+                                Access EMR Portal ↗
+                            </a>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        className="glass-panel"
+                        style={{ padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}
+                        {...fadeInUp}
+                    >
+                        <h4 style={{ marginBottom: '1rem' }}>Dr. S.T. Pushpa</h4>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flex: 1 }}>
+                            A leading Bangalore-based paediatrician leveraging MedFlow EMR to provide expert care
+                            for child health and development through a streamlined digital platform.
+                        </p>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <a
+                                href="https://drstpushpa.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn"
+                            >
+                                Visit drstpushpa.com ↗
                             </a>
                             <a
                                 href="https://emr-app-0909.onrender.com/"

@@ -86,6 +86,8 @@ export default function StockStewardDetail() {
                 <meta property="og:description" content="Master the markets with our production-ready AI trading platform." />
                 <meta property="og:url" content="https://cognivectra.com/products/stocksteward" />
                 <meta property="og:type" content="website" />
+                <meta property="og:image" content={stewardImg} />
+                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/stocksteward-logo.svg" />
             </Helmet>
             {/* HERO */}
             <section className="hero-modern">

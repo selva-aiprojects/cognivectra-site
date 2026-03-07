@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { LuCircleCheck, LuFilePen, LuPlus, LuSparkles } from 'react-icons/lu';
 import AdminLayout from '../layouts/AdminLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -241,8 +242,8 @@ export default function AdminJobs() {
                 </div>
                 {!showForm && (
                     <div className="admin-actions">
-                        <button onClick={openNewJobForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>
-                            <span>✨</span> Post Strategic Role
+                        <button onClick={openNewJobForm} className="btn">
+                            <LuSparkles /> Post Strategic Role
                         </button>
                     </div>
                 )}
@@ -290,7 +291,7 @@ export default function AdminJobs() {
                                             </td>
                                             <td>
                                                 <span className={`status-pill ${job.status === 'active' || job.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
-                                                    {job.status === 'active' || job.status === 'published' ? '🟢 Recruitment Open' : '📝 Internal Draft'}
+                                                    {job.status === 'active' || job.status === 'published' ? <><LuCircleCheck style={{ marginRight: '4px' }} /> Recruitment Open</> : <><LuFilePen style={{ marginRight: '4px' }} /> Internal Draft</>}
                                                 </span>
                                             </td>
                                             <td>

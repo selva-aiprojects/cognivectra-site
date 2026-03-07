@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  LuCloud,
+  LuRocket,
+  LuCpu,
+  LuBuilding2,
+  LuSettings
+} from "react-icons/lu";
 import heroServices from "../assets/generated/hero-services-ultra-8k.png";
 
 const fadeInUp = {
@@ -22,7 +29,7 @@ export default function Services() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge">⚙️ Enterprise-Grade Architecture</span>
+            <span className="hero-badge"><LuSettings style={{ marginRight: '0.4rem' }} /> Enterprise-Grade Architecture</span>
             <h1>Services Built for <br />Speed, Scale & Stability</h1>
             <p>
               CogniVectra delivers modular, production-ready systems that help
@@ -69,10 +76,10 @@ export default function Services() {
 
         <div className="services-modern-grid">
           {[
-            { icon: "☁️", title: "Cloud Architecture", desc: "Scalable, secure cloud foundations on AWS, GCP, or Azure with a focus on cost-optimization and resilience.", highlights: ["Landing Zone Construction", "Infrastructure as Code", "Disaster Recovery", "Security & Compliance"] },
-            { icon: "🚀", title: "DevOps & Platforms", desc: "Empowering your team with high-velocity CI/CD pipelines and high-reliability platform engineering.", highlights: ["Automated CI/CD Workflows", "Kubernetes Management", "Observability & Monitoring", "SRE Practices"] },
-            { icon: "🤖", title: "AI & Automation", desc: "Accelerating business processes and product features using state-of-the-art AI orchestration.", highlights: ["Custom LLM Integrations", "Automated Data Pipelines", "Internal Productivity Bots", "AI Strategy & Feasibility"] },
-            { icon: "🏗", title: "SaaS Foundations", desc: "Standardized, battle-tested components for authentication, billing, and core SaaS functionality.", highlights: ["RBAC & IAM Architecture", "Stripe & Billing Integration", "Multi-tenant Partitioning", "Scalable API Gateways"] }
+            { icon: <LuCloud />, title: "Cloud Architecture", desc: "Scalable, secure cloud foundations on AWS, GCP, or Azure with a focus on cost-optimization and resilience.", highlights: ["Landing Zone Construction", "Infrastructure as Code", "Disaster Recovery", "Security & Compliance"] },
+            { icon: <LuRocket />, title: "DevOps & Platforms", desc: "Empowering your team with high-velocity CI/CD pipelines and high-reliability platform engineering.", highlights: ["Automated CI/CD Workflows", "Kubernetes Management", "Observability & Monitoring", "SRE Practices"] },
+            { icon: <LuCpu />, title: "AI & Automation", desc: "Accelerating business processes and product features using state-of-the-art AI orchestration.", highlights: ["Custom LLM Integrations", "Automated Data Pipelines", "Internal Productivity Bots", "AI Strategy & Feasibility"] },
+            { icon: <LuBuilding2 />, title: "SaaS Foundations", desc: "Standardized, battle-tested components for authentication, billing, and core SaaS functionality.", highlights: ["RBAC & IAM Architecture", "Stripe & Billing Integration", "Multi-tenant Partitioning", "Scalable API Gateways"] }
           ].map((service, i) => (
             <motion.div
               key={i}
@@ -128,7 +135,7 @@ export default function Services() {
               Connect with our architects to discuss your production-ready deployment strategy.
             </p>
             <div className="hero-cta" style={{ justifyContent: 'center' }}>
-              <button onClick={() => { }} className="btn">Request Demo</button>
+              <Link to="/contact" className="btn">Request Demo</Link>
               <Link to="/contact" className="btn-outline">Start Strategy Call</Link>
             </div>
           </motion.div>

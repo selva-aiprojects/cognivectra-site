@@ -3,7 +3,18 @@ import { supabase } from "../lib/supabase";
 import AdminLayout from "../layouts/AdminLayout";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaFire, FaSnowflake, FaThermometerHalf, FaFilter, FaUser, FaEnvelope, FaBuilding, FaComments } from "react-icons/fa";
+import {
+  LuFlame,
+  LuSnowflake,
+  LuThermometer,
+  LuFilter,
+  LuUser,
+  LuMail,
+  LuBuilding2,
+  LuMessageSquare,
+  LuHistory,
+  LuSend
+} from "react-icons/lu";
 
 /* =========================
    MOCK DATA (Fallback)
@@ -108,10 +119,10 @@ export default function AdminReports() {
 
   const getScoreIcon = (score) => {
     switch (score) {
-      case 'hot': return <FaFire style={{ color: '#f87171' }} />;
-      case 'warm': return <FaThermometerHalf style={{ color: '#fbbf24' }} />;
-      case 'cold': return <FaSnowflake style={{ color: '#60a5fa' }} />;
-      default: return <FaUser style={{ opacity: 0.5 }} />;
+      case 'hot': return <LuFlame style={{ color: '#f87171' }} />;
+      case 'warm': return <LuThermometer style={{ color: '#fbbf24' }} />;
+      case 'cold': return <LuSnowflake style={{ color: '#60a5fa' }} />;
+      default: return <LuUser style={{ opacity: 0.5 }} />;
     }
   };
 
@@ -157,9 +168,9 @@ export default function AdminReports() {
               style={{ width: '140px', fontSize: '0.85rem' }}
             >
               <option value="all">Global Reach</option>
-              <option value="hot">🔥 High Intent</option>
-              <option value="warm">🟡 Interested</option>
-              <option value="cold">❄ Passive</option>
+              <option value="hot">High Intent</option>
+              <option value="warm">Interested</option>
+              <option value="cold">Passive</option>
             </select>
             <select
               value={filterStage}
@@ -282,13 +293,13 @@ export default function AdminReports() {
               <div style={{ padding: '1.5rem 2rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ fontSize: '0.75rem', opacity: 0.4 }}>Sync: {new Date(selectedLead.updated_at).toLocaleString()}</div>
                 <a href={`mailto:${selectedLead.user_email}`} className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', padding: '0.5rem 1rem' }}>
-                  <span>📩</span> Outreach Partner
+                  <LuMail /> Outreach Partner
                 </a>
               </div>
             </div>
           ) : (
             <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.4, textAlign: 'center', padding: '3rem' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🛸</div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}><LuHistory /></div>
               <h3 style={{ fontSize: '1.25rem' }}>Intelligence Vault</h3>
               <p>Select a lead from the telemetry list to view detailed conversational insights.</p>
             </div>

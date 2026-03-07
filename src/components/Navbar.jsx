@@ -84,7 +84,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       items: [
         { label: "StockSteward AI", path: "/products#steward", desc: "Algorithmic trading & market intelligence." },
         { label: "StoreAI", path: "/products#storeai", desc: "Transformative retail management analytics." },
-        { label: "MedFlow EMR", path: "/products#emr", desc: "Multi-tenant EMR live at Kidz-Clinic." },
+        { label: "MedFlow EMR", path: "/products#emr", desc: "Multi-tenant EMR live at Kidz-Clinic & Dr. S.T. Pushpa." },
         { label: "OmniCore (Beta)", path: "/products#omnicore", desc: "Unified enterprise AI orchestration engine." },
         { label: "VectraFlow", path: "/products#vectraflow", desc: "Intelligent document processing workflows." },
       ]

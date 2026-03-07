@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Link } from 'react-router-dom';
+import { LuCircleCheck, LuCircleAlert, LuPlus } from 'react-icons/lu';
 import AdminLayout from '../layouts/AdminLayout';
 
 export default function AdminClients() {
@@ -129,7 +129,7 @@ export default function AdminClients() {
                     <p style={{ opacity: 0.7 }}>Manage relationships, track leads, and view client health.</p>
                 </div>
                 <div className="admin-actions">
-                    <button onClick={openNewClientForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>+ Add Client</button>
+                    <button onClick={openNewClientForm} className="btn"><LuPlus /> Add Client</button>
                 </div>
             </header>
 
@@ -171,9 +171,9 @@ export default function AdminClients() {
                                 </td>
                                 <td>
                                     <span className={`status-pill ${client.relationship_status === 'healthy' ? 'status-hot' : 'status-cold'}`}>
-                                        {client.relationship_status === 'healthy' && <span>🟢</span>}
-                                        {client.relationship_status === 'at_risk' && <span>🔴</span>}
-                                        {client.relationship_status}
+                                        {client.relationship_status === 'healthy' && <LuCircleCheck style={{ marginRight: '4px' }} />}
+                                        {client.relationship_status === 'at_risk' && <LuCircleAlert style={{ marginRight: '4px' }} />}
+                                        <span style={{ textTransform: 'uppercase' }}>{client.relationship_status}</span>
                                     </span>
                                 </td>
                                 <td style={{ textAlign: 'center' }}>

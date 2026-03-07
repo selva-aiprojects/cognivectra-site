@@ -3,7 +3,25 @@ import { supabase } from "../lib/supabase";
 import { Link, useNavigate } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaRocket, FaLinkedin, FaInstagram, FaFacebook, FaEdit, FaCheckCircle, FaExclamationTriangle, FaSpinner, FaPlus, FaExternalLinkAlt, FaUsers, FaFileContract, FaTools, FaBriefcase, FaEnvelopeOpenText } from "react-icons/fa";
+import {
+  LuRocket,
+  LuLinkedin,
+  LuInstagram,
+  LuFacebook,
+  LuPenTool,
+  LuCircleCheck,
+  LuTriangleAlert,
+  LuRefreshCw,
+  LuPlus,
+  LuExternalLink,
+  LuUsers,
+  LuFileText,
+  LuSettings,
+  LuBriefcase,
+  LuMailOpen,
+  LuHistory,
+  LuLogOut
+} from "react-icons/lu";
 import ReactMarkdown from "react-markdown";
 import { useTenant } from "../context/TenantContext";
 
@@ -14,7 +32,6 @@ export default function AdminEnhanced() {
   const [publishingTo, setPublishingTo] = useState({});
   const [publishStatus, setPublishStatus] = useState({}); // { postId: { platform: { status, error } } }
   const [selectedPlatforms, setSelectedPlatforms] = useState({}); // { postId: ['blog', 'linkedin', ...] }
-  const [showPlatformSelector, setShowPlatformSelector] = useState({}); // { postId: true/false }
   const [socialMediaStatus, setSocialMediaStatus] = useState({}); // { postId: { platform: { published_at, platform_post_id } } }
   const [activeTab, setActiveTab] = useState("drafts");
   const { isModuleEnabled } = useTenant();
@@ -366,7 +383,7 @@ export default function AdminEnhanced() {
                     transition: 'all 0.2s'
                   }}
                 >
-                  <FaRocket style={{ marginRight: '6px' }} /> Publisher
+                  <LuRocket style={{ marginRight: '6px' }} /> Publisher
                 </button>
               )}
               {isModuleEnabled('TALENT') && (
@@ -384,7 +401,7 @@ export default function AdminEnhanced() {
                     transition: 'all 0.2s'
                   }}
                 >
-                  <FaUsers style={{ marginRight: '6px' }} /> Talent Ops
+                  <LuUsers style={{ marginRight: '6px' }} /> Talent Ops
                 </button>
               )}
             </div>
@@ -397,9 +414,9 @@ export default function AdminEnhanced() {
         </div>
         <div className="admin-actions" style={{ display: 'flex', gap: '1rem' }}>
           <button onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })} className="btn">
-            <FaPlus style={{ marginRight: '0.5rem' }} /> New Packet
+            <LuPlus /> New Packet
           </button>
-          <button onClick={handleSignOut} className="btn-outline" style={{ fontSize: '0.8rem' }}>Terminate Session</button>
+          <button onClick={handleSignOut} className="btn-outline" style={{ fontSize: '0.8rem' }}><LuLogOut /> Terminate Session</button>
         </div>
       </header>
 
@@ -666,7 +683,7 @@ export default function AdminEnhanced() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {filteredPosts.length === 0 && (
               <div style={{ padding: '5rem', textAlign: 'center', opacity: 0.4 }}>
-                <div style={{ fontSize: '3rem' }}>🛰️</div>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}><LuHistory /></div>
                 <p>No content packets detected in this sector.</p>
               </div>
             )}
@@ -695,10 +712,10 @@ export default function AdminEnhanced() {
 
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                       {[
-                        { id: 'blog', icon: <FaRocket />, color: '#818cf8' },
-                        { id: 'linkedin', icon: <FaLinkedin />, color: '#0077b5' },
-                        { id: 'instagram', icon: <FaInstagram />, color: '#e4405f' },
-                        { id: 'facebook', icon: <FaFacebook />, color: '#1877f2' }
+                        { id: 'blog', icon: <LuRocket />, color: '#818cf8' },
+                        { id: 'linkedin', icon: <LuLinkedin />, color: '#0077b5' },
+                        { id: 'instagram', icon: <LuInstagram />, color: '#e4405f' },
+                        { id: 'facebook', icon: <LuFacebook />, color: '#1877f2' }
                       ].map(platform => {
                         const status = getPlatformStatus(post.id, platform.id);
                         const isPublished = status?.type === "published" || (platform.id === 'blog' && post.status === 'published');
@@ -726,12 +743,12 @@ export default function AdminEnhanced() {
                                 rel="noopener noreferrer"
                                 style={{ textTransform: 'capitalize', color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
                               >
-                                {platform.id} <FaExternalLinkAlt style={{ fontSize: '0.6rem', opacity: 0.6 }} />
+                                {platform.id} <LuExternalLink style={{ fontSize: '0.6rem', opacity: 0.6 }} />
                               </a>
                             ) : (
                               <span style={{ textTransform: 'capitalize', color: isPublished ? 'white' : 'rgba(255,255,255,0.2)' }}>{platform.id}</span>
                             )}
-                            {isPublished && <FaCheckCircle style={{ fontSize: '0.6rem', color: '#10b981', marginLeft: '2px' }} />}
+                            {isPublished && <LuCircleCheck style={{ fontSize: '0.6rem', color: '#10b981', marginLeft: '2px' }} />}
                           </div>
                         );
                       })}
@@ -744,7 +761,7 @@ export default function AdminEnhanced() {
                       style={{ justifyContent: 'center', padding: '0.7rem', background: 'rgba(255,255,255,0.03)' }}
                       onClick={() => setEditingPost(post)}
                     >
-                      <FaEdit style={{ marginRight: '0.5rem' }} /> Engineer Packet
+                      <LuPenTool style={{ marginRight: '0.5rem' }} /> Engineer Packet
                     </button>
 
                     {selectorOpen ? (
@@ -781,7 +798,7 @@ export default function AdminEnhanced() {
                           onClick={() => publishPost(post)}
                           disabled={isPublishing}
                         >
-                          {isPublishing ? <FaSpinner className="spin" /> : "Initiate Deployment"}
+                          {isPublishing ? <LuRefreshCw className="spin" /> : "Initiate Deployment"}
                         </button>
                         <button
                           onClick={() => setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }))}
@@ -798,7 +815,7 @@ export default function AdminEnhanced() {
                           onClick={() => togglePlatformSelector(post.id)}
                           disabled={isPublishing}
                         >
-                          {isPublishing ? "Synchronizing..." : "🚀 Deploy Packet"}
+                          {isPublishing ? "Synchronizing..." : <><LuRocket /> Deploy Packet</>}
                         </button>
                       )
                     )}
@@ -814,7 +831,7 @@ export default function AdminEnhanced() {
                         {Object.entries(publishStatus[post.id]).map(([plat, stat]) => (
                           stat.status === 'error' && (
                             <div key={plat} style={{ fontSize: '0.7rem', color: '#f87171', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.2rem' }}>
-                              <FaExclamationTriangle /> {plat}: {stat.error?.slice(0, 30)}...
+                              <LuTriangleAlert /> {plat}: {stat.error?.slice(0, 30)}...
                             </div>
                           )
                         ))}

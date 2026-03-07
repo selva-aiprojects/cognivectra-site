@@ -2,7 +2,18 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaBuilding, FaUserCheck, FaCode, FaChartBar, FaRocket, FaBriefcase, FaUsers, FaTasks, FaClock, FaSpinner } from 'react-icons/fa';
+import {
+  LuBuilding2,
+  LuUserCheck,
+  LuCode,
+  LuChartBar,
+  LuRocket,
+  LuBriefcase,
+  LuUsers,
+  LuListTodo,
+  LuClock,
+  LuRefreshCw
+} from 'react-icons/lu';
 import AdminLayout from '../layouts/AdminLayout';
 import { useTenant } from '../context/TenantContext';
 
@@ -87,8 +98,8 @@ export default function Admin() {
     return (
       <AdminLayout>
         <div className="loading-container">
-          <FaSpinner className="loading-spinner spin" />
-          <p className="loading-text">Loading dashboard...</p>
+          <LuRefreshCw className="loading-spinner spin" />
+          <p className="loading-text">Synchronizing dashboard...</p>
         </div>
       </AdminLayout>
     );
@@ -104,12 +115,12 @@ export default function Admin() {
         <div className="admin-actions">
           {isModuleEnabled('BLOG') && (
             <>
-              <Link to="/admin/omni" className="btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem', background: 'var(--accent-primary)' }}>🚀 Social Publisher</Link>
-              <Link to="/admin/blog?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ Create Post</Link>
+              <Link to="/admin/omni" className="btn">🚀 Social Publisher</Link>
+              <Link to="/admin/blog?new=1" className="btn-outline">+ Create Post</Link>
             </>
           )}
           {isModuleEnabled('TALENT') && (
-            <Link to="/admin/jobs?new=1" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>+ New Job</Link>
+            <Link to="/admin/jobs?new=1" className="btn-outline">+ New Job</Link>
           )}
         </div>
       </header>
@@ -124,7 +135,7 @@ export default function Admin() {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <div className="admin-stat-header">
-            <div className="admin-stat-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}><FaUsers /></div>
+            <div className="admin-stat-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}><LuUsers /></div>
             <span className="admin-stat-trend trend-up">↑ 12%</span>
           </div>
           <div className="admin-stat-number">{metrics.total_active_clients}</div>
@@ -139,7 +150,7 @@ export default function Admin() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div className="admin-stat-header">
-            <div className="admin-stat-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.2)' }}><FaRocket /></div>
+            <div className="admin-stat-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.2)' }}><LuRocket /></div>
             <span className="admin-stat-trend trend-up">↑ 4%</span>
           </div>
           <div className="admin-stat-number">{metrics.total_active_projects}</div>
@@ -154,7 +165,7 @@ export default function Admin() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <div className="admin-stat-header">
-            <div className="admin-stat-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.2)' }}><FaChartBar /></div>
+            <div className="admin-stat-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.2)' }}><LuChartBar /></div>
             <span className="admin-stat-trend trend-down">↓ 2%</span>
           </div>
           <div className="admin-stat-number">{formatCurrency(metrics.pending_payments)}</div>
@@ -204,7 +215,7 @@ export default function Admin() {
         {isModuleEnabled('CRM') && (
           <div className="module-card glass-panel">
             <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
-              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaBuilding /></div>
+              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><LuBuilding2 /></div>
               <div>
                 <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Client Relations</h3>
                 <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>CRM & Interactions</p>
@@ -230,7 +241,7 @@ export default function Admin() {
         {isModuleEnabled('CRM') && (
           <div className="module-card glass-panel">
             <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
-              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaTasks /></div>
+              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><LuListTodo /></div>
               <div>
                 <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Project Delivery</h3>
                 <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Milestones & Health</p>
@@ -256,7 +267,7 @@ export default function Admin() {
         {isModuleEnabled('TALENT') && (
           <div className="module-card glass-panel">
             <div className="module-header" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
-              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><FaBriefcase /></div>
+              <div className="module-icon-lg" style={{ background: 'rgba(255,255,255,0.03)' }}><LuBriefcase /></div>
               <div>
                 <h3 style={{ fontSize: '1.25rem', color: 'white' }}>Hiring & Talent</h3>
                 <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Jobs & Offers</p>
@@ -275,7 +286,7 @@ export default function Admin() {
         {/* RECENT ACTIVITY */}
         <div className="module-card glass-panel">
           <h3 style={{ fontSize: '1.1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <FaClock /> Recent Activity
+            <LuClock /> Recent Activity
           </h3>
           <div className="activity-list" style={{ maxHeight: '200px', overflowY: 'auto', paddingRight: '0.5rem' }}>
             {recentInteractions.length > 0 ? (

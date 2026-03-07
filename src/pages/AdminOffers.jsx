@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
+import { LuSparkles, LuCircleCheck, LuFilePen, LuPrinter, LuEye } from 'react-icons/lu';
 import AdminLayout from '../layouts/AdminLayout';
 
 export default function AdminOffers() {
@@ -382,8 +383,8 @@ export default function AdminOffers() {
                     <p style={{ opacity: 0.7 }}>Design and issue employment agreements with standardized packages.</p>
                 </div>
                 <div className="admin-actions">
-                    <button onClick={() => setShowGenerator(true)} className="btn" style={{ padding: '0.6rem 1.5rem' }}>
-                        <span>✨</span> Generate New Offer
+                    <button onClick={() => setShowGenerator(true)} className="btn">
+                        <LuSparkles /> Generate New Offer
                     </button>
                 </div>
             </header>
@@ -497,7 +498,7 @@ export default function AdminOffers() {
                             <div dangerouslySetInnerHTML={{ __html: previewHTML }} />
                         </div>
                         <div className="form-actions" style={{ display: 'flex', gap: '1rem' }}>
-                            <button onClick={() => { const w = window.open('', '_blank'); w.document.write(previewHTML); w.document.close(); w.print(); }} className="btn-outline" style={{ flex: 1 }}>🖨️ Print / PDF</button>
+                            <button onClick={() => { const w = window.open('', '_blank'); w.document.write(previewHTML); w.document.close(); w.print(); }} className="btn-outline" style={{ flex: 1 }}><LuPrinter /> Print / PDF</button>
                             <button onClick={() => setViewingOffer(null)} className="btn" style={{ flex: 1 }}>Close</button>
                         </div>
                     </div>
@@ -532,7 +533,7 @@ export default function AdminOffers() {
                                 </td>
                                 <td>
                                     <span className={`status-pill ${offer.offer_status === 'accepted' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
-                                        {offer.offer_status === 'accepted' ? '🟢 Accepted' : (offer.offer_status === 'draft' ? '📝 Draft' : offer.offer_status)}
+                                        {offer.offer_status === 'accepted' ? <><LuCircleCheck style={{ marginRight: '4px' }} /> Accepted</> : (offer.offer_status === 'draft' ? <><LuFilePen style={{ marginRight: '4px' }} /> Draft</> : offer.offer_status)}
                                     </span>
                                 </td>
                                 <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>
@@ -540,7 +541,7 @@ export default function AdminOffers() {
                                 </td>
                                 <td>
                                     <button onClick={() => viewOfferLetter(offer)} className="btn" style={{ padding: '0.35rem 1rem', fontSize: '0.75rem' }}>
-                                        📄 View
+                                        <LuEye /> View
                                     </button>
                                 </td>
                             </tr>

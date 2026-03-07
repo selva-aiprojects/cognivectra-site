@@ -1,6 +1,16 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  LuBuilding2,
+  LuCloud,
+  LuCpu,
+  LuChartBar,
+  LuTarget,
+  LuUsers,
+  LuRocket,
+  LuGem
+} from "react-icons/lu";
 import heroAbout from "../assets/generated/hero-about.svg";
 
 const fadeInUp = {
@@ -22,7 +32,7 @@ export default function About() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge">About CogniVectra</span>
+            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> About CogniVectra</span>
             <h1>Building Foundations <br /> for Modern Enterprises</h1>
 
             <p>
@@ -74,10 +84,10 @@ export default function About() {
 
         <div className="services-modern-grid">
           {[
-            { icon: "🏗️", title: "Platform Engineering", desc: "We build the foundational platforms that power modern SaaS applications — from auth to billing.", highlights: ["Multi-tenant architecture", "Scalable Data Models", "Observability & Monitoring"] },
-            { icon: "☁️", title: "Cloud Infrastructure", desc: "Secure, cost-efficient, and scalable infrastructure designed for growth without complexity.", highlights: ["Hybrid Cloud Strategy", "Security Foundations", "Cost Optimization"] },
-            { icon: "🤖", title: "Process Automation", desc: "Automating repetitive workflows to allow your team to focus on building great products.", highlights: ["Low-code / No-code Solutions", "Custom Data Pipelines", "Workflow Orchestration"] },
-            { icon: "📊", title: "Data & Analytics", desc: "Robust analytics platforms providing real-time business insights for data-driven decisions.", highlights: ["Data Warehouse Design", "Real-time Dashboards", "Business Intelligence"] }
+            { icon: <LuBuilding2 />, title: "Platform Engineering", desc: "We build the foundational platforms that power modern SaaS applications — from auth to billing.", highlights: ["Multi-tenant architecture", "Scalable Data Models", "Observability & Monitoring"] },
+            { icon: <LuCloud />, title: "Cloud Infrastructure", desc: "Secure, cost-efficient, and scalable infrastructure designed for growth without complexity.", highlights: ["Hybrid Cloud Strategy", "Security Foundations", "Cost Optimization"] },
+            { icon: <LuCpu />, title: "Process Automation", desc: "Automating repetitive workflows to allow your team to focus on building great products.", highlights: ["Low-code / No-code Solutions", "Custom Data Pipelines", "Workflow Orchestration"] },
+            { icon: <LuChartBar />, title: "Data & Analytics", desc: "Robust analytics platforms providing real-time business insights for data-driven decisions.", highlights: ["Data Warehouse Design", "Real-time Dashboards", "Business Intelligence"] }
           ].map((service, i) => (
             <motion.div
               key={i}
@@ -104,9 +114,9 @@ export default function About() {
           <motion.h3 {...fadeInUp}>Our Core Values</motion.h3>
           <div className="why-modern-grid">
             {[
-              { icon: "🎯", title: "Excellence", desc: "Enterprise-grade quality with rapid deployment and scalability." },
-              { icon: "🤝", title: "Partnership", desc: "We work as an extension of your team, not just consultants." },
-              { icon: "🚀", title: "Innovation", desc: "Cutting-edge solutions for unique business challenges." }
+              { icon: <LuTarget />, title: "Excellence", desc: "Enterprise-grade quality with rapid deployment and scalability." },
+              { icon: <LuGem />, title: "Partnership", desc: "We work as an extension of your team, not just consultants." },
+              { icon: <LuRocket />, title: "Innovation", desc: "Cutting-edge solutions for unique business challenges." }
             ].map((value, i) => (
               <motion.div
                 key={i}
@@ -116,7 +126,7 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <h4>{value.icon} {value.title}</h4>
+                <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>{value.icon} {value.title}</h4>
                 <p>{value.desc}</p>
               </motion.div>
             ))}

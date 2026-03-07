@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Link } from 'react-router-dom';
+import { LuCircleCheck, LuCircleAlert, LuPlus } from 'react-icons/lu';
 import AdminLayout from '../layouts/AdminLayout';
 
 export default function AdminProjects() {
@@ -128,7 +128,7 @@ export default function AdminProjects() {
                     <p style={{ opacity: 0.7 }}>Track execution, health metrics, and client deliverables.</p>
                 </div>
                 <div className="admin-actions">
-                    <button onClick={openNewProjectForm} className="btn" style={{ padding: '0.6rem 1.5rem' }}>+ New Project</button>
+                    <button onClick={openNewProjectForm} className="btn"><LuPlus /> New Project</button>
                 </div>
             </header>
 
@@ -171,7 +171,7 @@ export default function AdminProjects() {
                                 </td>
                                 <td>
                                     <span className={`status-pill ${project.health_status === 'on_track' ? 'status-hot' : 'status-cold'}`}>
-                                        {project.health_status === 'on_track' ? '🟢 ON TRACK' : '🔴 DELAYED'}
+                                        {project.health_status === 'on_track' ? <><LuCircleCheck style={{ marginRight: '4px' }} /> ON TRACK</> : <><LuCircleAlert style={{ marginRight: '4px' }} /> DELAYED</>}
                                     </span>
                                 </td>
                                 <td>

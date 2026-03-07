@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import {
+  LuUsers,
+  LuGem,
+  LuTarget,
+  LuArrowRight,
+  LuCircleCheck
+} from "react-icons/lu";
 
 /* High-resolution 3D illustrations */
 import cloudImage from "../assets/generated/cap-cloud-3d-8k.png";
@@ -24,7 +31,7 @@ export default function WhoWeAre() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge">👥 About CogniVectra</span>
+            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> About CogniVectra</span>
 
             <h1>
               Enterprise Platform <br />
@@ -79,18 +86,18 @@ export default function WhoWeAre() {
         <div className="services-modern-grid">
 
           <div className="service-modern-card">
-            <h4>💎 What We Value</h4>
-            <ul>
-              <li>Integrity in advice, estimates, and delivery</li>
-              <li>Consistency in architecture and operations</li>
-              <li>Community ownership and knowledge sharing</li>
-              <li>Outcome-driven innovation, not hype</li>
-              <li>Pragmatic leadership balancing speed and risk</li>
+            <h4><LuGem style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> What We Value</h4>
+            <ul className="service-highlights">
+              <li><LuCircleCheck /> Integrity in advice, estimates, and delivery</li>
+              <li><LuCircleCheck /> Consistency in architecture and operations</li>
+              <li><LuCircleCheck /> Community ownership and knowledge sharing</li>
+              <li><LuCircleCheck /> Outcome-driven innovation, not hype</li>
+              <li><LuCircleCheck /> Pragmatic leadership balancing speed and risk</li>
             </ul>
           </div>
 
           <div className="service-modern-card">
-            <h4>🎯 Our Approach</h4>
+            <h4><LuTarget style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Our Approach</h4>
             <p>
               We start with your enterprise architecture and business goals — then
               design automation and cloud foundations that match your scale

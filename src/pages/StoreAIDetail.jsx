@@ -86,7 +86,8 @@ export default function StoreAIDetail() {
                 <meta property="og:description" content="Transform retail operations with our production-ready GenAI and predictive analytics platform." />
                 <meta property="og:url" content="https://cognivectra.com/products/storeai" />
                 <meta property="og:type" content="website" />
-                <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+                <meta property="og:image" content={storeAIImg} />
+                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/storeai-logo.svg" />
             </Helmet>
             {/* HERO */}
             <section className="hero-modern">

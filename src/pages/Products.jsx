@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { LuRocket } from "react-icons/lu";
 import heroProducts from "../assets/generated/hero-products-ultra-8k.png";
 import storeAIImg from "../assets/generated/product-storeai.png";
 import stewardImg from "../assets/generated/product-stocksteward.png";
@@ -49,7 +50,7 @@ export default function Products() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge">🚀 Our Platform Suite</span>
+                        <span className="hero-badge"><LuRocket style={{ marginRight: '0.4rem' }} /> Our Platform Suite</span>
                         <h1>Intelligence-Driven <br />Enterprise Platforms</h1>
                         <p>
                             CogniVectra develops production-ready platforms designed to solve
@@ -110,7 +111,7 @@ export default function Products() {
                             <Link to="/products/stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'stocksteward' })} className="btn-outline">
                                 View Details & Pricing
                             </Link>
-                            <Link to="/contact?product=stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'stocksteward' })} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            <Link to="/contact?product=stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'stocksteward' })} className="btn">
                                 Request Demo
                             </Link>
                         </div>
@@ -172,7 +173,7 @@ export default function Products() {
                             <Link to="/products/storeai" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'storeai' })} className="btn-outline">
                                 View Details & Pricing
                             </Link>
-                            <Link to="/contact?product=storeai" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'storeai' })} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            <Link to="/contact?product=storeai" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'storeai' })} className="btn">
                                 Request Demo
                             </Link>
                         </div>
@@ -194,7 +195,7 @@ export default function Products() {
                         </div>
                         <p>
                             A scalable, multi-tenant Electronic Medical Record (EMR) system built for modern clinics.
-                            Currently live with <strong>Kidz-Clinic</strong>, MedFlow streamlines clinical workflows
+                            Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, MedFlow streamlines clinical workflows
                             and patient management, with rapid onboarding for new providers starting this week.
                         </p>
                         <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
@@ -216,17 +217,26 @@ export default function Products() {
                             <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'medflow' })} className="btn-outline">
                                 View Details & Pricing
                             </Link>
-                            <Link to="/contact?product=medflow" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'medflow' })} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none' }}>
+                            <Link to="/contact?product=medflow" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'medflow' })} className="btn">
                                 Request Demo
                             </Link>
+                            <a
+                                href="https://drstpushpa.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'drstpushpa' })}
+                                className="btn-outline"
+                            >
+                                Visit Dr. S.T. Pushpa ↗
+                            </a>
                             <a
                                 href="https://kidz-clinic-client.onrender.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid' })}
+                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'kidz-clinic' })}
                                 className="btn-outline"
                             >
-                                View Live Implementation
+                                Visit Kidz-Clinic ↗
                             </a>
                         </div>
                     </motion.div>

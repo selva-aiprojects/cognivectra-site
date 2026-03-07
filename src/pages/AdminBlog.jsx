@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import AdminLayout from '../layouts/AdminLayout';
 import { motion } from "framer-motion";
+import { LuPlus, LuCircleCheck, LuFilePen } from 'react-icons/lu';
 import { Link, useLocation } from "react-router-dom";
 
 export default function AdminBlog() {
@@ -97,8 +98,8 @@ export default function AdminBlog() {
                 </div>
                 {!editingPost && (
                     <div className="admin-actions">
-                        <button className="btn" style={{ padding: '0.6rem 1.5rem' }} onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })}>
-                            + New Post
+                        <button className="btn" onClick={() => setEditingPost({ title: "", excerpt: "", body: "", status: "draft", tags: [] })}>
+                            <LuPlus /> New Post
                         </button>
                     </div>
                 )}
@@ -185,7 +186,7 @@ export default function AdminBlog() {
                                     </td>
                                     <td>
                                         <span className={`status-pill ${post.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
-                                            {post.status === 'published' ? '🟢 Published' : '📝 Draft'}
+                                            {post.status === 'published' ? <><LuCircleCheck style={{ marginRight: '4px' }} /> Published</> : <><LuFilePen style={{ marginRight: '4px' }} /> Draft</>}
                                         </span>
                                     </td>
                                     <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>

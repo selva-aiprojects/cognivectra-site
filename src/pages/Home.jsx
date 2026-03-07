@@ -1,6 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import {
+  LuRocket,
+  LuShield,
+  LuBrain,
+  LuLayers,
+  LuTarget,
+  LuCloud,
+  LuTrendingUp,
+  LuActivity,
+  LuArrowRight,
+  LuBuilding2,
+  LuCpu
+} from "react-icons/lu";
 import heroMain from "../assets/generated/hero-home-ultra-8k.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import clientKidzImg from "../assets/generated/ind-health-3d.png";
@@ -173,10 +186,10 @@ export default function Home() {
           viewport={{ once: true }}
         >
           {[
-            { icon: "🚀", title: "Enterprise Strategy", desc: "Executive-level technical leadership and architecture to align technology with your enterprise goals.", highlights: ["Strategic Roadmap Planning", "Platform Governance", "Technology Stack Selection"] },
-            { icon: "⛓️", title: "Cloud Scale Architecture", desc: "Cloud-native infrastructure and CI/CD pipelines that enable your organization to scale safely.", highlights: ["Enterprise Cloud Migration", "Kubernetes Orchestration", "Security Hardening"] },
-            { icon: "🧠", title: "GenAI Integration", desc: "Integrating production-ready GenAI workflows to automate enterprise tasks and create intelligent systems.", highlights: ["Enterprise LLM Deployment", "Process Automation", "AI-First Architectures"] },
-            { icon: "💎", title: "Multi-tenant SaaS", desc: "Building the core foundation for your SaaS products that is secure, multi-tenant, and enterprise-grade.", highlights: ["Scalable SaaS Architecture", "API Ecosystem Design", "Global Edge Distribution"] }
+            { icon: <LuTarget />, title: "Enterprise Strategy", desc: "Executive-level technical leadership and architecture to align technology with your enterprise goals.", highlights: ["Strategic Roadmap Planning", "Platform Governance", "Technology Stack Selection"] },
+            { icon: <LuCloud />, title: "Cloud Scale Architecture", desc: "Cloud-native infrastructure and CI/CD pipelines that enable your organization to scale safely.", highlights: ["Enterprise Cloud Migration", "Kubernetes Orchestration", "Security Hardening"] },
+            { icon: <LuBrain />, title: "GenAI Integration", desc: "Integrating production-ready GenAI workflows to automate enterprise tasks and create intelligent systems.", highlights: ["Enterprise LLM Deployment", "Process Automation", "AI-First Architectures"] },
+            { icon: <LuLayers />, title: "Multi-tenant SaaS", desc: "Building the core foundation for your SaaS products that is secure, multi-tenant, and enterprise-grade.", highlights: ["Scalable SaaS Architecture", "API Ecosystem Design", "Global Edge Distribution"] }
           ].map((service, i) => (
             <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel">
               <div className="service-icon-wrapper">{service.icon}</div>
@@ -215,7 +228,7 @@ export default function Home() {
             <p>Enterprise GenAI platform for retail management with predictive analytics and multi-tenant architecture.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products/storeai" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <button onClick={() => handleDemoRequest('storeai')} className="btn" style={{ background: 'var(--accent-secondary)', border: 'none', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+              <button onClick={() => handleDemoRequest('storeai')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
                 Request Demo
               </button>
             </div>
@@ -229,7 +242,7 @@ export default function Home() {
             <p>AI-powered education platform designed for enterprise scale with multi-tenant deployment capabilities.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <button onClick={() => handleDemoRequest('eduportal')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+              <button onClick={() => handleDemoRequest('eduportal')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
             </div>
           </motion.div>
           <motion.div
@@ -241,7 +254,7 @@ export default function Home() {
             <p>Enterprise healthcare EMR platform with GenAI-enabled capabilities for production environments.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products/medflow" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <button onClick={() => handleDemoRequest('medflow')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+              <button onClick={() => handleDemoRequest('medflow')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
             </div>
           </motion.div>
           <motion.div
@@ -253,7 +266,7 @@ export default function Home() {
             <p>Foundational multi-tenant SaaS architecture for building secure, scalable enterprise systems.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products/stocksteward" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <button onClick={() => handleDemoRequest('steward')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', background: 'var(--accent-secondary)', border: 'none' }}>Request Demo</button>
+              <button onClick={() => handleDemoRequest('steward')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
             </div>
           </motion.div>
         </div>
@@ -387,6 +400,25 @@ export default function Home() {
               Visit Clinic →
             </a>
           </motion.div>
+
+          {/* Client 3: Dr. S.T. Pushpa */}
+          <motion.div
+            className="glass-panel"
+            style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div style={{ height: '200px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)' }}>
+              <img src="/favicon.svg" alt="Dr. S.T. Pushpa" style={{ height: '80px', width: 'auto', opacity: 0.8 }} />
+            </div>
+            <h4>Dr. S.T. Pushpa</h4>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
+              Bangalore's leading paediatrician leveraging MedFlow EMR for compassionate care and efficient practice management.
+            </p>
+            <a href="https://drstpushpa.com/" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
+              Visit drstpushpa.com →
+            </a>
+          </motion.div>
         </div>
       </section>
 
@@ -407,11 +439,11 @@ export default function Home() {
 
         <div className="services-modern-grid">
           {[
-            { title: "Multi-tenant SaaS Architecture", desc: "Securely scale to thousands of organizations with isolated data environments and unified management.", icon: "🏢" },
-            { title: "Secure Cloud-Native Deployment", desc: "Automated provisioning and orchestration across major cloud providers with zero-trust security.", icon: "🛡️" },
-            { title: "Enterprise Scalability", desc: "Systems designed to handle extreme transaction volumes and large-scale data processing effortlessly.", icon: "📈" },
-            { title: "GenAI Integration Architecture", desc: "Production-ready pipelines for LLM orchestration, RAG, and agentic workflows.", icon: "🤖" },
-            { title: "Healthcare Platform Expertise", desc: "HIPAA-compliant data handling and interoperability standards for reliable healthcare delivery.", icon: "🏥" }
+            { title: "Multi-tenant SaaS Architecture", desc: "Securely scale to thousands of organizations with isolated data environments and unified management.", icon: <LuBuilding2 /> },
+            { title: "Secure Cloud-Native Deployment", desc: "Automated provisioning and orchestration across major cloud providers with zero-trust security.", icon: <LuShield /> },
+            { title: "Enterprise Scalability", desc: "Systems designed to handle extreme transaction volumes and large-scale data processing effortlessly.", icon: <LuTrendingUp /> },
+            { title: "GenAI Integration Architecture", desc: "Production-ready pipelines for LLM orchestration, RAG, and agentic workflows.", icon: <LuCpu /> },
+            { title: "Healthcare Platform Expertise", desc: "HIPAA-compliant data handling and interoperability standards for reliable healthcare delivery.", icon: <LuActivity /> }
           ].map((item, i) => (
             <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel" style={{ padding: '2rem' }}>
               <div className="service-icon-wrapper" style={{ fontSize: '2rem', marginBottom: '1rem' }}>{item.icon}</div>
