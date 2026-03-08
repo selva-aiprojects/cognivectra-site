@@ -19,6 +19,9 @@
   --accent-light: #818cf8;
   --border-light: rgba(255, 255, 255, 0.1);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --spacing-section: clamp(4rem, 8vh, 8rem);
+  --spacing-hero: clamp(6rem, 10vh, 10rem);
+  --spacing-container: 1.5rem;
   --body-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 40%, #020617 100%);
 }
 
@@ -1133,7 +1136,8 @@ a {
   min-height: 70vh;
   /* Ensure full viewport height minus header/footer roughly */
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-modern-inner {
@@ -2431,70 +2435,151 @@ select:focus {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.75rem 1rem;
-  width: 200px;
+  padding: 0.85rem 1.25rem;
+  width: 220px;
   cursor: pointer;
-  background: rgba(30, 41, 59, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  transition: all 0.3s ease;
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.arch-node::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.arch-node:hover::before,
+.arch-node.active::before {
+  opacity: 1;
 }
 
 .arch-node.active {
   border-color: var(--accent-light) !important;
-  background: rgba(30, 41, 59, 0.9) !important;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  background: rgba(30, 41, 59, 0.8) !important;
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.2), inset 0 0 15px rgba(99, 102, 241, 0.1);
+  transform: translateY(-5px) scale(1.02);
 }
 
 .arch-node-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.arch-node-content {
+  z-index: 2;
 }
 
 .arch-node-content h4 {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   margin: 0;
-  white-space: nowrap;
+  color: #fff;
+  text-transform: uppercase;
 }
 
+/* HUD DETAIL OVERLAY */
 .arch-detail-overlay {
   position: absolute;
-  top: 30%;
-  right: 5%;
-  width: 280px;
-  padding: 1.5rem;
-  z-index: 10;
-  pointer-events: none;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  width: 320px;
+  padding: 2rem;
+  z-index: 50;
+  background: rgba(2, 6, 23, 0.85) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(99, 102, 241, 0.05);
+  border-radius: 4px;
+  /* Tech Sharp */
+}
+
+/* Scanner Line Effect for HUD */
+.arch-detail-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-light);
+  opacity: 0.2;
+  animation: hudScanner 4s linear infinite;
+}
+
+@keyframes hudScanner {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 100%;
+  }
 }
 
 .detail-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 1rem;
 }
 
 .detail-header h3 {
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin: 0;
 }
 
 .arch-detail-overlay p {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  margin-bottom: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .detail-list {
   list-style: none;
   padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-list li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.8;
+}
+
+padding: 0;
 }
 
 .detail-list li {
@@ -3560,4 +3645,33 @@ select:focus {
   100% {
     transform: translateX(100%);
   }
+}
+
+/* Premium Silicon Valley Transitions */
+.section-transition-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.neural-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 2px 2px, rgba(99, 102, 241, 0.5) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+
+section {
+  padding: var(--spacing-section) 0;
+  position: relative;
+}
+
+.hero-modern {
+  padding: var(--spacing-hero) 0;
+  min-height: 90vh;
 }

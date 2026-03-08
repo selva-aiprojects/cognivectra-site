@@ -12,8 +12,17 @@ import {
   LuActivity,
   LuArrowRight,
   LuBuilding2,
-  LuCpu
+  LuCpu,
+  LuDatabase,
+  LuNetwork
 } from "react-icons/lu";
+import {
+  SiAmazonwebservices,
+  SiGooglecloud,
+  SiKubernetes,
+  SiOpenai,
+  SiSupabase
+} from "react-icons/si";
 import heroMain from "../assets/generated/hero-home-ultra-8k.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import clientKidzImg from "../assets/generated/ind-health-3d.png";
@@ -160,19 +169,18 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge"><LuCpu style={{ marginRight: '0.4rem' }} /> Enterprise AI Orchestration</span>
-            <h1>GenAI & Healthcare <br />Platform Engineering</h1>
-            <motion.p variants={fadeInUp}>
-              Cognivectra builds production-ready EMR systems, multi-tenant SaaS platforms,
-              and enterprise GenAI solutions designed for healthcare, education, and modern enterprises.
+            <span className="hero-badge">Cognivectra</span>
+            <h1>Engineering the Future <br />with Artificial Intelligence</h1>
+            <motion.p variants={fadeInUp} style={{ fontSize: '1.25rem', opacity: 0.9 }}>
+              Transforming Ideas into Intelligent AI Systems
             </motion.p>
             <motion.div variants={fadeInUp}>
               <div className="hero-cta">
-                <Link to="/contact" className="btn" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })}>
-                  Book Strategy Call
+                <Link to="/products" className="btn" onClick={() => trackEvent('cta_click', { cta_name: 'Explore AI Solutions', location: 'Hero' })}>
+                  Explore AI Solutions
                 </Link>
-                <Link to="/#services" className="btn-outline">
-                  Explore Solutions
+                <Link to="/contact" className="btn-outline" onClick={() => trackEvent('cta_click', { cta_name: 'Build with AI', location: 'Hero' })}>
+                  Build with AI
                 </Link>
               </div>
             </motion.div>
@@ -186,6 +194,45 @@ export default function Home() {
           >
             <div className="industry-visual glass-panel">
               <img src={heroMain} alt="CogniVectra Engineering" className="w-full h-full object-cover rounded-xl" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* TRUST STRIP - SILICON VALLEY STYLE */}
+        <div style={{ width: '100%', borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(2, 6, 23, 0.3)', backdropFilter: 'blur(10px)' }}>
+          <motion.div
+            className="container"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{ padding: '4rem 2rem', textAlign: 'center' }}
+          >
+            <p style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.2rem', opacity: 0.5, marginBottom: '2.5rem' }}>
+              Built On Enterprise Foundations
+            </p>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '3.5rem',
+              flexWrap: 'wrap',
+              opacity: 0.6
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <SiAmazonwebservices size={28} /> <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>AWS</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <SiGooglecloud size={28} /> <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>GCP</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <SiKubernetes size={28} /> <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>Kubernetes</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <SiOpenai size={28} /> <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>OpenAI</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <SiSupabase size={28} /> <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>Supabase</span>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -309,7 +356,8 @@ export default function Home() {
       </motion.section>
 
       {/* SERVICES */}
-      <section id="services" className="services-modern">
+      <section id="services" className="services-modern section-transition-wrap">
+        <div className="neural-pattern" />
         <motion.div
           className="section-header"
           style={{ textAlign: "center", marginBottom: "5rem" }}
@@ -318,14 +366,11 @@ export default function Home() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="hero-badge">Enterprise Strategy</span>
-          <h3>Engineering Excellence</h3>
+          <span className="hero-badge">Silicon Valley Standard</span>
+          <h3>Intelligence-Driven Platforms</h3>
           <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
-            We provide high-impact enterprise platform engineering and strategic leadership
-            to help organizations deploy resilient, GenAI-powered systems at scale.
-          </p>
-          <p style={{ color: "var(--accent-primary)", fontWeight: "600", marginTop: "1rem" }}>
-            We help enterprises move from prototype GenAI tools to secure, production platforms in weeks, not months.
+            We capitalize on the latest AI breakthroughs to build production-ready systems
+            that scale with enterprise-grade reliability.
           </p>
         </motion.div>
 
@@ -337,10 +382,9 @@ export default function Home() {
           viewport={{ once: true }}
         >
           {[
-            { icon: <LuTarget />, title: "Enterprise Strategy", desc: "Executive-level technical leadership and architecture to align technology with your enterprise goals.", highlights: ["Strategic Roadmap Planning", "Platform Governance", "Technology Stack Selection"] },
-            { icon: <LuCloud />, title: "Cloud Scale Architecture", desc: "Cloud-native infrastructure and CI/CD pipelines that enable your organization to scale safely.", highlights: ["Enterprise Cloud Migration", "Kubernetes Orchestration", "Security Hardening"] },
-            { icon: <LuBrain />, title: "GenAI Integration", desc: "Integrating production-ready GenAI workflows to automate enterprise tasks and create intelligent systems.", highlights: ["Enterprise LLM Deployment", "Process Automation", "AI-First Architectures"] },
-            { icon: <LuLayers />, title: "Multi-tenant SaaS", desc: "Building the core foundation for your SaaS products that is secure, multi-tenant, and enterprise-grade.", highlights: ["Scalable SaaS Architecture", "API Ecosystem Design", "Global Edge Distribution"] }
+            { icon: <LuLayers />, title: "Cognivectra AIEngine", desc: "Enterprise-grade AI orchestration platform for scalable infrastructure and model governance.", highlights: ["Strategic Architecture", "Platform Governance", "Secure Deployment"] },
+            { icon: <LuBrain />, title: "Cognivectra GenAI Studio", desc: "Build, deploy, and scale intelligent copilots and agentic workflows for enterprise operations.", highlights: ["Agentic Workflows", "Prompt Engineering", "LLM Fine-tuning"] },
+            { icon: <LuTrendingUp />, title: "Cognivectra Data Intel", desc: "Advanced analytics and predictive intelligence systems to drive data-driven decision making.", highlights: ["Predictive Analytics", "Real-time Insights", "Market Intelligence"] }
           ].map((service, i) => (
             <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel">
               <div className="service-icon-wrapper">{service.icon}</div>
@@ -355,7 +399,8 @@ export default function Home() {
       </section>
 
       {/* PRODUCTS PREVIEW */}
-      <section className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.5)' }}>
+      <section className="services-modern section-transition-wrap" style={{ background: 'rgba(2, 6, 23, 0.5)' }}>
+        <div className="neural-pattern" />
         <motion.div
           className="section-header text-center"
           initial={{ opacity: 0, y: 20 }}

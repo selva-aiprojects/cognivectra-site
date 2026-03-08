@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import heroLeadership from "../assets/generated/hero-leadership-ultra-8k.png";
 
 const fadeInUp = {

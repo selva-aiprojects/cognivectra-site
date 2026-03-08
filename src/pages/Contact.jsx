@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPaperPlane, FaCalendarAlt, FaEnvelope, FaWhatsapp, FaInfoCircle } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 import heroContact from "../assets/generated/hero-contact-8k.png";
 import { trackEvent } from "../lib/analytics";
 
