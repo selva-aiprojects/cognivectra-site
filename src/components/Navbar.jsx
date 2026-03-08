@@ -16,7 +16,7 @@ import resultsImg from "../assets/generated/hero-results-8k.png";
 import industriesImg from "../assets/generated/hero-industries-ultra-8k.png";
 import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 
-const logo = "/cognivectra-dark-crop.png";
+const logo = "/logo-enterprise.png";
 
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -143,7 +143,9 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             aria-label="CogniVectra Home"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <img src={logo} alt="CogniVectra Logo" className="brand-logo" style={{ height: '32px', width: 'auto' }} />
+            <img src="/logo-enterprise.png" alt="CogniVectra" className="brand-logo" />
+            <div className="brand-divider"></div>
+            <span className="brand-tagline">Transforming Ideas into Intelligent AI Systems</span>
           </NavLink>
 
           {/* Desktop Navigation */}
@@ -256,22 +258,15 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               />
             </div>
 
+            <NavLink to="/blog" className="nav-link desktop-only-link" style={{ marginLeft: '0.5rem' }}>
+              Blog
+            </NavLink>
+
             {/* Request Demo Button (Primary CTA) */}
             <Link
               to="/contact"
               onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Navbar' })}
               className="btn nav-cta"
-              style={{
-                border: 'none',
-                color: 'white',
-                padding: '0.75rem 1.5rem',
-                fontSize: '0.9rem',
-                marginLeft: '0.5rem',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
             >
               Book Strategy Call
             </Link>

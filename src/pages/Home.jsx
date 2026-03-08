@@ -50,6 +50,8 @@ export default function Home() {
     setIsDemoModalOpen(true);
   };
 
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
+
   useEffect(() => {
     async function fetchLatestPosts() {
       const { data, error } = await supabase
@@ -65,6 +67,12 @@ export default function Home() {
       setLoadingPosts(false);
     }
     fetchLatestPosts();
+
+    const handleScroll = () => {
+      setShowStickyCTA(window.scrollY > 800);
+    };
+    window.addEventListener('scroll', handleScroll);
+
     // Handle anchor scrolling
     if (hash) {
       const id = hash.replace("#", "");
@@ -75,6 +83,8 @@ export default function Home() {
     } else {
       window.scrollTo(0, 0);
     }
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [hash]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -661,6 +671,34 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
+      {/* Sticky CTA */}
+      <motion.div
+        className="sticky-cta-wrap"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: showStickyCTA ? 1 : 0, y: showStickyCTA ? 0 : 100 }}
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+          zIndex: 100,
+          pointerEvents: showStickyCTA ? 'auto' : 'none'
+        }}
+      >
+        <Link
+          to="/#architecture-review"
+          className="btn"
+          style={{
+            boxShadow: '0 10px 30px rgba(99, 102, 241, 0.4)',
+            padding: '1rem 2rem',
+            borderRadius: '50px',
+            fontSize: '0.9rem',
+            fontWeight: '800'
+          }}
+        >
+          🚀 Architecture Review
+        </Link>
+      </motion.div>
+
       {/* Demo Request Modal */}
       <DemoRequestModal
         isOpen={isDemoModalOpen}

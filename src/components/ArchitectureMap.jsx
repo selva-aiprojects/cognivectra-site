@@ -99,6 +99,13 @@ export default function ArchitectureMap() {
                             >
                                 <div className="arch-node-icon" style={{ backgroundColor: layer.color }}>
                                     {layer.icon}
+                                    {/* Discovery Beacon / Pulse */}
+                                    <motion.div
+                                        className="arch-node-pulse"
+                                        animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
+                                        transition={{ duration: 2, repeat: Infinity }}
+                                        style={{ backgroundColor: layer.color }}
+                                    />
                                 </div>
                                 <div className="arch-node-content">
                                     <h4>{layer.title}</h4>

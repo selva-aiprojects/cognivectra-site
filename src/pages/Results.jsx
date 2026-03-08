@@ -89,7 +89,7 @@ export default function Results() {
     <main>
       {/* HERO */}
       <section className="hero-modern bg-visual-energy">
-        <div className="hero-modern-inner">
+        <div className="hero-modern-inner" style={{ position: 'relative', zIndex: 10 }}>
           <motion.div
             className="hero-copy"
             initial={{ opacity: 0, x: -30 }}
@@ -130,8 +130,8 @@ export default function Results() {
       </section>
 
       {/* STATS STRIP */}
-      <section className="stats-strip" style={{ padding: '0 2rem', marginTop: '-3rem', position: 'relative', zIndex: 10 }}>
-        <div className="container glass-panel" style={{ display: 'flex', justifyContent: 'space-around', padding: '2.5rem', borderRadius: '20px', textAlign: 'center' }}>
+      <section className="stats-strip" style={{ padding: '0 2rem', marginTop: '-3rem', position: 'relative', zIndex: 20 }}>
+        <div className="container glass-panel" style={{ display: 'flex', justifyContent: 'space-around', padding: '2.5rem', borderRadius: '20px', textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div>
             <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>15+</div>
             <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Enterprise Deployments</div>

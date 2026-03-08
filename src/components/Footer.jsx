@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaWhatsapp, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
-import logo from "/cognivectra-dark-crop.png";
+const logo = "/logo-enterprise.png";
 import { trackEvent } from "../lib/analytics";
 
 export default function Footer() {
@@ -9,9 +9,14 @@ export default function Footer() {
       <div className="footer-inner">
 
         {/* Brand Column */}
-        <div className="footer-brand">
-          <img src={logo} alt="CogniVectra Logo" className="footer-logo" />
-          <p className="footer-tagline">
+        <div className="footer-brand" style={{ flex: '1.5' }}>
+          <Link to="/" className="brand" style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 0 }}>
+            <img src="/logo-enterprise.png" alt="CogniVectra" className="brand-logo" style={{ height: '70px', marginBottom: '1rem' }} />
+            <span className="brand-tagline" style={{ fontSize: '0.7rem', display: 'block', maxWidth: '280px' }}>
+              Transforming Ideas into Intelligent AI Systems
+            </span>
+          </Link>
+          <p className="footer-tagline" style={{ marginTop: '1.25rem', maxWidth: '280px', fontSize: '0.85rem' }}>
             Enterprise-grade cloud, automation, and platform foundations
             for startups that need to scale with confidence.
           </p>
