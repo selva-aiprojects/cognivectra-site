@@ -180,9 +180,9 @@ export default function Home() {
               Transforming Ideas into Intelligent AI Systems
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <div className="hero-cta">
-                <Link to="/products" className="btn" onClick={() => trackEvent('cta_click', { cta_name: 'Explore AI Solutions', location: 'Hero' })}>
-                  Explore AI Solutions
+              <div className="cta-group" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <Link to="/contact" className="btn" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })}>
+                  Book Strategy Call
                 </Link>
                 <Link to="/contact" className="btn-outline" onClick={() => trackEvent('cta_click', { cta_name: 'Build with AI', location: 'Hero' })}>
                   Build with AI
@@ -277,6 +277,7 @@ export default function Home() {
                 {
                   title: "Business Problem to AI Solution",
                   desc: "Bridging the gap between manual data silos and intelligent AI orchestration for predictable growth.",
+                  example: "Example: Turning manual claims review into an AI-assisted automated workflow.",
                   img: flowBusiness,
                   color: "rgba(79, 70, 229, 0.15)",
                   accentColor: "#6366f1",
@@ -285,6 +286,7 @@ export default function Home() {
                 {
                   title: "Enterprise DevOps Pipeline",
                   desc: "Automated, AI-enhanced CI/CD flows with Kubernetes orchestration and secure IaC deployment.",
+                  example: "Example: Moving from slow manual releases to secure, zero-touch daily deployments.",
                   img: flowDevOps,
                   color: "rgba(16, 185, 129, 0.15)",
                   accentColor: "#22c55e",
@@ -293,6 +295,7 @@ export default function Home() {
                 {
                   title: "Cloud Strategy & Migration",
                   desc: "Seamlessly migrating legacy infrastructure to distributed, resilient, and multi-cloud architectures.",
+                  example: "Example: Transitioning expensive on-premise servers to scalable AWS/GCP clusters.",
                   img: flowCloud,
                   color: "rgba(14, 165, 233, 0.15)",
                   accentColor: "#0ea5e9",
@@ -301,6 +304,7 @@ export default function Home() {
                 {
                   title: "IT Modernization with AI",
                   desc: "Systematic modernization of monolithic technical debt into scalable, high-performing AI-native systems.",
+                  example: "Example: Replacing a tangled monolith with nimble AI microservices.",
                   img: flowModernization,
                   color: "rgba(245, 158, 11, 0.15)",
                   accentColor: "#f59e0b",
@@ -309,6 +313,7 @@ export default function Home() {
                 {
                   title: "Solving Unique Business Problems",
                   desc: "Custom AI blueprints designed for your specific, non-trivial industry challenges and edge cases.",
+                  example: "Example: Building a specialized clinical trial matching model.",
                   img: flowUnique,
                   color: "rgba(236, 72, 153, 0.15)",
                   accentColor: "#ec4899",
@@ -462,9 +467,24 @@ export default function Home() {
                   <p style={{
                     fontSize: '0.95rem',
                     color: 'var(--text-secondary)',
-                    lineHeight: '1.7',
-                    opacity: 0.9
+                    lineHeight: '1.6',
+                    opacity: 1,
+                    marginBottom: '0.8rem'
                   }}>{flow.desc}</p>
+
+                  <p style={{
+                    fontSize: '0.85rem',
+                    color: '#10b981', // green for outcome/impact
+                    lineHeight: '1.5',
+                    opacity: 0.9,
+                    background: 'rgba(255,255,255,0.05)',
+                    padding: '0.6rem 0.8rem',
+                    borderRadius: '8px',
+                    borderLeft: `2px solid ${flow.accentColor}`
+                  }}>
+                    <strong style={{ color: 'white', marginRight: '4px' }}>Outcome:</strong>
+                    {flow.example.replace('Example: ', '')}
+                  </p>
                 </motion.div>
               ))}
             </motion.div>
@@ -529,7 +549,7 @@ export default function Home() {
 
               <div style={{ textAlign: 'center' }}>
                 <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ padding: '1rem 4rem' }}>
-                  {isSubmitting ? "Transmitting..." : "Secure My Review Session"}
+                  {isSubmitting ? "Transmitting..." : "Book Strategy Call"}
                 </button>
                 <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                   ✨ Limited to 2 technical reviews per week for non-clients.
@@ -706,46 +726,48 @@ export default function Home() {
       </section>
 
       {/* LATEST INSIGHTS (NEW) */}
-      {!loadingPosts && latestPosts.length > 0 && (
-        <section className="services-modern">
-          <motion.div
-            className="section-header text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="hero-badge">Technical Deep-Dives</span>
-            <h3>Latest from Our Blog</h3>
-            <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
-              Practical insights on cloud infrastructure, AI automation, and enterprise engineering.
-            </p>
-          </motion.div>
+      {
+        !loadingPosts && latestPosts.length > 0 && (
+          <section className="services-modern">
+            <motion.div
+              className="section-header text-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="hero-badge">Technical Deep-Dives</span>
+              <h3>Latest from Our Blog</h3>
+              <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto 3rem" }}>
+                Practical insights on cloud infrastructure, AI automation, and enterprise engineering.
+              </p>
+            </motion.div>
 
-          <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
-            {latestPosts.map((post) => (
-              <Link
-                key={post.slug}
-                to={`/blog/${post.slug}`}
-                className="service-modern-card glass-panel blog-card-mini"
-                style={{ textDecoration: 'none' }}
-              >
-                <div style={{ marginBottom: '1rem', fontSize: '0.8rem', opacity: 0.6 }}>
-                  {new Date(post.published_at || post.created_at).toLocaleDateString()}
-                </div>
-                <h4 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>{post.title}</h4>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-                  {post.excerpt}
-                </p>
-                <div className="btn-text">Read Article →</div>
-              </Link>
-            ))}
-          </div>
+            <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+              {latestPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  to={`/blog/${post.slug}`}
+                  className="service-modern-card glass-panel blog-card-mini"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <div style={{ marginBottom: '1rem', fontSize: '0.8rem', opacity: 0.6 }}>
+                    {new Date(post.published_at || post.created_at).toLocaleDateString()}
+                  </div>
+                  <h4 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>{post.title}</h4>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                    {post.excerpt}
+                  </p>
+                  <div className="btn-text">Read Article →</div>
+                </Link>
+              ))}
+            </div>
 
-          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-            <Link to="/blog" className="btn-outline">View All Insights</Link>
-          </div>
-        </section>
-      )}
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+              <Link to="/blog" className="btn-outline">View All Insights</Link>
+            </div>
+          </section>
+        )
+      }
 
       {/* CAREER CALLOUT (NEW) */}
       <section className="why-modern" style={{ background: 'linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, rgba(0,0,0,0) 100%)' }}>
@@ -810,22 +832,28 @@ export default function Home() {
               {
                 img: clientEduImg,
                 title: "EduPortal",
-                desc: "Next-generation institution management. **Reduced manual scheduling by 40%** through intelligent automation.",
+                challenge: "Inefficient institution management with heavy manual scheduling overhead.",
+                solution: "Implemented scalable intelligent automation.",
+                impact: "Reduced manual scheduling by 40%.",
                 link: "https://eduportal-new.onrender.com/",
                 linkText: "Visit Platform →"
               },
               {
                 img: clientKidzImg,
                 title: "Kidz-Clinic",
-                desc: "Specialized pediatric healthcare platform. **Improved patient throughput by 22%** using MedFlow's smart scheduling.",
+                challenge: "Bottlenecks in specialized pediatric patient load and scheduling.",
+                solution: "Deployed MedFlow smart scheduling & EMR system.",
+                impact: "Improved patient throughput by 22%.",
                 link: "https://kidz-clinic-client.onrender.com",
                 linkText: "Visit Clinic →"
               },
               {
                 title: "Dr. S.T. Pushpa",
-                desc: "Bangalore's leading paediatrician leveraging MedFlow EMR for compassionate care and efficient practice management.",
+                challenge: "Balancing busy practice management without losing focus on pediatric care.",
+                solution: "Leveraged custom MedFlow EMR operational tools.",
+                impact: "Streamlined care for thousands of patients.",
                 link: "https://drstpushpa.com/",
-                linkText: "Visit drstpushpa.com →",
+                linkText: "Visit Site →",
                 isCustom: true
               }
             ].map((client, i) => (
@@ -833,7 +861,7 @@ export default function Home() {
                 key={i}
                 className="glass-panel"
                 style={{
-                  width: '300px',
+                  width: '320px',
                   flexShrink: 0,
                   padding: '1.5rem',
                   display: 'flex',
@@ -850,11 +878,24 @@ export default function Home() {
                     <img src={client.img} alt={client.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   )}
                 </div>
-                <h4 style={{ fontSize: '1.1rem' }}>{client.title}</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
-                  {client.desc}
-                </p>
-                <a href={client.link} target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto', fontSize: '0.85rem' }}>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{client.title}</h4>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', flexGrow: 1 }}>
+                  <div>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700' }}>Challenge</span>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0' }}>{client.challenge}</p>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700' }}>Solution</span>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0' }}>{client.solution}</p>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '0.7rem', color: '#10b981', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700' }}>Impact</span>
+                    <p style={{ fontSize: '0.85rem', color: 'white', fontWeight: '600', margin: '0.2rem 0 0' }}>{client.impact}</p>
+                  </div>
+                </div>
+
+                <a href={client.link} target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto', fontSize: '0.85rem', paddingTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                   {client.linkText}
                 </a>
               </motion.div>
@@ -1018,6 +1059,6 @@ export default function Home() {
         onClose={() => setIsDemoModalOpen(false)}
         platform={demoPlatform}
       />
-    </main>
+    </main >
   );
 }

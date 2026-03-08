@@ -22,12 +22,12 @@ const networks = [
         color: "#ec4899", // Pink
         desc: "Distributed intelligence hub for autonomous agents and RAG pipelines.",
         nodes: [
-            { id: "data", x: 15, y: 50, label: "Enterprise Data", icon: <LuDatabase />, desc: "ERP / CRM / Logs" },
-            { id: "vector", x: 35, y: 20, label: "Vector DB", icon: <LuLayers />, desc: "Embeddings" },
-            { id: "engine", x: 50, y: 50, label: "AI Engine", icon: <LuCpu />, desc: "LLM Orchestration" },
-            { id: "features", x: 35, y: 80, label: "Feature Store", icon: <LuActivity />, desc: "Real-time signals" },
-            { id: "agents", x: 70, y: 30, label: "Autonomous Agents", icon: <LuZap />, desc: "Action execution" },
-            { id: "business", x: 80, y: 70, label: "Business Systems", icon: <LuBuilding2 />, desc: "Process integration" }
+            { id: "data", layer: "Data Layer", x: 15, y: 35, label: "Enterprise Data", icon: <LuDatabase />, desc: "ERP / CRM / Logs", hoverDetail: "Multi-modal ingestion pipeline pulling structured and unstructured data into unified storage." },
+            { id: "vector", layer: "Data Layer", x: 35, y: 5, label: "Vector DB", icon: <LuLayers />, desc: "Embeddings", hoverDetail: "High-performance vector search engine storing billions of document embeddings." },
+            { id: "engine", layer: "Intelligence", x: 50, y: 35, label: "AI Engine", icon: <LuCpu />, desc: "LLM Orchestration", hoverDetail: "Central API gateway routing prompts to OpenAI/Anthropic while enforcing enterprise security." },
+            { id: "features", layer: "Intelligence", x: 35, y: 65, label: "Feature Store", icon: <LuActivity />, desc: "Real-time signals", hoverDetail: "Low-latency cache serving live user profiles and historical signals to the AI." },
+            { id: "agents", layer: "Application", x: 70, y: 15, label: "Autonomous Agents", icon: <LuZap />, desc: "Action execution", hoverDetail: "Task-specific micro-agents capable of multi-step reasoning and API execution." },
+            { id: "business", layer: "Application", x: 80, y: 55, label: "Business Systems", icon: <LuBuilding2 />, desc: "Process integration", hoverDetail: "Direct integration into existing CRMs or custom frontends for end-user delivery." }
         ],
         edges: [
             { from: "data", to: "engine" },
@@ -43,12 +43,12 @@ const networks = [
         color: "#a855f7", // Purple
         desc: "Event-driven microservices architecture replacing monolithic systems.",
         nodes: [
-            { id: "legacy", x: 15, y: 50, label: "Legacy Monolith", icon: <LuDatabase />, desc: "On-prem data" },
-            { id: "api", x: 35, y: 50, label: "API Gateway", icon: <LuShare2 />, desc: "Kong / Apigee" },
-            { id: "eventbus", x: 50, y: 20, label: "Event Bus", icon: <LuActivity />, desc: "Kafka / Kinesis" },
-            { id: "micro", x: 65, y: 60, label: "Service Mesh", icon: <LuLayers />, desc: "Istio / Linkerd" },
-            { id: "ai", x: 80, y: 25, label: "Intelligence Layer", icon: <LuZap />, desc: "Predictive Models" },
-            { id: "client", x: 85, y: 80, label: "Omni-Channel", icon: <LuCloud />, desc: "Web / Mobile App" }
+            { id: "legacy", layer: "Legacy", x: 15, y: 35, label: "Legacy Monolith", icon: <LuDatabase />, desc: "On-prem data", hoverDetail: "Strangler-fig pattern gradually extracting domain logic from the legacy core." },
+            { id: "api", layer: "Gateway", x: 35, y: 35, label: "API Gateway", icon: <LuShare2 />, desc: "Kong / Apigee", hoverDetail: "Secure edge routing with rate-limiting, auth validation, and payload inspection." },
+            { id: "eventbus", layer: "Platform", x: 50, y: 5, label: "Event Bus", icon: <LuActivity />, desc: "Kafka / Kinesis", hoverDetail: "High-throughput asynchronous messaging backbone for decoupled services." },
+            { id: "micro", layer: "Platform", x: 65, y: 45, label: "Service Mesh", icon: <LuLayers />, desc: "Istio / Linkerd", hoverDetail: "Zero-trust network layer handling service-to-service mTLS and observability." },
+            { id: "ai", layer: "Intelligence", x: 80, y: 10, label: "Intelligence Layer", icon: <LuZap />, desc: "Predictive Models", hoverDetail: "Real-time decision engine flagging anomalies or generating recommendations." },
+            { id: "client", layer: "Experience", x: 85, y: 65, label: "Omni-Channel", icon: <LuCloud />, desc: "Web / Mobile App", hoverDetail: "Unified front-end experience consuming scalable microservice APIs." }
         ],
         edges: [
             { from: "legacy", to: "api" },
@@ -66,12 +66,12 @@ const networks = [
         color: "#0ea5e9", // Blue
         desc: "Highly available container orchestration across multi-cloud regions.",
         nodes: [
-            { id: "traffic", x: 15, y: 50, label: "Global LB", icon: <LuActivity />, desc: "Traffic routing" },
-            { id: "cluster1", x: 40, y: 25, label: "US-East Cluster", icon: <LuCloud />, desc: "EKS / GKE" },
-            { id: "cluster2", x: 40, y: 75, label: "EU-West Cluster", icon: <LuCloud />, desc: "EKS / AKS" },
-            { id: "dbMaster", x: 65, y: 50, label: "Global DB Master", icon: <LuDatabase />, desc: "Aurora / Spanner" },
-            { id: "cache1", x: 80, y: 20, label: "Redis Edge", icon: <LuZap />, desc: "Low latency" },
-            { id: "cache2", x: 80, y: 80, label: "Redis Edge", icon: <LuZap />, desc: "Low latency" }
+            { id: "traffic", layer: "Edge", x: 15, y: 35, label: "Global LB", icon: <LuActivity />, desc: "Traffic routing", hoverDetail: "Anycast load balancing routing users to their nearest healthy data center." },
+            { id: "cluster1", layer: "Compute", x: 40, y: 10, label: "US-East Cluster", icon: <LuCloud />, desc: "EKS / GKE", hoverDetail: "Auto-scaling Kubernetes cluster managing active workloads in the US region." },
+            { id: "cluster2", layer: "Compute", x: 40, y: 60, label: "EU-West Cluster", icon: <LuCloud />, desc: "EKS / AKS", hoverDetail: "Active-active failover cluster ensuring GDPR compliance for EU users." },
+            { id: "dbMaster", layer: "Storage", x: 65, y: 35, label: "Global DB Master", icon: <LuDatabase />, desc: "Aurora / Spanner", hoverDetail: "Multi-region distributed database with synchronous cross-ocean replication." },
+            { id: "cache1", layer: "Edge", x: 80, y: 5, label: "Redis Edge", icon: <LuZap />, desc: "Low latency", hoverDetail: "In-memory caching layer reducing DB load and dropping latency to sub-10ms." },
+            { id: "cache2", layer: "Edge", x: 80, y: 65, label: "Redis Edge", icon: <LuZap />, desc: "Low latency", hoverDetail: "In-memory caching layer reducing DB load and dropping latency to sub-10ms." }
         ],
         edges: [
             { from: "traffic", to: "cluster1" },
@@ -88,12 +88,12 @@ const networks = [
         color: "#22c55e", // Green
         desc: "Zero-touch CI/CD pipeline with continuous security and observability.",
         nodes: [
-            { id: "dev", x: 15, y: 50, label: "Engineering", icon: <LuCode />, desc: "Git Commit" },
-            { id: "git", x: 30, y: 50, label: "GitOps Source", icon: <LuGitBranch />, desc: "GitHub / GitLab" },
-            { id: "ci", x: 45, y: 20, label: "CI Pipeline", icon: <LuActivity />, desc: "Build & Test" },
-            { id: "sec", x: 45, y: 80, label: "SecOps Scan", icon: <LuShield />, desc: "Sonar / Snyk" },
-            { id: "registry", x: 65, y: 50, label: "Container Registry", icon: <LuDatabase />, desc: "ECR / ACR" },
-            { id: "prod", x: 80, y: 50, label: "Production K8s", icon: <LuCloud />, desc: "ArgoCD / Flux" }
+            { id: "dev", layer: "Code", x: 15, y: 35, label: "Engineering", icon: <LuCode />, desc: "Git Commit", hoverDetail: "Developers push code triggerring automated pre-commit and linting hooks." },
+            { id: "git", layer: "Code", x: 30, y: 35, label: "GitOps Source", icon: <LuGitBranch />, desc: "GitHub / GitLab", hoverDetail: "Single source of truth for both application code and infrastructure manifests." },
+            { id: "ci", layer: "Build", x: 45, y: 5, label: "CI Pipeline", icon: <LuActivity />, desc: "Build & Test", hoverDetail: "Automated unit testing, integration logic, and docker image compilation." },
+            { id: "sec", layer: "Security", x: 45, y: 65, label: "SecOps Scan", icon: <LuShield />, desc: "Sonar / Snyk", hoverDetail: "Static code analysis and vulnerability scanning blocking unsafe deployments." },
+            { id: "registry", layer: "Artifact", x: 65, y: 35, label: "Container Registry", icon: <LuDatabase />, desc: "ECR / ACR", hoverDetail: "Immutable image storage with cryptographic signing for supply-chain security." },
+            { id: "prod", layer: "Deploy", x: 80, y: 35, label: "Production K8s", icon: <LuCloud />, desc: "ArgoCD / Flux", hoverDetail: "GitOps controller automatically pulling and deploying new registry images." }
         ],
         edges: [
             { from: "dev", to: "git" },
@@ -137,7 +137,7 @@ const FlowLine = ({ pathD, color, delayOffset = 0, reverseFlow = false }) => {
                 opacity: [0, 1, 1, 0]
             }}
             transition={{
-                duration: 2.5,
+                duration: 6.0,
                 delay: delayOffset,
                 repeat: Infinity,
                 ease: "linear"
@@ -149,6 +149,21 @@ const FlowLine = ({ pathD, color, delayOffset = 0, reverseFlow = false }) => {
 export default function ArchitectureMap() {
     const [activeNetId, setActiveNetId] = useState(networks[0].id);
     const [isMobile, setIsMobile] = useState(false);
+    const [userInteracted, setUserInteracted] = useState(false);
+    const [hoveredNodeId, setHoveredNodeId] = useState(null);
+
+    // Auto-rotate workflows every 8 seconds, unless user clicks one manually
+    useEffect(() => {
+        if (userInteracted) return;
+        const interval = setInterval(() => {
+            setActiveNetId(currentId => {
+                const currentIndex = networks.findIndex(n => n.id === currentId);
+                const nextIndex = (currentIndex + 1) % networks.length;
+                return networks[nextIndex].id;
+            });
+        }, 8000);
+        return () => clearInterval(interval);
+    }, [userInteracted]);
 
     useEffect(() => {
         const check = () => setIsMobile(window.innerWidth < 768);
@@ -161,7 +176,7 @@ export default function ArchitectureMap() {
 
     return (
         <div style={{
-            padding: isMobile ? "3rem 1rem" : "6rem 2rem",
+            padding: isMobile ? "2rem 1rem" : "2rem 2rem",
             background: "linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(15,23,42,0.8) 100%)",
             position: "relative",
             overflow: "hidden"
@@ -191,18 +206,21 @@ export default function ArchitectureMap() {
                 position: "relative",
                 zIndex: 10
             }}>
-                {/* Control Panel (Left) */}
+                {/* Sidebar (Left) */}
                 <div style={{
-                    width: isMobile ? "100%" : "300px",
+                    width: isMobile ? "100%" : "320px",
                     display: "flex",
                     flexDirection: "column",
                     gap: "1rem",
-                    flexShrink: 0
+                    zIndex: 2 // Above SVG
                 }}>
                     {networks.map(net => (
                         <button
                             key={net.id}
-                            onClick={() => setActiveNetId(net.id)}
+                            onClick={() => {
+                                setActiveNetId(net.id);
+                                setUserInteracted(true);
+                            }}
                             style={{
                                 textAlign: "left",
                                 padding: "1.2rem 1.5rem",
@@ -246,7 +264,7 @@ export default function ArchitectureMap() {
                 {/* Canvas Area (Right) */}
                 <div style={{
                     flexGrow: 1,
-                    height: isMobile ? "450px" : "600px",
+                    height: isMobile ? "450px" : "550px",
                     background: "rgba(0,0,0,0.3)",
                     border: "1px solid rgba(255,255,255,0.05)",
                     borderRadius: "24px",
@@ -271,6 +289,12 @@ export default function ArchitectureMap() {
                                         <stop offset="50%" stopColor={activeNetwork.color} stopOpacity="0.4" />
                                         <stop offset="100%" stopColor={activeNetwork.color} stopOpacity="0.1" />
                                     </linearGradient>
+                                    <marker id={`arrow-${activeNetwork.id}`} markerWidth="2.5" markerHeight="2.5" refX="4" refY="1.25" orient="auto" markerUnits="userSpaceOnUse">
+                                        <path d="M 0 0 L 2.5 1.25 L 0 2.5 z" fill={activeNetwork.color} opacity="0.8" />
+                                    </marker>
+                                    <marker id={`arrow-rev-${activeNetwork.id}`} markerWidth="2.5" markerHeight="2.5" refX="-1.5" refY="1.25" orient="auto" markerUnits="userSpaceOnUse">
+                                        <path d="M 2.5 0 L 0 1.25 L 2.5 2.5 z" fill={activeNetwork.color} opacity="0.8" />
+                                    </marker>
                                 </defs>
 
                                 {activeNetwork.edges.map((edge, i) => {
@@ -293,6 +317,8 @@ export default function ArchitectureMap() {
                                                 vectorEffect="non-scaling-stroke"
                                                 strokeDasharray="4 6"
                                                 opacity="0.6"
+                                                markerEnd={!edge.reverseFlow ? `url(#arrow-${activeNetwork.id})` : undefined}
+                                                markerStart={edge.reverseFlow ? `url(#arrow-rev-${activeNetwork.id})` : undefined}
                                             />
                                             {/* Glowing animated path overlay (laser) */}
                                             <FlowLine
@@ -310,17 +336,19 @@ export default function ArchitectureMap() {
                             {activeNetwork.nodes.map((node) => (
                                 <motion.div
                                     key={node.id}
+                                    onMouseEnter={() => setHoveredNodeId(node.id)}
+                                    onMouseLeave={() => setHoveredNodeId(null)}
                                     style={{
                                         position: "absolute",
                                         left: `${node.x}%`,
                                         top: `${node.y}%`,
                                         transform: "translate(-50%, -50%)", // Center on coordinate
-                                        zIndex: 20
+                                        zIndex: hoveredNodeId === node.id ? 50 : 20 // Bring hovered node to the top
                                     }}
                                     initial={{ opacity: 0, scale: 0 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                                    whileHover={{ scale: 1.1, zIndex: 30 }}
+                                    whileHover={{ scale: 1.1 }} // Removed hardcoded zIndex: 30 to rely on the state-based zIndex above
                                 >
                                     {/* Pulse effect ring */}
                                     <motion.div
@@ -354,29 +382,70 @@ export default function ArchitectureMap() {
                                         {node.icon}
                                     </div>
 
-                                    {/* Node Label Card */}
+                                    {/* Static Node Label (Always Visible) */}
                                     <div style={{
                                         position: "absolute",
                                         top: "100%",
                                         left: "50%",
                                         transform: "translateX(-50%)",
-                                        marginTop: "12px",
-                                        background: "rgba(15,23,42,0.95)",
-                                        border: "1px solid rgba(255,255,255,0.1)",
-                                        padding: "0.5rem 0.8rem",
-                                        borderRadius: "8px",
-                                        whiteSpace: "nowrap",
+                                        marginTop: "8px",
                                         textAlign: "center",
-                                        boxShadow: "0 10px 20px rgba(0,0,0,0.5)",
-                                        pointerEvents: "none" // Prevent hovering over the text interrupting the main node hover
+                                        whiteSpace: "nowrap",
+                                        pointerEvents: "none",
+                                        opacity: hoveredNodeId === node.id ? 0 : 1, // Hide when deep hover card is active
+                                        transition: "opacity 0.2s ease",
+                                        background: "rgba(15,23,42,0.6)",
+                                        border: "1px solid rgba(255,255,255,0.05)",
+                                        backdropFilter: "blur(4px)",
+                                        padding: "0.4rem 0.6rem",
+                                        borderRadius: "8px",
+                                        boxShadow: "0 4px 12px rgba(0,0,0,0.5)"
                                     }}>
-                                        <div style={{ fontSize: "0.85rem", fontWeight: "600", color: "white", marginBottom: "2px" }}>
+                                        <div style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "1px", color: activeNetwork.color, opacity: 0.8, marginBottom: "2px" }}>
+                                            {node.layer}
+                                        </div>
+                                        <div style={{ fontSize: "0.85rem", fontWeight: "600", color: "white" }}>
                                             {node.label}
                                         </div>
-                                        <div style={{ fontSize: "0.7rem", color: activeNetwork.color, opacity: 0.9 }}>
+                                        <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>
                                             {node.desc}
                                         </div>
                                     </div>
+
+                                    {/* Node Label Deep Hover Card */}
+                                    {hoveredNodeId === node.id && (
+                                        <div style={{
+                                            position: "absolute",
+                                            ...(node.y > 60
+                                                ? { bottom: "100%", marginBottom: "12px" }
+                                                : { top: "100%", marginTop: "12px" }),
+                                            left: "50%",
+                                            transform: "translateX(-50%)",
+                                            background: "rgba(15,23,42,0.98)",
+                                            border: "1px solid rgba(255,255,255,0.1)",
+                                            padding: "0.8rem", // Slightly tighter padding
+                                            borderRadius: "10px",
+                                            width: "200px", // Slightly narrower
+                                            textAlign: "left",
+                                            boxShadow: `0 15px 35px rgba(0,0,0,0.6), 0 0 10px ${activeNetwork.color}22`,
+                                            pointerEvents: "none" // Prevent hovering over the text interrupting the main node hover
+                                        }}>
+                                            <div style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "1px", color: activeNetwork.color, opacity: 0.9, marginBottom: "4px" }}>
+                                                {node.layer}
+                                            </div>
+                                            <div style={{ fontSize: "0.9rem", fontWeight: "700", color: "white", marginBottom: "4px" }}>
+                                                {node.label}
+                                            </div>
+                                            <div style={{ fontSize: "0.75rem", color: "white", opacity: 0.9, paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.1)", marginBottom: "6px" }}>
+                                                {node.desc}
+                                            </div>
+                                            {node.hoverDetail && (
+                                                <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                                                    {node.hoverDetail}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </motion.div>
                             ))}
                         </motion.div>
