@@ -21,6 +21,7 @@ import DemoRequestModal from "../components/DemoRequestModal";
 import { useState, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
 import { supabase } from "../lib/supabase";
+import ArchitectureMap from "../components/ArchitectureMap";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -186,6 +187,11 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* NEW: INTERACTIVE ARCHITECTURE MAP */}
+      <section className="architecture-section relative z-10">
+        <ArchitectureMap />
       </section>
 
       {/* ARCHITECTURE REVIEW FORM SECTION */}

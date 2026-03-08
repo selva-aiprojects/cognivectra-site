@@ -9,10 +9,84 @@ import {
 } from "react-icons/lu";
 import resultsHero from "../assets/generated/hero-results-8k.png";
 
+const SuccessStory = ({ title, icon, category, challenge, solution, metrics }) => (
+  <motion.div
+    className="service-modern-card success-card"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+  >
+    <div className="success-header">
+      <div className="success-icon">{icon}</div>
+      <div className="success-title-wrap">
+        <span className="success-category">{category}</span>
+        <h4>{title}</h4>
+      </div>
+    </div>
+
+    <div className="success-body">
+      <div className="success-section">
+        <h5 style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5, marginBottom: '0.5rem' }}>The Challenge</h5>
+        <p style={{ fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>{challenge}</p>
+      </div>
+      <div className="success-section">
+        <h5 style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5, marginBottom: '0.5rem' }}>Our Architecture</h5>
+        <p style={{ fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>{solution}</p>
+      </div>
+      <div className="success-metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        {metrics.map((m, idx) => (
+          <div key={idx} className="metric-item">
+            <span className="metric-value" style={{ display: 'block', fontSize: '1.25rem', fontWeight: '800', color: 'var(--accent-light)' }}>{m.value}</span>
+            <span className="metric-label" style={{ display: 'block', fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.6 }}>{m.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
+
 export default function Results() {
+  const stories = [
+    {
+      title: "Rapid Deployment for Global SaaS",
+      category: "Platform Engineering",
+      icon: <LuRocket />,
+      challenge: "Manual deployments and configuration drift were causing 20% release failure rates and scaling bottlenecks across 3 global regions.",
+      solution: "Implemented a shared-nothing multi-tenant architecture with fully automated CI/CD pipelines and immutable infrastructure using Terraform.",
+      metrics: [
+        { value: "400%", label: "Speed" },
+        { value: "99.99%", label: "Uptime" },
+        { value: "0", label: "Errors" }
+      ]
+    },
+    {
+      title: "Healthcare Data Governance at Scale",
+      category: "HealthTech / Compliance",
+      icon: <LuCpu />,
+      challenge: "A diagnostic platform struggled to meet HIPAA data residency requirements while maintaining sub-second query performance for millions of records.",
+      solution: "Deployed a sharded data layer with regional residency guards and a unified compliance-aware API gateway with audit logging.",
+      metrics: [
+        { value: "100%", label: "HIPAA" },
+        { value: "650ms", label: "Latency" },
+        { value: "3.2M", label: "Records" }
+      ]
+    },
+    {
+      title: "Intelligent Process Automation",
+      category: "Enterprise AI",
+      icon: <LuBuilding2 />,
+      challenge: "Legacy administrative workflows required 4,000+ manual hours monthly, leading to significant delays and billing errors.",
+      solution: "Engineered a custom workflow orchestration engine with integrated GenAI for automated document classification and error-correction.",
+      metrics: [
+        { value: "85%", label: "Efficiency" },
+        { value: "4x", label: "Speed" },
+        { value: "$1.2M", label: "Savings" }
+      ]
+    }
+  ];
+
   return (
     <main>
-
       {/* HERO */}
       <section className="hero-modern bg-visual-energy">
         <div className="hero-modern-inner">
@@ -22,31 +96,24 @@ export default function Results() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge"><LuTrendingUp style={{ marginRight: '0.4rem' }} /> Proven Outcomes</span>
+            <span className="hero-badge"><LuTrendingUp style={{ marginRight: '0.4rem' }} /> Impact Report</span>
 
-            <h1>
-              Results & <br />
-              Case Snapshots
-            </h1>
+            <h1>Measurable <br />Engineering Wins</h1>
 
             <p>
-              CogniVectra helps organizations transition from legacy systems to
-              high-performance, automated platforms. Here are examples of the
-              tangible impact we deliver at scale.
+              We don't just ship code; we deliver strategic business outcomes.
+              Our platforms are engineered to reduce friction, eliminate human error,
+              and scale with your most ambitious growth targets.
             </p>
 
             <div className="hero-cta">
               <Link to="/contact" className="btn">
-                Book Strategy Call
+                Scale My Platform
               </Link>
               <Link to="/#services" className="btn-outline">
-                View Services
+                See Our Approach
               </Link>
             </div>
-
-            <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
-              Faster releases · AI enablement · Automation wins
-            </p>
           </motion.div>
 
           <motion.div
@@ -56,104 +123,59 @@ export default function Results() {
             transition={{ duration: 0.8 }}
           >
             <div className="industry-visual glass-panel">
-              <img src={resultsHero} alt="Results & Case Snapshots" className="w-full h-full object-cover rounded-xl" />
+              <img src={resultsHero} alt="CogniVectra Results" className="w-full h-full object-cover rounded-xl" />
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* CASE STUDIES GRID */}
-      <section className="services-modern">
-        <h3>Case Snapshots</h3>
-
-        <div className="services-modern-grid">
-
-          {/* CASE 1 */}
-          <div className="service-modern-card">
-            <h4><LuRocket style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Enterprise SaaS — Rapid Deployment</h4>
-            <p>
-              A multi-tenant SaaS provider was struggling with manual
-              deployments and inconsistent environment stability across global regions.
-            </p>
-            <ul>
-              <li>Implemented CI/CD pipelines and environment strategy</li>
-              <li>Added automated smoke checks and alerting</li>
-              <li>Documented a lightweight release process</li>
-            </ul>
-            <div className="result-highlight">
-              <strong>Outcome:</strong> Release lead time reduced from
-              weeks to a few days, with fewer production surprises.
-            </div>
+      {/* STATS STRIP */}
+      <section className="stats-strip" style={{ padding: '0 2rem', marginTop: '-3rem', position: 'relative', zIndex: 10 }}>
+        <div className="container glass-panel" style={{ display: 'flex', justifyContent: 'space-around', padding: '2.5rem', borderRadius: '20px', textAlign: 'center' }}>
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>15+</div>
+            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Enterprise Deployments</div>
           </div>
-
-          {/* CASE 2 */}
-          <div className="service-modern-card">
-            <h4><LuCpu style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Healthcare AI — Platform Scalability</h4>
-            <p>
-              A healthcare platform provider was scaling AI-assisted diagnostics
-              but required enhanced data governance and security hardening.
-            </p>
-            <ul>
-              <li>Redesigned environments and governance</li>
-              <li>Introduced cost tagging and spend dashboards</li>
-              <li>Added service guardrails</li>
-            </ul>
-            <div className="result-highlight">
-              <strong>Outcome:</strong> Predictable cloud spend and
-              improved stability with fewer mystery cost spikes.
-            </div>
+          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>$50M+</div>
+            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Cloud Budgets Managed</div>
           </div>
-
-          {/* CASE 3 */}
-          <div className="service-modern-card">
-            <h4><LuBuilding2 style={{ marginRight: '0.6rem', color: 'var(--accent-light)' }} /> Enterprise Operations — Intelligent Automation</h4>
-            <p>
-              A large-scale organization needed to automate complex clinical
-              and administrative workflows to improve physician efficiency.
-            </p>
-            <ul>
-              <li>Mapped workflows across sales, onboarding, and billing</li>
-              <li>Implemented no-code automations</li>
-              <li>Added reporting for throughput visibility</li>
-            </ul>
-            <div className="result-highlight">
-              <strong>Outcome:</strong> Fewer manual handoffs, reduced
-              errors, and more founder time for customers.
-            </div>
+          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>100%</div>
+            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Compliance Score</div>
           </div>
-
         </div>
       </section>
 
-      {/* VALUE BREAK */}
-      <section className="why-modern">
-        <div className="why-modern-inner">
-          <h3>Measurable Impact</h3>
+      {/* SUCCESS STORIES */}
+      <section className="services-modern">
+        <div className="container">
+          <div className="section-header text-left mb-12">
+            <h3>Strategic Success Stories</h3>
+          </div>
 
-          <div className="why-modern-grid">
-            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Faster time-to-market</div>
-            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Optimized cloud governance</div>
-            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Enterprise platform reliability</div>
-            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Reduced operational overhead</div>
-            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Improved engineering velocity</div>
-            <div className="why-pill"><LuCircleCheck style={{ marginRight: '0.4rem' }} /> Strategic resource efficiency</div>
+          <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))' }}>
+            {stories.map((story, i) => (
+              <SuccessStory key={i} {...story} />
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="cta-modern">
-        <h3>Want similar outcomes for your organization?</h3>
-        <p>
-          Share your platform goals and we will suggest the most
-          effective architectural strategy — Enterprise Launch Pack,
-          AI integration, or strategic advisory.
-        </p>
-        <Link to="/contact" className="btn">
-          Start Your Free Strategy Session
-        </Link>
+      <section className="cta-modern" style={{ position: 'relative', overflow: 'hidden', padding: '8rem 2rem' }}>
+        <div className="container" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+          <h3>Ready to Scale Your Impact?</h3>
+          <p style={{ maxWidth: '600px', margin: '0 auto 2.5rem', color: 'var(--text-secondary)' }}>
+            Whether you need to bridge the "Architecture Gap" or accelerate your GenAI roadmap, our engineering team is ready to deploy.
+          </p>
+          <Link to="/contact" className="btn" style={{ padding: '1rem 3rem' }}>
+            Start Your Strategy Session
+          </Link>
+        </div>
       </section>
-
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { supabase } from "./lib/supabase";
 
 import Navbar from "./components/Navbar.jsx";
@@ -9,35 +10,36 @@ import CursorTrail from "./components/CursorTrail.jsx";
 import DemoRequestModal from "./components/DemoRequestModal.jsx";
 import NeuralSearch from "./components/NeuralSearch.jsx";
 
-import Home from "./pages/Home.jsx";
-import Mission from "./pages/Mission.jsx";
-import WhoWeAre from "./pages/WhoWeAre.jsx";
-import Blog from "./pages/Blog.jsx";
-import BlogPost from "./pages/BlogPost.jsx";
-import About from "./pages/About.jsx";
-import Contact from "./pages/Contact.jsx";
-import Services from "./pages/Services.jsx";
-import Engagements from "./pages/Engagements.jsx";
-import Results from "./pages/Results.jsx";
-import Industries from "./pages/Industries.jsx";
-import Login from "./pages/Login.jsx";
-import ResetPassword from "./pages/ResetPassword.jsx";
-import Admin from "./pages/Admin.jsx";
-import AdminReports from "./pages/AdminReports.jsx";
-import AdminJobs from "./pages/AdminJobs.jsx";
-import AdminCompensation from "./pages/AdminCompensation.jsx";
-import AdminOffers from "./pages/AdminOffers.jsx";
-import AdminBlog from "./pages/AdminBlog.jsx";
-import AdminClients from "./pages/AdminClients.jsx";
-import AdminProjects from "./pages/AdminProjects.jsx";
-import AdminEnhanced from "./pages/AdminEnhanced.jsx";
-import Careers from "./pages/Careers.jsx";
-import Products from "./pages/Products.jsx";
-import Leadership from "./pages/Leadership.jsx";
-import StockStewardDetail from "./pages/StockStewardDetail.jsx";
-import StoreAIDetail from "./pages/StoreAIDetail.jsx";
-import MedFlowDetail from "./pages/MedFlowDetail.jsx";
-import EduPortalDetail from "./pages/EduPortalDetail.jsx";
+// Pages with lazy loading
+const Home = lazy(() => import("./pages/Home.jsx"));
+const Mission = lazy(() => import("./pages/Mission.jsx"));
+const WhoWeAre = lazy(() => import("./pages/WhoWeAre.jsx"));
+const Blog = lazy(() => import("./pages/Blog.jsx"));
+const BlogPost = lazy(() => import("./pages/BlogPost.jsx"));
+const About = lazy(() => import("./pages/About.jsx"));
+const Contact = lazy(() => import("./pages/Contact.jsx"));
+const Services = lazy(() => import("./pages/Services.jsx"));
+const Engagements = lazy(() => import("./pages/Engagements.jsx"));
+const Results = lazy(() => import("./pages/Results.jsx"));
+const Industries = lazy(() => import("./pages/Industries.jsx"));
+const Login = lazy(() => import("./pages/Login.jsx"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword.jsx"));
+const Admin = lazy(() => import("./pages/Admin.jsx"));
+const AdminReports = lazy(() => import("./pages/AdminReports.jsx"));
+const AdminJobs = lazy(() => import("./pages/AdminJobs.jsx"));
+const AdminCompensation = lazy(() => import("./pages/AdminCompensation.jsx"));
+const AdminOffers = lazy(() => import("./pages/AdminOffers.jsx"));
+const AdminBlog = lazy(() => import("./pages/AdminBlog.jsx"));
+const AdminClients = lazy(() => import("./pages/AdminClients.jsx"));
+const AdminProjects = lazy(() => import("./pages/AdminProjects.jsx"));
+const AdminEnhanced = lazy(() => import("./pages/AdminEnhanced.jsx"));
+const Careers = lazy(() => import("./pages/Careers.jsx"));
+const Products = lazy(() => import("./pages/Products.jsx"));
+const Leadership = lazy(() => import("./pages/Leadership.jsx"));
+const StockStewardDetail = lazy(() => import("./pages/StockStewardDetail.jsx"));
+const StoreAIDetail = lazy(() => import("./pages/StoreAIDetail.jsx"));
+const MedFlowDetail = lazy(() => import("./pages/MedFlowDetail.jsx"));
+const EduPortalDetail = lazy(() => import("./pages/EduPortalDetail.jsx"));
 
 
 import chatIcon from "./assets/chat-icon.svg";
@@ -129,39 +131,46 @@ export default function App() {
 
       {/* Main Content */}
       <main className="appShell">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/mission" element={<Mission />} />
-          <Route path="/who-we-are" element={<WhoWeAre />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/engagements" element={<Engagements />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/industries" element={<Industries />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/stocksteward" element={<StockStewardDetail />} />
-          <Route path="/products/storeai" element={<StoreAIDetail />} />
-          <Route path="/products/medflow" element={<MedFlowDetail />} />
-          <Route path="/products/eduportal" element={<EduPortalDetail />} />
-          <Route path="/leadership" element={<Leadership />} />
-          <Route path="/admin" element={<Admin />} />
+        <Suspense fallback={
+          <div className="loading-container">
+            <FaSpinner className="loading-spinner spin" />
+            <p>Loading Platform...</p>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/mission" element={<Mission />} />
+            <Route path="/who-we-are" element={<WhoWeAre />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/engagements" element={<Engagements />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/industries" element={<Industries />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/stocksteward" element={<StockStewardDetail />} />
+            <Route path="/products/storeai" element={<StoreAIDetail />} />
+            <Route path="/products/medflow" element={<MedFlowDetail />} />
+            <Route path="/products/eduportal" element={<EduPortalDetail />} />
+            <Route path="/leadership" element={<Leadership />} />
+            <Route path="/admin" element={<Admin />} />
 
-          <Route path="/admin/reports" element={<AdminReports />} />
-          <Route path="/admin/jobs" element={<AdminJobs />} />
-          <Route path="/admin/compensation" element={<AdminCompensation />} />
-          <Route path="/admin/offers" element={<AdminOffers />} />
-          <Route path="/admin/blog" element={<AdminBlog />} />
-          <Route path="/admin/clients" element={<AdminClients />} />
-          <Route path="/admin/projects" element={<AdminProjects />} />
-          <Route path="/admin/omni" element={<AdminEnhanced />} />
-          <Route path="/admin/*" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-        </Routes>
+            <Route path="/admin/reports" element={<AdminReports />} />
+            <Route path="/admin/jobs" element={<AdminJobs />} />
+            <Route path="/admin/compensation" element={<AdminCompensation />} />
+            <Route path="/admin/offers" element={<AdminOffers />} />
+            <Route path="/admin/blog" element={<AdminBlog />} />
+            <Route path="/admin/clients" element={<AdminClients />} />
+            <Route path="/admin/projects" element={<AdminProjects />} />
+            <Route path="/admin/omni" element={<AdminEnhanced />} />
+            <Route path="/admin/*" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Floating Chat Icon */}
