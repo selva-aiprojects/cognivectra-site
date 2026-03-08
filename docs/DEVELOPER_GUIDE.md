@@ -53,6 +53,26 @@ The reset page is located at `/reset-password`. It expects a recovery token from
 ### 3. Favicon Verification
 - Check `index.html` to ensure the favicon path points to `public/favicon.ico`.
 - Clear browser cache if the old icon persists.
+- **Lead Generation**: Submit a test request via the Home Page "Architecture Review" form and verify it appears in the `chat_conversations` table.
+
+---
+
+## 📈 Growth-Centric Development Standards
+
+### 1. Conversion Tracking
+All new lead capture points must trigger the `trackEvent` function from `@/lib/analytics`:
+```javascript
+trackEvent('lead_generated', {
+    type: 'your_landing_page_segment',
+    platform: 'product_id',
+    organization: org_name
+}, 'CONVERSION');
+```
+
+### 2. Design Patterns for Landing Pages
+- **Glassmorphic Forms**: Use `glass-panel` class with custom inline styles for high-conversion forms.
+- **ICP Targeting**: Integrate "Best For" messaging and audience identification strips to increase lead quality.
+- **CTA Hierarchy**: Always lead with "Book Strategy Call" as the primary action.
 
 ---
 

@@ -33,6 +33,34 @@ export default function Products() {
         }
     }, [hash]);
 
+    const handleQuickDemo = async (e, platform) => {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const org = e.target.organization.value;
+
+        trackEvent('lead_generated', {
+            type: 'quick_demo_inline',
+            platform,
+            organization: org
+        }, 'CONVERSION');
+
+        await supabase.from("chat_conversations").upsert([
+            {
+                user_name: "Quick Demo Lead",
+                user_email: email,
+                company: org,
+                stage: platform,
+                challenge: "(Quick Demo Inquiry from Products Page)",
+                source: `product_${platform}_inline`,
+                lead_score: "warm",
+                updated_at: new Date().toISOString(),
+            },
+        ], { onConflict: "user_email" });
+
+        alert("Request received! Our team will contact you shortly.");
+        e.target.reset();
+    };
+
     return (
         <main>
             <Helmet>
@@ -92,28 +120,36 @@ export default function Products() {
                             StockSteward leverages advanced LLMs and quantitative models to provide
                             real-time insights, automated portfolio management, and predictive market analysis.
                         </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
+                            Best for: Hedge funds, prop trading firms, and fintech startups.
+                        </p>
                         <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
                             <li>Automated Algorithmic Trading</li>
                             <li>AI-Powered Market Sentiment Analysis</li>
                             <li>Real-time Portfolio Risk Assessment</li>
                             <li>Interactive Financial Intelligence Chat</li>
                         </ul>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'stocksteward')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
+                            </form>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
                                 href="https://steward-platform.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'stocksteward', location: 'Products Grid' })}
-                                className="btn"
+                                className="btn-outline"
                             >
                                 Launch Platform ↗
                             </a>
                             <Link to="/products/stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'stocksteward' })} className="btn-outline">
                                 View Details
                             </Link>
-                            <button onClick={() => handleDemoRequest('steward')} className="btn-outline">
-                                Request Demo
-                            </button>
                         </div>
                     </motion.div>
 
@@ -154,28 +190,36 @@ export default function Products() {
                             stores operate. From automated inventory tracking to predictive sales
                             analytics and customer behavior insights.
                         </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
+                            Best for: Multi-location retail chains and e-commerce enterprises.
+                        </p>
                         <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
                             <li>Real-time Inventory Optimization</li>
                             <li>AI-Driven Sales Forecasting</li>
                             <li>Customer Sentiment Analysis</li>
                             <li>Automated Supply Chain Sync</li>
                         </ul>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'storeai')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
+                            </form>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
                                 href="https://store-ai-prd.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'storeai', location: 'Products Grid' })}
-                                className="btn"
+                                className="btn-outline"
                             >
                                 Launch Platform ↗
                             </a>
                             <Link to="/products/storeai" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'storeai' })} className="btn-outline">
                                 View Details
                             </Link>
-                            <button onClick={() => handleDemoRequest('storeai')} className="btn-outline">
-                                Request Demo
-                            </button>
                         </div>
                     </motion.div>
                 </div>
@@ -198,28 +242,36 @@ export default function Products() {
                             Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, MedFlow streamlines clinical workflows
                             and patient management, with rapid onboarding for new providers starting this week.
                         </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
+                            Best for: Multi-specialty clinics, pediatric hospitals, and digital health startups.
+                        </p>
                         <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
                             <li>Multi-Tenant Architecture for Scalability</li>
                             <li>Live Deployment: Kidz-Clinic</li>
                             <li>Rapid Provider Onboarding</li>
                             <li>Comprehensive Clinical Workflow Automation</li>
                         </ul>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'medflow')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
+                            </form>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
                                 href="https://emr-app-0909.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'medflow', location: 'Products Grid' })}
-                                className="btn"
+                                className="btn-outline"
                             >
                                 Launch Platform ↗
                             </a>
                             <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'medflow' })} className="btn-outline">
                                 View Details
                             </Link>
-                            <button onClick={() => handleDemoRequest('medflow')} className="btn-outline">
-                                Request Demo
-                            </button>
                             <a
                                 href="https://drstpushpa.com"
                                 target="_blank"
@@ -278,28 +330,36 @@ export default function Products() {
                             complex administrative tasks. Designed for enterprise-scale deployment with
                             robust multi-tenant capabilities.
                         </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
+                            Best for: K-12 schools, higher education institutions, and corporate training providers.
+                        </p>
                         <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
                             <li>Intelligent Resource Scheduling</li>
                             <li>AI-Driven Student Progress Tracking</li>
                             <li>Automated Enrollment Portals</li>
                             <li>Multi-Campus Centralized Management</li>
                         </ul>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'eduportal')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
+                            </form>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
                                 href="https://eduportal-new.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'eduportal', location: 'Products Grid' })}
-                                className="btn"
+                                className="btn-outline"
                             >
                                 Launch Platform ↗
                             </a>
                             <Link to="/products/eduportal" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'eduportal' })} className="btn-outline">
                                 View Details
                             </Link>
-                            <button onClick={() => handleDemoRequest('eduportal')} className="btn-outline">
-                                Request Demo
-                            </button>
                         </div>
                     </motion.div>
                 </div>

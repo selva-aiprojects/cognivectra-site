@@ -8,7 +8,9 @@ Consulting services are hard to sell via a single "Book a Call" button. High-con
 ### Technical Implementation
 - **Free Infrastructure Audit**: A 10-point self-assessment tool (implemented as a simple React form) that provides an immediate "Reliability Score."
 - **Niche Whitepapers**: Automated generation of technical checklists (e.g., "The SaaS Multi-Tenancy Security Guide").
-- **Interactive ROI Calculator**: A tool estimating savings from AI automation (e.g., "Hours saved per week by automating LinkedIn/Twitter workflows").
+- **Free 30-Minute Architecture Review**: (Implemented) A strategic high-intent form replacing bottom-page CTAs to capture technical roadmaps.
+- **Product "Quick Demos"**: (Implemented) Frictionless 2-field inline forms on product cards and detail pages to reduce conversion friction.
+- **Interactive ROI Calculator**: (Roadmap) A tool estimating savings from AI automation.
 
 ## 2. Semantic SEO & Content Loop
 CogniVectra should own specific "Pain Point" keywords rather than generic terms.
@@ -31,10 +33,13 @@ LinkedIn is the primary acquisition channel for Fractional CTO services.
 - **Direct Outreach**: Use Resend/SMTP to send personalized 1-to-1 audits to prospects identified in LinkedIn Sales Navigator.
 
 ## 4. Analytics & Funnel Optimization
-- **Behavioral Analysis**: Use Vercel Web Analytics to track users who hit the "Request Demo" but don't submit. 
-- **Conversion Hotfix**: If users drop off on the demo request, simplify the form or add "Social Proof" (e.g., "Trusted by 40+ Platforms").
+- **Behavioral Analysis**: Use Vercel Web Analytics and custom GA `lead_generated` events to track conversion performance across platforms.
+- **ICP Self-Identification**: (Implemented) Partner-identification strip and platform-specific "Best For" messaging to filter high-quality leads.
+- **CTA Hierarchy**:
+    - **Primary**: "Book Strategy Call" (Direct to Calendly/Contact).
+    - **Secondary**: "Schedule My Demo" (Quick inline capture).
 
 ---
 
-> [!TIP]
-> **Priority Move**: Implement the "Free 30-Minute Tech Audit" section on the Home Page. This lowers the psychological barrier for a new lead.
+> [!NOTE]
+> **Growth Assets**: See [growth-guide.md](file:///d:/Training/working/cognivectra-site/growth-guide.md) for LinkedIn templates and outreach scripts.

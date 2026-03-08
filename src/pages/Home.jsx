@@ -76,6 +76,63 @@ export default function Home() {
     }
   }, [hash]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleArchitectureSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(e.target);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const organization = formData.get('organization');
+      const focus = formData.get('focus');
+      const challenge = formData.get('challenge');
+
+      // Track conversion
+      trackEvent('lead_generated', {
+        type: 'architecture_review',
+        organization,
+        focus
+      }, 'CONVERSION');
+
+      // Save to Supabase (using existing chat_conversations as a lead vault)
+      await supabase.from("chat_conversations").upsert([
+        {
+          user_name: name,
+          user_email: email,
+          company: organization,
+          stage: focus,
+          challenge: `(Architecture Review): ${challenge}`,
+          source: "home_arch_review",
+          lead_score: "hot",
+          updated_at: new Date().toISOString(),
+        },
+      ], { onConflict: "user_email" });
+
+      // Notification
+      await supabase.functions.invoke('send-notification-email', {
+        body: {
+          type: 'architecture_review',
+          name,
+          email,
+          organization,
+          focus,
+          message: challenge
+        }
+      });
+
+      alert("Transmission Successful. Our team will reach out to schedule your review session.");
+      e.target.reset();
+    } catch (err) {
+      console.error("Submission error:", err);
+      alert("Submission error. Please try again or contact us directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <main>
       <Helmet>
@@ -106,10 +163,17 @@ export default function Home() {
               Cognivectra builds production-ready EMR systems, multi-tenant SaaS platforms,
               and enterprise GenAI solutions designed for healthcare, education, and modern enterprises.
             </motion.p>
-            <motion.div variants={fadeInUp} className="hero-cta">
-              <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })} className="btn">Book Strategy Call</Link>
+            <motion.div variants={fadeInUp}>
+              <div className="hero-cta">
+                <Link to="/contact" className="btn" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })}>
+                  Book Strategy Call
+                </Link>
+                <Link to="/#services" className="btn-outline">
+                  Explore Solutions
+                </Link>
+              </div>
             </motion.div>
-          </motion.div>
+          </motion.div> {/* Closing tag for hero-copy */}
 
           <motion.div
             className="hero-visual"
@@ -121,6 +185,66 @@ export default function Home() {
               <img src={heroMain} alt="CogniVectra Engineering" className="w-full h-full object-cover rounded-xl" />
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ARCHITECTURE REVIEW FORM SECTION */}
+      <section id="architecture-review" className="services-modern" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="login-grid" style={{ opacity: 0.2 }} />
+        <div className="container">
+          <div className="glass-panel" style={{ padding: '4rem', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span className="hero-badge">Strategic Engagement</span>
+              <h2 style={{ marginBottom: '1rem', fontSize: '2.5rem' }}>Request a 30-Minute Architecture Review</h2>
+              <p style={{ maxWidth: '700px', margin: '0 auto', color: 'var(--text-secondary)' }}>
+                Bypass the sales pitch. Get a direct technical deep-dive with our platform architects to map your roadmap and identify GenAI integration points.
+              </p>
+            </div>
+
+            <form onSubmit={handleArchitectureSubmit} style={{ maxWidth: '800px', margin: '0 auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+                <div className="form-group">
+                  <label className="contact-label">Full Name</label>
+                  <input type="text" name="name" required className="contact-input" placeholder="Enter your name" />
+                </div>
+                <div className="form-group">
+                  <label className="contact-label">Work Email</label>
+                  <input type="email" name="email" required className="contact-input" placeholder="you@organization.com" />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+                <div className="form-group">
+                  <label className="contact-label">Organization</label>
+                  <input type="text" name="organization" required className="contact-input" placeholder="Company name" />
+                </div>
+                <div className="form-group">
+                  <label className="contact-label">Current Focus</label>
+                  <select name="focus" className="contact-input" required>
+                    <option value="">Select focus area</option>
+                    <option value="healthcare">Healthcare / EMR Systems</option>
+                    <option value="fintech">FinTech / Trading</option>
+                    <option value="retail">Retail / AI Automation</option>
+                    <option value="enterprise">General Enterprise AI</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: '2.5rem' }}>
+                <label className="contact-label">Primary Challenge</label>
+                <textarea name="challenge" rows="4" className="contact-input" required placeholder="Briefly describe the challenge or goal for this session..." style={{ resize: 'none' }}></textarea>
+              </div>
+
+              <div style={{ textAlign: 'center' }}>
+                <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ padding: '1rem 4rem' }}>
+                  {isSubmitting ? "Transmitting..." : "Secure My Review Session"}
+                </button>
+                <p style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  ✨ Limited to 2 technical reviews per week for non-clients.
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
 
@@ -143,6 +267,23 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* PARTNER ICP STRIP */}
+      <section className="icp-strip glass-panel" style={{ margin: '0 auto', maxWidth: '1200px', borderRadius: '100px', padding: '1rem 2rem', marginBottom: '4rem' }}>
+        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px' }}>Who we partner with:</span>
+          {['Healthcare Providers', 'Health-tech Startups', 'Enterprise Innovation', 'FinTech Platforms'].map((icp, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              style={{ fontSize: '0.95rem', fontWeight: '500', color: 'white' }}
+            >
+              {icp}
+            </motion.div>
+          ))}
+        </div>
+      </section>
       {/* TRUST BAR (LEGACY STATS) */}
       <motion.section
         className="trust-modern"

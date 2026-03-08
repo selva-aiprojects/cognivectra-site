@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import storeAIImg from "../assets/generated/product-storeai.png";
 import ProductLogo from "../components/ProductLogo";
+import { trackEvent } from "../lib/analytics";
+import { supabase } from "../lib/supabase";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -63,6 +65,37 @@ const pricingPlans = [
 
 export default function StoreAIDetail() {
     const { hash } = useLocation();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleQuickDemo = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        const email = e.target.email.value;
+        const org = e.target.organization.value;
+
+        trackEvent('lead_generated', {
+            type: 'quick_demo_detail',
+            platform: 'storeai',
+            organization: org
+        }, 'CONVERSION');
+
+        await supabase.from("chat_conversations").upsert([
+            {
+                user_name: "Quick Demo Lead",
+                user_email: email,
+                company: org,
+                stage: "storeai",
+                challenge: "(Quick Demo Inquiry from StoreAI Detail Page)",
+                source: "product_storeai_detail",
+                lead_score: "hot",
+                updated_at: new Date().toISOString(),
+            },
+        ], { onConflict: "user_email" });
+
+        alert("Request received! Our team will contact you shortly.");
+        e.target.reset();
+        setIsSubmitting(false);
+    };
 
     useEffect(() => {
         if (hash) {
@@ -103,10 +136,22 @@ export default function StoreAIDetail() {
                             <ProductLogo type="store" style={{ marginBottom: '1rem' }} />
                             <h1>StoreAI</h1>
                         </div>
-                        <p>
-                            Revolutionary AI-powered retail management system that transforms how stores operate.
-                            From automated inventory tracking to predictive sales analytics and customer insights.
-                        </p>
+                        <div style={{ marginTop: '2.5rem', padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '500px' }}>
+                            <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Request a Live Demo</h4>
+                            <form onSubmit={handleQuickDemo} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.8rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                    <input type="text" name="organization" placeholder="Org" required style={{ width: '120px', padding: '0.8rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                </div>
+                                <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ width: '100%', padding: '0.8rem' }}>
+                                    {isSubmitting ? "Processing..." : "Schedule My Demo"}
+                                </button>
+                            </form>
+                            <p style={{ marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                                ⚡ Deployment-ready instances available today.
+                            </p>
+                        </div>
+
                         <div className="hero-cta">
                             <Link to="/contact?product=storeai" className="btn">
                                 Book Strategy Call
@@ -127,16 +172,15 @@ export default function StoreAIDetail() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
-                    >
-                        <div className="industry-visual glass-panel">
+                    >           <div className="industry-visual glass-panel">
                             <img src={storeAIImg} alt="StoreAI Dashboard" className="w-full h-full object-cover rounded-xl" />
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </section >
 
             {/* KEY FEATURES */}
-            <section className="services-modern">
+            < section className="services-modern" >
                 <motion.div
                     className="section-header text-center"
                     {...fadeInUp}
@@ -190,10 +234,11 @@ export default function StoreAIDetail() {
                         </motion.div>
                     ))}
                 </div>
-            </section>
+            </section >
 
             {/* PRICING */}
-            <section id="pricing" className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.5)' }}>
+            < section id="pricing" className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.5)' }
+            }>
                 <motion.div
                     className="section-header text-center"
                     {...fadeInUp}
@@ -247,10 +292,10 @@ export default function StoreAIDetail() {
                         </motion.div>
                     ))}
                 </div>
-            </section>
+            </section >
 
             {/* CTA */}
-            <section className="cta-modern">
+            < section className="cta-modern" >
                 <div className="container text-center">
                     <motion.div {...fadeInUp}>
                         <h3>Ready to Revolutionize Your Retail Operations?</h3>
@@ -272,7 +317,7 @@ export default function StoreAIDetail() {
                         </div>
                     </motion.div>
                 </div>
-            </section>
-        </main>
+            </section >
+        </main >
     );
 }

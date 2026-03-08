@@ -15,9 +15,15 @@ export default function Footer() {
             for startups that need to scale with confidence.
           </p>
           <div className="footer-cta">
-            <Link to="/contact" className="btn">
+            <a
+              href="https://calendly.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+              onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Footer' })}
+            >
               Book Strategy Call →
-            </Link>
+            </a>
           </div>
         </div>
 

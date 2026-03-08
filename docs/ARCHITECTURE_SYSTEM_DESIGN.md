@@ -28,6 +28,7 @@ CogniVectra adheres to "Elite Growth" principles:
 - **Production-Ready Foundations**: Zero technical debt. Every component is senior-architected using modern, scalable patterns.
 - **IP Ownership**: Clients own 100% of the intellectual property. No black-box vendor lock-in.
 - **Security-First**: Integrated HIPAA-ready guardrails (MedFlow) and enterprise-grade authentication (Supabase).
+- **Conversion-Optimized**: Architecture prioritizes lead capture via low-friction inline forms and high-value "Lead Magnet" assets.
 - **Agentic Efficiency**: Leveraging multi-agent AI (CrewAI/LangGraph) to automate complex operational workflows.
 
 ---
@@ -42,9 +43,11 @@ CogniVectra includes several internal management systems built on top of Supabas
 - **Offer Generator**: Automated PDF/HTML offer letter creation.
 - **Employee Database**: Central record of COGNI-ID assigned staff.
 
-### 2. CRM & Client Management
+### 2. CRM & Lead Generation Pipeline
+- **Lead Capture**: Multi-entry funnel via Architecture Review form, Product Quick-Demo forms, and AI Sales Assistant.
+- **Lead Scoring**: Automatic classification of leads (`hot`, `warm`) based on engagement (e.g., specific platform inquiries vs. general contact).
 - **Client Database**: Company info, primary contacts, and business health tracking.
-- **Interaction Log**: Timeline of calls, meetings, and proposals.
+- **Interaction Log**: Audit trail of form submissions, chatbot conversations, and proposal stages.
 - **Onboarding Workflow**: Checklist-driven client setup.
 
 ### 3. Project & Task Management

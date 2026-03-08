@@ -5,6 +5,8 @@ import { Helmet } from "react-helmet-async";
 import eduImg from "../assets/generated/ind-edtech-3d.png";
 import ProductLogo from "../components/ProductLogo";
 import DemoRequestModal from "../components/DemoRequestModal";
+import { trackEvent } from "../lib/analytics";
+import { supabase } from "../lib/supabase";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -66,6 +68,37 @@ const pricingPlans = [
 export default function EduPortalDetail() {
     const { hash } = useLocation();
     const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleQuickDemo = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        const email = e.target.email.value;
+        const org = e.target.organization.value;
+
+        trackEvent('lead_generated', {
+            type: 'quick_demo_detail',
+            platform: 'eduportal',
+            organization: org
+        }, 'CONVERSION');
+
+        await supabase.from("chat_conversations").upsert([
+            {
+                user_name: "Quick Demo Lead",
+                user_email: email,
+                company: org,
+                stage: "eduportal",
+                challenge: "(Quick Demo Inquiry from EduPortal Detail Page)",
+                source: "product_eduportal_detail",
+                lead_score: "hot",
+                updated_at: new Date().toISOString(),
+            },
+        ], { onConflict: "user_email" });
+
+        alert("Request received! Our team will contact you shortly.");
+        e.target.reset();
+        setIsSubmitting(false);
+    };
 
     useEffect(() => {
         if (hash) {
@@ -103,7 +136,24 @@ export default function EduPortalDetail() {
                         <p>
                             Next-generation institution management platform. **Reduced manual scheduling time by 15+ hours per week** through intelligent automation and multi-tenant digital administration.
                         </p>
-                        <div className="hero-cta">
+
+                        <div style={{ marginTop: '2.5rem', padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '500px' }}>
+                            <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Request a Live Demo</h4>
+                            <form onSubmit={handleQuickDemo} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.8rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                    <input type="text" name="organization" placeholder="Org" required style={{ width: '120px', padding: '0.8rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                </div>
+                                <button type="submit" disabled={isSubmitting} className="btn-primary" style={{ width: '100%', padding: '0.8rem' }}>
+                                    {isSubmitting ? "Processing..." : "Schedule My Demo"}
+                                </button>
+                            </form>
+                            <p style={{ marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                                ⚡ Deployment-ready instances available today.
+                            </p>
+                        </div>
+
+                        <div className="hero-cta" style={{ marginTop: '2rem' }}>
                             <button onClick={() => setIsDemoModalOpen(true)} className="btn">Book Strategy Call</button>
                             <a
                                 href="https://eduportal-new.onrender.com/"
