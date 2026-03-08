@@ -290,6 +290,10 @@ a {
 }
 
 @media (max-width: 1150px) {
+  .brand-logo {
+    height: 70px;
+    /* Increased for mobile visibility */
+  }
 
   .brand-divider,
   .brand-tagline {
@@ -483,7 +487,8 @@ a {
 }
 
 .mobile-menu-logo {
-  height: 28px;
+  height: 50px;
+  /* Increased from 28px */
   width: auto;
 }
 

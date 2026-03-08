@@ -26,9 +26,14 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
   const [activeMenu, setActiveMenu] = useState(null);
   const location = useLocation();
   const timeoutRef = useRef(null);
+  const mobileToggleRef = useRef(null);
 
   useEffect(() => {
-    setMobileMenuOpen(false);
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+      // Return focus to toggle when navigating away
+      mobileToggleRef.current?.focus();
+    }
     setActiveMenu(null);
   }, [location]);
 
@@ -37,6 +42,10 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       document.body.classList.add("menu-open");
     } else {
       document.body.classList.remove("menu-open");
+      // Ensure focus is not trapped in hidden menu
+      if (document.activeElement && document.getElementById('mobile-menu')?.contains(document.activeElement)) {
+        mobileToggleRef.current?.focus();
+      }
     }
 
     return () => {
@@ -345,6 +354,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
 
             <button
+              ref={mobileToggleRef}
               className={`hamburger-menu-toggle ${mobileMenuOpen ? "active" : ""}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
