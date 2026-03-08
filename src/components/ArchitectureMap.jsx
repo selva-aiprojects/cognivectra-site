@@ -1,189 +1,371 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { LuShieldCheck, LuLayers, LuShare2, LuCpu, LuActivity, LuDatabase } from 'react-icons/lu';
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+    LuGitBranch,
+    LuCode,
+    LuCpu,
+    LuCloud,
+    LuDatabase,
+    LuActivity,
+    LuChevronLeft,
+    LuChevronRight,
+    LuLayers,
+    LuZap,
+    LuShare2
+} from "react-icons/lu";
 
-const architectureLayers = [
+const workflows = [
     {
-        id: 'auth',
-        title: 'Auth & Identity',
-        icon: <LuShieldCheck />,
-        description: 'Secure, multi-tenant RBAC foundations integrated into every layer.',
-        details: ['Tenant Isolation', 'Cross-Domain Auth', 'Compliance Ready'],
-        color: '#818cf8',
-        pos: { x: '15%', y: '30%' }
+        id: "devops",
+        title: "Enterprise DevOps",
+        color: "#6366f1",
+        nodes: [
+            { title: "Developer", icon: <LuCode />, stack: "VS Code / JetBrains", color: "#6366f1" },
+            { title: "Git Repo", icon: <LuGitBranch />, stack: "GitHub / GitLab", color: "#8b5cf6" },
+            { title: "CI Pipeline", icon: <LuActivity />, stack: "Jenkins / GHA", color: "#22c55e" },
+            { title: "Artifacts", icon: <LuDatabase />, stack: "Docker / ECR", color: "#f97316" },
+            { title: "Kubernetes", icon: <LuCloud />, stack: "EKS / AKS", color: "#0ea5e9" },
+            { title: "Observability", icon: <LuCpu />, stack: "Grafana", color: "#f43f5e" }
+        ]
     },
     {
-        id: 'data',
-        title: 'Scalable Data Layer',
-        icon: <LuDatabase />,
-        description: 'Highly available database clusters with intelligent caching.',
-        details: ['Global Distribution', 'Auto-Scaling Storage', 'Real-time Sync'],
-        color: '#38bdf8',
-        pos: { x: '45%', y: '20%' }
+        id: "ai",
+        title: "Enterprise AI Platform",
+        color: "#ec4899",
+        nodes: [
+            { title: "Enterprise Data", icon: <LuDatabase />, stack: "ERP / CRM", color: "#f97316" },
+            { title: "Data Processing", icon: <LuActivity />, stack: "Spark / Databricks", color: "#22c55e" },
+            { title: "Feature Store", icon: <LuCpu />, stack: "ML Features", color: "#6366f1" },
+            { title: "Model Training", icon: <LuCpu />, stack: "PyTorch / TF", color: "#a855f7" },
+            { title: "Vector DB", icon: <LuDatabase />, stack: "Pinecone", color: "#06b6d4" },
+            { title: "AI Decision", icon: <LuZap />, stack: "LLM Agents", color: "#ec4899" }
+        ]
     },
     {
-        id: 'bus',
-        title: 'Event Bus',
-        icon: <LuShare2 />,
-        description: 'Low-latency communication backbone for decoupled microservices.',
-        details: ['Kafka Integration', 'Pub/Sub Architecture', 'Message Integrity'],
-        color: '#34d399',
-        pos: { x: '75%', y: '30%' }
+        id: "cloud",
+        title: "Cloud Migration",
+        color: "#0ea5e9",
+        nodes: [
+            { title: "Legacy Systems", icon: <LuDatabase />, stack: "VMware", color: "#64748b" },
+            { title: "Discovery", icon: <LuActivity />, stack: "CMDB", color: "#f59e0b" },
+            { title: "Migration", icon: <LuCpu />, stack: "Automation", color: "#6366f1" },
+            { title: "Landing Zone", icon: <LuCloud />, stack: "AWS / Azure", color: "#06b6d4" },
+            { title: "Containers", icon: <LuLayers />, stack: "Kubernetes", color: "#0ea5e9" },
+            { title: "Cloud Ops", icon: <LuActivity />, stack: "AI Ops", color: "#22c55e" }
+        ]
     },
     {
-        id: 'automation',
-        title: 'Automated Lifecycle',
-        icon: <LuActivity />,
-        description: 'Orchestration for complex employee and client lifecycles.',
-        details: ['BPMN Workflows', 'State Machines', 'Retry Logic'],
-        color: '#fbbf24',
-        pos: { x: '45%', y: '60%' }
+        id: "modern",
+        title: "IT Modernization",
+        color: "#22c55e",
+        nodes: [
+            { title: "Monolith", icon: <LuDatabase />, stack: "Java / .NET", color: "#ef4444" },
+            { title: "API Gateway", icon: <LuLayers />, stack: "Kong", color: "#a855f7" },
+            { title: "Service Mesh", icon: <LuShare2 />, stack: "Istio", color: "#6366f1" },
+            { title: "Microservices", icon: <LuCpu />, stack: "Spring Boot", color: "#0ea5e9" },
+            { title: "Observability", icon: <LuActivity />, stack: "Prometheus", color: "#22c55e" },
+            { title: "Self-Healing", icon: <LuZap />, stack: "Automation", color: "#f97316" }
+        ]
+    },
+    {
+        id: "platform",
+        title: "Platform Evolution",
+        color: "#a855f7",
+        nodes: [
+            { title: "Business Core", icon: <LuDatabase />, stack: "ERP", color: "#6366f1" },
+            { title: "API Layer", icon: <LuLayers />, stack: "Gateway", color: "#8b5cf6" },
+            { title: "Event Bus", icon: <LuActivity />, stack: "Kafka", color: "#22c55e" },
+            { title: "K8s Micro", icon: <LuCpu />, stack: "Cloud Native", color: "#06b6d4" },
+            { title: "Intelligence", icon: <LuZap />, stack: "LLM", color: "#ec4899" },
+            { title: "Experience", icon: <LuCloud />, stack: "Omni-channel", color: "#0ea5e9" }
+        ]
+    },
+    {
+        id: "customai",
+        title: "Unique AI Solving",
+        color: "#f97316",
+        nodes: [
+            { title: "Business Problem", icon: <LuZap />, stack: "Use Case", color: "#ec4899" },
+            { title: "Knowledge Base", icon: <LuDatabase />, stack: "Neo4j", color: "#22c55e" },
+            { title: "AI Agents", icon: <LuCpu />, stack: "Agentic AI", color: "#6366f1" },
+            { title: "Decision Engine", icon: <LuActivity />, stack: "Custom Logic", color: "#f97316" },
+            { title: "Integration", icon: <LuLayers />, stack: "APIs", color: "#06b6d4" },
+            { title: "Outcome / ROI", icon: <LuCloud />, stack: "Business Value", color: "#0ea5e9" }
+        ]
     }
 ];
 
-export default function ArchitectureMap() {
-    const [hoveredLayer, setHoveredLayer] = useState(null);
+// Animated flowing dot along the horizontal path
+const FlowDot = ({ delay, rowColor }) => (
+    <motion.circle
+        r="3"
+        fill={rowColor}
+        initial={{ cx: 0, cy: 0 }}
+        animate={{ cx: [24, 516] }}
+        transition={{
+            duration: 4,
+            delay,
+            repeat: Infinity,
+            ease: "linear"
+        }}
+        cy={0}
+        opacity={0.7}
+        style={{ filter: `drop-shadow(0 0 4px ${rowColor})` }}
+    />
+);
+
+// A single horizontal architecture row
+function WorkflowRow({ wf, isVisible }) {
+    const nodeCount = wf.nodes.length;
+    const svgWidth = 540;
+    const nodeSpacing = svgWidth / nodeCount;
 
     return (
-        <div className="architecture-map-container glass-panel" style={{ position: 'relative', overflow: 'hidden', padding: '6rem 2rem' }}>
-            {/* Background Grid Accent */}
-            <div className="login-grid" style={{ opacity: 0.1, pointerEvents: 'none' }} />
-
-            <div className="architecture-map-header text-center mb-16">
-                <span className="hero-badge" style={{ margin: '0 auto 1.5rem' }}>
-                    <LuLayers /> Engineering Excellence
-                </span>
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>The Architecture Gap We Solve</h2>
-                <p style={{ color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto', fontSize: '1.1rem', opacity: 0.8 }}>
-                    Explore our production-ready platform architecture. Hover over the nodes to see the technical specifications.
-                </p>
+        <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            transition={{ duration: 0.5 }}
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+                padding: "1.2rem 1.5rem",
+                borderRadius: "16px",
+                background: "rgba(255,255,255,0.02)",
+                border: `1px solid ${wf.color}22`,
+                boxShadow: `0 0 20px ${wf.color}0a`,
+                position: "relative",
+                overflow: "hidden"
+            }}
+        >
+            {/* Row label */}
+            <div style={{
+                fontSize: "0.7rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: wf.color,
+                marginBottom: "0.4rem",
+                opacity: 0.9
+            }}>
+                {wf.title}
             </div>
 
-            <div className="architecture-grid-wrapper" style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
-                <svg viewBox="0 0 800 550" className="architecture-svg" style={{ overflow: 'visible' }}>
-                    {/* Blueprint Definition */}
+            {/* Nodes + connector line */}
+            <div style={{ position: "relative", height: "72px" }}>
+                {/* SVG connector line + dots */}
+                <svg
+                    viewBox={`0 0 ${svgWidth} 10`}
+                    style={{
+                        position: "absolute",
+                        top: "24px",
+                        left: "0",
+                        width: "100%",
+                        height: "10px",
+                        overflow: "visible"
+                    }}
+                >
                     <defs>
-                        <pattern id="archGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(99, 102, 241, 0.1)" strokeWidth="0.5" />
-                        </pattern>
+                        <linearGradient id={`grad-${wf.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor={wf.color} stopOpacity="0.1" />
+                            <stop offset="50%" stopColor={wf.color} stopOpacity="0.5" />
+                            <stop offset="100%" stopColor={wf.color} stopOpacity="0.1" />
+                        </linearGradient>
+                        <marker id={`arrow-${wf.id}`} markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                            <polygon points="0 0, 6 2.5, 0 5" fill={wf.color} opacity="0.6" />
+                        </marker>
                     </defs>
-                    <rect width="100%" height="100%" fill="url(#archGrid)" opacity="0.5" />
-
-                    {/* Neural Flow Paths */}
-                    <g className="flow-lines">
-                        {/* Auth to Data */}
-                        <path id="path-auth-data" d="M 230 180 Q 360 120 460 120" stroke="rgba(99,102,241,0.15)" strokeWidth="1.5" fill="none" />
-                        {/* Data to Event Bus */}
-                        <path id="path-data-bus" d="M 540 120 Q 640 120 720 180" stroke="rgba(99,102,241,0.15)" strokeWidth="1.5" fill="none" />
-                        {/* Automation Centerpiece */}
-                        <path id="path-data-auto" d="M 500 160 L 500 280" stroke="rgba(99,102,241,0.15)" strokeWidth="1.5" fill="none" />
-                        <path id="path-auth-auto" d="M 230 220 Q 360 320 460 320" stroke="rgba(99,102,241,0.15)" strokeWidth="1.5" fill="none" />
-
-                        {/* Animated Particles */}
-                        <circle r="3" className="data-particle">
-                            <animateMotion dur="4s" repeatCount="indefinite" path="M 230 180 Q 360 120 460 120" />
-                        </circle>
-                        <circle r="2" className="data-particle">
-                            <animateMotion dur="3s" repeatCount="indefinite" delay="1s" path="M 540 120 Q 640 120 720 180" />
-                        </circle>
-                        <circle r="2.5" className="data-particle">
-                            <animateMotion dur="5s" repeatCount="indefinite" delay="0.5s" path="M 500 160 L 500 280" />
-                        </circle>
-                    </g>
-
-                    {/* Layer Nodes */}
-                    {architectureLayers.map((layer) => (
-                        <foreignObject
-                            key={layer.id}
-                            x={layer.pos.x}
-                            y={layer.pos.y}
-                            width="250"
-                            height="100"
-                            style={{ overflow: 'visible' }}
-                        >
-                            <motion.div
-                                className={`arch-node ${hoveredLayer?.id === layer.id ? 'active' : ''}`}
-                                onMouseEnter={() => setHoveredLayer(layer)}
-                                onMouseLeave={() => setHoveredLayer(null)}
-                                whileHover={{ y: -5 }}
-                            >
-                                <div className="arch-node-icon" style={{
-                                    background: `linear-gradient(135deg, ${layer.color} 0%, rgba(0,0,0,0.5) 100%)`,
-                                    border: `1px solid ${layer.color}44`
-                                }}>
-                                    {layer.icon}
-                                    <motion.div
-                                        className="arch-node-pulse"
-                                        animate={{ scale: [1, 1.4], opacity: [0.3, 0] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                        style={{ color: layer.color }}
-                                    />
-                                </div>
-                                <div className="arch-node-content">
-                                    <span style={{ fontSize: '0.65rem', opacity: 0.4, fontFamily: 'JetBrains Mono', letterSpacing: '0.1em', display: 'block' }}>
-                                        LVL_{layer.id.toUpperCase()}
-                                    </span>
-                                    <h4>{layer.title}</h4>
-                                </div>
-                                <div style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    left: 0,
-                                    height: '2px',
-                                    width: hoveredLayer?.id === layer.id ? '100%' : '0%',
-                                    background: layer.color,
-                                    transition: 'width 0.3s ease'
-                                }} />
-                            </motion.div>
-                        </foreignObject>
+                    {/* Connecting line */}
+                    <line
+                        x1={nodeSpacing / 2}
+                        y1="0"
+                        x2={svgWidth - nodeSpacing / 2}
+                        y2="0"
+                        stroke={`url(#grad-${wf.id})`}
+                        strokeWidth="1.5"
+                        markerEnd={`url(#arrow-${wf.id})`}
+                    />
+                    {/* Animated dots */}
+                    {[0, 1, 2].map(di => (
+                        <FlowDot key={di} delay={di * 1.3} rowColor={wf.color} />
                     ))}
                 </svg>
 
-                {/* HUD Detail Overlay - Terminals Style */}
-                <AnimatePresence>
-                    {hoveredLayer && (
+                {/* Node icons */}
+                <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    height: "100%"
+                }}>
+                    {wf.nodes.map((node, i) => (
                         <motion.div
-                            className="arch-detail-overlay"
-                            initial={{ opacity: 0, x: 40, scale: 0.95 }}
-                            animate={{ opacity: 1, x: 0, scale: 1 }}
-                            exit={{ opacity: 0, x: 20, scale: 0.95 }}
-                            transition={{ type: 'spring', damping: 20 }}
+                            key={i}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.06 }}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: "0.3rem",
+                                width: `${100 / nodeCount}%`,
+                            }}
                         >
-                            <div className="detail-header" style={{ borderColor: `${hoveredLayer.color}44` }}>
-                                <div style={{ color: hoveredLayer.color, fontSize: '1.5rem' }}>{hoveredLayer.icon}</div>
-                                <div>
-                                    <h3 style={{ color: hoveredLayer.color }}>{hoveredLayer.title}</h3>
-                                    <span style={{ fontSize: '0.6rem', opacity: 0.5, fontFamily: 'monospace' }}>SEC_PROTOCOL_ACTIVE</span>
-                                </div>
+                            <div style={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "10px",
+                                background: `linear-gradient(135deg, ${node.color}cc, rgba(15,23,42,0.9))`,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "1rem",
+                                color: "white",
+                                boxShadow: `0 0 8px ${node.color}44`,
+                                border: `1px solid ${node.color}44`,
+                                flexShrink: 0
+                            }}>
+                                {node.icon}
                             </div>
-                            <p>{hoveredLayer.description}</p>
-                            <div style={{ marginBottom: '1rem', height: '1px', background: 'rgba(255,255,255,0.05)' }} />
-                            <ul className="detail-list">
-                                {hoveredLayer.details.map((detail, idx) => (
-                                    <li key={idx} style={{ color: `${hoveredLayer.color}ee` }}>
-                                        <div style={{ width: '4px', height: '4px', background: hoveredLayer.color, borderRadius: '50%' }} />
-                                        {detail}
-                                    </li>
-                                ))}
-                            </ul>
-                            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: 0.3 }}>
-                                <span style={{ fontSize: '0.55rem', fontFamily: 'monospace' }}>X: {hoveredLayer.pos.x} Y: {hoveredLayer.pos.y}</span>
-                                <LuCpu size={12} />
-                            </div>
+                            <span style={{
+                                fontSize: "0.6rem",
+                                fontWeight: "600",
+                                color: "white",
+                                textAlign: "center",
+                                lineHeight: 1.2,
+                                maxWidth: "56px"
+                            }}>{node.title}</span>
                         </motion.div>
-                    )}
+                    ))}
+                </div>
+            </div>
+        </motion.div>
+    );
+}
+
+export default function ArchitectureMap() {
+    const [page, setPage] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 768);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+
+    // Show 3 rows per page on desktop, 1 on mobile
+    const rowsPerPage = isMobile ? 1 : 3;
+    const totalPages = Math.ceil(workflows.length / rowsPerPage);
+
+    const visibleWorkflows = workflows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    const prev = () => setPage(p => Math.max(p - 1, 0));
+    const next = () => setPage(p => Math.min(p + 1, totalPages - 1));
+
+    return (
+        <div
+            style={{
+                padding: isMobile ? "3rem 1rem" : "5rem 2rem",
+                position: "relative",
+                overflow: "hidden",
+                background: "rgba(2,6,23,0.3)"
+            }}
+        >
+            <div className="login-grid" style={{ opacity: 0.06, pointerEvents: "none" }} />
+
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+                <span className="hero-badge" style={{ margin: "0 auto 0.8rem" }}>
+                    <LuLayers /> Engineering Hub
+                </span>
+                <h2 style={{ fontSize: isMobile ? "1.5rem" : "2.2rem", marginBottom: "0.75rem" }}>
+                    Architecture Gap We Solve
+                </h2>
+                <p style={{
+                    color: "var(--text-secondary)",
+                    maxWidth: "600px",
+                    margin: "0 auto",
+                    fontSize: isMobile ? "0.85rem" : "1rem",
+                    opacity: 0.7
+                }}>
+                    Enterprise AI, Cloud, and DevOps architecture flows — visualized as live engineering pipelines.
+                </p>
+            </div>
+
+            {/* Rows */}
+            <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={page}
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -40 }}
+                        transition={{ duration: 0.35 }}
+                        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+                    >
+                        {visibleWorkflows.map((wf) => (
+                            <WorkflowRow key={wf.id} wf={wf} isVisible />
+                        ))}
+                    </motion.div>
                 </AnimatePresence>
 
-                {!hoveredLayer && (
-                    <motion.div
-                        className="arch-hint"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.6 }}
+                {/* Navigation */}
+                <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "1.5rem",
+                    marginTop: "2rem"
+                }}>
+                    <button
+                        onClick={prev}
+                        disabled={page === 0}
+                        className="nav-btn-mini"
+                        style={{ opacity: page === 0 ? 0.3 : 1, width: "40px", height: "40px" }}
                     >
-                        <LuCpu className="animate-pulse" />
-                        <span>Interactive Platform Intelligence [HUD v2.0]</span>
-                    </motion.div>
-                )}
+                        <LuChevronLeft />
+                    </button>
+
+                    {/* Dots */}
+                    <div style={{ display: "flex", gap: "0.4rem" }}>
+                        {Array.from({ length: totalPages }).map((_, i) => (
+                            <div
+                                key={i}
+                                onClick={() => setPage(i)}
+                                style={{
+                                    width: page === i ? "20px" : "6px",
+                                    height: "6px",
+                                    borderRadius: "3px",
+                                    background: page === i ? "var(--accent-primary)" : "rgba(255,255,255,0.12)",
+                                    transition: "all 0.3s ease",
+                                    cursor: "pointer"
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={next}
+                        disabled={page === totalPages - 1}
+                        className="nav-btn-mini"
+                        style={{ opacity: page === totalPages - 1 ? 0.3 : 1, width: "40px", height: "40px" }}
+                    >
+                        <LuChevronRight />
+                    </button>
+                </div>
+
+                <div style={{
+                    textAlign: "center",
+                    marginTop: "1rem",
+                    fontSize: "0.75rem",
+                    opacity: 0.35,
+                    letterSpacing: "2px",
+                    textTransform: "uppercase"
+                }}>
+                    ← Navigate Enterprise Flows →
+                </div>
             </div>
         </div>
     );

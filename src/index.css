@@ -19,8 +19,8 @@
   --accent-light: #818cf8;
   --border-light: rgba(255, 255, 255, 0.1);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --spacing-section: clamp(4rem, 8vh, 8rem);
-  --spacing-hero: clamp(6rem, 10vh, 10rem);
+  --spacing-section: clamp(2rem, 5vh, 4rem);
+  --spacing-hero: clamp(3rem, 6vh, 6rem);
   --spacing-container: 1.5rem;
   --body-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 40%, #020617 100%);
 }
@@ -2509,7 +2509,77 @@ select:focus {
   border: 1px solid rgba(99, 102, 241, 0.3) !important;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(99, 102, 241, 0.05);
   border-radius: 4px;
-  /* Tech Sharp */
+  backdrop-filter: blur(10px);
+}
+
+.arch-node {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  min-width: 220px;
+}
+
+.arch-node.active {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+}
+
+.arch-node-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.arch-node-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  z-index: -1;
+}
+
+.arch-node-content h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.nav-btn-mini {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.nav-btn-mini:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
 }
 
 /* Scanner Line Effect for HUD */
@@ -2579,7 +2649,8 @@ select:focus {
   opacity: 0.8;
 }
 
-padding: 0;
+.detail-list {
+  padding: 0;
 }
 
 .detail-list li {
@@ -3674,4 +3745,65 @@ section {
 .hero-modern {
   padding: var(--spacing-hero) 0;
   min-height: 90vh;
+}
+
+.architecture-section {
+  padding: 120px 20px;
+  text-align: center;
+}
+
+.arch-title {
+  font-size: 2.5rem;
+  margin-bottom: 80px;
+}
+
+.arch-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.arch-node {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 28px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  width: 100%;
+}
+
+.arch-node h3 {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.arch-node p {
+  font-size: 0.9rem;
+  opacity: .7;
+}
+
+.arch-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+}
+
+.flow-line {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom,
+      transparent,
+      #8b5cf6,
+      transparent);
 }

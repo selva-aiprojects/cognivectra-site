@@ -26,6 +26,11 @@ import {
 import heroMain from "../assets/generated/hero-home-ultra-8k.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import clientKidzImg from "../assets/generated/ind-health-3d.png";
+import flowBusiness from "../assets/generated/flow-business.png";
+import flowDevOps from "../assets/generated/flow-devops.png";
+import flowCloud from "../assets/generated/flow-cloud.png";
+import flowModernization from "../assets/generated/flow-modernization.png";
+import flowUnique from "../assets/generated/flow-unique.png";
 import DemoRequestModal from "../components/DemoRequestModal";
 import { useState, useEffect } from "react";
 import { trackEvent } from "../lib/analytics";
@@ -205,9 +210,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            style={{ padding: '4rem 2rem', textAlign: 'center' }}
+            style={{ padding: '2rem 2rem', textAlign: 'center' }}
           >
-            <p style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.2rem', opacity: 0.5, marginBottom: '2.5rem' }}>
+            <p style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.2rem', opacity: 0.5, marginBottom: '1.5rem' }}>
               Built On Enterprise Foundations
             </p>
             <div style={{
@@ -235,6 +240,238 @@ export default function Home() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* NEW: SOLUTIONS ARCHITECTURE SLIDER */}
+      <section className="solutions-architecture" style={{ background: 'var(--bg-primary)', position: 'relative', overflow: 'hidden', padding: 'var(--spacing-section) 0' }}>
+        <div className="neural-pattern" style={{ opacity: 0.1 }} />
+        <div className="container">
+          <motion.div
+            className="section-header text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{ marginBottom: '3rem' }}
+          >
+            <span className="hero-badge">Enterprise Flows</span>
+            <h3>Visualizing the Transformation</h3>
+            <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
+              Our architecture flows are designed to bridge the gap between complex legacy challenges and modern, AI-driven excellence.
+            </p>
+          </motion.div>
+
+          <div className="relative" style={{ width: '100%', overflow: 'hidden' }}>
+            <motion.div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '2rem',
+                cursor: 'grab',
+                padding: '2rem 1rem'
+              }}
+              drag="x"
+              dragConstraints={{ left: -1400, right: 0 }}
+            >
+              {[
+                {
+                  title: "Business Problem to AI Solution",
+                  desc: "Bridging the gap between manual data silos and intelligent AI orchestration for predictable growth.",
+                  img: flowBusiness,
+                  color: "rgba(79, 70, 229, 0.15)",
+                  accentColor: "#6366f1",
+                  steps: ["Problem", "Data", "AI Model", "Insights", "Action"]
+                },
+                {
+                  title: "Enterprise DevOps Pipeline",
+                  desc: "Automated, AI-enhanced CI/CD flows with Kubernetes orchestration and secure IaC deployment.",
+                  img: flowDevOps,
+                  color: "rgba(16, 185, 129, 0.15)",
+                  accentColor: "#22c55e",
+                  steps: ["Code", "Build", "Test", "Deploy", "Monitor"]
+                },
+                {
+                  title: "Cloud Strategy & Migration",
+                  desc: "Seamlessly migrating legacy infrastructure to distributed, resilient, and multi-cloud architectures.",
+                  img: flowCloud,
+                  color: "rgba(14, 165, 233, 0.15)",
+                  accentColor: "#0ea5e9",
+                  steps: ["Legacy", "Assess", "Migrate", "Optimize", "Cloud Ops"]
+                },
+                {
+                  title: "IT Modernization with AI",
+                  desc: "Systematic modernization of monolithic technical debt into scalable, high-performing AI-native systems.",
+                  img: flowModernization,
+                  color: "rgba(245, 158, 11, 0.15)",
+                  accentColor: "#f59e0b",
+                  steps: ["Monolith", "API Layer", "Services", "AI Ops", "Scale"]
+                },
+                {
+                  title: "Solving Unique Business Problems",
+                  desc: "Custom AI blueprints designed for your specific, non-trivial industry challenges and edge cases.",
+                  img: flowUnique,
+                  color: "rgba(236, 72, 153, 0.15)",
+                  accentColor: "#ec4899",
+                  steps: ["Challenge", "Blueprint", "AI Build", "Integrate", "ROI"]
+                }
+              ].map((flow, i) => (
+                <motion.div
+                  key={i}
+                  className="glass-panel"
+                  style={{
+                    width: '500px',
+                    flexShrink: 0,
+                    padding: '2.5rem',
+                    borderRadius: '32px',
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.04) 0%, ${flow.color} 100%)`,
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 20px 50px rgba(0,0,0,0.4)',
+                    overflow: 'hidden'
+                  }}
+                  whileHover={{ y: -15, scale: 1.02 }}
+                  initial={{ opacity: 0, scale: 0.9, x: 100 }}
+                  whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.7,
+                    delay: i * 0.1,
+                    type: "spring",
+                    stiffness: 100
+                  }}
+                >
+                  <div style={{
+                    height: '220px',
+                    overflow: 'hidden',
+                    borderRadius: '20px',
+                    marginBottom: '1.5rem',
+                    boxShadow: '0 15px 35px rgba(0,0,0,0.5)',
+                    position: 'relative'
+                  }}>
+                    <div className="gradient-overlay" style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.4) 100%)',
+                      zIndex: 1
+                    }} />
+                    <motion.img
+                      src={flow.img}
+                      alt={flow.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.1, rotate: 1 }}
+                      transition={{ duration: 0.8 }}
+                    />
+                  </div>
+                  <h4 style={{
+                    fontSize: '1.4rem',
+                    marginBottom: '1rem',
+                    color: 'white',
+                    fontWeight: '700',
+                    letterSpacing: '-0.01em'
+                  }}>{flow.title}</h4>
+
+                  {/* Horizontal Flow Arrow Strip */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0',
+                    marginBottom: '1.2rem',
+                    padding: '0.8rem 1rem',
+                    background: 'rgba(0,0,0,0.2)',
+                    borderRadius: '12px',
+                    border: `1px solid ${flow.accentColor}22`,
+                    overflowX: 'auto'
+                  }}>
+                    {flow.steps.map((step, si) => (
+                      <div key={si} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: si * 0.08 }}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '0.2rem'
+                          }}
+                        >
+                          <div style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: flow.accentColor,
+                            boxShadow: `0 0 8px ${flow.accentColor}88`,
+                            flexShrink: 0
+                          }} />
+                          <span style={{
+                            fontSize: '0.6rem',
+                            color: 'white',
+                            opacity: 0.8,
+                            fontWeight: '600',
+                            whiteSpace: 'nowrap'
+                          }}>{step}</span>
+                        </motion.div>
+
+                        {si < flow.steps.length - 1 && (
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            margin: '0 0.4rem',
+                            marginBottom: '0.9rem'
+                          }}>
+                            <div style={{
+                              width: '28px',
+                              height: '1.5px',
+                              background: `linear-gradient(90deg, ${flow.accentColor}66, ${flow.accentColor}cc)`,
+                              position: 'relative'
+                            }}>
+                              <motion.div
+                                style={{
+                                  position: 'absolute',
+                                  top: '-2.5px',
+                                  left: 0,
+                                  width: '6px',
+                                  height: '6px',
+                                  borderRadius: '50%',
+                                  background: flow.accentColor
+                                }}
+                                animate={{ left: ['0%', '100%'] }}
+                                transition={{
+                                  duration: 1.5,
+                                  delay: si * 0.3 + i * 0.2,
+                                  repeat: Infinity,
+                                  ease: 'linear'
+                                }}
+                              />
+                            </div>
+                            {/* Arrow tip */}
+                            <div style={{
+                              width: 0,
+                              height: 0,
+                              borderTop: '4px solid transparent',
+                              borderBottom: '4px solid transparent',
+                              borderLeft: `6px solid ${flow.accentColor}cc`,
+                              marginLeft: '-1px',
+                              marginBottom: '0.9rem'
+                            }} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <p style={{
+                    fontSize: '0.95rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: '1.7',
+                    opacity: 0.9
+                  }}>{flow.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+            <div style={{ textAlign: 'center', marginTop: '2.5rem', fontSize: '0.85rem', opacity: 0.5, letterSpacing: '2px', textTransform: 'uppercase' }}>
+              ← Swipe to see our Architectural Workflows →
+            </div>
+          </div>
         </div>
       </section>
 
@@ -323,7 +560,7 @@ export default function Home() {
       </motion.section>
 
       {/* PARTNER ICP STRIP */}
-      <section className="icp-strip glass-panel" style={{ margin: '0 auto', maxWidth: '1200px', borderRadius: '100px', padding: '1rem 2rem', marginBottom: '4rem' }}>
+      <section className="icp-strip glass-panel" style={{ margin: '0 auto', maxWidth: '1200px', borderRadius: '100px', padding: '1rem 2rem', marginBottom: '2rem' }}>
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
           <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px' }}>Who we partner with:</span>
           {['Healthcare Providers', 'Health-tech Startups', 'Enterprise Innovation', 'FinTech Platforms'].map((icp, i) => (
@@ -360,7 +597,7 @@ export default function Home() {
         <div className="neural-pattern" />
         <motion.div
           className="section-header"
-          style={{ textAlign: "center", marginBottom: "5rem" }}
+          style={{ textAlign: "center", marginBottom: "2rem" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -382,16 +619,16 @@ export default function Home() {
           viewport={{ once: true }}
         >
           {[
-            { icon: <LuLayers />, title: "Cognivectra AIEngine", desc: "Enterprise-grade AI orchestration platform for scalable infrastructure and model governance.", highlights: ["Strategic Architecture", "Platform Governance", "Secure Deployment"] },
-            { icon: <LuBrain />, title: "Cognivectra GenAI Studio", desc: "Build, deploy, and scale intelligent copilots and agentic workflows for enterprise operations.", highlights: ["Agentic Workflows", "Prompt Engineering", "LLM Fine-tuning"] },
-            { icon: <LuTrendingUp />, title: "Cognivectra Data Intel", desc: "Advanced analytics and predictive intelligence systems to drive data-driven decision making.", highlights: ["Predictive Analytics", "Real-time Insights", "Market Intelligence"] }
+            { icon: <LuBrain />, title: "GenAI Solutions", desc: "Build agentic workflows and intelligent copilots with RAG and LLM orchestration.", highlights: ["Agentic Workflows", "Custom RAG Pipelines", "Model Governance"] },
+            { icon: <LuLayers />, title: "Enterprise DevOps", desc: "AI-enhanced CI/CD, containerization, and IaC for high-frequency deployment.", highlights: ["Kubernetes (EKS/GKE)", "Infrastructure as Code", "Security Scanning"] },
+            { icon: <LuCloud />, title: "Cloud Migrations", desc: "Seamless legacy-to-cloud transitions with zero-downtime and multi-cloud strategies.", highlights: ["Modernization Strategy", "Multi-Cloud Setup", "Cost Optimization"] }
           ].map((service, i) => (
             <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel">
               <div className="service-icon-wrapper">{service.icon}</div>
               <h4>{service.title}</h4>
               <p>{service.desc}</p>
-              <ul className="service-highlights">
-                {service.highlights.map((h, j) => <li key={j}>{h}</li>)}
+              <ul className="service-highlights" style={{ paddingLeft: '1.2rem' }}>
+                {service.highlights.map((h, j) => <li key={j} style={{ fontSize: '0.85rem', marginBottom: '0.25rem' }}>{h}</li>)}
               </ul>
             </motion.div>
           ))}
@@ -504,7 +741,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <Link to="/blog" className="btn-outline">View All Insights</Link>
           </div>
         </section>
@@ -558,63 +795,74 @@ export default function Home() {
           </p>
         </motion.div>
 
-        <div className="hero-modern-inner" style={{ padding: '0 1rem', gap: '3rem' }}>
-          {/* Client 1: EduPortal */}
+        <div className="relative" style={{ maxWidth: '1000px', margin: '0 auto', overflow: 'hidden', padding: '1rem' }}>
           <motion.div
-            className="glass-panel"
-            style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '1.5rem',
+              cursor: 'grab'
+            }}
+            drag="x"
+            dragConstraints={{ left: -800, right: 0 }}
           >
-            <div style={{ height: '200px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '1rem' }}>
-              <img src={clientEduImg} alt="EduPortal" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            <h4>EduPortal</h4>
-            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
-              Next-generation institution management. **Reduced manual scheduling by 40%** through intelligent automation.
-            </p>
-            <a href="https://eduportal-new.onrender.com/" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
-              Visit Platform →
-            </a>
+            {[
+              {
+                img: clientEduImg,
+                title: "EduPortal",
+                desc: "Next-generation institution management. **Reduced manual scheduling by 40%** through intelligent automation.",
+                link: "https://eduportal-new.onrender.com/",
+                linkText: "Visit Platform →"
+              },
+              {
+                img: clientKidzImg,
+                title: "Kidz-Clinic",
+                desc: "Specialized pediatric healthcare platform. **Improved patient throughput by 22%** using MedFlow's smart scheduling.",
+                link: "https://kidz-clinic-client.onrender.com",
+                linkText: "Visit Clinic →"
+              },
+              {
+                title: "Dr. S.T. Pushpa",
+                desc: "Bangalore's leading paediatrician leveraging MedFlow EMR for compassionate care and efficient practice management.",
+                link: "https://drstpushpa.com/",
+                linkText: "Visit drstpushpa.com →",
+                isCustom: true
+              }
+            ].map((client, i) => (
+              <motion.div
+                key={i}
+                className="glass-panel"
+                style={{
+                  width: '300px',
+                  flexShrink: 0,
+                  padding: '1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  border: '1px solid rgba(255,255,255,0.05)'
+                }}
+                whileHover={{ y: -5 }}
+              >
+                <div style={{ height: '160px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '0.5rem', background: client.isCustom ? 'rgba(255,255,255,0.02)' : 'transparent', display: client.isCustom ? 'flex' : 'block', alignItems: 'center', justifyContent: 'center' }}>
+                  {client.isCustom ? (
+                    <img src="/favicon.svg" alt={client.title} style={{ height: '60px', width: 'auto', opacity: 0.8 }} />
+                  ) : (
+                    <img src={client.img} alt={client.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  )}
+                </div>
+                <h4 style={{ fontSize: '1.1rem' }}>{client.title}</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
+                  {client.desc}
+                </p>
+                <a href={client.link} target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto', fontSize: '0.85rem' }}>
+                  {client.linkText}
+                </a>
+              </motion.div>
+            ))}
           </motion.div>
-
-          {/* Client 2: Kidz-Clinic */}
-          <motion.div
-            className="glass-panel"
-            style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div style={{ height: '200px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '1rem' }}>
-              <img src={clientKidzImg} alt="Kidz Clinic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            <h4>Kidz-Clinic</h4>
-            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
-              Specialized pediatric healthcare platform. **Improved patient throughput by 22% and handled 10k+ monthly appointments** using MedFlow's smart scheduling.
-            </p>
-            <a href="https://kidz-clinic-client.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
-              Visit Clinic →
-            </a>
-          </motion.div>
-
-          {/* Client 3: Dr. S.T. Pushpa */}
-          <motion.div
-            className="glass-panel"
-            style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.05)' }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div style={{ height: '200px', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)' }}>
-              <img src="/favicon.svg" alt="Dr. S.T. Pushpa" style={{ height: '80px', width: 'auto', opacity: 0.8 }} />
-            </div>
-            <h4>Dr. S.T. Pushpa</h4>
-            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
-              Bangalore's leading paediatrician leveraging MedFlow EMR for compassionate care and efficient practice management.
-            </p>
-            <a href="https://drstpushpa.com/" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
-              Visit drstpushpa.com →
-            </a>
-          </motion.div>
+          <div style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.8rem', opacity: 0.5 }}>
+            ← Drag to explore →
+          </div>
         </div>
       </section>
 
@@ -635,11 +883,11 @@ export default function Home() {
 
         <div className="services-modern-grid">
           {[
-            { title: "Multi-tenant SaaS Architecture", desc: "Securely scale to thousands of organizations with isolated data environments and unified management.", icon: <LuBuilding2 /> },
-            { title: "Secure Cloud-Native Deployment", desc: "Automated provisioning and orchestration across major cloud providers with zero-trust security.", icon: <LuShield /> },
-            { title: "Enterprise Scalability", desc: "Systems designed to handle extreme transaction volumes and large-scale data processing effortlessly.", icon: <LuTrendingUp /> },
-            { title: "GenAI Integration Architecture", desc: "Production-ready pipelines for LLM orchestration, RAG, and agentic workflows.", icon: <LuCpu /> },
-            { title: "Healthcare Platform Expertise", desc: "HIPAA-compliant data handling and interoperability standards for reliable healthcare delivery.", icon: <LuActivity /> }
+            { title: "GenAI & LLM Orchestration", desc: "Production-ready pipelines for RAG, agentic workflows, and model security.", icon: <LuCpu /> },
+            { title: "DevOps Excellence", desc: "Global-scale CI/CD, K8s orchestration, and automated infrastructure as code.", icon: <LuNetwork /> },
+            { title: "Cloud Modernization", desc: "Legacy migration paths to modern cloud-native architectures with zero downtime.", icon: <LuCloud /> },
+            { title: "Multi-tenant SaaS Foundation", desc: "Securely scale to thousands of organizations with isolated data environments.", icon: <LuBuilding2 /> },
+            { title: "Healthcare Data Compliance", desc: "HIPAA-compliant platforms with deep EMR and interoperability expertise.", icon: <LuActivity /> }
           ].map((item, i) => (
             <motion.div key={i} variants={fadeInUp} className="service-modern-card glass-panel" style={{ padding: '2rem' }}>
               <div className="service-icon-wrapper" style={{ fontSize: '2rem', marginBottom: '1rem' }}>{item.icon}</div>
