@@ -188,7 +188,7 @@ export default function Contact() {
                   className="contact-tab-panel"
                 >
                   <form onSubmit={handleSubmit}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+                    <div className="contact-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
                       <div className="form-group">
                         <label className="contact-label">Identifier (Name)</label>
                         <input
@@ -212,7 +212,7 @@ export default function Contact() {
                       </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+                    <div className="contact-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
                       <div className="form-group">
                         <label className="contact-label">Organization Type</label>
                         <select name="stage" className="contact-input" defaultValue="">

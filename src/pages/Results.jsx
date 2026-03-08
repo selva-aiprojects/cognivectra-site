@@ -135,18 +135,18 @@ export default function Results() {
       </section>
 
       {/* STATS STRIP */}
-      <section className="stats-strip" style={{ padding: '0 2rem', marginTop: '-3rem', position: 'relative', zIndex: 20 }}>
-        <div className="container glass-panel" style={{ display: 'flex', justifyContent: 'space-around', padding: '2.5rem', borderRadius: '20px', textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <section className="stats-strip" style={{ padding: '0 1rem', marginTop: '-3rem', position: 'relative', zIndex: 20 }}>
+        <div className="container glass-panel stats-strip-inner" style={{ display: 'flex', justifyContent: 'space-around', padding: '2.5rem', borderRadius: '20px', textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div>
             <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>15+</div>
             <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Enterprise Deployments</div>
           </div>
-          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+          <div className="divider-v" style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
           <div>
             <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>$50M+</div>
             <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Cloud Budgets Managed</div>
           </div>
-          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+          <div className="divider-v" style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
           <div>
             <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--accent-light)' }}>100%</div>
             <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5, marginTop: '0.5rem' }}>Compliance Score</div>

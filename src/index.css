@@ -3807,3 +3807,144 @@ section {
       #8b5cf6,
       transparent);
 }
+
+/* ============================================================
+   MOBILE VIEW REFINEMENTS & CONFLICT RESOLUTION (APPENDED)
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* 1. Global Spacing & Grid Overrides */
+  section {
+    padding: 3.5rem 1.25rem !important;
+  }
+
+  .services-modern-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .glass-panel {
+    padding: 1.5rem !important;
+  }
+
+  /* 2. Home: Platform Credibility Strip (trust-modern) */
+  .trust-modern {
+    padding: 2.5rem 1rem !important;
+  }
+
+  .trust-modern-inner {
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+    text-align: center;
+    justify-content: center !important;
+  }
+
+  .trust-modern-inner>div {
+    font-size: 0.85rem !important;
+    width: 90% !important;
+    margin: 0 auto;
+  }
+
+  .trust-modern h4 {
+    font-size: 0.8rem !important;
+    margin-bottom: 2rem !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  /* 3. Home: Partner ICP Strip */
+  .icp-strip {
+    padding: 1.25rem !important;
+    border-radius: 24px !important;
+    /* Stacked look on mobile */
+    margin-top: 1rem !important;
+    margin-bottom: 5rem !important;
+    /* Avoid Sticky CTA overlap */
+  }
+
+  .icp-strip .flex {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  /* 4. Sticky Elements Conflict Resolution */
+  .sticky-cta-wrap {
+    bottom: 6rem !important;
+    /* Move above Chat FAB */
+    right: 1.25rem !important;
+  }
+
+  .chat-fab {
+    bottom: 1.25rem !important;
+    right: 1.25rem !important;
+    left: auto !important;
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  /* 5. Results: Metrics Grid */
+  .success-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+
+  /* 6. Products: Demo Form Stacking */
+  .product-demo-form {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .product-demo-form input,
+  .product-demo-form button {
+    width: 100% !important;
+  }
+
+  /* 7. Architecture Map scaling */
+  .arch-canvas-container {
+    height: 380px !important;
+  }
+
+  .arch-node-icon-mobile {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.1rem !important;
+  }
+
+  /* 8. Results: Stats Strip Stacking */
+  .stats-strip-inner {
+    flex-direction: column !important;
+    gap: 2rem !important;
+    padding: 2rem 1.5rem !important;
+  }
+
+  .stats-strip-inner>div {
+    width: 100% !important;
+  }
+
+  .stats-strip-inner .divider-v {
+    display: none !important;
+    /* Hide vertical dividers on mobile */
+  }
+
+  /* 9. Contact: Form Row Stacking */
+  .contact-form-row {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* 10. Careers: Job Meta Stacking */
+  .job-meta-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .trust-modern-inner>div {
+    font-size: 0.75rem !important;
+  }
+
+  .success-metrics-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

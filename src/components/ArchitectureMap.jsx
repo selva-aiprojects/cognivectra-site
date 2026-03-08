@@ -262,16 +262,19 @@ export default function ArchitectureMap() {
                 </div>
 
                 {/* Canvas Area (Right) */}
-                <div style={{
-                    flexGrow: 1,
-                    height: isMobile ? "450px" : "550px",
-                    background: "rgba(0,0,0,0.3)",
-                    border: "1px solid rgba(255,255,255,0.05)",
-                    borderRadius: "24px",
-                    position: "relative",
-                    overflow: "hidden",
-                    boxShadow: "inset 0 0 100px rgba(0,0,0,0.5)"
-                }}>
+                <div
+                    className="arch-canvas-container"
+                    style={{
+                        flexGrow: 1,
+                        height: isMobile ? "450px" : "550px",
+                        background: "rgba(0,0,0,0.3)",
+                        border: "1px solid rgba(255,255,255,0.05)",
+                        borderRadius: "24px",
+                        position: "relative",
+                        overflow: "hidden",
+                        boxShadow: "inset 0 0 100px rgba(0,0,0,0.5)"
+                    }}
+                >
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeNetId}
@@ -390,16 +393,17 @@ export default function ArchitectureMap() {
                                         transform: "translateX(-50%)",
                                         marginTop: "8px",
                                         textAlign: "center",
-                                        whiteSpace: "nowrap",
+                                        whiteSpace: isMobile ? "normal" : "nowrap",
                                         pointerEvents: "none",
                                         opacity: hoveredNodeId === node.id ? 0 : 1, // Hide when deep hover card is active
                                         transition: "opacity 0.2s ease",
                                         background: "rgba(15,23,42,0.6)",
                                         border: "1px solid rgba(255,255,255,0.05)",
                                         backdropFilter: "blur(4px)",
-                                        padding: "0.4rem 0.6rem",
+                                        padding: isMobile ? "0.3rem 0.5rem" : "0.4rem 0.6rem",
                                         borderRadius: "8px",
-                                        boxShadow: "0 4px 12px rgba(0,0,0,0.5)"
+                                        boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+                                        width: isMobile ? "90px" : "auto"
                                     }}>
                                         <div style={{ fontSize: "0.55rem", textTransform: "uppercase", letterSpacing: "1px", color: activeNetwork.color, opacity: 0.8, marginBottom: "2px" }}>
                                             {node.layer}

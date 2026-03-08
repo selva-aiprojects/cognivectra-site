@@ -132,7 +132,7 @@ export default function Products() {
                         </ul>
                         <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'stocksteward')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'stocksteward')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                 <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
@@ -202,7 +202,7 @@ export default function Products() {
                         </ul>
                         <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'storeai')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'storeai')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                 <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
@@ -254,7 +254,7 @@ export default function Products() {
                         </ul>
                         <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'medflow')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'medflow')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                 <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>

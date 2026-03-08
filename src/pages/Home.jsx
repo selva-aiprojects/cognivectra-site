@@ -569,8 +569,8 @@ export default function Home() {
         style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(2, 6, 23, 0.8)' }}
       >
         <div className="container" style={{ textAlign: 'center', padding: '1.5rem 0' }}>
-          <h4 style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--accent-primary)', marginBottom: '1.5rem' }}>Production-Ready Enterprise Platforms</h4>
-          <div className="trust-modern-inner" style={{ justifyContent: 'space-around', gap: '2rem' }}>
+          <h4 style={{ textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--accent-primary)', marginBottom: '1.5rem' }} className="trust-modern-title">Production-Ready Enterprise Platforms</h4>
+          <div className="trust-modern-inner" style={{ gap: '2rem' }}>
             <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>MedFlow EMR</strong> AI-powered healthcare platform</div>
             <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>StoreAI</strong> Enterprise GenAI platform</div>
             <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>EduPortal</strong> AI-powered education platform</div>
@@ -580,9 +580,9 @@ export default function Home() {
       </motion.section>
 
       {/* PARTNER ICP STRIP */}
-      <section className="icp-strip glass-panel" style={{ margin: '0 auto', maxWidth: '1200px', borderRadius: '100px', padding: '1rem 2rem', marginBottom: '2rem' }}>
+      <section className="icp-strip glass-panel" style={{ margin: '0 auto', maxWidth: '1200px', padding: '1rem 2rem', marginBottom: '2rem' }}>
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px' }}>Who we partner with:</span>
+          <span style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px' }} className="icp-label">Who we partner with:</span>
           {['Healthcare Providers', 'Health-tech Startups', 'Enterprise Innovation', 'FinTech Platforms'].map((icp, i) => (
             <motion.div
               key={i}

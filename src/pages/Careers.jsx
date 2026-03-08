@@ -321,7 +321,7 @@ export default function Careers() {
                                     {job.summary}
                                 </p>
 
-                                <div style={{
+                                <div className="job-meta-grid" style={{
                                     display: 'grid',
                                     gridTemplateColumns: '1fr 1fr',
                                     gap: '1.25rem',
@@ -383,7 +383,7 @@ export default function Careers() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="application-form">
-                            <div className="form-grid">
+                            <div className="form-grid contact-form-row">
                                 <div className="form-group">
                                     <label>Full Name *</label>
                                     <input
