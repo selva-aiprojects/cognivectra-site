@@ -4,7 +4,7 @@ import MegaMenu from "./MegaMenu";
 import {
   FaSearch, FaHome, FaCogs, FaRocket, FaBriefcase,
   FaChartBar, FaGlobe, FaUsers, FaRss, FaEnvelope,
-  FaLinkedin, FaTwitter, FaTimes
+  FaLinkedin, FaTwitter, FaFacebook, FaTimes
 } from "react-icons/fa";
 import { trackEvent } from "../lib/analytics";
 
@@ -376,6 +376,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
         id="mobile-menu"
         aria-hidden={!mobileMenuOpen}
         aria-label="Mobile Navigation"
+        inert={mobileMenuOpen ? undefined : ""}
       >
         <div className="mobile-menu-header">
           <img src={logo} alt="CogniVectra Logo" className="mobile-menu-logo" />
@@ -442,6 +443,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             <span className="social-label">Join Our Network</span>
             <div className="mobile-social-links">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+              <a href="https://www.facebook.com/profile.php?id=61582266623883" target="_blank" rel="noopener noreferrer"><FaFacebook /></a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
             </div>
           </div>
