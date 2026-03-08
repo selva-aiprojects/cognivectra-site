@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import {
   FaSearch, FaHome, FaCogs, FaRocket, FaBriefcase,

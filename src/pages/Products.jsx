@@ -10,6 +10,7 @@ import emrImg from "../assets/generated/ind-health-3d.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import ProductLogo from "../components/ProductLogo";
 import { trackEvent } from "../lib/analytics";
+import { supabase } from "../lib/supabase";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },

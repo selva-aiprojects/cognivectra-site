@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import logo from "/cognivectra-dark-crop.png";
+import { trackEvent } from "../lib/analytics";
 
 export default function Footer() {
   return (
