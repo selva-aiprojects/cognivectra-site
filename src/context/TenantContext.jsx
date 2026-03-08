@@ -15,17 +15,21 @@ export const TenantProvider = ({ children }) => {
         try {
             // 1. Detect subdomain (e.g. client1.cognivectra.com)
             const hostname = window.location.hostname;
-            const subdomain = hostname.split('.')[0];
+            const subdomainParts = hostname.split('.');
+            let subdomain = subdomainParts[0];
 
-            // For local development, we can use a 'admin' subdomain or default to global
-            const targetSubdomain = (subdomain === 'localhost' || subdomain === '127') ? 'admin' : subdomain;
+            // Handle production aliases: map cognivectra (vercel), www, and empty to 'admin'
+            if (subdomain === 'localhost' || subdomain === '127' || subdomain === 'cognivectra' || subdomain === 'www' || subdomainParts.length === 1) {
+                subdomain = 'admin';
+            }
 
             // 2. Fetch tenant config from Supabase
+            // Use maybeSingle() to prevent network level 406 errors on empty results
             const { data, error } = await supabase
                 .from('tenants')
                 .select('*')
-                .eq('subdomain', targetSubdomain)
-                .single();
+                .eq('subdomain', subdomain)
+                .maybeSingle();
 
             let globalTenant = null;
             if (error || !data) {
@@ -34,7 +38,7 @@ export const TenantProvider = ({ children }) => {
                     .from('tenants')
                     .select('*')
                     .eq('id', '00000000-0000-0000-0000-000000000000')
-                    .single();
+                    .maybeSingle();
                 globalTenant = gt;
             }
 

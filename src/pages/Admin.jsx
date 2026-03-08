@@ -45,7 +45,7 @@ export default function Admin() {
       const { data: metricsData, error: metricsError } = await supabase
         .from('business_metrics')
         .select('*')
-        .single();
+        .maybeSingle();
 
       if (metricsError) throw metricsError;
       if (metricsData) setMetrics(metricsData);
