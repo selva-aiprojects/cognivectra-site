@@ -116,15 +116,9 @@ export default function MedFlowDetail() {
     return (
         <main>
             <Helmet>
-                <title>MedFlow EMR | Enterprise Healthcare Platform & Clinical AI</title>
-                <meta name="description" content="MedFlow EMR is a scalable, multi-tenant healthcare platform built for modern clinics. HIPAA compliant, GenAI-powered diagnostics, and intelligent clinical workflow automation." />
-                <meta name="keywords" content="Healthcare EMR, Multi-tenant EMR, HIPAA Compliant Software, AI Healthcare Diagnostics, MedFlow, CogniVectra, Clinical Workflow Automation, Secure Patient Records" />
-                <meta property="og:title" content="MedFlow EMR | Intelligent Healthcare Engineering" />
-                <meta property="og:description" content="Production-ready healthcare platform with GenAI diagnostics and HIPAA compliance." />
-                <meta property="og:url" content="https://cognivectra.com/products/medflow" />
-                <meta property="og:type" content="website" />
-                <meta property="og:image" content={emrImg} />
-                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/medflow-logo.svg" />
+                <title>MedFlow EMR | GenAI Healthcare Platform Engineering</title>
+                <meta name="description" content="Production-ready healthcare platform with GenAI diagnostics and HIPAA compliance. Built for clinics and multi-tenant healthcare services." />
+                <meta name="keywords" content="healthcare EMR, GenAI medical, HIPAA compliant platform, MedFlow, clinical AI, cloud EMR India" />
             </Helmet>
             {/* HERO */}
             <section className="hero-modern">
@@ -138,7 +132,7 @@ export default function MedFlowDetail() {
                         <span className="hero-badge">Multi-Tenant Healthcare Platform</span>
                         <div className="flex items-center gap-4 mb-4">
                             <ProductLogo type="medflow" style={{ marginBottom: '1rem' }} />
-                            <h1>MedFlow EMR</h1>
+                            <h1>MedFlow EMR Platform</h1>
                         </div>
                         <p>
                             A scalable, multi-tenant Electronic Medical Record (EMR) system built for modern clinics.

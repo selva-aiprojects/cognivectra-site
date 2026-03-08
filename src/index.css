@@ -291,8 +291,8 @@ a {
 
 @media (max-width: 1150px) {
   .brand-logo {
-    height: 85px;
-    /* Significantly increased for mobile impact */
+    height: 80px;
+    /* High-impact mobile presence */
   }
 
   .brand-divider,
@@ -841,7 +841,8 @@ a {
   }
 
   .brand-logo {
-    height: 24px !important;
+    height: 55px !important;
+    /* Bold branding even on smallest screens */
   }
 
   .mobile-actions {

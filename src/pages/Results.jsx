@@ -87,6 +87,10 @@ export default function Results() {
 
   return (
     <main>
+      <Helmet>
+        <title>Case Studies & Impact | CogniVectra Results</title>
+        <meta name="description" content="Explore our success stories in healthcare, fintech, and enterprise AI. Real metrics and architectural deep-dives from our production deployments." />
+      </Helmet>
       {/* HERO */}
       <section className="hero-modern bg-visual-energy">
         <div className="hero-modern-inner" style={{ position: 'relative', zIndex: 10 }}>

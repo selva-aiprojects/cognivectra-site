@@ -112,15 +112,9 @@ export default function StockStewardDetail() {
     return (
         <main>
             <Helmet>
-                <title>StockSteward AI | Enterprise FinTech & Algorithmic Trading</title>
-                <meta name="description" content="StockSteward AI is a sophisticated enterprise FinTech platform for algorithmic trading, market intelligence, and AI-powered portfolio management." />
-                <meta name="keywords" content="FinTech Platform, Algorithmic Trading AI, Market Intelligence, Steward Platform, StockSteward, CogniVectra" />
-                <meta property="og:title" content="StockSteward AI | FinTech Intelligence at Scale" />
-                <meta property="og:description" content="Master the markets with our production-ready AI trading platform." />
-                <meta property="og:url" content="https://cognivectra.com/products/stocksteward" />
-                <meta property="og:type" content="website" />
-                <meta property="og:image" content={stewardImg} />
-                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/stocksteward-logo.svg" />
+                <title>StockSteward AI | Algorithmic Trading Intelligence</title>
+                <meta name="description" content="Sophisticated algorithmic trading and market intelligence platform powered by advanced AI. High-performance fintech infrastructure." />
+                <meta name="keywords" content="algorithmic trading consulting, fintech AI, market intelligence, StockSteward, AI trading platform" />
             </Helmet>
             {/* HERO */}
             <section className="hero-modern">
@@ -134,7 +128,7 @@ export default function StockStewardDetail() {
                         <span className="hero-badge">AIEngine Platform</span>
                         <div className="flex items-center gap-4 mb-4">
                             <ProductLogo type="steward" style={{ marginBottom: '1rem' }} />
-                            <h1>StockSteward AI</h1>
+                            <h1>StockSteward AI Platform</h1>
                         </div>
                         <p>
                             Sophisticated algorithmic trading and market intelligence platform powered by advanced AI.

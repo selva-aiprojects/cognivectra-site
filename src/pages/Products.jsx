@@ -80,8 +80,8 @@ export default function Products() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge"><LuRocket style={{ marginRight: '0.4rem' }} /> Our Platform Suite</span>
-                        <h1>Intelligence-Driven <br />Enterprise Platforms</h1>
+                        <span className="hero-badge">AIEngine Platform</span>
+                        <h1>Production-Ready <br />AI Platforms</h1>
                         <p>
                             CogniVectra develops production-ready platforms designed to solve
                             complex challenges in healthcare, retail, and enterprise AI orchestration.
@@ -416,8 +416,8 @@ export default function Products() {
                         <p className="mb-8">
                             We partner with technical leaders to turn complex requirements into market-leading enterprise platforms.
                         </p>
-                        <Link to="/contact" className="btn">
-                            Discuss Your Project
+                        <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Products Footer' })} className="btn">
+                            Book Strategy Call
                         </Link>
                     </motion.div>
                 </div>

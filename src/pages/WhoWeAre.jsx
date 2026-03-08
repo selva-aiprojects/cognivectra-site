@@ -31,12 +31,13 @@ export default function WhoWeAre() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> About CogniVectra</span>
+            <Helmet>
+              <title>Our Team & Culture | CogniVectra Innovations</title>
+              <meta name="description" content="Meet the engineers and platform specialists behind CogniVectra. We specialize in production-ready AI systems and enterprise architecture." />
+            </Helmet>
+            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> CogniVectra Team</span>
 
-            <h1>
-              Enterprise Platform <br />
-              Engineering Partners
-            </h1>
+            <h1>The CogniVectra Team</h1>
 
             <p>
               CogniVectra Innovations is an enterprise AI and healthcare platform
@@ -53,7 +54,7 @@ export default function WhoWeAre() {
 
             <div className="hero-cta">
               <Link to="/contact" className="btn">
-                Talk to Us
+                Book Strategy Call
               </Link>
               <Link to="/#services" className="btn-outline">
                 View Services
@@ -214,7 +215,7 @@ export default function WhoWeAre() {
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
             <Link to="/contact" className="btn">
-              Connect with an Architect
+              Book Strategy Call
             </Link>
             <Link to="/careers" className="btn-outline">
               Join Our Team

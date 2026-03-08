@@ -147,29 +147,21 @@ export default function Home() {
   return (
     <main>
       <Helmet>
-        <title>CogniVectra | Elite GenAI, Cloud & Healthcare Platform Engineering</title>
-        <meta name="description" content="CogniVectra delivers production-ready GenAI foundations, scalable Healthcare EMR, and expert Cloud-native engineering for modern enterprises and startups." />
-        <meta name="keywords" content="Enterprise GenAI, Healthcare EMR, Cloud Architecture, DevOps Automation, Multi-tenant SaaS, CogniVectra, AI Platform Engineering" />
-        <meta property="og:title" content="CogniVectra | Elite GenAI & Healthcare Platforms" />
-        <meta property="og:description" content="Production-ready GenAI foundations and scalable Healthcare platforms for modern enterprises." />
-        <meta property="og:url" content="https://cognivectra.com/" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://cognivectra.com/og-image.png" />
+        <title>CogniVectra | GenAI & Healthcare EMR Platform Engineering</title>
+        <meta name="description" content="CogniVectra builds production‑ready GenAI, EMR, and cloud platforms for healthcare, education, and fintech organizations." />
+        <meta name="keywords" content="GenAI healthcare, EMR platform, cloud-native EMR, multi-tenant SaaS, algorithmic trading consulting, CogniVectra" />
       </Helmet>
-
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section className="hero-modern">
         <div className="hero-modern-inner">
           <motion.div
             className="hero-copy"
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <motion.span variants={fadeInUp} className="hero-badge">Enterprise-Grade Architecture</motion.span>
-            <h1 style={{ opacity: 1, transform: 'none' }}>
-              Enterprise GenAI and Healthcare Platforms <br />Ready for Deployment
-            </h1>
+            <span className="hero-badge"><LuCpu style={{ marginRight: '0.4rem' }} /> Enterprise AI Orchestration</span>
+            <h1>GenAI & Healthcare <br />Platform Engineering</h1>
             <motion.p variants={fadeInUp}>
               Cognivectra builds production-ready EMR systems, multi-tenant SaaS platforms,
               and enterprise GenAI solutions designed for healthcare, education, and modern enterprises.

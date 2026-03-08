@@ -29,8 +29,12 @@ export default function Services() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
+            <Helmet>
+              <title>Enterprise AI & Cloud Services | CogniVectra</title>
+              <meta name="description" content="Modular, production-ready engineering services including cloud architecture, DevOps, and GenAI orchestration for modern enterprises." />
+            </Helmet>
             <span className="hero-badge"><LuSettings style={{ marginRight: '0.4rem' }} /> Enterprise-Grade Architecture</span>
-            <h1>Services Built for <br />Speed, Scale & Stability</h1>
+            <h1>Platform Engineering <br />for Speed, Scale & Stability</h1>
             <p>
               CogniVectra delivers modular, production-ready systems that help
               enterprises build intelligent platforms, automate operations, and
@@ -38,7 +42,7 @@ export default function Services() {
             </p>
             <div className="hero-cta">
               <Link to="/contact" className="btn">Book Strategy Call</Link>
-              <Link to="/engagements" className="btn-outline">View Engagements</Link>
+              <Link to="/#services" className="btn-outline">View Services</Link>
             </div>
 
             <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
@@ -135,8 +139,8 @@ export default function Services() {
               Connect with our architects to discuss your production-ready deployment strategy.
             </p>
             <div className="hero-cta" style={{ justifyContent: 'center' }}>
-              <Link to="/contact" className="btn">Request Demo</Link>
-              <Link to="/contact" className="btn-outline">Start Strategy Call</Link>
+              <Link to="/contact" className="btn">Book Strategy Call</Link>
+              <Link to="/engagements" className="btn-outline">View Engagements</Link>
             </div>
           </motion.div>
         </div>

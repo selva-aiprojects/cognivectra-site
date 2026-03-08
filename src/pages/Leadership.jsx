@@ -21,6 +21,10 @@ export default function Leadership() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
+                        <Helmet>
+                            <title>Leadership & Technical Vision | CogniVectra</title>
+                            <meta name="description" content="Meet the leadership team at CogniVectra. Over 25 years of hands-on technical excellence and strategic vision in platform engineering." />
+                        </Helmet>
                         <span className="hero-badge">💼 Leadership</span>
                         <h1>Expertise That <br />Drives Innovation</h1>
                         <p>
@@ -29,7 +33,7 @@ export default function Leadership() {
                             to guide CogniVectra toward the future of AI.
                         </p>
                         <div className="hero-cta">
-                            <Link to="/contact" className="btn">Connect with Us</Link>
+                            <Link to="/contact" className="btn">Book Strategy Call</Link>
                             <Link to="/who-we-are" className="btn-outline">About Our Mission</Link>
                         </div>
                     </motion.div>
@@ -145,8 +149,8 @@ export default function Leadership() {
                             Leverage our decades of experience to accelerate your journey.
                         </p>
                         <div className="hero-cta" style={{ justifyContent: 'center' }}>
-                            <button onClick={() => { }} className="btn">Request Demo</button>
-                            <Link to="/contact" className="btn-outline">
+                            <Link to="/contact" className="btn">Book Strategy Call</Link>
+                            <Link to="/products" className="btn-outline">
                                 View Platforms
                             </Link>
                         </div>

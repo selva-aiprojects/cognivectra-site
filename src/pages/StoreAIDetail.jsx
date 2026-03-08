@@ -112,15 +112,9 @@ export default function StoreAIDetail() {
     return (
         <main>
             <Helmet>
-                <title>StoreAI | Enterprise GenAI for Retail Management & Analytics</title>
-                <meta name="description" content="StoreAI is an enterprise-grade GenAI platform for retail management. Optimize inventory, predict sales trends, and gain customer insights with our scalable AI platform." />
-                <meta name="keywords" content="AI Retail Management, Retail Predictive Analytics, Smart Inventory, StoreAI, CogniVectra, Retail AI Platform, Automated Replenishment" />
-                <meta property="og:title" content="StoreAI | Retail Intelligence at Enterprise Scale" />
-                <meta property="og:description" content="Transform retail operations with our production-ready GenAI and predictive analytics platform." />
-                <meta property="og:url" content="https://cognivectra.com/products/storeai" />
-                <meta property="og:type" content="website" />
-                <meta property="og:image" content={storeAIImg} />
-                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/storeai-logo.svg" />
+                <title>StoreAI | Enterprise GenAI for Retail Intelligence</title>
+                <meta name="description" content="Production-ready GenAI platform for retail management. Optimize inventory, predict sales trends, and gain customer insights with our scalable AI platform." />
+                <meta name="keywords" content="retail AI, smart inventory management, predictive analytics, StoreAI, retail tech automation" />
             </Helmet>
             {/* HERO */}
             <section className="hero-modern">
@@ -134,7 +128,7 @@ export default function StoreAIDetail() {
                         <span className="hero-badge">Retail Intelligence</span>
                         <div className="flex items-center gap-4 mb-4">
                             <ProductLogo type="store" style={{ marginBottom: '1rem' }} />
-                            <h1>StoreAI</h1>
+                            <h1>StoreAI Platform</h1>
                         </div>
                         <div style={{ marginTop: '2.5rem', padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '500px' }}>
                             <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Request a Live Demo</h4>

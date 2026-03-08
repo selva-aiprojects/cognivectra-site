@@ -115,8 +115,9 @@ export default function EduPortalDetail() {
     return (
         <main>
             <Helmet>
-                <title>EduPortal | Next-Gen Institution Management & AI Learning</title>
-                <meta name="description" content="EduPortal is a scalable, multi-tenant education management platform. Empowering institutions with AI-driven analytics, streamlined administration, and digital learning tools." />
+                <title>EduPortal | AI Institution Management</title>
+                <meta name="description" content="Scalable institution management platform with AI-driven analytics, automated scheduling, and multi-tenant administration." />
+                <meta name="keywords" content="education management, AI learning, school automation, EduPortal, edtech AI" />
             </Helmet>
 
             {/* HERO */}
@@ -131,7 +132,7 @@ export default function EduPortalDetail() {
                         <span className="hero-badge">AI-Powered Education Platform</span>
                         <div className="flex items-center gap-4 mb-4">
                             <ProductLogo type="edu" style={{ marginBottom: '1rem' }} />
-                            <h1>EduPortal</h1>
+                            <h1>EduPortal System</h1>
                         </div>
                         <p>
                             Next-generation institution management platform. **Reduced manual scheduling time by 15+ hours per week** through intelligent automation and multi-tenant digital administration.
@@ -154,7 +155,7 @@ export default function EduPortalDetail() {
                         </div>
 
                         <div className="hero-cta" style={{ marginTop: '2rem' }}>
-                            <button onClick={() => setIsDemoModalOpen(true)} className="btn">Book Strategy Call</button>
+                            <Link to="/contact?product=eduportal" className="btn">Book Strategy Call</Link>
                             <a
                                 href="https://eduportal-new.onrender.com/"
                                 target="_blank"
@@ -297,9 +298,9 @@ export default function EduPortalDetail() {
                             Transform your institution with AI-driven management. Schedule your strategy call today.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button onClick={() => setIsDemoModalOpen(true)} className="btn">
+                            <Link to="/contact?product=eduportal" className="btn">
                                 Book Strategy Call
-                            </button>
+                            </Link>
                             <Link to="/contact" className="btn-outline">
                                 View Case Studies
                             </Link>

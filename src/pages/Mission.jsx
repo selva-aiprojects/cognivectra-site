@@ -21,16 +21,24 @@ export default function Mission() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
+            <Helmet>
+              <title>Mission & Vision | CogniVectra Production-Ready Innovation</title>
+              <meta name="description" content="Discover CogniVectra's mission to empower organizations through high-performance technology and our vision for accessible, production-ready AI orchestration." />
+            </Helmet>
             <span className="hero-badge">🎯 Mission & Vision</span>
-            <h1>Empowering Organizations <br />Through High-Performance Technology</h1>
+            <h1>High-Performance Technology <br />for Modern Enterprises</h1>
             <p>
               We help enterprises build reliable, automated platforms that scale
               with confidence. Our mission is to make production-ready
               infrastructure and AI orchestration accessible to every organization.
             </p>
             <div className="hero-cta">
-              <Link to="/contact" className="btn">Start a Conversation</Link>
-              <Link to="/services" className="btn-outline">Explore Services</Link>
+              <Link to="/contact" className="btn">
+                Book Strategy Call
+              </Link>
+              <Link to="/#services" className="btn-outline">
+                View Services
+              </Link>
             </div>
 
             <p className="hero-subtext" style={{ marginTop: "2rem", opacity: 0.6 }}>
@@ -135,9 +143,14 @@ export default function Mission() {
               Let's discuss how we can build the production-ready foundation for
               your organization’s next phase of growth.
             </p>
-            <Link to="/services" className="btn">
-              Explore Our Services
-            </Link>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
+              <Link to="/contact" className="btn">
+                Book Strategy Call
+              </Link>
+              <Link to="/careers" className="btn-outline">
+                Join Our Team
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
