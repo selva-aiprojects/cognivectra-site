@@ -291,8 +291,8 @@ a {
 
 @media (max-width: 1150px) {
   .brand-logo {
-    height: 70px;
-    /* Increased for mobile visibility */
+    height: 85px;
+    /* Significantly increased for mobile impact */
   }
 
   .brand-divider,
@@ -487,8 +487,8 @@ a {
 }
 
 .mobile-menu-logo {
-  height: 50px;
-  /* Increased from 28px */
+  height: 60px;
+  /* Further increased for impact */
   width: auto;
 }
 
@@ -2694,6 +2694,15 @@ select:focus {
   color: white;
   font-size: 24px;
   border: none;
+}
+
+@media (max-width: 768px) {
+  .chat-fab {
+    right: auto;
+    left: 2rem;
+    /* Move to left on mobile to avoid 'Architecture Review' overlap */
+    bottom: 1.5rem;
+  }
 }
 
 .chat-fab:hover {

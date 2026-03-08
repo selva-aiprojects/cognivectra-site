@@ -651,7 +651,7 @@ export default function AdminEnhanced() {
                     </div>
                     <div style={{ padding: '30px', flex: 1, overflowY: 'auto', color: '#1e293b', fontFamily: 'serif' }}>
                       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                        <h2 style={{ margin: 0, color: '#0f172a' }}>CogniVectra</h2>
+                        <img src="/logo-enterprise.png" alt="CogniVectra" style={{ height: '50px', width: 'auto', marginBottom: '10px' }} />
                         <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Employment Offer Letter</div>
                       </div>
 

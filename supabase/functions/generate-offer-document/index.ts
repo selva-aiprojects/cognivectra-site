@@ -24,7 +24,7 @@ const TEMPLATE = `
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 700px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                     <tr>
                         <td style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0;">
-                            <img src="https://cognivectra.org/cognivectra-dark-crop.png" alt="CogniVectra Logo" style="max-width: 200px; height: auto; margin-bottom: 10px;">
+                            <img src="/logo-enterprise.png" alt="CogniVectra Logo" style="max-width: 200px; height: auto; margin-bottom: 10px;">
                             <h1 style="color: #ffffff; font-size: 26px; margin: 10px 0 0 0; font-weight: 600;">Employment Offer Letter</h1>
                         </td>
                     </tr>

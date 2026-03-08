@@ -185,7 +185,7 @@ export default function ResetPassword() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        src="/cognivectra-dark-crop.png"
+                        src="/logo-enterprise.png"
                         alt="CogniVectra"
                         style={{ height: '32px', width: 'auto', margin: '0 auto 1.5rem' }}
                     />

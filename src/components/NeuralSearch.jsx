@@ -20,7 +20,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef(null);
 
-    const logo = '/cognivectra-dark-crop.png';
+    const logo = '/logo-enterprise.png';
 
     useEffect(() => {
         if (isOpen) {

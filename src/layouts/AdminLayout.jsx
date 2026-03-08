@@ -97,7 +97,7 @@ export default function AdminLayout({ children }) {
                         {tenant?.branding?.logo_url ? (
                             <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '32px', width: 'auto', marginBottom: '0.5rem' }} />
                         ) : (
-                            <LuGlobe style={{ fontSize: '1.5rem', color: 'var(--accent-primary)', marginBottom: '0.5rem' }} />
+                            <img src="/logo-enterprise.png" alt="CogniVectra" style={{ height: '32px', width: 'auto', marginBottom: '0.5rem', filter: 'brightness(1.2)' }} />
                         )}
                         <div data-testid="tenant-name" style={{ fontSize: '0.9rem', fontWeight: '800', color: 'white', textAlign: 'center' }}>
                             {tenant?.tenant_name || 'Operations OS'}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../lib/supabase";
 import chatIcon from "../assets/chat-icon.svg";
+import { FaTimes } from "react-icons/fa";
 import { trackEvent } from "../lib/analytics";
 
 const STORAGE_KEY = "cv_chat_state_v3";
@@ -354,8 +355,12 @@ export default function Chatbot({ isOpen, setIsOpen }) {
   ========================= */
   return (
     <>
-      <button className="chat-fab" onClick={() => setIsOpen(!isOpen)}>
-        <img src={chatIcon} alt="Chat" />
+      <button className={`chat-fab ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? "Close Chat" : "Open Chat"}>
+        {isOpen ? (
+          <FaTimes style={{ fontSize: '24px' }} />
+        ) : (
+          <img src={chatIcon} alt="Chat" />
+        )}
       </button>
 
       {showResumeBanner && !isOpen && (
