@@ -16,7 +16,7 @@ export default function Footer() {
           </p>
           <div className="footer-cta">
             <Link to="/contact" className="btn">
-              Talk to an Expert →
+              Book Strategy Call →
             </Link>
           </div>
         </div>

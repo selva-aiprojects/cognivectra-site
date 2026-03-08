@@ -257,19 +257,24 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             {/* Request Demo Button (Primary CTA) */}
-            <button
-              onClick={() => handleDemoRequest('general')}
+            <Link
+              to="/contact"
+              onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Navbar' })}
               className="btn nav-cta"
               style={{
                 border: 'none',
                 color: 'white',
                 padding: '0.75rem 1.5rem',
                 fontSize: '0.9rem',
-                marginLeft: '0.5rem'
+                marginLeft: '0.5rem',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
-              Request Demo
-            </button>
+              Book Strategy Call
+            </Link>
 
             {/* AI Assistant */}
             <button
@@ -458,11 +463,10 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               className="btn mobile-cta"
               onClick={() => {
                 setMobileMenuOpen(false);
-                setDemoPlatform('general');
-                setIsDemoModalOpen(true);
+                trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Mobile Nav' });
               }}
             >
-              Request Demo
+              Book Strategy Call
             </NavLink>
           </div>
         </div>

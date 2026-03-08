@@ -112,17 +112,17 @@ export default function MedFlowDetail() {
                             Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, MedFlow streamlines clinical workflows and patient management.
                         </p>
                         <div className="hero-cta">
+                            <Link to="/contact?product=medflow" className="btn">
+                                Book Strategy Call
+                            </Link>
                             <a
                                 href="https://emr-app-0909.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn"
+                                className="btn-outline"
                             >
                                 Try Live Demo ↗
                             </a>
-                            <Link to="/contact?product=medflow" className="btn-outline">
-                                Request Custom Demo
-                            </Link>
                         </div>
                     </motion.div>
 
@@ -339,7 +339,7 @@ export default function MedFlowDetail() {
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                             <Link to="/contact?product=medflow" className="btn">
-                                Request Custom Demo
+                                Book Strategy Call
                             </Link>
                             <a
                                 href="https://emr-app-0909.onrender.com/"

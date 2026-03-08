@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import stewardImg from "../assets/generated/product-stocksteward.png";
+import eduImg from "../assets/generated/ind-edtech-3d.png";
 import ProductLogo from "../components/ProductLogo";
+import DemoRequestModal from "../components/DemoRequestModal";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -14,55 +15,57 @@ const fadeInUp = {
 
 const pricingPlans = [
     {
-        name: "Starter",
-        price: "$99",
+        name: "Standard",
+        price: "$199",
         period: "month",
-        description: "Perfect for individual traders and small portfolios",
+        description: "Ideal for individual training centers and small setups",
         features: [
-            "Up to 10 portfolio connections",
-            "Basic AI market analysis",
-            "Real-time price alerts",
-            "Monthly performance reports",
+            "Up to 10 instructors",
+            "Core student management",
+            "Course scheduling",
+            "Digital assessments",
+            "Standard reporting",
             "Email support"
         ],
         highlighted: false
     },
     {
-        name: "Professional",
-        price: "$299",
+        name: "Campus",
+        price: "$499",
         period: "month",
-        description: "Ideal for active traders and investment firms",
+        description: "Optimized for colleges and professional institutions",
         features: [
-            "Unlimited portfolio connections",
-            "Advanced AI market sentiment analysis",
-            "Algorithmic trading automation",
-            "Real-time risk assessment",
-            "Custom trading strategies",
+            "Up to 100 instructors",
+            "Advanced learning analytics",
+            "AI-powered grading assistant",
+            "Video lecture hosting",
+            "Automated certification",
             "Priority support",
-            "API access"
+            "Parent-Student mobile app"
         ],
         highlighted: true
     },
     {
-        name: "Enterprise",
+        name: "Institution",
         price: "Custom",
         period: "",
-        description: "Tailored solutions for hedge funds and institutions",
+        description: "Enterprise solutions for university networks",
         features: [
-            "All Professional features",
-            "Dedicated infrastructure",
-            "Custom AI model training",
-            "White-label solutions",
-            "On-premise deployment option",
-            "24/7 dedicated support",
-            "Custom integrations"
+            "Unlimited users",
+            "Custom LLM integration",
+            "Full API access",
+            "Dedicated cloud infrastructure",
+            "Whitelabel branding",
+            "24/7 technical lead",
+            "Advanced compliance & security"
         ],
         highlighted: false
     }
 ];
 
-export default function StockStewardDetail() {
+export default function EduPortalDetail() {
     const { hash } = useLocation();
+    const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
     useEffect(() => {
         if (hash) {
@@ -79,16 +82,10 @@ export default function StockStewardDetail() {
     return (
         <main>
             <Helmet>
-                <title>StockSteward AI | Enterprise FinTech & Algorithmic Trading</title>
-                <meta name="description" content="StockSteward AI is a sophisticated enterprise FinTech platform for algorithmic trading, market intelligence, and AI-powered portfolio management." />
-                <meta name="keywords" content="FinTech Platform, Algorithmic Trading AI, Market Intelligence, Steward Platform, StockSteward, CogniVectra" />
-                <meta property="og:title" content="StockSteward AI | FinTech Intelligence at Scale" />
-                <meta property="og:description" content="Master the markets with our production-ready AI trading platform." />
-                <meta property="og:url" content="https://cognivectra.com/products/stocksteward" />
-                <meta property="og:type" content="website" />
-                <meta property="og:image" content={stewardImg} />
-                <link rel="icon" type="image/svg+xml" href="/src/assets/logos/stocksteward-logo.svg" />
+                <title>EduPortal | Next-Gen Institution Management & AI Learning</title>
+                <meta name="description" content="EduPortal is a scalable, multi-tenant education management platform. Empowering institutions with AI-driven analytics, streamlined administration, and digital learning tools." />
             </Helmet>
+
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">
@@ -98,21 +95,18 @@ export default function StockStewardDetail() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge">AIEngine Platform</span>
+                        <span className="hero-badge">AI-Powered Education Platform</span>
                         <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="steward" style={{ marginBottom: '1rem' }} />
-                            <h1>StockSteward AI</h1>
+                            <ProductLogo type="edu" style={{ marginBottom: '1rem' }} />
+                            <h1>EduPortal</h1>
                         </div>
                         <p>
-                            Sophisticated algorithmic trading and market intelligence platform powered by advanced AI.
-                            Make data-driven investment decisions with real-time insights and automated portfolio management.
+                            Next-generation institution management platform. **Reduced manual scheduling time by 15+ hours per week** through intelligent automation and multi-tenant digital administration.
                         </p>
                         <div className="hero-cta">
-                            <Link to="/contact?product=stocksteward" className="btn">
-                                Book Strategy Call
-                            </Link>
+                            <button onClick={() => setIsDemoModalOpen(true)} className="btn">Book Strategy Call</button>
                             <a
-                                href="https://steward-platform.onrender.com/"
+                                href="https://eduportal-new.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -129,7 +123,7 @@ export default function StockStewardDetail() {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="industry-visual glass-panel">
-                            <img src={stewardImg} alt="StockSteward Dashboard" className="w-full h-full object-cover rounded-xl" />
+                            <img src={eduImg} alt="EduPortal Dashboard" className="w-full h-full object-cover rounded-xl" />
                         </div>
                     </motion.div>
                 </div>
@@ -141,41 +135,41 @@ export default function StockStewardDetail() {
                     className="section-header text-center"
                     {...fadeInUp}
                 >
-                    <span className="hero-badge">Powerful Features</span>
-                    <h3>Everything You Need for Smart Trading</h3>
+                    <span className="hero-badge">Academic Excellence</span>
+                    <h3>Intelligent Institution Orchestration</h3>
                 </motion.div>
 
                 <div className="services-modern-grid">
                     {[
                         {
+                            icon: "🎓",
+                            title: "Multi-Tenant Hub",
+                            desc: "Manage multiple branches or departments under one unified secure architecture"
+                        },
+                        {
                             icon: "🤖",
-                            title: "AI-Powered Analysis",
-                            desc: "Advanced LLM integration for market sentiment analysis and predictive modeling"
+                            title: "AI Grading Lead",
+                            desc: "Automate subjective and objective assessments with high-accuracy AI assistance"
+                        },
+                        {
+                            icon: "📅",
+                            title: "Smart Timetabling",
+                            desc: "Resolve complex scheduling conflicts automatically across thousands of students"
                         },
                         {
                             icon: "📊",
-                            title: "Real-time Analytics",
-                            desc: "Live market data processing with instant insights and recommendations"
+                            title: "Learning Analytics",
+                            desc: "Deep insights into student performance using predictive modeling"
                         },
                         {
-                            icon: "⚡",
-                            title: "Automated Trading",
-                            desc: "Execute trades automatically based on your custom strategies and AI signals"
+                            icon: "📱",
+                            title: "Unified App",
+                            desc: "Real-time communication bridge between faculty, students, and parents"
                         },
                         {
                             icon: "🛡️",
-                            title: "Risk Management",
-                            desc: "Comprehensive risk assessment and portfolio optimization tools"
-                        },
-                        {
-                            icon: "📈",
-                            title: "Performance Tracking",
-                            desc: "Detailed analytics and reporting to track your investment performance"
-                        },
-                        {
-                            icon: "🔗",
-                            title: "API Integration",
-                            desc: "Connect with your favorite brokers and financial data providers"
+                            title: "Enterprise Security",
+                            desc: "Cloud-native data protection ensuring student privacy and institutional security"
                         }
                     ].map((feature, i) => (
                         <motion.div
@@ -193,16 +187,13 @@ export default function StockStewardDetail() {
             </section>
 
             {/* PRICING */}
-            <section id="pricing" className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.5)' }}>
+            <section id="pricing" className="services-modern">
                 <motion.div
                     className="section-header text-center"
                     {...fadeInUp}
                 >
                     <span className="hero-badge">Pricing Plans</span>
-                    <h3>Choose Your Trading Power</h3>
-                    <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
-                        Transparent pricing with no hidden fees. Start with our free trial and scale as you grow.
-                    </p>
+                    <h3>Structured for Educational Growth</h3>
                 </motion.div>
 
                 <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
@@ -210,8 +201,6 @@ export default function StockStewardDetail() {
                         <motion.div
                             key={i}
                             className={`service-modern-card glass-panel ${plan.highlighted ? 'highlighted-plan' : ''}`}
-                            {...fadeInUp}
-                            transition={{ delay: i * 0.1 }}
                             style={{
                                 border: plan.highlighted ? '2px solid var(--accent-primary)' : '1px solid rgba(255,255,255,0.1)',
                                 position: 'relative'
@@ -219,7 +208,7 @@ export default function StockStewardDetail() {
                         >
                             {plan.highlighted && (
                                 <span className="hero-badge" style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    Most Popular
+                                    Recommended
                                 </span>
                             )}
                             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -238,11 +227,11 @@ export default function StockStewardDetail() {
                                 ))}
                             </ul>
                             <Link
-                                to="/contact?product=stocksteward&plan=${plan.name.toLowerCase()}"
+                                to="/contact?product=eduportal"
                                 className={`btn ${plan.highlighted ? '' : 'btn-outline'}`}
                                 style={{ width: '100%', textAlign: 'center' }}
                             >
-                                {plan.name === 'Enterprise' ? 'Contact Sales' : 'Start Free Trial'}
+                                {plan.name === 'Institution' ? 'Contact Sales' : 'Get Started'}
                             </Link>
                         </motion.div>
                     ))}
@@ -253,26 +242,27 @@ export default function StockStewardDetail() {
             <section className="cta-modern">
                 <div className="container text-center">
                     <motion.div {...fadeInUp}>
-                        <h3>Ready to Transform Your Trading Strategy?</h3>
+                        <h3>Ready to Modernize Your Learning Environment?</h3>
                         <p className="mb-8">
-                            Get a personalized demo and see how StockSteward AI can enhance your investment decisions.
+                            Transform your institution with AI-driven management. Schedule your strategy call today.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <Link to="/contact?product=stocksteward" className="btn">
+                            <button onClick={() => setIsDemoModalOpen(true)} className="btn">
                                 Book Strategy Call
+                            </button>
+                            <Link to="/contact" className="btn-outline">
+                                View Case Studies
                             </Link>
-                            <a
-                                href="https://steward-platform.onrender.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-outline"
-                            >
-                                Try Live Platform
-                            </a>
                         </div>
                     </motion.div>
                 </div>
             </section>
+
+            <DemoRequestModal
+                isOpen={isDemoModalOpen}
+                onClose={() => setIsDemoModalOpen(false)}
+                platform="eduportal"
+            />
         </main>
     );
 }

@@ -37,6 +37,7 @@ import Leadership from "./pages/Leadership.jsx";
 import StockStewardDetail from "./pages/StockStewardDetail.jsx";
 import StoreAIDetail from "./pages/StoreAIDetail.jsx";
 import MedFlowDetail from "./pages/MedFlowDetail.jsx";
+import EduPortalDetail from "./pages/EduPortalDetail.jsx";
 
 
 import chatIcon from "./assets/chat-icon.svg";
@@ -145,6 +146,7 @@ export default function App() {
           <Route path="/products/stocksteward" element={<StockStewardDetail />} />
           <Route path="/products/storeai" element={<StoreAIDetail />} />
           <Route path="/products/medflow" element={<MedFlowDetail />} />
+          <Route path="/products/eduportal" element={<EduPortalDetail />} />
           <Route path="/leadership" element={<Leadership />} />
           <Route path="/admin" element={<Admin />} />
 

@@ -108,17 +108,17 @@ export default function StoreAIDetail() {
                             From automated inventory tracking to predictive sales analytics and customer insights.
                         </p>
                         <div className="hero-cta">
+                            <Link to="/contact?product=storeai" className="btn">
+                                Book Strategy Call
+                            </Link>
                             <a
                                 href="https://store-ai-prd.onrender.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn"
+                                className="btn-outline"
                             >
                                 Try Live Demo ↗
                             </a>
-                            <Link to="/contact?product=storeai" className="btn-outline">
-                                Request Custom Demo
-                            </Link>
                         </div>
                     </motion.div>
 
@@ -259,7 +259,7 @@ export default function StoreAIDetail() {
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                             <Link to="/contact?product=storeai" className="btn">
-                                Request Custom Demo
+                                Book Strategy Call
                             </Link>
                             <a
                                 href="https://store-ai-prd.onrender.com/"

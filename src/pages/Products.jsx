@@ -7,6 +7,7 @@ import heroProducts from "../assets/generated/hero-products-ultra-8k.png";
 import storeAIImg from "../assets/generated/product-storeai.png";
 import stewardImg from "../assets/generated/product-stocksteward.png";
 import emrImg from "../assets/generated/ind-health-3d.png";
+import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import ProductLogo from "../components/ProductLogo";
 import { trackEvent } from "../lib/analytics";
 
@@ -57,8 +58,7 @@ export default function Products() {
                             complex challenges in healthcare, retail, and enterprise AI orchestration.
                         </p>
                         <div className="hero-cta">
-                            <a href="#steward" onClick={() => trackEvent('cta_click', { cta_name: 'Explore Platforms', location: 'Products Hero' })} className="btn">Explore Platforms</a>
-                            <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Inquire for Custom Deployment', location: 'Products Hero' })} className="btn-outline">Inquire for Custom Deployment</Link>
+                            <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })} className="btn">Book Strategy Call</Link>
                         </div>
                     </motion.div>
 
@@ -106,14 +106,14 @@ export default function Products() {
                                 onClick={() => trackEvent('external_link_click', { product: 'stocksteward', location: 'Products Grid' })}
                                 className="btn"
                             >
-                                Explore StockSteward ↗
+                                Launch Platform ↗
                             </a>
-                            <Link to="/products/stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'stocksteward' })} className="btn-outline">
-                                View Details & Pricing
+                            <Link to="/products/stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'stocksteward' })} className="btn-outline">
+                                View Details
                             </Link>
-                            <Link to="/contact?product=stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'stocksteward' })} className="btn">
+                            <button onClick={() => handleDemoRequest('steward')} className="btn-outline">
                                 Request Demo
-                            </Link>
+                            </button>
                         </div>
                     </motion.div>
 
@@ -168,14 +168,14 @@ export default function Products() {
                                 onClick={() => trackEvent('external_link_click', { product: 'storeai', location: 'Products Grid' })}
                                 className="btn"
                             >
-                                Visit StoreAI Live ↗
+                                Launch Platform ↗
                             </a>
-                            <Link to="/products/storeai" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'storeai' })} className="btn-outline">
-                                View Details & Pricing
+                            <Link to="/products/storeai" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'storeai' })} className="btn-outline">
+                                View Details
                             </Link>
-                            <Link to="/contact?product=storeai" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'storeai' })} className="btn">
+                            <button onClick={() => handleDemoRequest('storeai')} className="btn-outline">
                                 Request Demo
-                            </Link>
+                            </button>
                         </div>
                     </motion.div>
                 </div>
@@ -212,14 +212,14 @@ export default function Products() {
                                 onClick={() => trackEvent('external_link_click', { product: 'medflow', location: 'Products Grid' })}
                                 className="btn"
                             >
-                                Launch MedFlow ↗
+                                Launch Platform ↗
                             </a>
-                            <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Details & Pricing', product: 'medflow' })} className="btn-outline">
-                                View Details & Pricing
+                            <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'medflow' })} className="btn-outline">
+                                View Details
                             </Link>
-                            <Link to="/contact?product=medflow" onClick={() => trackEvent('cta_click', { cta_name: 'Request Demo', product: 'medflow' })} className="btn">
+                            <button onClick={() => handleDemoRequest('medflow')} className="btn-outline">
                                 Request Demo
-                            </Link>
+                            </button>
                             <a
                                 href="https://drstpushpa.com"
                                 target="_blank"
@@ -247,6 +247,59 @@ export default function Products() {
                     >
                         <div className="industry-visual glass-panel">
                             <img src={emrImg} alt="MedFlow EMR Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* FEATURED PRODUCT 4 - EduPortal */}
+            <section id="eduportal" className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                <div className="hero-modern-inner" style={{ padding: 0 }}>
+                    <motion.div
+                        className="hero-visual"
+                        {...fadeInUp}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={clientEduImg} alt="EduPortal Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        className="hero-copy"
+                        {...fadeInUp}
+                    >
+                        <span className="hero-badge">AI-Powered EdTech</span>
+                        <div className="flex items-center gap-4 mb-4">
+                            <ProductLogo type="eduportal" style={{ marginBottom: '1rem' }} />
+                            <h3>EduPortal</h3>
+                        </div>
+                        <p>
+                            A comprehensive institution management platform that leverages AI to automate
+                            complex administrative tasks. Designed for enterprise-scale deployment with
+                            robust multi-tenant capabilities.
+                        </p>
+                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
+                            <li>Intelligent Resource Scheduling</li>
+                            <li>AI-Driven Student Progress Tracking</li>
+                            <li>Automated Enrollment Portals</li>
+                            <li>Multi-Campus Centralized Management</li>
+                        </ul>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
+                            <a
+                                href="https://eduportal-new.onrender.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'eduportal', location: 'Products Grid' })}
+                                className="btn"
+                            >
+                                Launch Platform ↗
+                            </a>
+                            <Link to="/products/eduportal" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'eduportal' })} className="btn-outline">
+                                View Details
+                            </Link>
+                            <button onClick={() => handleDemoRequest('eduportal')} className="btn-outline">
+                                Request Demo
+                            </button>
                         </div>
                     </motion.div>
                 </div>
@@ -308,6 +361,6 @@ export default function Products() {
                     </motion.div>
                 </div>
             </section>
-        </main>
+        </main >
     );
 }

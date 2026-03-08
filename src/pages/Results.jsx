@@ -36,9 +36,9 @@ export default function Results() {
             </p>
 
             <div className="hero-cta">
-              <button onClick={() => { }} className="btn">
-                Request Demo
-              </button>
+              <Link to="/contact" className="btn">
+                Book Strategy Call
+              </Link>
               <Link to="/#services" className="btn-outline">
                 View Services
               </Link>

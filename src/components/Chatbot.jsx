@@ -299,7 +299,7 @@ export default function Chatbot({ isOpen, setIsOpen }) {
           type: "final",
           text:
             "🎉 You're all set!\n\n📅 Want to book a 15-minute strategy call now?",
-          calendly: true,
+          strategyCall: true,
         },
       ]);
 
@@ -396,11 +396,11 @@ export default function Chatbot({ isOpen, setIsOpen }) {
                 </div>
               )}
 
-              {msg.calendly && (
+              {msg.strategyCall && (
                 <div className="chat-options">
                   <button onClick={() => {
                     trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Chatbot' });
-                    window.location.href = "/contact?tab=call";
+                    window.location.href = "/contact";
                   }}>
                     📅 Book Strategy Call
                   </button>

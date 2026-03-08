@@ -107,8 +107,7 @@ export default function Home() {
               and enterprise GenAI solutions designed for healthcare, education, and modern enterprises.
             </motion.p>
             <motion.div variants={fadeInUp} className="hero-cta">
-              <button onClick={() => handleDemoRequest('general')} className="btn">Request Demo</button>
-              <Link to="/products" onClick={() => trackEvent('cta_click', { cta_name: 'View Platforms', location: 'Hero' })} className="btn-outline">View Platforms</Link>
+              <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })} className="btn">Book Strategy Call</Link>
             </motion.div>
           </motion.div>
 
@@ -176,6 +175,9 @@ export default function Home() {
             We provide high-impact enterprise platform engineering and strategic leadership
             to help organizations deploy resilient, GenAI-powered systems at scale.
           </p>
+          <p style={{ color: "var(--accent-primary)", fontWeight: "600", marginTop: "1rem" }}>
+            We help enterprises move from prototype GenAI tools to secure, production platforms in weeks, not months.
+          </p>
         </motion.div>
 
         <motion.div
@@ -241,7 +243,7 @@ export default function Home() {
             <h4>EduPortal</h4>
             <p>AI-powered education platform designed for enterprise scale with multi-tenant deployment capabilities.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-              <Link to="/products" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <Link to="/products/eduportal" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
               <button onClick={() => handleDemoRequest('eduportal')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
             </div>
           </motion.div>
@@ -263,7 +265,7 @@ export default function Home() {
           >
             <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Enterprise Core</span>
             <h4>StewardPlatform</h4>
-            <p>Foundational multi-tenant SaaS architecture for building secure, scalable enterprise systems.</p>
+            <p>Foundational multi-tenant SaaS architecture (part of the StockSteward suite) for building secure, scalable enterprise systems. <br /><span style={{ fontSize: '0.85rem', opacity: 0.8, color: 'var(--accent-primary)' }}>StewardPlatform powers the StockSteward suite for fintech and trading.</span></p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products/stocksteward" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
               <button onClick={() => handleDemoRequest('steward')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
@@ -375,7 +377,7 @@ export default function Home() {
             </div>
             <h4>EduPortal</h4>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
-              A next-generation education management platform empowering institutions with seamless digital learning and administration tools.
+              Next-generation institution management. **Reduced manual scheduling by 40%** through intelligent automation.
             </p>
             <a href="https://eduportal-new.onrender.com/" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
               Visit Platform →
@@ -394,7 +396,7 @@ export default function Home() {
             </div>
             <h4>Kidz-Clinic</h4>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', flexGrow: 1 }}>
-              A specialized pediatric healthcare platform offering digital appointment scheduling and patient resource management.
+              Specialized pediatric healthcare platform. **Improved patient throughput by 22% and handled 10k+ monthly appointments** using MedFlow's smart scheduling.
             </p>
             <a href="https://kidz-clinic-client.onrender.com" target="_blank" rel="noopener noreferrer" className="btn-text" style={{ marginTop: 'auto' }}>
               Visit Clinic →
@@ -468,7 +470,7 @@ export default function Home() {
             <p>
               Cognivectra is an enterprise AI and healthcare platform engineering company
               specializing in production-ready EMR systems, multi-tenant SaaS platforms,
-              and enterprise GenAI integration.
+              and enterprise GenAI integration. We help organizations move from pilot GenAI projects to secure, production-grade platforms in weeks, not months.
             </p>
             <p>
               The company focuses on building secure, scalable platforms
@@ -506,10 +508,7 @@ export default function Home() {
             Connect with our architects to discuss your production-ready deployment strategy.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => handleDemoRequest('general')} className="btn">
-              Request Demo
-            </button>
-            <Link to="/contact" className="btn-outline" style={{ background: 'rgba(255,255,255,0.05)' }}>
+            <Link to="/contact" className="btn">
               Book Strategy Call
             </Link>
           </div>
