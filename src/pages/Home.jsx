@@ -956,32 +956,60 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-      {/* Sticky CTA */}
+      {/* Sticky CTA (Raised to avoid chat widget, styled to be compact and catchy) */}
       <motion.div
         className="sticky-cta-wrap"
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: showStickyCTA ? 1 : 0, y: showStickyCTA ? 0 : 100 }}
+        initial={{ opacity: 0, scale: 0.8, y: 50 }}
+        animate={showStickyCTA ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 50 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
         style={{
           position: 'fixed',
-          bottom: '2rem',
-          right: '2rem',
+          bottom: '6rem', // Raised above typical chat widget height
+          right: '1.5rem',
           zIndex: 100,
           pointerEvents: showStickyCTA ? 'auto' : 'none'
         }}
       >
         <Link
           to="/#architecture-review"
-          className="btn"
           style={{
-            boxShadow: '0 10px 30px rgba(99, 102, 241, 0.4)',
-            padding: '1rem 2rem',
-            borderRadius: '50px',
-            fontSize: '0.9rem',
-            fontWeight: '800'
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: 'linear-gradient(135deg, var(--accent-primary) 0%, #a855f7 100%)',
+            color: 'white',
+            textDecoration: 'none',
+            padding: '0.6rem 1.2rem',
+            borderRadius: '30px',
+            fontSize: '0.8rem',
+            fontWeight: '800',
+            letterSpacing: '0.5px',
+            boxShadow: '0 8px 25px rgba(99, 102, 241, 0.5)',
+            border: '1px solid rgba(255,255,255,0.2)'
           }}
         >
-          🚀 Architecture Review
+          <motion.span
+            animate={{ rotate: [0, -10, 10, -10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
+            style={{ display: 'inline-block' }}
+          >
+            🚀
+          </motion.span>
+          Review Architecture
         </Link>
+        {/* Subtle pulsing glow ring behind it */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            inset: '-4px',
+            borderRadius: '30px',
+            background: 'var(--accent-primary)',
+            zIndex: -1,
+            opacity: 0.4
+          }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
       </motion.div>
 
       {/* Demo Request Modal */}
