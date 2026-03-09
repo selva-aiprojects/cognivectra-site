@@ -11,14 +11,14 @@ This document details the technical architecture and business management modules
 - **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
 - **AI Core**: OpenAI GPT-4 + LangGraph + CrewAI (Multi-agent orchestration)
 - **Routing**: **Warm-Adapter** Intent Router (FastAPI) + deterministic orchestrator
-- **Security**: 3-layer encryption (Supabase Vault + Fernet + Environment injection)
+- **Security**: 3-layer encryption + **AI Guardrails** (Toxicity/Injection filtering)
 
 ### System Components
 - **Neural Search (RAG)**: Global intelligent search engine using Supabase Edge Functions with keyword fallback and agentic routing.
 - **Intent Router**: LoRA-enabled Python microservice classifying user queries into specialized intents.
 - **LangGraph Orchestrator**: Multi-agent state machine that routes intents to specific agent nodes for high-fidelity responses.
 - **Admin Dashboard**: Central hub for content review, social publishing, and business ops.
-- **Edge Functions**: Deno functions orchestrating requests between the frontend and AI microservices.
+- **Edge Functions**: Deno functions serving as the API Gateway, implementing **AI Guardrails** and orchestrating requests.
 
 ---
 
@@ -27,7 +27,7 @@ This document details the technical architecture and business management modules
 CogniVectra adheres to "Elite Growth" principles:
 - **Production-Ready Foundations**: Zero technical debt. Every component is senior-architected using modern, scalable patterns.
 - **IP Ownership**: Clients own 100% of the intellectual property. No black-box vendor lock-in.
-- **Security-First**: Integrated HIPAA-ready guardrails (MedFlow) and enterprise-grade authentication (Supabase).
+- **Security-First**: Integrated HIPAA-ready guardrails (MedFlow), enterprise-grade authentication, and **AI Safety Guardrails** (Toxicity/Injection defense).
 - **Conversion-Optimized**: Architecture prioritizes lead capture via low-friction inline forms and high-value "Lead Magnet" assets.
 - **Agentic Efficiency**: Leveraging multi-agent AI (CrewAI/LangGraph) with deterministic state management to eliminate cyclic reference loops. [Learn more](file:///d:/Training/working/cognivectra-site/docs/AI_CREWAI_STATE_MANAGEMENT.md).
 

@@ -45,6 +45,7 @@ Visual design and image management
 
 ### 🤖 **AI & Automation**
 - `AI_CREWAI_STATE_MANAGEMENT.md` - CrewAI & LangGraph State Management
+- `AI_SAFETY_GUARDRAILS.md` - AI Safety Guardrails (Toxicity & Injection)
 - `AI_CONTENT_README.md` - AI content generation setup (in root `/docs/`)
 - `SOCIAL_MEDIA_AI_OPERATIONS.md` - Social media integration guide
 

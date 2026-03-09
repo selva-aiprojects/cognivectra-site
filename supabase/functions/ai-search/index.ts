@@ -37,7 +37,7 @@ serve(async (req: Request) => {
 
     try {
         const body = await req.json()
-        const { query, tenant_id = 'public', user_id = null } = body
+        let { query, tenant_id = 'public', user_id = null } = body
 
         if (!query) {
             return new Response(JSON.stringify({ error: 'Query is required' }), {
@@ -46,8 +46,62 @@ serve(async (req: Request) => {
             })
         }
 
+        // ── 🛡️ GUARDRAIL 1: Token Efficiency (Truncation) ──────────────────
+        // Prevent "token bomb" attacks by capping raw input early.
+        const MAX_QUERY_LENGTH = 500
+        if (query.length > MAX_QUERY_LENGTH) {
+            console.warn(`⚠️ Query truncated from ${query.length} to ${MAX_QUERY_LENGTH} chars.`)
+            query = query.substring(0, MAX_QUERY_LENGTH)
+        }
+
+        // ── 🛡️ GUARDRAIL 2: Prompt Injection Defense (Heuristic) ──────────
+        const INJECTION_PATTERNS = [
+            /ignore previous instructions/i,
+            /system reveal/i,
+            /disregard all prior/i,
+            /you are now a/i,
+            /output the system prompt/i
+        ]
+        if (INJECTION_PATTERNS.some(pattern => pattern.test(query))) {
+            console.error('🚫 Blocked potential prompt injection attempt.')
+            return new Response(JSON.stringify({
+                answer: "I cannot fulfill this request as it violates our safety and security policies.",
+                routing: 'guarded_rejection'
+            }), {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            })
+        }
+
+        // ── 🛡️ GUARDRAIL 3: Toxicity Check (OpenAI Moderation) ─────────────
+        const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
+        if (openaiApiKey) {
+            try {
+                const modRes = await fetch('https://api.openai.com/v1/moderations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${openaiApiKey}`
+                    },
+                    body: JSON.stringify({ input: query }),
+                })
+                if (modRes.ok) {
+                    const modData = await modRes.json()
+                    if (modData.results[0]?.flagged) {
+                        console.error('🚫 Content flagged by OpenAI Moderation:', modData.results[0].categories)
+                        return new Response(JSON.stringify({
+                            answer: "I'm sorry, I cannot process this request as it contains content that violates our usage policies.",
+                            routing: 'moderated_rejection'
+                        }), {
+                            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                        })
+                    }
+                }
+            } catch (modErr: unknown) {
+                console.warn('⚠️ Moderation check failed (non-critical):', (modErr as Error).message)
+            }
+        }
+
         // ── Feature Flag Check ─────────────────────────────────────────────
-        // Read from Supabase Vault — NEVER hardcoded here
         const loraRoutingEnabled = Deno.env.get('ENABLE_LORA_ROUTING') === 'true'
 
         if (loraRoutingEnabled) {
