@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "../lib/supabase";
-import { FaCalendarAlt, FaClock, FaUser, FaArrowLeft, FaShareAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaClock, FaUser, FaArrowLeft, FaShareAlt, FaFacebook } from "react-icons/fa";
 import { Helmet } from 'react-helmet-async';
 import blogHero from "../assets/hero-automation-new.png";
 
@@ -62,6 +62,8 @@ export default function BlogPost() {
         <meta property="og:title" content={`${post.title} | CogniVectra`} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:image" content={post.image_url || 'https://cognivectra.com/hero-automation.png'} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="article" />
         <meta property="twitter:title" content={`${post.title} | CogniVectra`} />
         <meta property="twitter:description" content={post.excerpt} />
       </Helmet>
@@ -134,16 +136,27 @@ export default function BlogPost() {
                 {Math.ceil((post.body?.length || 500) / 1000) + 2} min read
               </div>
 
-              <button
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({ title: post.title, url: window.location.href });
-                  }
-                }}
-                style={{ background: 'none', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem', fontWeight: '600', marginLeft: 'auto' }}
-              >
-                <FaShareAlt /> Share Insight
-              </button>
+              <div style={{ display: 'flex', gap: '1rem', marginLeft: 'auto' }}>
+                <button
+                  onClick={() => {
+                    const url = window.location.href;
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+                  }}
+                  style={{ background: 'none', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem', fontWeight: '600' }}
+                >
+                  <FaFacebook /> Share
+                </button>
+                <button
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({ title: post.title, url: window.location.href });
+                    }
+                  }}
+                  style={{ background: 'none', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem', fontWeight: '600' }}
+                >
+                  <FaShareAlt /> Share Insight
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>

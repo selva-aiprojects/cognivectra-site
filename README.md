@@ -11,9 +11,10 @@ A premium B2B SaaS marketing website and business management platform for automa
 
 We have consolidated our documentation into three core manuals:
 
-- [🤖 **Social Media & AI Operations**](./docs/SOCIAL_MEDIA_AI_OPERATIONS.md): How to use the AI content engine and manage social media bridges.
-- [🏗️ **Architecture & System Design**](./docs/ARCHITECTURE_SYSTEM_DESIGN.md): Technical stack, data models, and business module breakdowns.
-- [👨‍💻 **Developer Guide**](./docs/DEVELOPER_GUIDE.md): Local setup, testing commands, and troubleshooting.
+- [🤖 **Social Media & AI Operations**](./docs/technical/SOCIAL_MEDIA_AI_OPERATIONS.md): How to use the AI content engine and manage social media bridges.
+- [🧠 **AI & CrewAI State Management**](./docs/technical/AI_CREWAI_STATE_MANAGEMENT.md): Technical reference for LangGraph orchestration and cyclic reference handling.
+- [🏗️ **Architecture & System Design**](./docs/technical/ARCHITECTURE_SYSTEM_DESIGN.md): Technical stack, data models, and business module breakdowns.
+- [👨‍💻 **Developer Guide**](./docs/technical/DEVELOPER_GUIDE.md): Local setup, testing commands, and troubleshooting.
 
 ---
 

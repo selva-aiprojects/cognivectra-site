@@ -5,13 +5,15 @@ import 'react-quill/dist/quill.snow.css';
 import AdminLayout from '../layouts/AdminLayout';
 import { motion } from "framer-motion";
 import { LuPlus, LuCircleCheck, LuFilePen } from 'react-icons/lu';
+import { FaFacebook, FaLinkedin, FaInstagram, FaSpinner } from 'react-icons/fa';
 import { Link, useLocation } from "react-router-dom";
 
 export default function AdminBlog() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingPost, setEditingPost] = useState(null);
     const [saving, setSaving] = useState(false);
+    const [socialPosts, setSocialPosts] = useState({}); // Tracking platform status per post
+    const [broadcasting, setBroadcasting] = useState(null); // ID of post being broadcasted
 
     // Quill modules configuration
     const modules = {
@@ -44,10 +46,45 @@ export default function AdminBlog() {
 
             if (error) throw error;
             setPosts(data || []);
+
+            // Fetch social sharing status
+            const { data: socialData, error: socialError } = await supabase
+                .from("social_media_posts")
+                .select("post_id, platform");
+
+            if (!socialError && socialData) {
+                const mapping = {};
+                socialData.forEach(s => {
+                    if (!mapping[s.post_id]) mapping[s.post_id] = [];
+                    mapping[s.post_id].push(s.platform);
+                });
+                setSocialPosts(mapping);
+            }
         } catch (err) {
             console.error("Error fetching posts:", err);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function triggerSocialPublishing(postId, slug) {
+        setBroadcasting(postId);
+        try {
+            console.log(`Triggering social publishing for post ${postId}...`);
+            const { data, error } = await supabase.functions.invoke('publish-social', {
+                body: {
+                    postId: postId,
+                    platforms: ['linkedin', 'facebook', 'instagram']
+                }
+            });
+
+            if (error) throw error;
+            console.log("Social publishing triggered successfully:", data);
+        } catch (err) {
+            console.error("Error triggering social publishing:", err);
+        } finally {
+            setBroadcasting(null);
+            fetchPosts(); // Refresh to show icons
         }
     }
 
@@ -63,6 +100,13 @@ export default function AdminBlog() {
                 : await supabase.from("posts").insert([postData]);
 
             if (error) throw error;
+
+            // Trigger social publishing if newly published
+            if (postData.status === 'published') {
+                const postId = editingPost.id || (await supabase.from("posts").select("id").eq("slug", slug).single()).data?.id;
+                if (postId) triggerSocialPublishing(postId, slug);
+            }
+
             setEditingPost(null);
             fetchPosts();
         } catch (err) {
@@ -182,7 +226,17 @@ export default function AdminBlog() {
                                 <tr key={post.id}>
                                     <td>
                                         <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{post.title}</div>
-                                        <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>/{post.slug}</div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.4rem' }}>
+                                            <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>/{post.slug}</span>
+                                            {post.status === 'published' && (
+                                                <div style={{ display: 'flex', gap: '6px', marginLeft: '0.5rem' }}>
+                                                    <FaLinkedin title="LinkedIn" style={{ color: socialPosts[post.id]?.includes('linkedin') ? '#0A66C2' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }} />
+                                                    <FaFacebook title="Facebook" style={{ color: socialPosts[post.id]?.includes('facebook') ? '#1877F2' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }} />
+                                                    <FaInstagram title="Instagram" style={{ color: socialPosts[post.id]?.includes('instagram') ? '#E4405F' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }} />
+                                                    {broadcasting === post.id && <FaSpinner className="spin" style={{ fontSize: '0.7rem', color: 'var(--accent-light)' }} />}
+                                                </div>
+                                            )}
+                                        </div>
                                     </td>
                                     <td>
                                         <span className={`status-pill ${post.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
@@ -193,8 +247,19 @@ export default function AdminBlog() {
                                         {new Date(post.created_at).toLocaleDateString()}
                                     </td>
                                     <td>
-                                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-                                            <button onClick={() => setEditingPost(post)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Edit Post</button>
+                                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', alignItems: 'center' }}>
+                                            <button onClick={() => setEditingPost(post)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Edit</button>
+                                            {post.status === 'published' && (
+                                                <a
+                                                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://cognivectra.com/blog/${post.slug}`)}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{ color: '#1877F2', fontSize: '1rem', display: 'flex', alignItems: 'center' }}
+                                                    title="Share on Facebook"
+                                                >
+                                                    <FaFacebook />
+                                                </a>
+                                            )}
                                             <button onClick={() => handleDeletePost(post.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Purge</button>
                                         </div>
                                     </td>

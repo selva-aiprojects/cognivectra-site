@@ -53,19 +53,35 @@ Respond with ONLY the intent label (e.g. PRODUCT_INFO). No explanation."""
 
 class IntentEngine:
     """
-    Zero-shot intent classifier (Phase 1).
-    Swap classify() internals in Phase 2 to load a real LoRA adapter.
+    Multi-adapter intent classifier (Phase 2).
+    Maintains a registry of 'warm' adapters for zero-latency switching.
     """
 
     def __init__(self):
         self._client = None
-        self._use_lora = os.environ.get("LORA_ADAPTER_PATH") and os.path.exists(
-            os.environ.get("LORA_ADAPTER_PATH", "")
-        )
-        if self._use_lora:
-            self._load_lora_adapter()
+        self._tokenizer = None
+        self._lora_model = None
+        self._adapters_registry = self._parse_adapters_env()
+        
+        if self._adapters_registry:
+            self._load_warm_adapters()
         else:
-            logger.info("LoRA adapter not found — using zero-shot OpenAI classification.")
+            logger.info("No LoRA adapters configured — using zero-shot OpenAI classification.")
+
+    def _parse_adapters_env(self) -> dict[str, str]:
+        """Parse LORA_ADAPTERS="name1:path1,name2:path2" into a dict."""
+        adapters_str = os.environ.get("LORA_ADAPTERS", "")
+        # Fallback to legacy single path if registry env isn't set
+        if not adapters_str and os.environ.get("LORA_ADAPTER_PATH"):
+            return {"default": os.environ["LORA_ADAPTER_PATH"]}
+            
+        registry = {}
+        if adapters_str:
+            for pair in adapters_str.split(","):
+                if ":" in pair:
+                    name, path = pair.split(":", 1)
+                    registry[name.strip()] = path.strip()
+        return registry
 
     def _get_openai_client(self) -> OpenAI:
         if self._client is None:
@@ -73,39 +89,53 @@ class IntentEngine:
             self._client = OpenAI(api_key=api_key)
         return self._client
 
-    def _load_lora_adapter(self):
+    def _load_warm_adapters(self):
         """
-        Phase 2: Load a PEFT LoRA adapter.
-        Uncomment and implement when a fine-tuned adapter is available.
+        Phase 2: Load multiple PEFT LoRA adapters into a single warm model instance.
         """
         try:
             from peft import PeftModel
             from transformers import AutoModelForCausalLM, AutoTokenizer
+            import torch
 
             base_model_name = os.environ.get(
                 "BASE_MODEL_NAME", "meta-llama/Meta-Llama-3.1-8B-Instruct"
             )
-            adapter_path = os.environ["LORA_ADAPTER_PATH"]
-
-            logger.info("Loading base model: %s", base_model_name)
+            
+            # Load Base Model & Tokenizer once
+            logger.info("Loading base model for Multi-Adapter Registry: %s", base_model_name)
             self._tokenizer = AutoTokenizer.from_pretrained(base_model_name)
             base_model = AutoModelForCausalLM.from_pretrained(
-                base_model_name, device_map="auto", load_in_4bit=True
+                base_model_name, 
+                device_map="auto", 
+                torch_dtype=torch.float16,
+                load_in_4bit=True
             )
-            self._lora_model = PeftModel.from_pretrained(base_model, adapter_path)
-            self._lora_model.eval()
-            logger.info("LoRA adapter loaded from: %s", adapter_path)
-        except Exception as e:
-            logger.error("Failed to load LoRA adapter: %s — falling back to zero-shot.", e)
-            self._use_lora = False
 
-    def classify(self, query: str) -> tuple[str, float]:
+            # Load adapters into the registry
+            first_adapter = True
+            for name, path in self._adapters_registry.items():
+                if first_adapter:
+                    logger.info("Initializing PEFT model with base adapter '%s' from: %s", name, path)
+                    self._lora_model = PeftModel.from_pretrained(base_model, path, adapter_name=name)
+                    first_adapter = False
+                else:
+                    logger.info("Adding warm adapter '%s' from: %s", name, path)
+                    self._lora_model.load_adapter(path, name)
+            
+            self._lora_model.eval()
+            logger.info("✅ Warm Adapter Registry initialized with %d adapters.", len(self._adapters_registry))
+        except Exception as e:
+            logger.error("Failed to initialize Warm Adapter Registry: %s — falling back to zero-shot.", e)
+            self._lora_model = None
+
+    def classify(self, query: str, task: str = "default") -> tuple[str, float]:
         """
         Classify a query into an intent.
-        Returns: (intent_label, confidence_score)
+        'task' parameter allows selecting a specific warm adapter.
         """
-        if self._use_lora:
-            return self._classify_lora(query)
+        if self._lora_model is not None:
+            return self._classify_lora(query, task)
         return self._classify_zero_shot(query)
 
     def _classify_zero_shot(self, query: str) -> tuple[str, float]:
@@ -119,40 +149,42 @@ class IntentEngine:
                 {"role": "user", "content": query},
             ],
             max_tokens=20,
-            temperature=0.0,  # Deterministic for classification
+            temperature=0.0,
         )
 
         raw_intent = response.choices[0].message.content.strip().upper()
-
-        # Validate intent is in known labels
         if raw_intent not in INTENT_LABELS:
-            logger.warning("Unknown intent '%s' returned — defaulting to GENERAL.", raw_intent)
             return "GENERAL", 0.5
 
-        # Derive pseudo-confidence from finish_reason (full = high confidence)
         finish_reason = response.choices[0].finish_reason
         confidence = 0.92 if finish_reason == "stop" else 0.6
-
         return raw_intent, confidence
 
-    def _classify_lora(self, query: str) -> tuple[str, float]:
-        """Use loaded LoRA adapter for classification (Phase 2)."""
+    def _classify_lora(self, query: str, task: str) -> tuple[str, float]:
+        """Use Warm Adapter for high-speed switching classification."""
         import torch
 
+        # Zero-latency switch to the requested adapter
+        if task in self._adapters_registry:
+            self._lora_model.set_adapter(task)
+        else:
+            # Fallback to first available if requested task not found
+            default_adapt = list(self._adapters_registry.keys())[0]
+            self._lora_model.set_adapter(default_adapt)
+
         prompt = f"{SYSTEM_PROMPT}\n\nUser query: {query}\nIntent:"
-        inputs = self._tokenizer(prompt, return_tensors="pt").to("cuda" if torch.cuda.is_available() else "cpu")
+        inputs = self._tokenizer(prompt, return_tensors="pt").to(self._lora_model.device)
 
         with torch.no_grad():
             outputs = self._lora_model.generate(**inputs, max_new_tokens=10, temperature=0.0)
 
         decoded = self._tokenizer.decode(outputs[0], skip_special_tokens=True)
-        # Extract last token(s) as the intent label
         intent_raw = decoded.split("Intent:")[-1].strip().upper().split()[0]
 
         if intent_raw not in INTENT_LABELS:
             return "GENERAL", 0.5
 
-        return intent_raw, 0.95  # LoRA model = higher confidence
+        return intent_raw, 0.95
 
 
 # Module-level singleton

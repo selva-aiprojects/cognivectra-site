@@ -132,45 +132,11 @@ serve(async (req: Request) => {
                     failureLogs.push("Direct API skipped: Missing LINKEDIN_ACCESS_TOKEN.");
                 }
 
-                // STRATEGY B: WEBHOOK FALLBACK (If direct failed or was skipped)
+                // STRATEGY B: WEBHOOK FALLBACK
                 if (!successResult) {
-                    console.log("🌐 Attempting Webhook Bridge fallback...");
-                    if (webhookUrl) {
-                        try {
-                            const webhookRes = await fetch(webhookUrl, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    platform: 'linkedin',
-                                    action: 'publish',
-                                    post: {
-                                        id: post.id,
-                                        title: post.title,
-                                        slug: post.slug,
-                                        excerpt: post.excerpt,
-                                        content: post.content,
-                                        share_text: shareText,
-                                        url: blogUrl,
-                                        image_url: post.image_url
-                                    }
-                                })
-                            });
-
-                            if (webhookRes.ok) {
-                                console.log("✅ Webhook Bridge successful");
-                                successResult = { ok: true, data: { id: 'webhook-triggered', source: 'bridge' }, urnUsed: 'webhook' };
-                            } else {
-                                const errText = await webhookRes.text();
-                                console.error(`❌ Webhook Bridge failed: ${errText}`);
-                                failureLogs.push(`Webhook Bridge Error: ${errText}`);
-                            }
-                        } catch (webhookErr: any) {
-                            console.error("❌ Webhook Bridge network error:", webhookErr.message);
-                            failureLogs.push(`Webhook Network Error: ${webhookErr.message}`);
-                        }
-                    } else {
-                        console.warn("⚠️ SOCIAL_WEBHOOK_URL not set in secrets.");
-                        failureLogs.push("Webhook fallback skipped: Missing SOCIAL_WEBHOOK_URL.");
+                    successResult = await sendToWebhook('linkedin', post, blogUrl, shareText);
+                    if (!successResult && failureLogs.length === 0) {
+                        failureLogs.push("Missing LinkedIn Token & Webhook URL");
                     }
                 }
 
@@ -193,6 +159,39 @@ serve(async (req: Request) => {
             } catch (err: any) {
                 console.error("❌ Unexpected LinkedIn logic error:", err);
                 results.push({ platform: 'linkedin', success: false, error: `Critical LinkedIn logic error: ${err.message}` });
+            }
+        }
+
+        // Shared Webhook Helper
+        async function sendToWebhook(platform: string, post: any, blogUrl: string, shareText: string) {
+            const webhookUrl = Deno.env.get('SOCIAL_WEBHOOK_URL');
+            if (!webhookUrl) return null;
+
+            try {
+                console.log(`🌐 Sending ${platform} post to Webhook Bridge...`);
+                const res = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        platform,
+                        action: 'publish',
+                        post: {
+                            id: post.id,
+                            title: post.title,
+                            slug: post.slug,
+                            excerpt: post.excerpt,
+                            content: post.content,
+                            share_text: shareText,
+                            url: blogUrl,
+                            image_url: post.image_url
+                        }
+                    })
+                });
+                if (res.ok) return { ok: true, data: { id: `webhook-${platform}`, source: 'make_com' }, urnUsed: 'webhook' };
+                return null;
+            } catch (e) {
+                console.error(`❌ Webhook error for ${platform}:`, e);
+                return null;
             }
         }
 
@@ -281,7 +280,7 @@ serve(async (req: Request) => {
 
                     if (!publishRes.ok) {
                         const errorData = await publishRes.json()
-                        throw new Error(`Instagram publish failed: ${errorData.error?.message || 'Unknown error'}`)
+                        throw new Error(`Instagram media creation/publish failed: ${errorData.error?.message || 'Unknown error'}`)
                     }
 
                     const publishData = await publishRes.json()
@@ -292,11 +291,17 @@ serve(async (req: Request) => {
                     })
                 }
             } catch (err: any) {
-                results.push({
-                    platform: 'instagram',
-                    success: false,
-                    error: err.message || 'Instagram publishing failed'
-                })
+                console.log(`⚠️ Instagram direct API failed, trying webhook: ${err.message}`);
+                const webhookRes = await sendToWebhook('instagram', post, blogUrl, socialData.instagram || post.title);
+                if (webhookRes) {
+                    results.push({ platform: 'instagram', success: true, data: webhookRes.data });
+                } else {
+                    results.push({
+                        platform: 'instagram',
+                        success: false,
+                        error: err.message || 'Instagram publishing failed'
+                    })
+                }
             }
         }
 
@@ -341,11 +346,17 @@ serve(async (req: Request) => {
                     })
                 }
             } catch (err: any) {
-                results.push({
-                    platform: 'facebook',
-                    success: false,
-                    error: err.message || 'Facebook publishing failed'
-                })
+                console.log(`⚠️ Facebook direct API failed, trying webhook: ${err.message}`);
+                const webhookRes = await sendToWebhook('facebook', post, blogUrl, socialData.facebook || post.title);
+                if (webhookRes) {
+                    results.push({ platform: 'facebook', success: true, data: webhookRes.data });
+                } else {
+                    results.push({
+                        platform: 'facebook',
+                        success: false,
+                        error: err.message || 'Facebook publishing failed'
+                    })
+                }
             }
         }
 
