@@ -72,7 +72,7 @@ export default function Login() {
 
             <div className="login-split-container">
                 {/* Visual Left Panel */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
@@ -95,12 +95,12 @@ export default function Login() {
                     </div>
 
                     <div className="login-left-content">
-                        <motion.h1 
+                        <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.6 }}
                         >
-                            Enterprise AI <br/>Operations Platform
+                            Enterprise AI <br />Operations Platform
                         </motion.h1>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -117,14 +117,14 @@ export default function Login() {
                 </motion.div>
 
                 {/* Form Right Panel */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="login-right-panel"
                 >
                     <div className="login-right-inner" style={{ maxWidth: '400px', width: '100%', margin: '0 auto' }}>
-                        <div className="login-header" style={{ textAlign: 'left', marginBottom: '2.5rem' }}>
+                        <div style={{ textAlign: 'left', marginBottom: '2.5rem' }}>
                             <h2 style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--admin-text-main)', marginBottom: '0.5rem', letterSpacing: '-0.03em' }}>
                                 Welcome back
                             </h2>
@@ -170,10 +170,10 @@ export default function Login() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         placeholder="admin@cognivectra.com"
-                                        style={{ 
-                                            padding: '0.9rem 1rem 0.9rem 3rem', 
-                                            width: '100%', 
-                                            borderRadius: '10px', 
+                                        style={{
+                                            padding: '0.9rem 1rem 0.9rem 3rem',
+                                            width: '100%',
+                                            borderRadius: '10px',
                                             border: '1px solid var(--admin-border)',
                                             background: '#f8fafc',
                                             fontSize: '0.95rem',
@@ -205,10 +205,10 @@ export default function Login() {
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
                                         placeholder="••••••••"
-                                        style={{ 
-                                            padding: '0.9rem 1rem 0.9rem 3rem', 
-                                            width: '100%', 
-                                            borderRadius: '10px', 
+                                        style={{
+                                            padding: '0.9rem 1rem 0.9rem 3rem',
+                                            width: '100%',
+                                            borderRadius: '10px',
                                             border: '1px solid var(--admin-border)',
                                             background: '#f8fafc',
                                             fontSize: '0.95rem',
@@ -225,10 +225,10 @@ export default function Login() {
                                 type="submit"
                                 disabled={loading}
                                 className="btn"
-                                style={{ 
-                                    width: '100%', 
-                                    height: '52px', 
-                                    fontSize: '1rem', 
+                                style={{
+                                    width: '100%',
+                                    height: '52px',
+                                    fontSize: '1rem',
                                     borderRadius: '10px',
                                     fontWeight: '700',
                                     display: 'flex',

@@ -566,49 +566,179 @@ export default function Home() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(2, 6, 23, 0.8)' }}
+        style={{
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          background: 'rgba(2, 6, 23, 0.8)',
+          padding: '4rem 0'
+        }}
       >
-        <div className="container" style={{ textAlign: 'center', padding: '1.5rem 0' }}>
-          <h4 style={{ textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--accent-primary)', marginBottom: '1.5rem' }} className="trust-modern-title">Production-Ready Enterprise Platforms</h4>
-          <div className="trust-modern-inner" style={{ gap: '2rem' }}>
-            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>MedFlow EMR</strong> AI-powered healthcare platform</div>
-            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>StoreAI</strong> Enterprise GenAI platform</div>
-            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>EduPortal</strong> AI-powered education platform</div>
-            <div style={{ fontSize: '0.95rem' }}><strong style={{ color: 'white', display: 'block' }}>StewardPlatform</strong> Multi-tenant SaaS foundation</div>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{ textAlign: 'center', marginBottom: '3rem' }}
+          >
+            <h4 style={{
+              textTransform: 'uppercase',
+              letterSpacing: '3px',
+              color: 'var(--accent-primary)',
+              fontSize: '0.85rem',
+              fontWeight: '700',
+              margin: 0
+            }}>Production-Ready Enterprise Platforms</h4>
+          </motion.div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '1.5rem',
+            padding: '0 1rem'
+          }}>
+            {[
+              { name: "MedFlow EMR", desc: "AI-powered healthcare platform", icon: <LuActivity size={24} /> },
+              { name: "StoreAI", desc: "Enterprise GenAI platform", icon: <LuTrendingUp size={24} /> },
+              { name: "EduPortal", desc: "AI-powered education platform", icon: <LuBrain size={24} /> },
+              { name: "StewardPlatform", desc: "Multi-tenant SaaS foundation", icon: <LuShield size={24} /> }
+            ].map((platform, i) => (
+              <motion.div
+                key={i}
+                className="glass-panel"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                whileHover={{ y: -5, borderColor: 'var(--accent-light)', boxShadow: '0 15px 30px -5px rgba(0,0,0,0.3)' }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.4 }}
+                style={{
+                  padding: '2.5rem 1.5rem',
+                  borderRadius: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                  cursor: 'default'
+                }}
+              >
+                <div style={{
+                  color: 'var(--accent-primary)',
+                  marginBottom: '1.5rem',
+                  background: 'rgba(79, 70, 229, 0.1)',
+                  padding: '1.25rem',
+                  borderRadius: '50%',
+                  border: '1px solid rgba(79, 70, 229, 0.2)'
+                }}>
+                  {platform.icon}
+                </div>
+                <h5 style={{ fontSize: '1.15rem', color: 'white', marginBottom: '0.75rem', fontWeight: '600' }}>
+                  {platform.name}
+                </h5>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                  {platform.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </motion.section>
 
       {/* PARTNER ICP STRIP */}
-      <section className="icp-strip glass-panel" style={{ margin: '0 auto', maxWidth: '1200px', padding: '1rem 2rem', marginBottom: '2rem' }}>
-        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
-          <span style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px' }} className="icp-label">Who we partner with:</span>
-          {['Healthcare Providers', 'Health-tech Startups', 'Enterprise Innovation', 'FinTech Platforms'].map((icp, i) => (
+      <section className="icp-strip" style={{ margin: '0 auto', maxWidth: '1200px', padding: '2rem', marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <span style={{ color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '3px', fontSize: '0.85rem', fontWeight: '700' }}>Who We Partner With</span>
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
+          {[
+            { name: 'Healthcare Providers', icon: <LuActivity size={20} /> },
+            { name: 'Health-tech Startups', icon: <LuRocket size={20} /> },
+            { name: 'Enterprise Innovation', icon: <LuBuilding2 size={20} /> },
+            { name: 'FinTech Platforms', icon: <LuTrendingUp size={20} /> }
+          ].map((icp, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              style={{ fontSize: '0.95rem', fontWeight: '500', color: 'white' }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              whileHover={{ y: -3, background: 'rgba(255,255,255,0.08)', borderColor: 'rgba(255,255,255,0.2)', boxShadow: '0 10px 20px -5px rgba(0,0,0,0.3)' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                fontSize: '1rem',
+                fontWeight: '500',
+                color: 'white',
+                background: 'rgba(255,255,255,0.03)',
+                padding: '1rem 1.75rem',
+                borderRadius: '100px',
+                border: '1px solid rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(10px)',
+                cursor: 'default'
+              }}
             >
-              {icp}
+              <div style={{ color: 'var(--accent-light)' }}>{icp.icon}</div>
+              {icp.name}
             </motion.div>
           ))}
         </div>
       </section>
+
       {/* TRUST BAR (LEGACY STATS) */}
       <motion.section
         className="trust-modern"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        style={{ paddingTop: 0 }}
+        style={{ paddingTop: 0, paddingBottom: '4rem' }}
       >
-        <div className="trust-modern-inner">
-          <div><strong>25+</strong>Years Experience</div>
-          <div><strong>40+</strong>Platforms Built</div>
-          <div><strong>12+</strong>Countries Served</div>
-          <div><strong>99.9%</strong>System Reliability</div>
+        <div className="container" style={{ padding: '0 1rem' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '3rem 2rem',
+            background: 'linear-gradient(145deg, rgba(2, 6, 23, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%)',
+            border: '1px solid rgba(255,255,255,0.05)',
+            borderRadius: '24px',
+            padding: '4rem 2rem',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          }}>
+            {[
+              { value: "25+", label: "Years Experience" },
+              { value: "40+", label: "Platforms Built" },
+              { value: "12+", label: "Countries Served" },
+              { value: "99.9%", label: "System Reliability" }
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 100, delay: i * 0.1 }}
+                style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+              >
+                <div style={{
+                  fontSize: '3.5rem',
+                  fontWeight: '800',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  marginBottom: '1rem',
+                  lineHeight: '1.2'
+                }}>
+                  {stat.value}
+                </div>
+                <div style={{
+                  color: 'var(--text-secondary)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  fontSize: '0.85rem',
+                  fontWeight: '600'
+                }}>
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.section>
 

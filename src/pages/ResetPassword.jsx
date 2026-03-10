@@ -15,7 +15,12 @@ export default function ResetPassword() {
 
     const [isValidSession, setIsValidSession] = useState(false);
 
+    const initialized = React.useRef(false);
+
     useEffect(() => {
+        if (initialized.current) return;
+        initialized.current = true;
+
         async function handlePasswordRecovery() {
 
             // --- Strategy 1: URL Hash (Implicit flow from /auth/v1/verify redirect) ---
