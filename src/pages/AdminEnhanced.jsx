@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { Link, useNavigate } from "react-router-dom";
-import AdminLayout from "../layouts/AdminLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LuRocket,
@@ -20,7 +19,8 @@ import {
   LuBriefcase,
   LuMailOpen,
   LuHistory,
-  LuLogOut
+  LuLogOut,
+  LuShare2
 } from "react-icons/lu";
 import ReactMarkdown from "react-markdown";
 import { FaFileContract } from "react-icons/fa";
@@ -34,6 +34,7 @@ export default function AdminEnhanced() {
   const [publishStatus, setPublishStatus] = useState({}); // { postId: { platform: { status, error } } }
   const [selectedPlatforms, setSelectedPlatforms] = useState({}); // { postId: ['blog', 'linkedin', ...] }
   const [socialMediaStatus, setSocialMediaStatus] = useState({}); // { postId: { platform: { published_at, platform_post_id } } }
+  const [showPlatformSelector, setShowPlatformSelector] = useState({});
   const [activeTab, setActiveTab] = useState("drafts");
   const { isModuleEnabled } = useTenant();
   const [activeConsole, setActiveConsole] = useState(isModuleEnabled('BLOG') ? "publisher" : "talent"); // or "talent"
@@ -145,7 +146,7 @@ export default function AdminEnhanced() {
       alert(editingPost.id ? "Changes synced." : "New packet registered.");
       setEditingPost(null);
       setPreviewMode(false);
-      fetchPosts();
+      fetchAdminData();
     } else {
       alert("Error: " + error.message);
     }
@@ -156,13 +157,23 @@ export default function AdminEnhanced() {
       ...prev,
       [postId]: !prev[postId]
     }));
-    // Initialize with default selection if not set
     if (!selectedPlatforms[postId]) {
       setSelectedPlatforms(prev => ({
         ...prev,
         [postId]: ["blog", "linkedin"]
       }));
     }
+  }
+
+  function togglePlatform(postId, platform) {
+    setSelectedPlatforms(prev => {
+      const current = prev[postId] || [];
+      if (current.includes(platform)) {
+        return { ...prev, [postId]: current.filter(p => p !== platform) };
+      } else {
+        return { ...prev, [postId]: [...current, platform] };
+      }
+    });
   }
 
   function handleSelectPackage(pkg) {
@@ -261,18 +272,25 @@ export default function AdminEnhanced() {
     setPublishStatus(prev => ({ ...prev, [post.id]: initialStatus }));
 
     try {
-      // 1. Publish to Blog (Database status change)
-      if (platformsToUse.includes('blog')) {
+      // 1. Ensure post status is "published" if any platform is triggered
+      if (platformsToUse.length > 0) {
+        const updateData = {
+          status: "published",
+          published_platforms: platformsToUse
+        };
+        
+        // Only set published_at if not already set
+        if (!post.published_at) {
+          updateData.published_at = new Date().toISOString();
+        }
+
         const { error } = await supabase
           .from("posts")
-          .update({
-            status: "published",
-            published_at: new Date().toISOString(),
-            published_platforms: platformsToUse
-          })
+          .update(updateData)
           .eq("id", post.id);
 
         if (error) throw error;
+        console.log("✅ Post status synced to 'published'");
       }
 
       // 2. Publish to social media
@@ -281,7 +299,7 @@ export default function AdminEnhanced() {
       } else {
         // If only blog was selected, we are done
         alert(`Successfully published "${post.title}" to Blog.`);
-        await fetchPosts();
+        await fetchAdminData();
       }
 
       // Clear status after a delay
@@ -300,12 +318,26 @@ export default function AdminEnhanced() {
   }
 
   async function publishToSocialMedia(post, platforms) {
+    const { data: { session } } = await supabase.auth.getSession();
+    console.log(`🚀 Invoking 'publish-social' for post ${post.id}...`);
+    console.log(`🔐 Auth State: ${session ? 'Authenticated' : 'NOT Authenticated'} | User: ${session?.user?.id || 'none'}`);
+    
+    if (!session) {
+      alert("⚠️ Your session has expired. Please sign out and sign back in.");
+      return;
+    }
+
     try {
       const { data, error } = await supabase.functions.invoke("publish-social", {
         body: { postId: post.id, platforms }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("❌ Edge Function invocation error object:", error);
+        throw error;
+      };
+
+      console.log("✅ Edge Function response data:", data);
 
       // Update status based on results
       if (data && data.results) {
@@ -360,15 +392,15 @@ export default function AdminEnhanced() {
 
 
   return (
-    <AdminLayout>
-      <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+    <>
+      <header className="admin-header">
         <div className="admin-title-area">
-          <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-            <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>{activeConsole === 'publisher' ? 'Omni-Channel' : 'Talent Ops'}</span>
+          <div className="admin-breadcrumbs">
+            <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">{activeConsole === 'publisher' ? 'Omni-Channel' : 'Talent Ops'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em', margin: 0 }}>{activeConsole === 'publisher' ? 'Publisher Console' : 'Talent Console'}</h1>
-            <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '4px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <h1>{activeConsole === 'publisher' ? 'Publisher Console' : 'Talent Console'}</h1>
+            <div style={{ display: 'flex', background: 'var(--admin-bg)', padding: '4px', borderRadius: '8px', border: '1px solid var(--admin-border)' }}>
               {isModuleEnabled('BLOG') && (
                 <button
                   onClick={() => setActiveConsole('publisher')}
@@ -376,10 +408,10 @@ export default function AdminEnhanced() {
                     padding: '6px 16px',
                     borderRadius: '8px',
                     fontSize: '0.75rem',
-                    fontWeight: '600',
+                    fontWeight: '700',
                     border: 'none',
-                    background: activeConsole === 'publisher' ? 'var(--accent-primary)' : 'transparent',
-                    color: activeConsole === 'publisher' ? 'white' : 'var(--text-secondary)',
+                    background: activeConsole === 'publisher' ? 'var(--admin-accent)' : 'transparent',
+                    color: activeConsole === 'publisher' ? 'white' : 'var(--admin-text-muted)',
                     cursor: 'pointer',
                     transition: 'all 0.2s'
                   }}
@@ -394,10 +426,10 @@ export default function AdminEnhanced() {
                     padding: '6px 16px',
                     borderRadius: '8px',
                     fontSize: '0.75rem',
-                    fontWeight: '600',
+                    fontWeight: '700',
                     border: 'none',
-                    background: activeConsole === 'talent' ? 'var(--accent-primary)' : 'transparent',
-                    color: activeConsole === 'talent' ? 'white' : 'var(--text-secondary)',
+                    background: activeConsole === 'talent' ? 'var(--admin-accent)' : 'transparent',
+                    color: activeConsole === 'talent' ? 'white' : 'var(--admin-text-muted)',
                     cursor: 'pointer',
                     transition: 'all 0.2s'
                   }}
@@ -407,7 +439,7 @@ export default function AdminEnhanced() {
               )}
             </div>
           </div>
-          <p style={{ opacity: 0.7, marginTop: '0.5rem' }}>
+          <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>
             {activeConsole === 'publisher'
               ? 'Distribute thought leadership across the CogniVectra ecosystem.'
               : 'Orchestrate elite talent acquisition and offer engineering.'}
@@ -433,12 +465,12 @@ export default function AdminEnhanced() {
                 style={{
                   padding: '0.75rem 1.5rem',
                   borderRadius: '12px',
-                  background: activeTab === tab ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
+                  background: activeTab === tab ? 'var(--admin-accent)' : 'var(--admin-accent-soft)',
                   border: '1px solid',
-                  borderColor: activeTab === tab ? 'var(--accent-primary)' : 'rgba(255,255,255,0.1)',
-                  color: activeTab === tab ? 'white' : 'var(--text-secondary)',
+                  borderColor: activeTab === tab ? 'var(--admin-accent)' : 'var(--admin-border)',
+                  color: activeTab === tab ? 'white' : 'var(--admin-text-muted)',
                   fontSize: '0.85rem',
-                  fontWeight: '600',
+                  fontWeight: '700',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   textTransform: 'uppercase',
@@ -483,43 +515,43 @@ export default function AdminEnhanced() {
                   <div style={{ display: 'grid', gridTemplateColumns: previewMode ? '1fr 1fr' : '1fr', gap: '2rem' }}>
                     <div className="editor-side">
                       <div className="form-group">
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Strategic Title</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>Strategic Title</label>
                         <input
                           value={editingPost.title}
                           onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
                           placeholder="The Singularity of Agentic Development..."
-                          style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                          style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', background: 'var(--admin-accent-soft)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-main)' }}
                         />
                       </div>
 
                       <div className="form-group" style={{ marginTop: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Social Abstract</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>Social Abstract</label>
                         <input
                           value={editingPost.excerpt}
                           onChange={e => setEditingPost({ ...editingPost, excerpt: e.target.value })}
                           placeholder="Short hook..."
-                          style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                           style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', background: 'var(--admin-accent-soft)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-main)' }}
                         />
                       </div>
 
                       <div className="form-group" style={{ marginTop: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Destination Slug (URL Link)</label>
-                        <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-                          <span style={{ padding: '0 0.8rem', opacity: 0.4, fontSize: '0.8rem' }}>/blog/</span>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>Destination Slug (URL Link)</label>
+                        <div style={{ display: 'flex', alignItems: 'center', background: 'var(--admin-accent-soft)', borderRadius: '8px', border: '1px solid var(--admin-border)', overflow: 'hidden' }}>
+                          <span style={{ padding: '0 0.8rem', color: 'var(--admin-text-muted)', fontWeight: '600', fontSize: '0.8rem' }}>/blog/</span>
                           <input
                             value={editingPost.slug || ""}
                             onChange={e => setEditingPost({ ...editingPost, slug: e.target.value.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "") })}
                             placeholder="custom-url-handle"
-                            style={{ flex: 1, padding: '0.8rem 0.8rem 0.8rem 0', background: 'transparent', border: 'none', color: 'var(--accent-light)', fontSize: '0.85rem' }}
+                            style={{ flex: 1, padding: '0.8rem 0.8rem 0.8rem 0', background: 'transparent', border: 'none', color: 'var(--admin-accent)', fontSize: '0.85rem' }}
                           />
                         </div>
                       </div>
 
                       <div className="form-group" style={{ marginTop: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Core Manuscript (Markdown)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>Core Manuscript (Markdown)</label>
                         <textarea
                           rows={15}
-                          style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontFamily: 'monospace', fontSize: '0.9rem', lineHeight: '1.6' }}
+                          style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'var(--admin-accent-soft)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-main)', fontFamily: 'monospace', fontSize: '0.9rem', lineHeight: '1.6' }}
                           value={editingPost.body}
                           onChange={e => setEditingPost({ ...editingPost, body: e.target.value })}
                         />
@@ -527,10 +559,10 @@ export default function AdminEnhanced() {
                     </div>
 
                     {previewMode && (
-                      <div className="preview-side" style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '12px', padding: '2rem', border: '1px solid rgba(255,255,255,0.05)', maxHeight: '600px', overflowY: 'auto' }}>
-                        <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', opacity: 0.4, marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Production Preview</div>
-                        <h1 style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>{editingPost.title}</h1>
-                        <div className="markdown-render" style={{ fontSize: '1rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                      <div className="preview-side" style={{ background: 'var(--admin-accent-soft)', borderRadius: '12px', padding: '2rem', border: '1px solid var(--admin-border)', maxHeight: '600px', overflowY: 'auto' }}>
+                        <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--admin-text-muted)', fontWeight: '700', marginBottom: '1.5rem', borderBottom: '1px solid var(--admin-border)', paddingBottom: '0.5rem' }}>Production Preview</div>
+                        <h1 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--admin-text-main)' }}>{editingPost.title}</h1>
+                        <div className="markdown-render" style={{ fontSize: '1rem', lineHeight: '1.6', color: 'var(--admin-text-muted)', fontWeight: '500' }}>
                           <ReactMarkdown>{editingPost.body}</ReactMarkdown>
                         </div>
                       </div>
@@ -559,7 +591,7 @@ export default function AdminEnhanced() {
                 <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', alignItems: 'center' }}>
                   <div>
                     <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Offer Engineering</h2>
-                    <p style={{ fontSize: '0.85rem', opacity: 0.6 }}>Designing official deployment for <strong>{selectedApplication.full_name}</strong></p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontWeight: '500' }}>Designing official deployment for <strong>{selectedApplication.full_name}</strong></p>
                   </div>
                   <button className="modal-close" onClick={() => setShowOfferGenerator(false)} style={{ background: 'transparent', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
@@ -568,7 +600,7 @@ export default function AdminEnhanced() {
                   {/* CONFIGURATION PANEL */}
                   <div className="config-panel">
                     <div className="form-group" style={{ marginBottom: '2rem' }}>
-                      <label style={{ display: 'block', marginBottom: '0.8rem', fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5 }}>1. Select Benchmark Vector</label>
+                      <label style={{ display: 'block', marginBottom: '0.8rem', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--admin-text-muted)', fontWeight: '700' }}>1. Select Benchmark Vector</label>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem' }}>
                         {compensationPackages.map(pkg => (
                           <button
@@ -580,13 +612,16 @@ export default function AdminEnhanced() {
                               background: offerData.role_title === pkg.role_title ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
                               border: '1px solid rgba(255,255,255,0.1)',
                               color: 'white',
+                              background: offerData.role_title === pkg.role_title ? 'var(--admin-accent)' : 'var(--admin-accent-soft)',
+                              border: '1px solid var(--admin-border)',
+                              color: offerData.role_title === pkg.role_title ? 'white' : 'var(--admin-text-muted)',
                               fontSize: '0.75rem',
                               textAlign: 'left',
                               cursor: 'pointer'
                             }}
                           >
                             <div style={{ fontWeight: '700' }}>{pkg.role_title}</div>
-                            <div style={{ fontSize: '0.65rem', opacity: 0.6 }}>{pkg.role_level} benchmark</div>
+                            <div style={{ fontSize: '0.65rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>{pkg.role_level} benchmark</div>
                           </button>
                         ))}
                       </div>
@@ -595,7 +630,7 @@ export default function AdminEnhanced() {
                     {offerData.role_title && (
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <div className="form-group" style={{ marginBottom: '2rem' }}>
-                          <label style={{ display: 'block', marginBottom: '0.8rem', fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.5 }}>2. Tune Compensation (CTC)</label>
+                           <label style={{ display: 'block', marginBottom: '0.8rem', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--admin-text-muted)', fontWeight: '800' }}>2. Tune Compensation (CTC)</label>
                           <input
                             type="range"
                             min={compensationPackages.find(p => p.role_title === offerData.role_title)?.annual_ctc_min}
@@ -603,31 +638,31 @@ export default function AdminEnhanced() {
                             step={50000}
                             value={offerData.annual_ctc}
                             onChange={(e) => updateOfferCtc(Number(e.target.value), compensationPackages.find(p => p.role_title === offerData.role_title))}
-                            style={{ width: '100%', accentColor: 'var(--accent-primary)' }}
+                             style={{ width: '100%', accentColor: 'var(--admin-accent)' }}
                           />
-                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1rem', fontWeight: '800', marginTop: '0.5rem', color: 'var(--accent-light)' }}>
+                                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1rem', fontWeight: '800', marginTop: '0.5rem', color: 'var(--admin-accent)' }}>
                             <span>INR {offerData.annual_ctc.toLocaleString()}</span>
-                            <span style={{ fontSize: '0.75rem', opacity: 0.5 }}>Calculated components updated.</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)', fontWeight: '600' }}>Calculated components updated.</span>
                           </div>
                         </div>
 
-                        <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', textTransform: 'uppercase', opacity: 0.5 }}>Breakdown Engineering</h4>
+                         <div style={{ background: 'var(--admin-bg)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--admin-border)' }}>
+                          <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--admin-text-muted)', fontWeight: '800' }}>Breakdown Engineering</h4>
                           <div style={{ display: 'grid', gap: '0.8rem', fontSize: '0.85rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <span style={{ opacity: 0.6 }}>Basic Salary (50%)</span>
+                              <span style={{ color: 'var(--admin-text-muted)' }}>Basic Salary (50%)</span>
                               <span>₹ {offerData.basic_salary.toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <span style={{ opacity: 0.6 }}>HRA (20%)</span>
+                              <span style={{ color: 'var(--admin-text-muted)' }}>HRA (20%)</span>
                               <span>₹ {offerData.hra.toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <span style={{ opacity: 0.6 }}>Special Allowance (20%)</span>
+                              <span style={{ color: 'var(--admin-text-muted)' }}>Special Allowance (20%)</span>
                               <span>₹ {offerData.special_allowance.toLocaleString()}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--accent-light)' }}>
-                              <span style={{ opacity: 0.6 }}>Performance Bonus (10%)</span>
+                             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--admin-accent)' }}>
+                              <span style={{ color: 'var(--admin-text-muted)', fontWeight: '600' }}>Performance Bonus (10%)</span>
                               <span>₹ {offerData.performance_bonus.toLocaleString()}</span>
                             </div>
                           </div>
@@ -683,7 +718,7 @@ export default function AdminEnhanced() {
           {/* DEPLOYMENT FEED */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {filteredPosts.length === 0 && (
-              <div style={{ padding: '5rem', textAlign: 'center', opacity: 0.4 }}>
+               <div style={{ padding: '5rem', textAlign: 'center', color: 'var(--admin-text-muted)', fontWeight: '600' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '1rem' }}><LuHistory /></div>
                 <p>No content packets detected in this sector.</p>
               </div>
@@ -700,16 +735,16 @@ export default function AdminEnhanced() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   className="glass-panel"
-                  style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'center', border: '1px solid rgba(255,255,255,0.05)' }}
+                   style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'center', border: '1px solid var(--admin-border)' }}
                 >
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.8rem' }}>
                       <span className={`status-pill ${post.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.65rem', textTransform: 'uppercase' }}>
                         {post.status.replace('_', ' ')}
                       </span>
-                      <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'white' }}>{post.title}</h3>
+                       <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--admin-text-main)' }}>{post.title}</h3>
                     </div>
-                    <p style={{ fontSize: '0.9rem', opacity: 0.6, marginBottom: '1.5rem', lineHeight: '1.6' }}>{post.excerpt || "No summary engineering provided."}</p>
+                     <p style={{ fontSize: '0.9rem', color: 'var(--admin-text-muted)', fontWeight: '500', marginBottom: '1.5rem', lineHeight: '1.6' }}>{post.excerpt || "No summary engineering provided."}</p>
 
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                       {[
@@ -731,12 +766,12 @@ export default function AdminEnhanced() {
                               fontSize: '0.75rem',
                               padding: '0.4rem 0.8rem',
                               borderRadius: '6px',
-                              background: isPublished ? `${platform.color}22` : 'rgba(255,255,255,0.03)',
-                              border: `1px solid ${isPublished ? platform.color + '44' : 'rgba(255,255,255,0.05)'}`,
+                              background: isPublished ? `${platform.color}22` : 'var(--admin-accent-soft)',
+                              border: `1px solid ${isPublished ? platform.color + '44' : 'var(--admin-border)'}`,
                               transition: 'all 0.3s ease'
                             }}
                           >
-                            <span style={{ color: isPublished ? platform.color : 'rgba(255,255,255,0.2)' }}>{platform.icon}</span>
+                            <span style={{ color: isPublished ? platform.color : 'var(--admin-text-muted)' }}>{platform.icon}</span>
                             {isPublished && status?.platform_url ? (
                               <a
                                 href={status.platform_url}
@@ -747,7 +782,7 @@ export default function AdminEnhanced() {
                                 {platform.id} <LuExternalLink style={{ fontSize: '0.6rem', opacity: 0.6 }} />
                               </a>
                             ) : (
-                              <span style={{ textTransform: 'capitalize', color: isPublished ? 'white' : 'rgba(255,255,255,0.2)' }}>{platform.id}</span>
+                              <span style={{ textTransform: 'capitalize', color: isPublished ? 'white' : 'var(--admin-text-muted)' }}>{platform.id}</span>
                             )}
                             {isPublished && <LuCircleCheck style={{ fontSize: '0.6rem', color: '#10b981', marginLeft: '2px' }} />}
                           </div>
@@ -769,9 +804,9 @@ export default function AdminEnhanced() {
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ background: 'rgba(0,0,0,0.5)', padding: '1.2rem', borderRadius: '12px', border: '1px solid var(--accent-primary)' }}
+                        style={{ background: 'var(--admin-bg)', padding: '1.2rem', borderRadius: '12px', border: '1px solid var(--admin-accent)' }}
                       >
-                        <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.5, marginBottom: '0.8rem', fontWeight: '800', letterSpacing: '0.05em' }}>Target Vectors</div>
+                         <div style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--admin-text-muted)', marginBottom: '0.8rem', fontWeight: '800', letterSpacing: '0.05em' }}>Target Vectors</div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.2rem' }}>
                           {["blog", "linkedin", "instagram", "facebook"].map(p => (
                             <button
@@ -781,8 +816,8 @@ export default function AdminEnhanced() {
                                 padding: '0.4rem 0.6rem',
                                 fontSize: '0.7rem',
                                 borderRadius: '6px',
-                                background: (selectedPlatforms[post.id] || []).includes(p) ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                background: (selectedPlatforms[post.id] || []).includes(p) ? 'var(--admin-accent)' : 'var(--admin-accent-soft)',
+                                border: '1px solid var(--admin-border)',
                                 color: 'white',
                                 cursor: 'pointer',
                                 flex: '1 1 45%',
@@ -803,28 +838,40 @@ export default function AdminEnhanced() {
                         </button>
                         <button
                           onClick={() => setShowPlatformSelector(prev => ({ ...prev, [post.id]: false }))}
-                          style={{ width: '100%', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem', marginTop: '0.5rem', cursor: 'pointer' }}
+                          style={{ width: '100%', background: 'transparent', border: 'none', color: 'var(--admin-text-muted)', fontSize: '0.7rem', marginTop: '0.5rem', cursor: 'pointer' }}
                         >
                           Cancel
                         </button>
                       </motion.div>
                     ) : (
-                      (post.status === "draft" || post.status === "pending_review") && (
-                        <button
-                          className="btn"
-                          style={{ padding: '0.7rem' }}
-                          onClick={() => togglePlatformSelector(post.id)}
-                          disabled={isPublishing}
-                        >
-                          {isPublishing ? "Synchronizing..." : <><LuRocket /> Deploy Packet</>}
-                        </button>
-                      )
-                    )}
-
-                    {post.status === "published" && !selectorOpen && (
-                      <Link to={`/blog/${post.slug}`} target="_blank" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.8rem', padding: '0.7rem' }}>
-                        Verify Live Link
-                      </Link>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {(post.status === "draft" || post.status === "pending_review") ? (
+                          <button
+                            className="btn"
+                            style={{ padding: '0.7rem' }}
+                            onClick={() => togglePlatformSelector(post.id)}
+                            disabled={isPublishing}
+                          >
+                            {isPublishing ? "Synchronizing..." : <><LuRocket /> Deploy Packet</>}
+                          </button>
+                        ) : (
+                          <>
+                            <button
+                              className="btn-outline"
+                              style={{ padding: '0.7rem', borderColor: 'var(--admin-accent)', color: 'var(--admin-accent)' }}
+                              onClick={() => togglePlatformSelector(post.id)}
+                              disabled={isPublishing}
+                            >
+                              <LuShare2 /> Sync Social Vectors
+                            </button>
+                            {post.status === "published" && (
+                               <Link to={`/blog/${post.slug}`} target="_blank" className="btn-outline" style={{ textAlign: 'center', fontSize: '0.8rem', padding: '0.7rem', color: 'var(--admin-accent)', fontWeight: '700' }}>
+                                Verify Live Link
+                              </Link>
+                            )}
+                          </>
+                        )}
+                      </div>
                     )}
 
                     {publishStatus[post.id] && (
@@ -855,9 +902,9 @@ export default function AdminEnhanced() {
                 style={{
                   padding: '0.75rem 1.5rem',
                   borderRadius: '12px',
-                  background: activeTab === tab ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: activeTab === tab ? 'white' : 'var(--text-secondary)',
+                   background: activeTab === tab ? 'var(--admin-accent)' : 'var(--admin-accent-soft)',
+                  border: '1px solid var(--admin-border)',
+                  color: activeTab === tab ? 'white' : 'var(--admin-text-muted)',
                   fontSize: '0.85rem',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -876,7 +923,7 @@ export default function AdminEnhanced() {
             {activeTab === 'applicants' && (
               <>
                 {applications.length === 0 ? (
-                  <div style={{ padding: '5rem', textAlign: 'center', opacity: 0.4 }}>
+                   <div style={{ padding: '5rem', textAlign: 'center', color: 'var(--admin-text-muted)', fontWeight: '600' }}>
                     <div style={{ fontSize: '3rem' }}>👥</div>
                     <p>No active talent packets detected.</p>
                   </div>
@@ -887,14 +934,14 @@ export default function AdminEnhanced() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="glass-panel"
-                      style={{ padding: '1.5rem 2rem', border: '1px solid rgba(255,255,255,0.05)', display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'center' }}
+                      style={{ padding: '1.5rem 2rem', border: '1px solid var(--admin-border)', display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'center' }}
                     >
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
                           <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{app.full_name}</h3>
                           <span style={{ fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px', background: 'var(--accent-primary)', color: 'white' }}>{app.position}</span>
                         </div>
-                        <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', opacity: 0.6 }}>
+                         <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>
                           <span>{app.email}</span>
                           <span>•</span>
                           <span>{app.experience_years} Years Exp.</span>
@@ -921,16 +968,16 @@ export default function AdminEnhanced() {
             {activeTab === 'benchmarks' && (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
                 {compensationPackages.map(pkg => (
-                  <div key={pkg.id} className="glass-panel" style={{ padding: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div key={pkg.id} className="glass-panel" style={{ padding: '1.5rem', border: '1px solid var(--admin-border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                       <h4 style={{ margin: 0 }}>{pkg.role_title}</h4>
-                      <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>{pkg.role_level}</span>
+                      <span style={{ fontSize: '0.7rem', color: 'var(--admin-text-muted)' }}>{pkg.role_level}</span>
                     </div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--accent-light)' }}>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--admin-accent)' }}>
                       {pkg.currency} {pkg.annual_ctc_min.toLocaleString()} - {pkg.annual_ctc_max.toLocaleString()}
                     </div>
-                    <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', fontSize: '0.8rem', opacity: 0.7 }}>
-                      {pkg.department} • {pkg.work_location}
+                    <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--admin-border)', fontSize: '0.8rem', color: 'var(--admin-text-muted)', fontWeight: '600' }}>
+                       {pkg.department} • {pkg.work_location}
                     </div>
                   </div>
                 ))}
@@ -939,6 +986,6 @@ export default function AdminEnhanced() {
           </div>
         </div>
       )}
-    </AdminLayout>
+        </>
   );
 }

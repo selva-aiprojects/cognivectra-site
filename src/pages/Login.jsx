@@ -63,10 +63,8 @@ export default function Login() {
     }
 
     return (
-        <div className="login-page">
-            <div className="login-grid" />
-            <div className="login-glow" style={{ top: '10%', left: '10%' }} />
-            <div className="login-glow" style={{ bottom: '10%', right: '10%', background: '#3b82f6' }} />
+        <div className="admin-theme login-page-body">
+            <div className="login-grid" style={{ opacity: 0.1 }} />
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -85,21 +83,24 @@ export default function Login() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}
                     >
                         {tenant?.branding?.logo_url ? (
-                            <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '40px', width: 'auto' }} />
+                            <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '32px', width: 'auto' }} />
                         ) : (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <FaGlobe style={{ fontSize: '1.5rem', color: 'var(--accent-primary)' }} />
-                                <div data-testid="tenant-name" style={{ fontSize: '0.9rem', fontWeight: '800', color: 'white', textAlign: 'center' }}>
-                                    {tenant?.tenant_name || 'Operations OS'}
-                                </div>
-                            </div>
+                            <FaGlobe style={{ fontSize: '1.5rem', color: 'var(--admin-accent)' }} />
                         )}
+                        <div style={{ textAlign: 'left' }}>
+                            <div data-testid="tenant-name" style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--admin-text-main)', letterSpacing: '-0.02em', lineHeight: '1' }}>
+                                {tenant?.tenant_name || 'CogniVectra Global'}
+                            </div>
+                            <div style={{ fontSize: '0.6rem', color: 'var(--admin-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', marginTop: '0.2rem' }}>
+                                Command Center
+                            </div>
+                        </div>
                     </motion.div>
-                    <h2>Command Portal</h2>
-                    <p>Authorization required to access {tenant?.tenant_name || 'CogniVectra'} core.</p>
+                    <h2>Welcome back</h2>
+                    <p>Enter your credentials to access the operational bridge.</p>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -128,35 +129,43 @@ export default function Login() {
                 </AnimatePresence>
 
                 <form onSubmit={handleLogin} className="login-form">
-                    <div className="form-group">
-                        <label><FaEnvelope style={{ marginRight: '0.5rem', fontSize: '0.7rem' }} /> Identifier</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            placeholder="admin@cognivectra.com"
-                        />
+                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.8rem', fontWeight: '700', color: 'var(--admin-text-main)' }}>Admin Identifier</label>
+                        <div style={{ position: 'relative' }}>
+                            <FaEnvelope style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--admin-text-muted)', fontSize: '0.8rem' }} />
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder="admin@cognivectra.com"
+                                style={{ paddingLeft: '2.75rem', width: '100%' }}
+                            />
+                        </div>
                     </div>
 
-                    <div className="form-group">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
-                            <label style={{ margin: 0 }}><FaLock style={{ marginRight: '0.5rem', fontSize: '0.7rem' }} /> Access Code</label>
+                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                            <label style={{ margin: 0, fontSize: '0.8rem', fontWeight: '700', color: 'var(--admin-text-main)' }}>Access Code</label>
                             <button
                                 type="button"
                                 onClick={handleForgotPassword}
-                                style={{ background: 'none', border: 'none', color: 'var(--accent-light)', fontSize: '0.7rem', cursor: 'pointer', fontWeight: 600 }}
+                                style={{ background: 'none', border: 'none', color: 'var(--admin-accent)', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 700 }}
                             >
-                                Lost Access?
+                                Forgot?
                             </button>
                         </div>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="••••••••"
-                        />
+                        <div style={{ position: 'relative' }}>
+                            <FaLock style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--admin-text-muted)', fontSize: '0.8rem' }} />
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                placeholder="••••••••"
+                                style={{ paddingLeft: '2.75rem', width: '100%' }}
+                            />
+                        </div>
                     </div>
 
                     <button
@@ -171,8 +180,13 @@ export default function Login() {
                     </button>
                 </form>
 
-                <div className="login-footer">
-                    <FaLock style={{ fontSize: '0.7rem' }} /> Encrypted via Supabase High-Trust Mesh
+                <div className="login-footer" style={{ borderTop: '1px solid var(--admin-border)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--admin-text-muted)', fontSize: '0.75rem' }}>
+                        <FaLock style={{ fontSize: '0.7rem' }} /> Secure Bridge
+                    </div>
+                    <div style={{ background: '#f1f5f9', color: '#64748b', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.6rem', fontWeight: '800', letterSpacing: '0.05em' }}>
+                        v1.4.2 OPS_OS
+                    </div>
                 </div>
             </motion.div >
         </div >

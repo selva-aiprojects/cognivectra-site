@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
-import { LuSparkles, LuCircleCheck, LuFilePen, LuPrinter, LuEye } from 'react-icons/lu';
-import AdminLayout from '../layouts/AdminLayout';
+import { LuSparkles, LuCircleCheck, LuFilePen, LuPrinter, LuEye, LuCircleAlert, LuPlus, LuSend, LuFileSearch } from 'react-icons/lu';
 
 export default function AdminOffers() {
     const navigate = useNavigate();
@@ -370,17 +369,17 @@ export default function AdminOffers() {
         }
     }
 
-    if (loading) return <AdminLayout>Loading...</AdminLayout>;
+    if (loading) return <div>Loading offers...</div>;
 
     return (
-        <AdminLayout>
-            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+        <>
+            <header className="admin-header">
                 <div className="admin-title-area">
-                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Hiring</span>
+                    <div className="admin-breadcrumbs">
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Hiring</span>
                     </div>
-                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Offer Console</h1>
-                    <p style={{ opacity: 0.7 }}>Design and issue employment agreements with standardized packages.</p>
+                    <h1>Offer Console</h1>
+                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Design and issue employment agreements with standardized packages.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={() => setShowGenerator(true)} className="btn">
@@ -395,16 +394,16 @@ export default function AdminOffers() {
             {/* Offer Generator Modal */}
             {showGenerator && !showPreview && (
                 <div className="modal-overlay" onClick={() => setShowGenerator(false)}>
-                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1000px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1000px', border: `1px solid var(--admin-border)` }}>
                         <div className="modal-header">
                             <div>
                                 <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Offer Construction</h2>
-                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Step 1: Link to candidate and compensation</p>
+                                <p style={{ fontSize: '0.8rem', color: 'var(--admin-text-muted)', fontWeight: '600' }}>Step 1: Link to candidate and compensation</p>
                             </div>
                             <button className="modal-close" onClick={() => setShowGenerator(false)}>×</button>
                         </div>
                         <form className="application-form">
-                            <h3 style={{ fontSize: '1rem', marginBottom: '1.25rem', opacity: 0.9 }}>Profile Matching</h3>
+                            <h3 style={{ fontSize: '1.1rem', marginBottom: '1.25rem', fontWeight: '700' }}>Profile Matching</h3>
                             <div className="form-group">
                                 <label>Shortlisted Application</label>
                                 <select onChange={(e) => {
@@ -428,7 +427,7 @@ export default function AdminOffers() {
                                 </div>
                             </div>
 
-                            <h3 style={{ fontSize: '1rem', marginTop: '2rem', marginBottom: '1.25rem', opacity: 0.9 }}>Equity & Compensation</h3>
+                            <h3 style={{ fontSize: '1.1rem', marginTop: '2rem', marginBottom: '1.25rem', fontWeight: '700' }}>Equity & Compensation</h3>
                             <div className="form-group">
                                 <label>Standardized Package</label>
                                 <select value={offerData.compensationPackageId} onChange={(e) => selectCompensationPackage(e.target.value)}>
@@ -462,11 +461,11 @@ export default function AdminOffers() {
             {/* Preview Modal */}
             {showPreview && (
                 <div className="modal-overlay" onClick={() => setShowPreview(false)}>
-                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: `1px solid var(--admin-border)` }}>
                         <div className="modal-header">
                             <div>
                                 <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Review Agreement</h2>
-                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Step 2: Legal validation and sign-off</p>
+                                <p style={{ fontSize: '0.8rem', color: 'var(--admin-text-muted)', fontWeight: '600' }}>Step 2: Legal validation and sign-off</p>
                             </div>
                             <button className="modal-close" onClick={() => setShowPreview(false)}>×</button>
                         </div>
@@ -486,11 +485,11 @@ export default function AdminOffers() {
             {/* View Existing Offer Modal */}
             {viewingOffer && (
                 <div className="modal-overlay" onClick={() => setViewingOffer(null)}>
-                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth:900, border: `1px solid var(--admin-border)` }}>
                         <div className="modal-header">
                             <div>
                                 <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Offer Letter — {viewingOffer.candidate_name}</h2>
-                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>{viewingOffer.offer_reference} | {viewingOffer.job_title} | Status: {viewingOffer.offer_status?.toUpperCase()}</p>
+                                <p style={{ fontSize: '0.8rem', color: 'var(--admin-text-muted)', fontWeight: '600' }}>{viewingOffer.offer_reference} | {viewingOffer.job_title} | Status: {viewingOffer.offer_status?.toUpperCase()}</p>
                             </div>
                             <button className="modal-close" onClick={() => setViewingOffer(null)}>×</button>
                         </div>
@@ -521,14 +520,14 @@ export default function AdminOffers() {
                         {offers.map(offer => (
                             <tr key={offer.id}>
                                 <td>
-                                    <div style={{ fontWeight: '700', color: '#fff' }}>{offer.candidate_name}</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{offer.candidate_email}</div>
+                                    <div style={{ fontWeight: '700' }}>{offer.candidate_name}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>{offer.candidate_email}</div>
                                 </td>
                                 <td>
-                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{offer.job_title}</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>{offer.department}</div>
+                                    <div style={{ fontSize: '0.9rem' }}>{offer.job_title}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>{offer.department}</div>
                                 </td>
-                                <td style={{ color: 'var(--accent-light)', fontWeight: '700' }}>
+                                <td style={{ color: 'var(--admin-accent)', fontWeight: '700' }}>
                                     {offer.annual_ctc}
                                 </td>
                                 <td>
@@ -536,7 +535,7 @@ export default function AdminOffers() {
                                         {offer.offer_status === 'accepted' ? <><LuCircleCheck style={{ marginRight: '4px' }} /> Accepted</> : (offer.offer_status === 'draft' ? <><LuFilePen style={{ marginRight: '4px' }} /> Draft</> : offer.offer_status)}
                                     </span>
                                 </td>
-                                <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                                <td style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)' }}>
                                     {new Date(offer.created_at).toLocaleDateString()}
                                 </td>
                                 <td>
@@ -549,6 +548,6 @@ export default function AdminOffers() {
                     </tbody>
                 </table>
             </div>
-        </AdminLayout>
+        </>
     );
 }

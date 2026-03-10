@@ -62,8 +62,12 @@ serve(async (req: Request) => {
 
         const results = []
         const socialData = post.social_media_data || {}
-        const blogUrl = `https://cogni-vectra.vercel.app/blog/${post.slug}`
+        // Use production domain for live site
+        const blogUrl = `https://cognivectra.com/blog/${post.slug}`
         const shareText = socialData.linkedin || post.excerpt || post.title
+
+        console.log(`📝 Preparing content for: ${blogUrl}`);
+        console.log(`🔗 Webhook fallback target: ${Deno.env.get('SOCIAL_WEBHOOK_URL')?.substring(0, 20)}...`);
 
         if (platforms.includes('linkedin')) {
             try {
@@ -164,33 +168,69 @@ serve(async (req: Request) => {
 
         // Shared Webhook Helper
         async function sendToWebhook(platform: string, post: any, blogUrl: string, shareText: string) {
-            const webhookUrl = Deno.env.get('SOCIAL_WEBHOOK_URL');
-            if (!webhookUrl) return null;
+            const rawWebhookUrl = Deno.env.get('SOCIAL_WEBHOOK_URL');
+            if (!rawWebhookUrl) {
+                console.warn(`⚠️ No SOCIAL_WEBHOOK_URL configured for ${platform} fallback.`);
+                return null;
+            }
+
+            // Robust cleaning for the URL (handles common quote issues)
+            const webhookUrl = rawWebhookUrl.replace(/["'`]/g, "").trim();
+            
+            // Instagram requires high-quality public URLs
+            const defaultImageUrl = 'https://cognivectra.com/Logo-refined.png';
+            const postImageUrl = post.image_url;
+            
+            // Ensure absolute URL for images
+            let imageUrl = postImageUrl;
+            if (!imageUrl || imageUrl.startsWith('/') || imageUrl.includes('localhost')) {
+                imageUrl = defaultImageUrl;
+            }
 
             try {
-                console.log(`🌐 Sending ${platform} post to Webhook Bridge...`);
+                console.log(`🌐 [BRIDGE] Sending ${platform.toLowerCase()} post to Webhook at: ${webhookUrl.substring(0, 30)}...`);
+                const payload = {
+                    platform: platform.toLowerCase(), // Force lowercase for Make.com filter matches
+                    action: 'publish',
+                    post: {
+                        id: post.id,
+                        title: post.title,
+                        slug: post.slug,
+                        excerpt: post.excerpt,
+                        content: post.content,
+                        share_text: shareText,
+                        url: blogUrl,
+                        image_url: imageUrl
+                    }
+                };
+                
+                console.log(`📡 Payload Size: ${JSON.stringify(payload).length} characters`);
+                
                 const res = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        platform,
-                        action: 'publish',
-                        post: {
-                            id: post.id,
-                            title: post.title,
-                            slug: post.slug,
-                            excerpt: post.excerpt,
-                            content: post.content,
-                            share_text: shareText,
-                            url: blogUrl,
-                            image_url: post.image_url
-                        }
-                    })
+                    body: JSON.stringify(payload)
                 });
-                if (res.ok) return { ok: true, data: { id: `webhook-${platform}`, source: 'make_com' }, urnUsed: 'webhook' };
+
+                const responseText = await res.text();
+                console.log(`📥 Webhook Response [${res.status}]:`, responseText.substring(0, 100));
+
+                if (res.ok) {
+                    return { 
+                        ok: true, 
+                        data: { 
+                            id: `webhook-${platform}-${Date.now()}`, 
+                            source: 'make_com',
+                            detail: responseText.substring(0, 50)
+                        }, 
+                        urnUsed: 'webhook' 
+                    };
+                }
+                
+                console.error(`❌ Webhook failed with status ${res.status}`);
                 return null;
-            } catch (e) {
-                console.error(`❌ Webhook error for ${platform}:`, e);
+            } catch (e: any) {
+                console.error(`❌ Webhook fetch error for ${platform}:`, e.message);
                 return null;
             }
         }
@@ -228,22 +268,19 @@ serve(async (req: Request) => {
         // Instagram Publishing
         if (platforms.includes('instagram')) {
             try {
+                console.log("🔍 Evaluating Instagram publishing strategy...");
                 const token = Deno.env.get('INSTAGRAM_ACCESS_TOKEN')?.replace(/["'`]/g, "").trim()
                 const businessAccountId = Deno.env.get('INSTAGRAM_BUSINESS_ACCOUNT_ID')?.replace(/["'`]/g, "").trim()
-                const defaultImageUrl = Deno.env.get('DEFAULT_POST_IMAGE_URL') || 'https://via.placeholder.com/1080x1080?text=CogniVectra'
+                const defaultImageUrl = (Deno.env.get('DEFAULT_POST_IMAGE_URL') || 'https://cognivectra.com/Logo-refined.png').replace(/["'`]/g, "").trim();
 
-                if (!token || !businessAccountId) {
-                    results.push({
-                        platform: 'instagram',
-                        success: false,
-                        error: 'Missing credentials. Please set INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_BUSINESS_ACCOUNT_ID in environment variables.'
-                    });
-                } else {
-                    // Instagram requires image - use post image or default
+                let successResult = null;
+                const failureLogs = [];
+
+                if (token && businessAccountId) {
+                    console.log("✅ Instagram credentials found. Attempting Direct API...");
                     const imageUrl = post.image_url || defaultImageUrl
                     const caption = socialData.instagram || socialData.instagram_caption || `${post.title}\n\n${post.excerpt || ''}\n\nRead more: ${blogUrl}`
 
-                    // Step 1: Create media container
                     const createMediaRes = await fetch(
                         `https://graph.instagram.com/v18.0/${businessAccountId}/media`,
                         {
@@ -251,75 +288,79 @@ serve(async (req: Request) => {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 image_url: imageUrl,
-                                caption: caption.substring(0, 2200), // Instagram caption limit
+                                caption: caption.substring(0, 2200),
                                 access_token: token
                             })
                         }
                     )
 
-                    if (!createMediaRes.ok) {
-                        const errorData = await createMediaRes.json()
-                        throw new Error(`Instagram media creation failed: ${errorData.error?.message || 'Unknown error'}`)
-                    }
+                    if (createMediaRes.ok) {
+                        const mediaData = await createMediaRes.json()
+                        const creationId = mediaData.id
 
-                    const mediaData = await createMediaRes.json()
-                    const creationId = mediaData.id
+                        const publishRes = await fetch(
+                            `https://graph.instagram.com/v18.0/${businessAccountId}/media_publish`,
+                            {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    creation_id: creationId,
+                                    access_token: token
+                                })
+                            }
+                        )
 
-                    // Step 2: Publish the media container
-                    const publishRes = await fetch(
-                        `https://graph.instagram.com/v18.0/${businessAccountId}/media_publish`,
-                        {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                creation_id: creationId,
-                                access_token: token
-                            })
+                        if (publishRes.ok) {
+                            const publishData = await publishRes.json()
+                            successResult = { ok: true, data: { id: publishData.id, creation_id: creationId } };
+                        } else {
+                            const errData = await publishRes.json();
+                            failureLogs.push(`Publish failed: ${errData.error?.message}`);
                         }
-                    )
-
-                    if (!publishRes.ok) {
-                        const errorData = await publishRes.json()
-                        throw new Error(`Instagram media creation/publish failed: ${errorData.error?.message || 'Unknown error'}`)
+                    } else {
+                        const errData = await createMediaRes.json();
+                        failureLogs.push(`Media creation failed: ${errData.error?.message}`);
                     }
+                } else {
+                    failureLogs.push("Direct API skipped: Missing INSTAGRAM_ACCESS_TOKEN or BUSINESS_ACCOUNT_ID");
+                }
 
-                    const publishData = await publishRes.json()
-                    results.push({
-                        platform: 'instagram',
-                        success: true,
-                        data: { id: publishData.id, creation_id: creationId }
-                    })
+                if (!successResult) {
+                    console.log("ℹ️ [INSTAGRAM] Triggering Webhook Bridge Fallback...");
+                    const instaShareText = socialData.instagram || socialData.instagram_caption || post.excerpt || post.title;
+                    const webhookRes = await sendToWebhook('instagram', post, blogUrl, instaShareText);
+                    if (webhookRes) {
+                        console.log("✅ [INSTAGRAM] Webhook Bridge successful.");
+                        successResult = webhookRes;
+                    } else {
+                        console.error("❌ [INSTAGRAM] Webhook Bridge failed.");
+                    }
+                }
+
+                if (successResult) {
+                    results.push({ platform: 'instagram', success: true, data: successResult.data });
+                } else {
+                    results.push({ platform: 'instagram', success: false, error: failureLogs.join(' | ') || 'Instagram publishing failed' });
                 }
             } catch (err: any) {
-                console.log(`⚠️ Instagram direct API failed, trying webhook: ${err.message}`);
-                const webhookRes = await sendToWebhook('instagram', post, blogUrl, socialData.instagram || post.title);
-                if (webhookRes) {
-                    results.push({ platform: 'instagram', success: true, data: webhookRes.data });
-                } else {
-                    results.push({
-                        platform: 'instagram',
-                        success: false,
-                        error: err.message || 'Instagram publishing failed'
-                    })
-                }
+                console.error("❌ Unexpected Instagram logic error:", err);
+                results.push({ platform: 'instagram', success: false, error: err.message });
             }
         }
 
         // Facebook Publishing
         if (platforms.includes('facebook')) {
             try {
+                console.log("🔍 Evaluating Facebook publishing strategy...");
                 const token = Deno.env.get('FACEBOOK_ACCESS_TOKEN')?.replace(/["'`]/g, "").trim()
                 const pageId = Deno.env.get('FACEBOOK_PAGE_ID')?.replace(/["'`]/g, "").trim()
 
-                if (!token || !pageId) {
-                    results.push({
-                        platform: 'facebook',
-                        success: false,
-                        error: 'Missing credentials. Please set FACEBOOK_ACCESS_TOKEN and FACEBOOK_PAGE_ID in environment variables.'
-                    })
-                } else {
-                    const message = socialData.facebook || socialData.facebook_post || `${post.title}\n\n${post.excerpt || ''}`
+                let successResult = null;
+                const failureLogs = [];
 
+                if (token && pageId) {
+                    console.log("✅ Facebook credentials found. Attempting Direct API...");
+                    const message = socialData.facebook || socialData.facebook_post || `${post.title}\n\n${post.excerpt || ''}`
                     const response = await fetch(
                         `https://graph.facebook.com/v18.0/${pageId}/feed`,
                         {
@@ -333,30 +374,37 @@ serve(async (req: Request) => {
                         }
                     )
 
-                    if (!response.ok) {
-                        const errorData = await response.json()
-                        throw new Error(`Facebook publish failed: ${errorData.error?.message || 'Unknown error'}`)
+                    if (response.ok) {
+                        const responseData = await response.json()
+                        successResult = { ok: true, data: { id: responseData.id } };
+                    } else {
+                        const errData = await response.json();
+                        failureLogs.push(`API failed: ${errData.error?.message}`);
                     }
+                } else {
+                    failureLogs.push("Direct API skipped: Missing FACEBOOK_ACCESS_TOKEN or PAGE_ID");
+                }
 
-                    const responseData = await response.json()
-                    results.push({
-                        platform: 'facebook',
-                        success: true,
-                        data: { id: responseData.id }
-                    })
+                if (!successResult) {
+                    console.log("ℹ️ [FACEBOOK] Triggering Webhook Bridge Fallback...");
+                    const fbShareText = socialData.facebook || socialData.facebook_post || post.excerpt || post.title;
+                    const webhookRes = await sendToWebhook('facebook', post, blogUrl, fbShareText);
+                    if (webhookRes) {
+                        console.log("✅ [FACEBOOK] Webhook Bridge successful.");
+                        successResult = webhookRes;
+                    } else {
+                        console.error("❌ [FACEBOOK] Webhook Bridge failed.");
+                    }
+                }
+
+                if (successResult) {
+                    results.push({ platform: 'facebook', success: true, data: successResult.data });
+                } else {
+                    results.push({ platform: 'facebook', success: false, error: failureLogs.join(' | ') || 'Facebook publishing failed' });
                 }
             } catch (err: any) {
-                console.log(`⚠️ Facebook direct API failed, trying webhook: ${err.message}`);
-                const webhookRes = await sendToWebhook('facebook', post, blogUrl, socialData.facebook || post.title);
-                if (webhookRes) {
-                    results.push({ platform: 'facebook', success: true, data: webhookRes.data });
-                } else {
-                    results.push({
-                        platform: 'facebook',
-                        success: false,
-                        error: err.message || 'Facebook publishing failed'
-                    })
-                }
+                console.error("❌ Unexpected Facebook logic error:", err);
+                results.push({ platform: 'facebook', success: false, error: err.message });
             }
         }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { LuCircleCheck, LuCircleAlert, LuPlus } from 'react-icons/lu';
-import AdminLayout from '../layouts/AdminLayout';
+import { Link } from 'react-router-dom';
 
 export default function AdminClients() {
     const [loading, setLoading] = useState(true);
@@ -116,17 +116,17 @@ export default function AdminClients() {
         }
     }
 
-    if (loading) return <AdminLayout>Loading clients...</AdminLayout>;
+    if (loading) return <div>Loading clients...</div>;
 
     return (
-        <AdminLayout>
-            <header className="admin-header glass-panel">
+        <>
+            <header className="admin-header">
                 <div className="admin-title-area">
                     <div className="admin-breadcrumbs">
-                        <Link to="/admin">Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>CRM</span>
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">CRM</span>
                     </div>
-                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Client Hub</h1>
-                    <p style={{ opacity: 0.7 }}>Manage relationships, track leads, and view client health.</p>
+                    <h1>Client Hub</h1>
+                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500' }}>Manage relationships, track leads, and view client health.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={openNewClientForm} className="btn"><LuPlus /> Add Client</button>
@@ -151,12 +151,12 @@ export default function AdminClients() {
                         {clients.map(client => (
                             <tr key={client.id} onClick={() => { setEditingClient(client); setFormData(client); setShowForm(true); }} style={{ cursor: 'pointer' }}>
                                 <td>
-                                    <div style={{ fontWeight: '700', color: '#fff', fontSize: '0.95rem' }}>{client.company_name}</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '2px' }}>{client.industry}</div>
+                                    <div style={{ fontWeight: '700', fontSize: '0.95rem' }}>{client.company_name}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)', marginTop: '2px' }}>{client.industry}</div>
                                 </td>
                                 <td>
-                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{client.primary_contact_name}</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{client.primary_contact_email}</div>
+                                    <div style={{ fontSize: '0.9rem' }}>{client.primary_contact_name}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>{client.primary_contact_email}</div>
                                 </td>
                                 <td>
                                     <span style={{
@@ -164,7 +164,7 @@ export default function AdminClients() {
                                         fontSize: '0.7rem',
                                         fontWeight: '700',
                                         letterSpacing: '0.05em',
-                                        color: client.client_type === 'active' ? 'var(--accent-light)' : 'var(--text-secondary)'
+                                        color: client.client_type === 'active' ? 'var(--admin-accent)' : 'var(--admin-text-muted)'
                                     }}>
                                         {client.client_type}
                                     </span>
@@ -177,11 +177,11 @@ export default function AdminClients() {
                                     </span>
                                 </td>
                                 <td style={{ textAlign: 'center' }}>
-                                    <span style={{ background: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                                    <span style={{ background: 'var(--admin-accent-soft)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem' }}>
                                         {client.active_projects}
                                     </span>
                                 </td>
-                                <td style={{ fontWeight: '700', color: 'var(--accent-light)' }}>
+                                <td style={{ fontWeight: '700', color: 'var(--admin-accent)' }}>
                                     ₹{(client.total_revenue / 100000).toFixed(1)}L
                                 </td>
                             </tr>
@@ -193,7 +193,7 @@ export default function AdminClients() {
             {/* CLIENT FORM MODAL */}
             {showForm && (
                 <div className="modal-overlay" onClick={() => setShowForm(false)}>
-                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', border: `1px solid var(--admin-border)` }}>
                         <div className="modal-header">
                             <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingClient ? 'Update Details' : 'Create Client Profile'}</h2>
                             <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
@@ -228,7 +228,7 @@ export default function AdminClients() {
                                 </div>
                             </div>
 
-                            <h3 style={{ marginTop: '2rem', marginBottom: '1rem', fontSize: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>Primary Decision Maker</h3>
+                            <h3 style={{ marginTop: '2rem', marginBottom: '1rem', fontSize: '1rem', borderBottom: '1px solid var(--admin-border)', paddingBottom: '0.5rem' }}>Primary Decision Maker</h3>
                             <div className="form-grid">
                                 <div className="form-group">
                                     <label>Full Name *</label>
@@ -250,6 +250,6 @@ export default function AdminClients() {
                     </div>
                 </div>
             )}
-        </AdminLayout>
+        </>
     );
 }

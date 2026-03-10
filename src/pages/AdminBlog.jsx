@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import AdminLayout from '../layouts/AdminLayout';
 import { motion } from "framer-motion";
 import { LuPlus, LuCircleCheck, LuFilePen } from 'react-icons/lu';
 import { FaFacebook, FaLinkedin, FaInstagram, FaSpinner } from 'react-icons/fa';
@@ -14,6 +13,7 @@ export default function AdminBlog() {
     const [saving, setSaving] = useState(false);
     const [socialPosts, setSocialPosts] = useState({}); // Tracking platform status per post
     const [broadcasting, setBroadcasting] = useState(null); // ID of post being broadcasted
+    const [editingPost, setEditingPost] = useState(null);
 
     // Quill modules configuration
     const modules = {
@@ -128,17 +128,17 @@ export default function AdminBlog() {
         }
     }
 
-    if (loading) return <AdminLayout>Loading...</AdminLayout>;
+    if (loading) return <div>Loading...</div>;
 
     return (
-        <AdminLayout>
-            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+        <>
+            <header className="admin-header">
                 <div className="admin-title-area">
-                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Content</span>
+                    <div className="admin-breadcrumbs">
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Content</span>
                     </div>
-                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Blog Management</h1>
-                    <p style={{ opacity: 0.7 }}>Write and publish insights to CogniVectra Blog.</p>
+                    <h1>Blog Management</h1>
+                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Write and publish insights to CogniVectra Blog.</p>
                 </div>
                 {!editingPost && (
                     <div className="admin-actions">
@@ -154,7 +154,7 @@ export default function AdminBlog() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="module-card glass-panel"
-                    style={{ maxWidth: '1000px', border: '1px solid rgba(255,255,255,0.1)' }}
+                    style={{ maxWidth: '1000px', border: `1px solid var(--admin-border)` }}
                 >
                     <div className="modal-header" style={{ marginBottom: '2rem' }}>
                         <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingPost.id ? "Edit Masterpiece" : "New Thought Leadership"}</h2>
@@ -182,7 +182,7 @@ export default function AdminBlog() {
                         </div>
                         <div className="form-group">
                             <label>Article Body</label>
-                            <div className="glass-panel" style={{ overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <div className="glass-panel" style={{ overflow: 'hidden', border: `1px solid var(--admin-border)` }}>
                                 <ReactQuill
                                     theme="snow"
                                     value={editingPost.body}
@@ -225,15 +225,15 @@ export default function AdminBlog() {
                             {posts.map((post) => (
                                 <tr key={post.id}>
                                     <td>
-                                        <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{post.title}</div>
+                                        <div style={{ fontWeight: '700', fontSize: '1rem' }}>{post.title}</div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.4rem' }}>
-                                            <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>/{post.slug}</span>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--admin-text-muted)' }}>/{post.slug}</span>
                                             {post.status === 'published' && (
                                                 <div style={{ display: 'flex', gap: '6px', marginLeft: '0.5rem' }}>
-                                                    <FaLinkedin title="LinkedIn" style={{ color: socialPosts[post.id]?.includes('linkedin') ? '#0A66C2' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }} />
-                                                    <FaFacebook title="Facebook" style={{ color: socialPosts[post.id]?.includes('facebook') ? '#1877F2' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }} />
-                                                    <FaInstagram title="Instagram" style={{ color: socialPosts[post.id]?.includes('instagram') ? '#E4405F' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }} />
-                                                    {broadcasting === post.id && <FaSpinner className="spin" style={{ fontSize: '0.7rem', color: 'var(--accent-light)' }} />}
+                                                    <FaLinkedin title="LinkedIn" style={{ color: socialPosts[post.id]?.includes('linkedin') ? '#0A66C2' : 'var(--admin-border)', fontSize: '0.8rem' }} />
+                                                    <FaFacebook title="Facebook" style={{ color: socialPosts[post.id]?.includes('facebook') ? '#1877F2' : 'var(--admin-border)', fontSize: '0.8rem' }} />
+                                                    <FaInstagram title="Instagram" style={{ color: socialPosts[post.id]?.includes('instagram') ? '#E4405F' : 'var(--admin-border)', fontSize: '0.8rem' }} />
+                                                    {broadcasting === post.id && <FaSpinner className="spin" style={{ fontSize: '0.7rem', color: 'var(--admin-accent)' }} />}
                                                 </div>
                                             )}
                                         </div>
@@ -243,12 +243,22 @@ export default function AdminBlog() {
                                             {post.status === 'published' ? <><LuCircleCheck style={{ marginRight: '4px' }} /> Published</> : <><LuFilePen style={{ marginRight: '4px' }} /> Draft</>}
                                         </span>
                                     </td>
-                                    <td style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                                    <td style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)' }}>
                                         {new Date(post.created_at).toLocaleDateString()}
                                     </td>
                                     <td>
                                         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', alignItems: 'center' }}>
-                                            <button onClick={() => setEditingPost(post)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Edit</button>
+                                            <button onClick={() => setEditingPost(post)} style={{ background: 'transparent', border: 'none', color: 'var(--admin-accent)', cursor: 'pointer', fontSize: '0.85rem' }}>Edit</button>
+                                            {post.status === 'published' && (
+                                                <button 
+                                                    onClick={() => triggerSocialPublishing(post.id, post.slug)} 
+                                                    style={{ background: 'transparent', border: 'none', color: 'var(--admin-accent)', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center' }}
+                                                    title="Broadcast to All Socials"
+                                                    disabled={broadcasting === post.id}
+                                                >
+                                                    {broadcasting === post.id ? <FaSpinner className="spin" /> : <FaLinkedin style={{ color: '#0A66C2' }} />}
+                                                </button>
+                                            )}
                                             {post.status === 'published' && (
                                                 <a
                                                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://cognivectra.com/blog/${post.slug}`)}`}
@@ -260,7 +270,7 @@ export default function AdminBlog() {
                                                     <FaFacebook />
                                                 </a>
                                             )}
-                                            <button onClick={() => handleDeletePost(post.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Purge</button>
+                                            <button onClick={() => handleDeletePost(post.id)} style={{ background: 'transparent', border: 'none', color: '#dc2626', cursor: 'pointer', fontSize: '0.85rem' }}>Purge</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -269,6 +279,6 @@ export default function AdminBlog() {
                     </table>
                 </div>
             )}
-        </AdminLayout>
+        </>
     );
 }

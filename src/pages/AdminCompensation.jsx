@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import AdminLayout from '../layouts/AdminLayout';
 import { LuPlus } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
@@ -231,17 +230,17 @@ export default function AdminCompensation() {
         }).format(amount || 0);
     }
 
-    if (loading) return <AdminLayout>Loading...</AdminLayout>;
+    if (loading) return <div>Loading...</div>;
 
     return (
-        <AdminLayout>
-            <header className="admin-header glass-panel" style={{ padding: '1.5rem 2.5rem', borderRadius: '16px', marginBottom: '2.5rem' }}>
+        <>
+            <header className="admin-header">
                 <div className="admin-title-area">
-                    <div className="admin-breadcrumbs" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
-                        <Link to="/admin" style={{ opacity: 0.6 }}>Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Compensation</span>
+                    <div className="admin-breadcrumbs">
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Compensation</span>
                     </div>
-                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Salary Benchmarking</h1>
-                    <p style={{ opacity: 0.7 }}>Standardize compensation and benefits across organizational roles.</p>
+                    <h1>Salary Benchmarking</h1>
+                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Standardize compensation and benefits across organizational roles.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={openNewPackageForm} className="btn"><LuPlus /> Create Package</button>
@@ -254,11 +253,11 @@ export default function AdminCompensation() {
             {/* Package Form Modal */}
             {showForm && (
                 <div className="modal-overlay" onClick={() => setShowForm(false)}>
-                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', border: `1px solid var(--admin-border)` }}>
                         <div className="modal-header">
                             <div>
                                 <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingPackage ? 'Update Package' : 'Design New Package'}</h2>
-                                <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>Define market-aligned compensation for selected role.</p>
+                                <p style={{ fontSize: '0.8rem', color: 'var(--admin-text-muted)', fontWeight: '600' }}>Define market-aligned compensation for selected role.</p>
                             </div>
                             <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
                         </div>
@@ -292,7 +291,7 @@ export default function AdminCompensation() {
                                 </div>
                             </div>
 
-                            <h3 style={{ fontSize: '1rem', marginTop: '2rem', marginBottom: '1.25rem', opacity: 0.9 }}>CTC Range (Annual)</h3>
+                            <h3 style={{ fontSize: '1.1rem', marginTop: '2rem', marginBottom: '1.25rem', fontWeight: '700' }}>CTC Range (Annual)</h3>
                             <div className="form-grid">
                                 <div className="form-group">
                                     <label>Minimum Expected CTC</label>
@@ -304,7 +303,7 @@ export default function AdminCompensation() {
                                 </div>
                             </div>
 
-                            <h3 style={{ fontSize: '1rem', marginTop: '2rem', marginBottom: '1.25rem', opacity: 0.9 }}>Supplementary Benefits</h3>
+                            <h3 style={{ fontSize: '1.1rem', marginTop: '2rem', marginBottom: '1.25rem', fontWeight: '700' }}>Supplementary Benefits</h3>
                             <div className="form-grid">
                                 {[0, 1, 2, 3].map(index => (
                                     <div key={index} className="form-group">
@@ -339,11 +338,11 @@ export default function AdminCompensation() {
                         {packages.map(pkg => (
                             <tr key={pkg.id}>
                                 <td>
-                                    <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{pkg.role_title}</div>
-                                    <div style={{ fontSize: '0.7rem', opacity: 0.4, marginTop: '2px' }}>ID: CP-{pkg.id.toString().padStart(4, '0')}</div>
+                                    <div style={{ fontWeight: '700', fontSize: '1rem' }}>{pkg.role_title}</div>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--admin-text-muted)', marginTop: '2px' }}>ID: CP-{pkg.id.toString().padStart(4, '0')}</div>
                                 </td>
                                 <td>
-                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{pkg.department}</div>
+                                    <div style={{ fontSize: '0.9rem' }}>{pkg.department}</div>
                                 </td>
                                 <td>
                                     <span style={{
@@ -352,18 +351,18 @@ export default function AdminCompensation() {
                                         fontWeight: '700',
                                         letterSpacing: '0.1em',
                                         padding: '0.3rem 0.6rem',
-                                        background: 'rgba(255,255,255,0.05)',
+                                        background: 'var(--admin-accent-soft)',
                                         borderRadius: '4px',
-                                        color: '#fff'
+                                        color: 'var(--admin-accent)'
                                     }}>{pkg.role_level}</span>
                                 </td>
-                                <td style={{ color: 'var(--accent-light)', fontWeight: '700' }}>
+                                <td style={{ color: 'var(--admin-accent)', fontWeight: '700' }}>
                                     {formatCurrency(pkg.annual_ctc_min, pkg.currency)} - {formatCurrency(pkg.annual_ctc_max, pkg.currency)}
                                 </td>
                                 <td>
                                     <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-                                        <button onClick={() => openEditPackageForm(pkg)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Modify</button>
-                                        <button onClick={() => handleDelete(pkg.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Terminate</button>
+                                        <button onClick={() => openEditPackageForm(pkg)} style={{ background: 'transparent', border: 'none', color: 'var(--admin-accent)', cursor: 'pointer', fontSize: '0.85rem' }}>Modify</button>
+                                        <button onClick={() => handleDelete(pkg.id)} style={{ background: 'transparent', border: 'none', color: '#dc2626', cursor: 'pointer', fontSize: '0.85rem' }}>Terminate</button>
                                     </div>
                                 </td>
                             </tr>
@@ -371,6 +370,6 @@ export default function AdminCompensation() {
                     </tbody>
                 </table>
             </div>
-        </AdminLayout>
+        </>
     );
 }

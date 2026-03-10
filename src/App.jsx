@@ -31,6 +31,7 @@ const AdminCompensation = lazy(() => import("./pages/AdminCompensation.jsx"));
 const AdminOffers = lazy(() => import("./pages/AdminOffers.jsx"));
 const AdminBlog = lazy(() => import("./pages/AdminBlog.jsx"));
 const AdminClients = lazy(() => import("./pages/AdminClients.jsx"));
+const AdminLayout = lazy(() => import("./layouts/AdminLayout.jsx"));
 const AdminProjects = lazy(() => import("./pages/AdminProjects.jsx"));
 const AdminEnhanced = lazy(() => import("./pages/AdminEnhanced.jsx"));
 const Careers = lazy(() => import("./pages/Careers.jsx"));
@@ -130,7 +131,7 @@ export default function App() {
       )}
 
       {/* Main Content */}
-      <main className="appShell">
+      <main className={location.pathname.startsWith('/admin') ? "admin-app-shell" : "appShell"}>
         <Suspense fallback={
           <div className="loading-container">
             <FaSpinner className="loading-spinner spin" />
@@ -156,16 +157,17 @@ export default function App() {
             <Route path="/products/medflow" element={<MedFlowDetail />} />
             <Route path="/products/eduportal" element={<EduPortalDetail />} />
             <Route path="/leadership" element={<Leadership />} />
-            <Route path="/admin" element={<Admin />} />
-
-            <Route path="/admin/reports" element={<AdminReports />} />
-            <Route path="/admin/jobs" element={<AdminJobs />} />
-            <Route path="/admin/compensation" element={<AdminCompensation />} />
-            <Route path="/admin/offers" element={<AdminOffers />} />
-            <Route path="/admin/blog" element={<AdminBlog />} />
-            <Route path="/admin/clients" element={<AdminClients />} />
-            <Route path="/admin/projects" element={<AdminProjects />} />
-            <Route path="/admin/omni" element={<AdminEnhanced />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Admin />} />
+              <Route path="reports" element={<AdminReports />} />
+              <Route path="jobs" element={<AdminJobs />} />
+              <Route path="compensation" element={<AdminCompensation />} />
+              <Route path="offers" element={<AdminOffers />} />
+              <Route path="blog" element={<AdminBlog />} />
+              <Route path="clients" element={<AdminClients />} />
+              <Route path="projects" element={<AdminProjects />} />
+              <Route path="omni" element={<AdminEnhanced />} />
+            </Route>
             <Route path="/admin/*" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPassword />} />

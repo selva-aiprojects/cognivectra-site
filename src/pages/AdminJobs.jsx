@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { LuCircleCheck, LuFilePen, LuPlus, LuSparkles } from 'react-icons/lu';
-import AdminLayout from '../layouts/AdminLayout';
+import { LuCircleCheck, LuFilePen, LuPlus, LuSparkles, LuCircleAlert, LuTrash2 } from 'react-icons/lu';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AdminJobs() {
@@ -227,18 +226,18 @@ export default function AdminJobs() {
     }
 
     if (loading) {
-        return <AdminLayout>Loading jobs...</AdminLayout>;
+        return <div>Loading jobs...</div>;
     }
 
     return (
-        <AdminLayout>
-            <header className="admin-header glass-panel">
+        <>
+            <header className="admin-header">
                 <div className="admin-title-area">
                     <div className="admin-breadcrumbs">
-                        <Link to="/admin">Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Talent</span>
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Talent</span>
                     </div>
-                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Job Listings</h1>
-                    <p style={{ opacity: 0.7 }}>Manage open positions and career opportunities.</p>
+                    <h1>Job Listings</h1>
+                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Manage open positions and career opportunities.</p>
                 </div>
                 {!showForm && (
                     <div className="admin-actions">
@@ -275,19 +274,19 @@ export default function AdminJobs() {
                             <tbody>
                                 {jobs.length === 0 ? (
                                     <tr>
-                                        <td colSpan="6" style={{ textAlign: 'center', padding: '4rem', opacity: 0.5 }}>No active job profiles found.</td>
+                                        <td colSpan="6" style={{ textAlign: 'center', padding: '4rem', color: 'var(--admin-text-muted)' }}>No active job profiles found.</td>
                                     </tr>
                                 ) : (
                                     jobs.map((job) => (
                                         <tr key={job.id}>
                                             <td>
-                                                <div style={{ fontWeight: '700', color: '#fff', fontSize: '1rem' }}>{job.title}</div>
-                                                <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>ID: {job.slug}</div>
+                                                <div style={{ fontWeight: '700', fontSize: '1rem' }}>{job.title}</div>
+                                                <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>ID: {job.slug}</div>
                                             </td>
                                             <td>{job.department}</td>
                                             <td>{job.location}</td>
                                             <td>
-                                                <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>{job.job_type}</span>
+                                                <span style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)', fontWeight: '500' }}>{job.job_type}</span>
                                             </td>
                                             <td>
                                                 <span className={`status-pill ${job.status === 'active' || job.status === 'published' ? 'status-hot' : 'status-cold'}`} style={{ fontSize: '0.7rem' }}>
@@ -296,8 +295,8 @@ export default function AdminJobs() {
                                             </td>
                                             <td>
                                                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-                                                    <button onClick={() => openEditJobForm(job)} style={{ background: 'transparent', border: 'none', color: 'var(--accent-light)', cursor: 'pointer', fontSize: '0.85rem' }}>Update</button>
-                                                    <button onClick={() => handleDelete(job.id)} style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '0.85rem' }}>Remove</button>
+                                                    <button onClick={() => openEditJobForm(job)} style={{ background: 'transparent', border: 'none', color: 'var(--admin-accent)', cursor: 'pointer', fontSize: '0.85rem' }}>Update</button>
+                                                    <button onClick={() => handleDelete(job.id)} style={{ background: 'transparent', border: 'none', color: '#dc2626', cursor: 'pointer', fontSize: '0.85rem' }}>Remove</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -307,14 +306,14 @@ export default function AdminJobs() {
                         </table>
                     </motion.div>
                 ) : (
-                    <motion.div
-                        key="form"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="module-card glass-panel"
-                        style={{ maxWidth: '1000px', border: '1px solid rgba(255,255,255,0.1)' }}
-                    >
+                        <motion.div
+                            key="form"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="module-card glass-panel"
+                            style={{ maxWidth: '1000px', border: `1px solid var(--admin-border)` }}
+                        >
                         <div className="modal-header" style={{ marginBottom: '2.5rem' }}>
                             <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingJob ? 'Refine Role Profile' : 'Design Job Architect'}</h2>
                             <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
@@ -383,6 +382,6 @@ export default function AdminJobs() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </AdminLayout>
+        </>
     );
 }

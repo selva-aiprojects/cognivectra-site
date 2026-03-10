@@ -3,9 +3,10 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import {
   FaSearch, FaHome, FaCogs, FaRocket, FaBriefcase,
-  FaChartBar, FaGlobe, FaUsers, FaRss, FaEnvelope,
+  FaGlobe, FaUsers, FaRss, FaEnvelope,
   FaLinkedin, FaTwitter, FaFacebook, FaTimes
 } from "react-icons/fa";
+import { LuChartBar } from "react-icons/lu";
 import { trackEvent } from "../lib/analytics";
 
 // Images
@@ -424,7 +425,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <FaBriefcase className="mobile-icon" /> Engagements
             </NavLink>
             <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>
-              <FaChartBar className="mobile-icon" /> Results
+              <LuChartBar className="mobile-icon" /> Results
             </NavLink>
             <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>
               <FaGlobe className="mobile-icon" /> Industries

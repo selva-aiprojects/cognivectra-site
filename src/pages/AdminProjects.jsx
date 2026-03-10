@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { LuCircleCheck, LuCircleAlert, LuPlus } from 'react-icons/lu';
-import AdminLayout from '../layouts/AdminLayout';
+import { Link } from 'react-router-dom';
 
 export default function AdminProjects() {
     const [loading, setLoading] = useState(true);
@@ -115,17 +115,17 @@ export default function AdminProjects() {
         }
     }
 
-    if (loading) return <AdminLayout>Loading projects...</AdminLayout>;
+    if (loading) return <div>Loading projects...</div>;
 
     return (
-        <AdminLayout>
-            <header className="admin-header glass-panel">
+        <>
+            <header className="admin-header">
                 <div className="admin-title-area">
                     <div className="admin-breadcrumbs">
-                        <Link to="/admin">Dashboard</Link> <span>/</span> <span style={{ color: 'var(--accent-light)' }}>Projects</span>
+                        <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Projects</span>
                     </div>
-                    <h1 style={{ fontSize: '2rem', letterSpacing: '-0.03em' }}>Delivery Board</h1>
-                    <p style={{ opacity: 0.7 }}>Track execution, health metrics, and client deliverables.</p>
+                    <h1>Delivery Board</h1>
+                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Track execution, health metrics, and client deliverables.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={openNewProjectForm} className="btn"><LuPlus /> New Project</button>
@@ -150,12 +150,12 @@ export default function AdminProjects() {
                         {projects.map(project => (
                             <tr key={project.id} onClick={() => { setEditingProject(project); setFormData(project); setShowForm(true); }} style={{ cursor: 'pointer' }}>
                                 <td>
-                                    <div style={{ fontWeight: '700', color: '#fff', fontSize: '0.95rem' }}>{project.project_name}</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '2px' }}>{project.project_type}</div>
+                                    <div style={{ fontWeight: '700', fontSize: '0.95rem' }}>{project.project_name}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)', marginTop: '2px' }}>{project.project_type}</div>
                                 </td>
                                 <td>
-                                    <div style={{ fontSize: '0.9rem', color: '#fff' }}>{project.client_name}</div>
-                                    <div style={{ fontSize: '0.7rem', opacity: 0.5 }}>{project.client_code}</div>
+                                    <div style={{ fontSize: '0.9rem' }}>{project.client_name}</div>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--admin-text-muted)' }}>{project.client_code}</div>
                                 </td>
                                 <td>
                                     <span style={{
@@ -163,8 +163,8 @@ export default function AdminProjects() {
                                         borderRadius: '4px',
                                         fontSize: '0.7rem',
                                         fontWeight: '700',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        color: '#fff',
+                                        background: 'var(--admin-accent-soft)',
+                                        color: 'var(--admin-accent)',
                                         textTransform: 'uppercase',
                                         letterSpacing: '0.05em'
                                     }}>{project.project_status.replace('_', ' ')}</span>
@@ -176,13 +176,13 @@ export default function AdminProjects() {
                                 </td>
                                 <td>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                        <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden', minWidth: '80px' }}>
-                                            <div style={{ width: `${project.completion_percentage}%`, height: '100%', background: 'linear-gradient(to right, var(--accent-primary), var(--accent-light))' }} />
+                                        <div style={{ flex: 1, height: '6px', background: 'var(--admin-border)', borderRadius: '3px', overflow: 'hidden', minWidth: '80px' }}>
+                                            <div style={{ width: `${project.completion_percentage}%`, height: '100%', background: 'var(--admin-accent)' }} />
                                         </div>
-                                        <span style={{ fontSize: '0.75rem', fontWeight: '700', opacity: 0.8 }}>{project.completion_percentage}%</span>
+                                        <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--admin-text-muted)' }}>{project.completion_percentage}%</span>
                                     </div>
                                 </td>
-                                <td style={{ fontWeight: '700', color: 'var(--accent-light)' }}>
+                                <td style={{ fontWeight: '700', color: 'var(--admin-accent)' }}>
                                     ₹{(project.project_value / 100000).toFixed(1)}L
                                 </td>
                             </tr>
@@ -194,7 +194,7 @@ export default function AdminProjects() {
             {/* PROJECT FORM MODAL */}
             {showForm && (
                 <div className="modal-overlay" onClick={() => setShowForm(false)}>
-                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', border: `1px solid var(--admin-border)` }}>
                         <div className="modal-header">
                             <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>{editingProject ? 'Modify Project' : 'Initialize New Project'}</h2>
                             <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
@@ -246,6 +246,6 @@ export default function AdminProjects() {
                     </div>
                 </div>
             )}
-        </AdminLayout>
+        </>
     );
 }
