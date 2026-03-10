@@ -131,7 +131,7 @@ export default function App() {
       )}
 
       {/* Main Content */}
-      <main className={location.pathname.startsWith('/admin') ? "admin-app-shell" : "appShell"}>
+      <main className={(location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) ? "admin-app-shell" : "appShell"}>
         <Suspense fallback={
           <div className="loading-container">
             <FaSpinner className="loading-spinner spin" />
