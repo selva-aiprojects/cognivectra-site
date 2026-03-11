@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,7 +15,7 @@ export default function ResetPassword() {
 
     const [isValidSession, setIsValidSession] = useState(false);
 
-    const initialized = React.useRef(false);
+    const initialized = useRef(false);
 
     useEffect(() => {
         if (initialized.current) return;
