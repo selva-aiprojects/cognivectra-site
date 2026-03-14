@@ -12,7 +12,7 @@ export const supabase = createClient(supabaseUrl || 'https://placeholder.supabas
     auth: {
         flowType: 'pkce',
         autoRefreshToken: true,
-        detectSessionInUrl: true,
+        detectSessionInUrl: false, // Critical: Prevent auto-consumption of recovery tokens
         persistSession: true
     }
 });

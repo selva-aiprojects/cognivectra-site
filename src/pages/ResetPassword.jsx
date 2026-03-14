@@ -11,6 +11,8 @@ export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const [initializing, setInitializing] = useState(true);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [isConfirmed, setIsConfirmed] = useState(false);
+    const [needsConfirmation, setNeedsConfirmation] = useState(false);
     const navigate = useNavigate();
 
     const [isValidSession, setIsValidSession] = useState(false);
@@ -18,90 +20,49 @@ export default function ResetPassword() {
     const initialized = useRef(false);
 
     useEffect(() => {
+        console.log('🛡️ CogniVectra Secure Auth Component Loaded [v2.1.0]');
         if (initialized.current) return;
         initialized.current = true;
 
-        async function handlePasswordRecovery() {
-
-            // --- Strategy 1: URL Hash (Implicit flow from /auth/v1/verify redirect) ---
-            // Supabase server-side verify redirects back with: #access_token=...&type=recovery
-            if (window.location.hash) {
-                const hash = new URLSearchParams(window.location.hash.replace('#', ''))
-                const accessToken = hash.get('access_token')
-                const refreshToken = hash.get('refresh_token')
-                const tokenType = hash.get('type')
-
-                if (accessToken && tokenType === 'recovery') {
-                    console.log('🔑 Recovery tokens found in URL hash. Establishing session...')
-                    try {
-                        const { data, error } = await supabase.auth.setSession({
-                            access_token: accessToken,
-                            refresh_token: refreshToken || '',
-                        })
-                        if (error) throw error
-                        if (data.session) {
-                            console.log('✅ Session established via URL hash tokens.')
-                            setIsValidSession(true)
-                            setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' })
-                        }
-                    } catch (err) {
-                        console.error('❌ Hash session error:', err.message)
-                        setMessage({ type: 'error', text: 'Invalid or expired reset link. Please request a new one.' })
-                    } finally {
-                        setInitializing(false)
-                    }
-                    return
-                }
-            }
-
-            // --- Strategy 2: PKCE Flow (Supabase JS v2 default) ---
-            // The reset link arrives as: /reset-password?code=XXXX
-            const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
-
-            if (code) {
-                console.log('🔑 PKCE code detected. Exchanging for session...');
-                try {
-                    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-                    if (error) throw error;
-                    if (data.session) {
-                        console.log('✅ Session established via PKCE exchange.');
-                        setIsValidSession(true);
-                        setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
-                    }
-                } catch (err) {
-                    console.error('❌ PKCE exchange failed:', err.message);
-                    setMessage({ type: 'error', text: 'Invalid or expired reset link. Please request a new one.' });
-                } finally {
-                    setInitializing(false);
-                }
-                return;
-            }
-
-            // --- Strategy 3: Check for existing session ---
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                console.log('✨ Existing active session detected.');
+        async function checkInitialHealth() {
+            // Priority 1: Check for existing session
+            const { data: { session: existingSession } } = await supabase.auth.getSession();
+            if (existingSession) {
+                console.log('✨ Session detected on entry.');
                 setIsValidSession(true);
-                setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
                 setInitializing(false);
                 return;
             }
 
-            // --- Strategy 4: Listen for PASSWORD_RECOVERY event (fallback) ---
+            // Priority 2: Detect if we have parameters that REQUIRE manual initialization
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const hasHash = window.location.hash.includes('access_token');
+
+            if (code || hasHash) {
+                console.log('📬 Recovery parameters detected. Awaiting manual activation.');
+                setNeedsConfirmation(true);
+                setInitializing(false);
+                return;
+            }
+
+            // Priority 3: Fallback listener for async events
             const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-                console.log('🔑 Auth Event:', event);
                 if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
                     setIsValidSession(true);
                     setInitializing(false);
-                    setMessage({ type: 'success', text: 'Secure channel established. You may now update your access code.' });
                 }
             });
 
-            // If nothing fires after 4s, show error
+            // If nothing found after 4s (resilient to slow network)
             const timer = setTimeout(() => {
-                setInitializing(false);
-                setMessage({ type: 'error', text: 'Invalid or expired reset link. Please request a new recovery link.' });
+                setInitializing(prev => {
+                    if (prev) {
+                        setMessage({ type: 'error', text: 'CogniVectra Auth Error: The recovery signal could not be established locally. [ERR-INIT-TIMEOUT]' });
+                        return false;
+                    }
+                    return false;
+                });
             }, 4000);
 
             return () => {
@@ -110,8 +71,77 @@ export default function ResetPassword() {
             };
         }
 
-        handlePasswordRecovery();
+        checkInitialHealth();
     }, []);
+
+    async function handleInitializeRecovery() {
+        setLoading(true);
+        setMessage({ type: '', text: '' });
+
+        try {
+            // Check for Hash first (Implicit)
+            if (window.location.hash) {
+                const hash = new URLSearchParams(window.location.hash.replace('#', ''))
+                const accessToken = hash.get('access_token')
+                const refreshToken = hash.get('refresh_token')
+                const tokenType = hash.get('type')
+
+                if (accessToken && tokenType === 'recovery') {
+                    const { data, error } = await supabase.auth.setSession({
+                        access_token: accessToken,
+                        refresh_token: refreshToken || '',
+                    })
+                    if (error) throw error
+                    if (data.session) {
+                        setIsValidSession(true)
+                        setIsConfirmed(true)
+                        return
+                    }
+                }
+            }
+
+            // Check for PKCE Code
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            if (code) {
+                const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+                if (error) throw error;
+                if (data.session) {
+                    setIsValidSession(true);
+                    setIsConfirmed(true);
+                    return;
+                }
+            }
+
+            // Final fallback check
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setIsValidSession(true);
+                setIsConfirmed(true);
+            } else {
+                throw new Error("CogniVectra Auth Error: The recovery link has expired or was already consumed. [ERR-MANUAL-CONSUMED]");
+            }
+        } catch (err) {
+            // Check if we already have a session before showing an error
+            // (prevents race condition with onAuthStateChange)
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setIsValidSession(true);
+                return;
+            }
+            console.error('❌ Recovery initialization failed:', err.message);
+            setMessage({ type: 'error', text: err.message });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // Clear any lingering error messages once a session is established
+    useEffect(() => {
+        if (isValidSession) {
+            setMessage({ type: '', text: '' });
+        }
+    }, [isValidSession]);
 
 
     async function handleReset(e) {
@@ -160,8 +190,66 @@ export default function ResetPassword() {
                 <div className="login-grid" />
                 <div className="login-card glass-panel" style={{ textAlign: 'center', padding: '4rem' }}>
                     <FaSpinner className="spin" style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--accent-primary)' }} />
-                    <p>Authenticating recovery session...</p>
+                    <p>Scanning authorization parameters...</p>
                 </div>
+            </div>
+        );
+    }
+
+    if (needsConfirmation && !isValidSession) {
+        return (
+            <div className="login-page">
+                <div className="login-grid" />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="login-card glass-panel"
+                    style={{ textAlign: 'center', padding: '3rem' }}
+                >
+                    <div className="login-header">
+                        <FaShieldAlt style={{ fontSize: '3rem', color: 'var(--accent-primary)', marginBottom: '1.5rem' }} />
+                        <h2>Identity Verification</h2>
+                        <p>A recovery signal has been detected. Click below to initialize a secure session.</p>
+                    </div>
+
+                    {message.text && (
+                        <div style={{ padding: '1rem', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
+                            {message.text}
+                        </div>
+                    )}
+
+                    <button
+                        onClick={handleInitializeRecovery}
+                        disabled={loading}
+                        className="btn"
+                        style={{ width: '100%', height: '54px', fontSize: '1.1rem' }}
+                    >
+                        {loading ? <FaSpinner className="spin" /> : 'Initialize Secure Recovery'}
+                    </button>
+                </motion.div>
+            </div>
+        );
+    }
+
+    if (!isValidSession) {
+        return (
+            <div className="login-page">
+                <div className="login-grid" />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="login-card glass-panel"
+                    style={{ textAlign: 'center', padding: '3rem' }}
+                >
+                    <div className="login-header">
+                        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+                        <h2>Session Error</h2>
+                        <p>{message.text || 'Invalid or expired recovery link.'}</p>
+                    </div>
+                    <button onClick={() => navigate('/login')} className="btn" style={{ width: '100%', marginTop: '1rem' }}>
+                        Return to Bridge
+                    </button>
+                </motion.div>
             </div>
         );
     }
