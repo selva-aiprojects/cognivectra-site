@@ -138,7 +138,7 @@ export default function AdminBlog() {
                         <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Content</span>
                     </div>
                     <h1>Blog Management</h1>
-                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Write and publish insights to CogniVectra Blog.</p>
+                    <p>Write and publish insights to CogniVectra Blog.</p>
                 </div>
                 {!editingPost && (
                     <div className="admin-actions">
@@ -148,6 +148,31 @@ export default function AdminBlog() {
                     </div>
                 )}
             </header>
+
+            {/* CONTENT KPI STRIP */}
+            <div className="admin-kpi-strip">
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuPlus /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{posts.length}</div>
+                        <div className="kpi-label">Intel Packets</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuCircleCheck /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{posts.filter(p => p.status === 'published').length}</div>
+                        <div className="kpi-label">Deployed Streams</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}><LuFilePen /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{posts.filter(p => p.status === 'draft').length}</div>
+                        <div className="kpi-label">Pending Engineering</div>
+                    </div>
+                </div>
+            </div>
 
             {editingPost ? (
                 <motion.div

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { LuCircleCheck, LuCircleAlert, LuPlus } from 'react-icons/lu';
+import { LuCircleCheck, LuCircleAlert, LuPlus, LuBuilding2, LuRocket } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 export default function AdminClients() {
@@ -126,12 +126,44 @@ export default function AdminClients() {
                         <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">CRM</span>
                     </div>
                     <h1>Client Hub</h1>
-                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500' }}>Manage relationships, track leads, and view client health.</p>
+                    <p>Manage relationships, track leads, and view client health.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={openNewClientForm} className="btn"><LuPlus /> Add Client</button>
                 </div>
             </header>
+
+            {/* CRM KPI STRIP */}
+            <div className="admin-kpi-strip">
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuBuilding2 /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{clients.filter(c => c.client_type === 'active').length}</div>
+                        <div className="kpi-label">Active Partners</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuRocket /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{clients.filter(c => c.client_type === 'prospect' || c.client_type === 'lead').length}</div>
+                        <div className="kpi-label">Pipeline Funnel</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}><LuCircleCheck /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{clients.filter(c => c.relationship_status === 'healthy').length}</div>
+                        <div className="kpi-label">Healthy Retention</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuPlus /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">₹{(clients.reduce((acc, c) => acc + (c.total_revenue || 0), 0) / 100000).toFixed(1)}L</div>
+                        <div className="kpi-label">Portfolio Value</div>
+                    </div>
+                </div>
+            </div>
 
             {success && <div className="success-message status-hot">{success}</div>}
 

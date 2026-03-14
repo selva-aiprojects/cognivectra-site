@@ -80,18 +80,27 @@ export default function Login() {
                 >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 2, position: 'relative' }}>
                         {tenant?.branding?.logo_url ? (
-                            <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '40px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
+                            <img src={tenant.branding.logo_url} alt={tenant.tenant_name} style={{ height: '40px', width: 'auto' }} />
                         ) : (
-                            <FaGlobe style={{ fontSize: '2rem', color: '#ffffff' }} />
+                            <img src="/logo-enterprise.png" alt="CogniVectra" style={{ height: '40px', width: 'auto' }} />
                         )}
-                        <div style={{ textAlign: 'left' }}>
-                            <div style={{ fontSize: '1.4rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.02em', lineHeight: '1' }}>
-                                {tenant?.tenant_name || 'CogniVectra'}
+                        {tenant?.branding?.logo_url && (
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontSize: '1.4rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.02em', lineHeight: '1' }}>
+                                    {tenant.tenant_name}
+                                </div>
+                                <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '700', marginTop: '0.2rem' }}>
+                                    Central Command System
+                                </div>
                             </div>
-                            <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '700', marginTop: '0.2rem' }}>
-                                Central Command System
+                        )}
+                        {!tenant?.branding?.logo_url && (
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '700' }}>
+                                    Central Command System
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <div className="login-left-content">

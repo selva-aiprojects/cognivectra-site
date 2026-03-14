@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { LuPlus } from 'react-icons/lu';
+import { LuPlus, LuBriefcase, LuTarget, LuChartBar } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 export default function AdminCompensation() {
@@ -240,12 +240,37 @@ export default function AdminCompensation() {
                         <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Compensation</span>
                     </div>
                     <h1>Salary Benchmarking</h1>
-                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Standardize compensation and benefits across organizational roles.</p>
+                    <p>Standardize compensation and benefits across organizational roles.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={openNewPackageForm} className="btn"><LuPlus /> Create Package</button>
                 </div>
             </header>
+
+            {/* COMPENSATION KPI STRIP */}
+            <div className="admin-kpi-strip">
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuBriefcase /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{packages.length}</div>
+                        <div className="kpi-label">Active Benchmarks</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}><LuTarget /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{packages.filter(p => ['senior', 'lead', 'executive'].includes(p.role_level)).length}</div>
+                        <div className="kpi-label">Senior Tier Vectors</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuChartBar /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">₹{Math.round(packages.reduce((acc, p) => acc + (p.annual_ctc_max || 0), 0) / (packages.length || 1) / 100000)}L</div>
+                        <div className="kpi-label">Avg. Capability Cost</div>
+                    </div>
+                </div>
+            </div>
 
             {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
             {error && <div className="error-message" style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>{error}</div>}

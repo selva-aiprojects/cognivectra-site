@@ -20,7 +20,8 @@ import {
   LuMailOpen,
   LuHistory,
   LuLogOut,
-  LuShare2
+  LuShare2,
+  LuChartBar
 } from "react-icons/lu";
 import ReactMarkdown from "react-markdown";
 import { FaFileContract } from "react-icons/fa";
@@ -60,6 +61,15 @@ export default function AdminEnhanced() {
   useEffect(() => {
     checkUser();
   }, []);
+
+  useEffect(() => {
+    // Reset tab to a valid default when switching consoles
+    if (activeConsole === 'publisher') {
+      setActiveTab('drafts');
+    } else {
+      setActiveTab('applicants');
+    }
+  }, [activeConsole]);
 
   async function checkUser() {
     const { data: { session } } = await supabase.auth.getSession();
@@ -439,7 +449,7 @@ export default function AdminEnhanced() {
               )}
             </div>
           </div>
-          <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>
+          <p>
             {activeConsole === 'publisher'
               ? 'Distribute thought leadership across the CogniVectra ecosystem.'
               : 'Orchestrate elite talent acquisition and offer engineering.'}
@@ -452,6 +462,31 @@ export default function AdminEnhanced() {
           <button onClick={handleSignOut} className="btn-outline" style={{ fontSize: '0.8rem' }}><LuLogOut /> Terminate Session</button>
         </div>
       </header>
+
+      {/* OMNI KPI STRIP */}
+      <div className="admin-kpi-strip">
+          <div className="kpi-card glass-panel">
+              <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuRocket /></div>
+              <div className="kpi-data">
+                  <div className="kpi-value">{posts.length}</div>
+                  <div className="kpi-label">Content Streams</div>
+              </div>
+          </div>
+          <div className="kpi-card glass-panel">
+              <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuUsers /></div>
+              <div className="kpi-data">
+                  <div className="kpi-value">{applications.length}</div>
+                  <div className="kpi-label">Talent Funnel</div>
+              </div>
+          </div>
+          <div className="kpi-card glass-panel">
+              <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuChartBar /></div>
+              <div className="kpi-data">
+                  <div className="kpi-value">{compensationPackages.length}</div>
+                  <div className="kpi-label">Comp Benchmarks</div>
+              </div>
+          </div>
+      </div>
 
       {/* CONSOLE SWITCHER ENGINE */}
       {activeConsole === 'publisher' ? (
@@ -551,7 +586,7 @@ export default function AdminEnhanced() {
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--admin-text-muted)', fontWeight: '700' }}>Core Manuscript (Markdown)</label>
                         <textarea
                           rows={15}
-                          style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'var(--admin-accent-soft)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-main)', fontFamily: 'monospace', fontSize: '0.9rem', lineHeight: '1.6' }}
+                          style={{ width: '100%', padding: '1rem', borderRadius: '8px', background: 'var(--admin-accent-soft)', border: '1px solid var(--admin-border)', color: 'var(--admin-text-main)', fontFamily: 'var(--admin-font-body)', fontSize: '0.95rem', lineHeight: '1.6' }}
                           value={editingPost.body}
                           onChange={e => setEditingPost({ ...editingPost, body: e.target.value })}
                         />
@@ -777,12 +812,12 @@ export default function AdminEnhanced() {
                                 href={status.platform_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ textTransform: 'capitalize', color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                                style={{ textTransform: 'capitalize', color: 'var(--admin-text-main)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: '700' }}
                               >
                                 {platform.id} <LuExternalLink style={{ fontSize: '0.6rem', opacity: 0.6 }} />
                               </a>
                             ) : (
-                              <span style={{ textTransform: 'capitalize', color: isPublished ? 'white' : 'var(--admin-text-muted)' }}>{platform.id}</span>
+                              <span style={{ textTransform: 'capitalize', color: isPublished ? 'var(--admin-text-main)' : 'var(--admin-text-muted)', fontWeight: isPublished ? '700' : '500' }}>{platform.id}</span>
                             )}
                             {isPublished && <LuCircleCheck style={{ fontSize: '0.6rem', color: '#10b981', marginLeft: '2px' }} />}
                           </div>

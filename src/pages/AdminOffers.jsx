@@ -379,7 +379,7 @@ export default function AdminOffers() {
                         <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Hiring</span>
                     </div>
                     <h1>Offer Console</h1>
-                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Design and issue employment agreements with standardized packages.</p>
+                    <p>Design and issue employment agreements with standardized packages.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={() => setShowGenerator(true)} className="btn">
@@ -387,6 +387,31 @@ export default function AdminOffers() {
                     </button>
                 </div>
             </header>
+
+            {/* OFFER KPI STRIP */}
+            <div className="admin-kpi-strip">
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuFileSearch /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{offers.length}</div>
+                        <div className="kpi-label">Issued Portfolio</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuCircleCheck /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{offers.filter(o => o.offer_status === 'accepted').length}</div>
+                        <div className="kpi-label">Onboarding Confirmed</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}><LuSend /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{offers.filter(o => o.offer_status === 'draft' || o.offer_status === 'sent').length}</div>
+                        <div className="kpi-label">Awaiting Signature</div>
+                    </div>
+                </div>
+            </div>
 
             {success && <div className="success-message" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(16, 185, 129, 0.2)', animation: 'slideDown 0.3s ease' }}>{success}</div>}
             {error && <div className="error-message" style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>{error}</div>}

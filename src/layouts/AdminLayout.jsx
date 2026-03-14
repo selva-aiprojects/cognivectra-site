@@ -87,13 +87,15 @@ export default function AdminLayout({ children }) {
                     {tenant?.branding?.logo_url ? (
                         <img src={tenant.branding.logo_url} alt={tenant.tenant_name} className="topbar-logo-img" />
                     ) : (
-                        <FaGlobe className="topbar-logo-icon" />
+                        <img src="/logo-enterprise.png" alt="CogniVectra" className="topbar-logo-img" />
                     )}
-                    <div className="topbar-brand-text">
-                        <div data-testid="tenant-name" className="topbar-tenant-name">
-                            {tenant?.tenant_name || 'CogniVectra Global'}
+                    {tenant?.branding?.logo_url && (
+                        <div className="topbar-brand-text">
+                            <div data-testid="tenant-name" className="topbar-tenant-name">
+                                {tenant.tenant_name}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 <nav className={`topbar-nav ${sidebarOpen ? 'open' : ''}`}>

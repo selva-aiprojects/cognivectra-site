@@ -3,23 +3,30 @@
    Professional Light Theme for Day-to-Day Operations
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --admin-bg: #f8fafc;
+  --admin-bg: #f3f4f9; /* Softer bluish gray */
   --admin-sidebar-bg: #0f172a; 
-  --admin-card-bg: #ffffff;
-  --admin-text-main: #020617; 
-  --admin-text-muted: #475569; 
-  --admin-accent: #4338ca; 
-  --admin-accent-hover: #3730a3;
-  --admin-accent-soft: #f5f3ff;
-  --admin-border: #e2e8f0; 
-  --admin-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --admin-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --admin-shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --admin-font-heading: 'Space Grotesk', sans-serif;
+  --admin-card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95)); 
+  --admin-text-main: #0f172a; 
+  --admin-text-muted: #64748b; 
+  --admin-accent: #6366f1; /* Sapphire */
+  --admin-accent-hover: #4f46e5;
+  --admin-accent-soft: rgba(99, 102, 241, 0.05);
+  --admin-border: rgba(226, 232, 240, 0.8); 
+  --admin-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --admin-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+    0 2px 4px -2px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  --admin-shadow-lg: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.03), 
+    0 8px 10px -6px rgba(0, 0, 0, 0.02),
+    0 0 0 1px rgba(99, 102, 241, 0.1);
+  --admin-font-heading: 'Plus Jakarta Sans', sans-serif;
   --admin-font-body: 'Inter', sans-serif;
+  --admin-radius: 16px;
 }
 
 .admin-theme {
@@ -54,18 +61,18 @@
 
 /* Horizontal Top Navigation */
 .admin-theme .admin-topbar {
-  background: var(--admin-sidebar-bg) !important; /* Force deep blue */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: linear-gradient(to bottom, #0f172a, #1e1b4b) !important; /* Sapphire depth */
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2) !important;
   display: flex;
-  flex-direction: row; /* Single line */
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 65px;
-  padding: 0 1.5rem;
+  height: 70px;
+  padding: 0 2rem;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3) !important;
 }
 
 .admin-theme .topbar-brand {
@@ -149,30 +156,30 @@
 }
 
 .admin-theme .topbar-link {
-  color: #cbd5e1 !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 8px !important;
+  color: #94a3b8 !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 99px !important; /* Pill style */
   font-weight: 600 !important;
   display: flex !important;
   align-items: center !important;
-  gap: 0.5rem !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  gap: 0.6rem !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   border: none !important;
   font-size: 0.85rem !important;
-  letter-spacing: -0.01em !important;
+  letter-spacing: 0.01em !important;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .admin-theme .topbar-link:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
+  background: rgba(99, 102, 241, 0.1) !important;
+  color: #e2e8f0 !important;
 }
 
 .admin-theme .topbar-link.active {
-  background: var(--admin-accent) !important;
+  background: rgba(99, 102, 241, 0.2) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.4) !important;
 }
 
 .admin-theme .topbar-actions {
@@ -300,22 +307,25 @@
   color: var(--admin-text-muted) !important;
   font-size: 0.95rem !important;
   font-weight: 500 !important;
+  margin-top: 0.5rem !important;
 }
 
 .admin-theme .admin-breadcrumbs {
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.5rem !important;
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 0.75rem !important;
-  color: var(--admin-text-muted) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  color: var(--admin-text-muted);
 }
 
 .admin-theme .admin-breadcrumbs a {
-  color: var(--admin-text-muted) !important;
-  text-decoration: none !important;
-  transition: color 0.2s !important;
+  color: var(--admin-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .admin-theme .admin-breadcrumbs a:hover {
@@ -344,10 +354,52 @@
 .admin-theme .glass-panel, 
 .admin-theme .module-card {
   background: var(--admin-card-bg) !important;
-  border: 1px solid var(--admin-border) !important;
-  backdrop-filter: none !important;
-  box-shadow: var(--admin-shadow) !important;
+  border: 1px solid rgba(226, 232, 240, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.02), 
+    0 4px 6px -2px rgba(0, 0, 0, 0.01),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+  border-radius: var(--admin-radius) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  color: var(--admin-text-main);
+}
+
+.admin-theme .sidebar-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.8rem 1.25rem !important;
+  color: var(--admin-text-main) !important;
+  text-decoration: none !important;
   border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+  cursor: pointer;
+  background: transparent;
+}
+
+.admin-theme .sidebar-link:hover {
+  background: var(--admin-accent-soft) !important;
+  color: var(--admin-accent) !important;
+  border-color: var(--admin-border) !important;
+}
+
+.admin-theme .sidebar-link.active {
+  background: var(--admin-accent) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+}
+
+.admin-theme .glass-panel:hover, 
+.admin-theme .module-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.04), 
+    0 10px 10px -5px rgba(0, 0, 0, 0.02),
+    0 0 0 1px rgba(99, 102, 241, 0.2) inset !important;
 }
 
 .admin-theme .admin-table-container {
@@ -383,7 +435,78 @@
 }
 
 .admin-theme .admin-table tr:hover td {
-  background: #f8fafc !important;
+  background: var(--admin-accent-soft) !important;
+}
+
+/* HIGH-DENSITY KPI STRIP */
+.admin-theme .admin-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.admin-theme .kpi-card {
+  padding: 1.25rem 1.5rem !important;
+  background: var(--admin-card-bg) !important;
+  border: 1px solid var(--admin-border) !important;
+  border-radius: 12px !important;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.admin-theme .kpi-card:hover {
+  border-color: var(--admin-accent);
+  box-shadow: var(--admin-shadow);
+}
+
+.admin-theme .kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.admin-theme .kpi-data {
+  overflow: hidden;
+}
+
+.admin-theme .kpi-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--admin-text-main);
+  font-family: var(--admin-font-heading);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.admin-theme .kpi-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--admin-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* SAPPHIRE GLOW ACCENTS */
+.admin-theme .sapphire-glow {
+  position: relative;
+}
+
+.admin-theme .sapphire-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
+  pointer-events: none;
 }
 
 /* Status Pills */
@@ -416,25 +539,41 @@
 .admin-theme .admin-stat-card,
 .admin-theme .stat-card {
   background: var(--admin-card-bg) !important;
-  padding: 1.5rem !important;
-  border-radius: 12px !important;
-  border: 1px solid var(--admin-border) !important;
-  box-shadow: var(--admin-shadow) !important;
+  padding: 1.75rem !important;
+  border-radius: var(--admin-radius) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 
+    0 10px 20px -5px rgba(0, 0, 0, 0.03), 
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-theme .admin-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, transparent, var(--admin-accent), transparent);
+  opacity: 0.3;
 }
 
 .admin-theme .admin-stat-number {
-  font-size: 1.5rem !important;
+  font-size: 2rem !important;
   font-weight: 800 !important;
   color: var(--admin-text-main) !important;
-  margin-bottom: 0.25rem !important;
+  margin-bottom: 0.5rem !important;
+  letter-spacing: -0.02em;
 }
 
 .admin-theme .admin-stat-label {
-  font-size: 0.75rem !important;
+  font-size: 0.8rem !important;
   color: var(--admin-text-muted) !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.1em !important;
-  font-weight: 800 !important; /* Bolder labels */
+  letter-spacing: 0.05em !important;
+  font-weight: 600 !important;
 }
 
 .admin-theme .nav-group-label {

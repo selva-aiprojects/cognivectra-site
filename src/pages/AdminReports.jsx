@@ -157,9 +157,9 @@ export default function AdminReports() {
               </span>
             )}
           </div>
-          <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Analyzing organic acquisition via chatbot and contact channels.</p>
+          <p>Analyzing organic acquisition via chatbot and contact channels.</p>
         </div>
-        <div className="admin-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <div className="admin-actions">
           <div className="filter-group" style={{ display: 'flex', gap: '0.75rem' }}>
             <select
               value={filterScore}
@@ -185,7 +185,39 @@ export default function AdminReports() {
         </div>
       </header>
 
-      <div className="reports-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem', height: 'calc(100vh - 280px)' }}>
+            {/* INTELLIGENCE KPI STRIP */}
+            <div className="admin-kpi-strip">
+                <div className="kpi-card glass-panel sapphire-glow">
+                    <div className="kpi-icon" style={{ background: 'rgba(248, 113, 113, 0.1)', color: '#f87171' }}><LuFlame /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{leads.filter(l => l.lead_score === 'hot').length}</div>
+                        <div className="kpi-label">Hot Acquisitions</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuMessageSquare /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{leads.filter(l => l.source === 'chatbot').length}</div>
+                        <div className="kpi-label">Chat Bot Interactions</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuBuilding2 /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{new Set(leads.map(l => l.company)).size}</div>
+                        <div className="kpi-label">Unique Organizations</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuSend /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{leads.filter(l => l.stage === 'series-a' || l.stage === 'mvp').length}</div>
+                        <div className="kpi-label">Strategic Candidates</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="reports-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem', height: 'calc(100vh - 380px)' }}>
         {/* LEAD LIST SECTION */}
         <div className="admin-table-container glass-panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
           <div style={{ flex: 1, overflowY: 'auto' }}>

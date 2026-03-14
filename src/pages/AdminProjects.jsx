@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { LuCircleCheck, LuCircleAlert, LuPlus } from 'react-icons/lu';
+import { LuCircleCheck, LuCircleAlert, LuPlus, LuRocket, LuListTodo } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 export default function AdminProjects() {
@@ -125,12 +125,44 @@ export default function AdminProjects() {
                         <Link to="/admin">Dashboard</Link> <span>/</span> <span className="current">Projects</span>
                     </div>
                     <h1>Delivery Board</h1>
-                    <p style={{ color: 'var(--admin-text-muted)', fontWeight: '500', marginTop: '0.5rem' }}>Track execution, health metrics, and client deliverables.</p>
+                    <p>Track execution, health metrics, and client deliverables.</p>
                 </div>
                 <div className="admin-actions">
                     <button onClick={openNewProjectForm} className="btn"><LuPlus /> New Project</button>
                 </div>
             </header>
+
+            {/* DELIVERY KPI STRIP */}
+            <div className="admin-kpi-strip">
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}><LuRocket /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{projects.filter(p => p.project_status === 'in_progress').length}</div>
+                        <div className="kpi-label">In-Flight Streams</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuListTodo /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{Math.round(projects.reduce((acc, p) => acc + (p.completion_percentage || 0), 0) / (projects.length || 1))}%</div>
+                        <div className="kpi-label">Avg. Velocity</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}><LuCircleAlert /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">{projects.filter(p => p.health_status === 'delayed' || p.health_status === 'at_risk').length}</div>
+                        <div className="kpi-label">Blockers/Risks</div>
+                    </div>
+                </div>
+                <div className="kpi-card glass-panel">
+                    <div className="kpi-icon" style={{ background: 'var(--admin-accent-soft)', color: 'var(--admin-accent)' }}><LuPlus /></div>
+                    <div className="kpi-data">
+                        <div className="kpi-value">₹{(projects.reduce((acc, p) => acc + (p.project_value || 0), 0) / 100000).toFixed(1)}L</div>
+                        <div className="kpi-label">Under Execution</div>
+                    </div>
+                </div>
+            </div>
 
             {success && <div className="success-message status-hot">{success}</div>}
 
