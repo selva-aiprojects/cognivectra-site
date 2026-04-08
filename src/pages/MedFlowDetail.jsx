@@ -159,7 +159,7 @@ export default function MedFlowDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://emr-app-0909.onrender.com/"
+                                href="https://healthezee-hms.vercel.app"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -265,15 +265,15 @@ export default function MedFlowDetail() {
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                             <a
-                                href="https://kidz-clinic-client.onrender.com"
+                                href="https://www.whitekraaft.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn"
                             >
-                                Visit Kidz-Clinic ↗
+                                Visit White Kraaft ↗
                             </a>
                             <a
-                                href="https://emr-app-0909.onrender.com/"
+                                href="https://healthezee-hms.vercel.app"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -295,15 +295,15 @@ export default function MedFlowDetail() {
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                             <a
-                                href="https://drstpushpa.com/"
+                                href="https://www.whitekraaft.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn"
                             >
-                                Visit drstpushpa.com ↗
+                                Visit White Kraaft ↗
                             </a>
                             <a
-                                href="https://emr-app-0909.onrender.com/"
+                                href="https://healthezee-hms.vercel.app"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -385,7 +385,7 @@ export default function MedFlowDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://emr-app-0909.onrender.com/"
+                                href="https://healthezee-hms.vercel.app"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -399,3 +399,4 @@ export default function MedFlowDetail() {
         </main>
     );
 }
+

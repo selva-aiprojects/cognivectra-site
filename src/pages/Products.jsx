@@ -262,7 +262,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://emr-app-0909.onrender.com/"
+                                href="https://healthezee-hms.vercel.app"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'medflow', location: 'Products Grid' })}
@@ -274,22 +274,22 @@ export default function Products() {
                                 View Details
                             </Link>
                             <a
-                                href="https://drstpushpa.com"
+                                href="https://www.whitekraaft.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'drstpushpa' })}
+                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'whitekraaft' })}
                                 className="btn-outline"
                             >
-                                Visit Dr. S.T. Pushpa ↗
+                                Visit White Kraaft ↗
                             </a>
                             <a
-                                href="https://kidz-clinic-client.onrender.com"
+                                href="https://www.whitekraaft.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'kidz-clinic' })}
+                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'whitekraaft' })}
                                 className="btn-outline"
                             >
-                                Visit Kidz-Clinic ↗
+                                Visit White Kraaft ↗
                             </a>
                         </div>
                     </motion.div>
@@ -425,3 +425,4 @@ export default function Products() {
         </main >
     );
 }
+

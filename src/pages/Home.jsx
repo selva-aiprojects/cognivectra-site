@@ -970,20 +970,29 @@ export default function Home() {
               },
               {
                 img: clientKidzImg,
-                title: "Kidz-Clinic",
+                title: "Kidz Clinic",
                 challenge: "Bottlenecks in specialized pediatric patient load and scheduling.",
                 solution: "Deployed MedFlow smart scheduling & EMR system.",
                 impact: "Improved patient throughput by 22%.",
-                link: "https://kidz-clinic-client.onrender.com",
-                linkText: "Visit Clinic →"
+                link: "https://www.whitekraaft.com/",
+                linkText: "Visit Partner"
               },
               {
-                title: "Dr. S.T. Pushpa",
+                title: "drstpushpa.com",
                 challenge: "Balancing busy practice management without losing focus on pediatric care.",
                 solution: "Leveraged custom MedFlow EMR operational tools.",
                 impact: "Streamlined care for thousands of patients.",
                 link: "https://drstpushpa.com/",
-                linkText: "Visit Site →",
+                linkText: "Visit Site",
+                isCustom: true
+              },
+              {
+                title: "Whitekraft",
+                challenge: "Needed an enterprise-ready healthcare platform partner for scalable digital operations.",
+                solution: "Partnered on MedFlow-powered healthcare workflows and enterprise platform delivery.",
+                impact: "Enabled a stronger foundation for production healthcare operations.",
+                link: "https://www.whitekraaft.com/",
+                linkText: "Visit Partner",
                 isCustom: true
               }
             ].map((client, i) => (
@@ -1192,3 +1201,4 @@ export default function Home() {
     </main >
   );
 }
+
