@@ -3,38 +3,38 @@ import React, { useState } from 'react';
 export default function BrandLogo({ size = 'default', className = '', onClick = () => {} }) {
   const [imgError, setImgError] = useState(false);
 
-  // Precision optical sizing tailored for Orbitron and Rajdhani (ultra-competitive futuristic AI typography)
+  // Precision sizing map boosting the neural orb icon to 64px with ultra-luminous neon visibility
   const sizeMap = {
     default: {
-      imgSize: '56px',
+      imgSize: '64px',
       titleSize: '2.1rem',
       subSize: '0.88rem',
       gap: '15px',
       dotSize: '8px'
     },
     large: {
-      imgSize: '68px',
+      imgSize: '76px',
       titleSize: '2.55rem',
       subSize: '1.05rem',
       gap: '18px',
       dotSize: '10px'
     },
     footer: {
-      imgSize: '64px',
+      imgSize: '72px',
       titleSize: '2.35rem',
       subSize: '0.95rem',
       gap: '16px',
       dotSize: '9px'
     },
     admin: {
-      imgSize: '42px',
+      imgSize: '46px',
       titleSize: '1.5rem',
       subSize: '0.68rem',
       gap: '12px',
       dotSize: '6px'
     },
     mobile: {
-      imgSize: '46px',
+      imgSize: '52px',
       titleSize: '1.7rem',
       subSize: '0.75rem',
       gap: '12px',
@@ -57,7 +57,7 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
       }}
       onClick={onClick}
     >
-      {/* 8K Quantum Neural Brain Orb (Royal Purple & Sapphire Theme) */}
+      {/* Ultra-Luminous 64px Quantum Neural Brain Orb */}
       <div 
         style={{ 
           position: 'relative', 
@@ -71,28 +71,28 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
       >
         {!imgError ? (
           <img 
-            src="/favicon.png?v=nanobanana_v1" 
+            src="/favicon.png?v=nanobanana_v2" 
             alt="CogniVectra Quantum Core" 
             onError={() => setImgError(true)}
             style={{ 
               height: currentSize.imgSize, 
               width: currentSize.imgSize, 
               objectFit: 'contain',
-              filter: 'drop-shadow(0 0 16px rgba(192, 132, 252, 0.55)) drop-shadow(0 0 6px rgba(168, 85, 247, 0.75))',
+              filter: 'drop-shadow(0 0 18px rgba(192, 132, 252, 0.9)) drop-shadow(0 0 28px rgba(56, 189, 248, 0.75)) brightness(1.15) contrast(1.12)',
               transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           />
         ) : (
           <svg viewBox="0 0 100 100" width={currentSize.imgSize} height={currentSize.imgSize}>
-            <circle cx="50" cy="50" r="44" fill="rgba(168, 85, 247, 0.15)" />
-            <ellipse cx="50" cy="50" rx="44" ry="18" fill="none" stroke="#c084fc" strokeWidth="3" transform="rotate(-30 50 50)" />
-            <ellipse cx="50" cy="50" rx="44" ry="18" fill="none" stroke="#a855f7" strokeWidth="2.5" transform="rotate(60 50 50)" />
-            <circle cx="50" cy="50" r="14" fill="#c084fc" filter="drop-shadow(0 0 8px #c084fc)" />
+            <circle cx="50" cy="50" r="44" fill="rgba(168, 85, 247, 0.25)" />
+            <ellipse cx="50" cy="50" rx="44" ry="18" fill="none" stroke="#c084fc" strokeWidth="3.5" transform="rotate(-30 50 50)" filter="drop-shadow(0 0 6px #c084fc)" />
+            <ellipse cx="50" cy="50" rx="44" ry="18" fill="none" stroke="#38bdf8" strokeWidth="3" transform="rotate(60 50 50)" filter="drop-shadow(0 0 6px #38bdf8)" />
+            <circle cx="50" cy="50" r="16" fill="#ffffff" filter="drop-shadow(0 0 12px #c084fc)" />
           </svg>
         )}
       </div>
 
-      {/* Ultra-Competitive Tech Wordmark Block ('Orbitron' for Title, 'Rajdhani' bottom right for Subtitle) */}
+      {/* Ultra-Competitive Tech Wordmark ('Orbitron' Title, 'Rajdhani' bottom right Subtitle) */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyItems: 'center', lineHeight: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span 
