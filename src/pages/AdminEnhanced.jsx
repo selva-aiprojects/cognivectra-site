@@ -644,9 +644,6 @@ export default function AdminEnhanced() {
                             style={{
                               padding: '0.8rem',
                               borderRadius: '8px',
-                              background: offerData.role_title === pkg.role_title ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
-                              border: '1px solid rgba(255,255,255,0.1)',
-                              color: 'white',
                               background: offerData.role_title === pkg.role_title ? 'var(--admin-accent)' : 'var(--admin-accent-soft)',
                               border: '1px solid var(--admin-border)',
                               color: offerData.role_title === pkg.role_title ? 'white' : 'var(--admin-text-muted)',
