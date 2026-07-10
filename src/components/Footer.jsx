@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FaEnvelope, FaWhatsapp, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 const logo = "/logo-enterprise.png";
 import { trackEvent } from "../lib/analytics";
+import BrandLogo from "./BrandLogo";
 
 export default function Footer() {
   return (
@@ -10,8 +11,8 @@ export default function Footer() {
 
         {/* Brand Column */}
         <div className="footer-brand" style={{ flex: '1.5' }}>
-          <Link to="/" className="brand" style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 0 }}>
-            <img src="/logo-enterprise.png" alt="CogniVectra" className="brand-logo" style={{ height: '70px', marginBottom: '1rem' }} />
+          <Link to="/" className="brand" style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 0, gap: '0.8rem' }}>
+            <BrandLogo size="footer" />
             <span className="brand-tagline" style={{ fontSize: '0.7rem', display: 'block', maxWidth: '280px' }}>
               Transforming Ideas into Intelligent AI Systems
             </span>

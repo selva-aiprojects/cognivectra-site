@@ -20,6 +20,7 @@ import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
 const logo = "/logo-enterprise.png";
 
 import ThemeSwitcher from "./ThemeSwitcher";
+import BrandLogo from "./BrandLogo";
 
 export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDemoPlatform, setIsSearchOpen, theme, setTheme }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -153,7 +154,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             aria-label="CogniVectra Home"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <img src="/logo-enterprise.png" alt="CogniVectra" className="brand-logo" />
+            <BrandLogo size="default" />
           </NavLink>
 
           {/* Desktop Navigation */}
@@ -383,7 +384,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
         inert={mobileMenuOpen ? undefined : ""}
       >
         <div className="mobile-menu-header">
-          <img src={logo} alt="CogniVectra Logo" className="mobile-menu-logo" />
+          <BrandLogo size="mobile" />
           <button
             className="mobile-close-btn"
             onClick={() => setMobileMenuOpen(false)}

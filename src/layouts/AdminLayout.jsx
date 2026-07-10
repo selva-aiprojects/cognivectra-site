@@ -17,6 +17,7 @@ import {
 } from 'react-icons/lu';
 import { FaGlobe } from 'react-icons/fa';
 import { useTenant } from '../context/TenantContext';
+import BrandLogo from '../components/BrandLogo';
 import '../admin.css';
 
 export default function AdminLayout({ children }) {
@@ -87,7 +88,7 @@ export default function AdminLayout({ children }) {
                     {tenant?.branding?.logo_url ? (
                         <img src={tenant.branding.logo_url} alt={tenant.tenant_name} className="topbar-logo-img" />
                     ) : (
-                        <img src="/logo-enterprise.png" alt="CogniVectra" className="topbar-logo-img" />
+                        <BrandLogo size="admin" />
                     )}
                     {tenant?.branding?.logo_url && (
                         <div className="topbar-brand-text">
