@@ -62,3 +62,7 @@ services/**/.pytest_cache/
 services/**/adapters/        # LoRA model adapter files (large binary assets)
 services/**/*.safetensors
 services/**/*.bin
+
+# Vercel
+.vercel
+
