@@ -3,40 +3,40 @@ import React, { useState } from 'react';
 export default function BrandLogo({ size = 'default', className = '', onClick = () => {} }) {
   const [imgError, setImgError] = useState(false);
 
-  // Precision optical tokens keeping 'cognivectra' and 'innovations' large, distinct, and horizontal on the right side
+  // Precision tokens keeping 'cognivectra' large, with 'innovations' positioned at the bottom right beneath it
   const sizeMap = {
     default: {
-      imgSize: '54px',
-      titleSize: '2.15rem',
-      subSize: '1.25rem',
-      gap: '14px',
+      imgSize: '56px',
+      titleSize: '2.25rem',
+      subSize: '0.88rem',
+      gap: '15px',
       dotSize: '8px'
     },
     large: {
-      imgSize: '66px',
-      titleSize: '2.6rem',
-      subSize: '1.5rem',
-      gap: '16px',
+      imgSize: '68px',
+      titleSize: '2.75rem',
+      subSize: '1.05rem',
+      gap: '18px',
       dotSize: '10px'
     },
     footer: {
-      imgSize: '62px',
-      titleSize: '2.4rem',
-      subSize: '1.4rem',
+      imgSize: '64px',
+      titleSize: '2.5rem',
+      subSize: '0.95rem',
       gap: '16px',
       dotSize: '9px'
     },
     admin: {
-      imgSize: '40px',
-      titleSize: '1.55rem',
-      subSize: '0.9rem',
-      gap: '10px',
+      imgSize: '42px',
+      titleSize: '1.6rem',
+      subSize: '0.68rem',
+      gap: '12px',
       dotSize: '6px'
     },
     mobile: {
-      imgSize: '44px',
-      titleSize: '1.75rem',
-      subSize: '1.05rem',
+      imgSize: '46px',
+      titleSize: '1.8rem',
+      subSize: '0.75rem',
       gap: '12px',
       dotSize: '7px'
     }
@@ -78,7 +78,7 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
               height: currentSize.imgSize, 
               width: currentSize.imgSize, 
               objectFit: 'contain',
-              filter: 'drop-shadow(0 0 16px rgba(192, 132, 252, 0.55)) drop-shadow(0 0 5px rgba(168, 85, 247, 0.8))',
+              filter: 'drop-shadow(0 0 16px rgba(192, 132, 252, 0.55)) drop-shadow(0 0 6px rgba(168, 85, 247, 0.75))',
               transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           />
@@ -92,47 +92,52 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
         )}
       </div>
 
-      {/* Single Horizontal Line: 'cognivectra' + dot + 'innovations' at right side */}
-      <div style={{ display: 'flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
-        <span 
-          style={{ 
-            fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
-            fontWeight: 850,
-            fontSize: currentSize.titleSize,
-            letterSpacing: '-0.025em',
-            color: '#ffffff',
-            lineHeight: 1,
-            textShadow: '0 2px 14px rgba(0, 0, 0, 0.85)'
-          }}
-        >
-          cognivectra
-        </span>
+      {/* Two-line block: 'cognivectra' on top, 'innovations' right-aligned at the bottom under cognivectra */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyItems: 'center', lineHeight: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span 
+            style={{ 
+              fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
+              fontWeight: 850,
+              fontSize: currentSize.titleSize,
+              letterSpacing: '-0.025em',
+              color: '#ffffff',
+              lineHeight: 0.92,
+              textShadow: '0 2px 14px rgba(0, 0, 0, 0.85)',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            cognivectra
+          </span>
+          {/* Luminous Royal Purple Quantum Dot */}
+          <span 
+            style={{ 
+              display: 'inline-block',
+              width: currentSize.dotSize,
+              height: currentSize.dotSize,
+              backgroundColor: '#c084fc',
+              borderRadius: '50%',
+              marginLeft: '5px',
+              boxShadow: '0 0 12px #c084fc, 0 0 24px #a855f7',
+              flexShrink: 0
+            }}
+          />
+        </div>
 
-        {/* Luminous Royal Purple Quantum Dot */}
-        <span 
-          style={{ 
-            display: 'inline-block',
-            width: currentSize.dotSize,
-            height: currentSize.dotSize,
-            backgroundColor: '#c084fc',
-            borderRadius: '50%',
-            margin: '0 10px',
-            boxShadow: '0 0 12px #c084fc, 0 0 24px #a855f7',
-            flexShrink: 0,
-            transform: 'translateY(-2px)'
-          }}
-        />
-
-        {/* 'innovations' on the right side in distinct luminous purple */}
+        {/* 'innovations' positioned right below cognivectra at the right side */}
         <span 
           style={{ 
             fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
             fontWeight: 750,
             fontSize: currentSize.subSize,
-            letterSpacing: '0.08em',
+            letterSpacing: '0.28em',
+            textTransform: 'lowercase',
             color: '#d8b4fe',
-            lineHeight: 1,
-            textShadow: '0 0 12px rgba(192, 132, 252, 0.55)'
+            marginTop: '5px',
+            marginRight: '2px',
+            textShadow: '0 0 12px rgba(192, 132, 252, 0.5)',
+            whiteSpace: 'nowrap',
+            alignSelf: 'flex-end'
           }}
         >
           innovations
