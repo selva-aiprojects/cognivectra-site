@@ -241,8 +241,8 @@ a {
 }
 
 .brand-logo {
-  height: 55px;
-  max-width: 260px;
+  height: 72px;
+  max-width: 320px;
   width: auto;
   object-fit: contain;
 }
@@ -491,8 +491,8 @@ a {
 }
 
 .mobile-menu-logo {
-  height: 50px;
-  max-width: 220px;
+  height: 60px;
+  max-width: 250px;
   width: auto;
   object-fit: contain;
 }
