@@ -154,8 +154,6 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             onClick={() => setMobileMenuOpen(false)}
           >
             <img src="/logo-enterprise.png" alt="CogniVectra" className="brand-logo" />
-            <div className="brand-divider"></div>
-            <span className="brand-tagline">Transforming Ideas into Intelligent AI Systems</span>
           </NavLink>
 
           {/* Desktop Navigation */}
