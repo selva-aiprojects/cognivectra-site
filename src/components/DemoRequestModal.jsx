@@ -17,9 +17,12 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const platforms = {
-    'storeai': 'StoreAI - Retail Management',
-    'stocksteward': 'StockSteward AI - Trading Platform',
     'medflow': 'MedFlow EMR - Healthcare Platform',
+    'storeai': 'StoreAI - Retail Management',
+    'cognihrms': 'CogniHRMS - Human Resource Management',
+    'hospitality': 'Hospitality Management (eHMS)',
+    'eduportal': 'EduPortal - Education & Institution Platform',
+    'stocksteward': 'StockSteward AI - Trading Platform',
     'omnicore': 'OmniCore - Enterprise Orchestration',
     'general': 'General Inquiry'
   };

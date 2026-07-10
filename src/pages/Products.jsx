@@ -464,16 +464,19 @@ export default function Products() {
                 <div className="services-modern-grid">
                     {[
                         {
+                            id: "omnicore",
                             title: "OmniCore",
                             desc: "Unified enterprise orchestration platform for cross-departmental AI automation and data flow management.",
                             status: "Beta"
                         },
                         {
+                            id: "vectraflow",
                             title: "VectraFlow",
                             desc: "Intelligent workflow engine for automated document processing and compliance checking using LLMs.",
                             status: "Development"
                         },
                         {
+                            id: "neuralops",
                             title: "NeuralOps",
                             desc: "Machine learning operations (MLOps) toolkit for scaling AI models from prototype to enterprise-wide deployment.",
                             status: "In Design"
@@ -481,6 +484,7 @@ export default function Products() {
                     ].map((product, i) => (
                         <motion.div
                             key={i}
+                            id={product.id}
                             className="service-modern-card glass-panel"
                             {...fadeInUp}
                             transition={{ delay: i * 0.1 }}

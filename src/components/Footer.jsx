@@ -57,7 +57,7 @@ export default function Footer() {
           <h4>Services</h4>
           <ul className="footer-links">
             <li><Link to="/services">Services</Link></li>
-            <li><Link to="/products">Products</Link></li>
+            <li><Link to="/products">Platforms</Link></li>
             <li><Link to="/engagements">Engagements</Link></li>
             <li><Link to="/industries">Industries</Link></li>
             <li><Link to="/contact">Contact</Link></li>

@@ -93,9 +93,12 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       section: "Platforms",
       image: productsImg,
       items: [
-        { label: "StockSteward AI", path: "/products#steward", desc: "Algorithmic trading & market intelligence." },
+        { label: "MedFlow EMR", path: "/products#emr", desc: "AI-powered multi-tenant healthcare & EMR platform." },
         { label: "StoreAI", path: "/products#storeai", desc: "Transformative retail management analytics." },
-        { label: "MedFlow EMR", path: "/products#emr", desc: "Multi-tenant EMR live at Kidz-Clinic & Dr. S.T. Pushpa." },
+        { label: "CogniHRMS", path: "/products#cognihrms", desc: "Next-gen AI workforce & HR management." },
+        { label: "Hospitality eHMS", path: "/products#hospitality", desc: "Smart hotel, resort & concierge management." },
+        { label: "EduPortal", path: "/products#eduportal", desc: "AI-powered education & institution portal." },
+        { label: "StockSteward AI", path: "/products#steward", desc: "Algorithmic trading & market intelligence." },
         { label: "OmniCore (Beta)", path: "/products#omnicore", desc: "Unified enterprise AI orchestration engine." },
         { label: "VectraFlow", path: "/products#vectraflow", desc: "Intelligent document processing workflows." },
       ]
