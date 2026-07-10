@@ -3,39 +3,39 @@ import React, { useState } from 'react';
 export default function BrandLogo({ size = 'default', className = '', onClick = () => {} }) {
   const [imgError, setImgError] = useState(false);
 
-  // Precision tokens keeping 'cognivectra' large, with 'innovations' positioned at the bottom right beneath it
+  // Precision optical sizing tailored for Orbitron and Rajdhani (ultra-competitive futuristic AI typography)
   const sizeMap = {
     default: {
       imgSize: '56px',
-      titleSize: '2.25rem',
+      titleSize: '2.1rem',
       subSize: '0.88rem',
       gap: '15px',
       dotSize: '8px'
     },
     large: {
       imgSize: '68px',
-      titleSize: '2.75rem',
+      titleSize: '2.55rem',
       subSize: '1.05rem',
       gap: '18px',
       dotSize: '10px'
     },
     footer: {
       imgSize: '64px',
-      titleSize: '2.5rem',
+      titleSize: '2.35rem',
       subSize: '0.95rem',
       gap: '16px',
       dotSize: '9px'
     },
     admin: {
       imgSize: '42px',
-      titleSize: '1.6rem',
+      titleSize: '1.5rem',
       subSize: '0.68rem',
       gap: '12px',
       dotSize: '6px'
     },
     mobile: {
       imgSize: '46px',
-      titleSize: '1.8rem',
+      titleSize: '1.7rem',
       subSize: '0.75rem',
       gap: '12px',
       dotSize: '7px'
@@ -92,15 +92,15 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
         )}
       </div>
 
-      {/* Two-line block: 'cognivectra' on top, 'innovations' right-aligned at the bottom under cognivectra */}
+      {/* Ultra-Competitive Tech Wordmark Block ('Orbitron' for Title, 'Rajdhani' bottom right for Subtitle) */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyItems: 'center', lineHeight: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span 
             style={{ 
-              fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
-              fontWeight: 850,
+              fontFamily: "'Orbitron', 'Space Grotesk', 'Syne', sans-serif",
+              fontWeight: 800,
               fontSize: currentSize.titleSize,
-              letterSpacing: '-0.025em',
+              letterSpacing: '0.01em',
               color: '#ffffff',
               lineHeight: 0.92,
               textShadow: '0 2px 14px rgba(0, 0, 0, 0.85)',
@@ -117,20 +117,20 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
               height: currentSize.dotSize,
               backgroundColor: '#c084fc',
               borderRadius: '50%',
-              marginLeft: '5px',
+              marginLeft: '6px',
               boxShadow: '0 0 12px #c084fc, 0 0 24px #a855f7',
               flexShrink: 0
             }}
           />
         </div>
 
-        {/* 'innovations' positioned right below cognivectra at the right side */}
+        {/* 'innovations' in Rajdhani positioned right below cognivectra at the right side */}
         <span 
           style={{ 
-            fontFamily: "'Plus Jakarta Sans', 'Outfit', sans-serif",
-            fontWeight: 750,
+            fontFamily: "'Rajdhani', 'Space Grotesk', sans-serif",
+            fontWeight: 700,
             fontSize: currentSize.subSize,
-            letterSpacing: '0.28em',
+            letterSpacing: '0.32em',
             textTransform: 'lowercase',
             color: '#d8b4fe',
             marginTop: '5px',
