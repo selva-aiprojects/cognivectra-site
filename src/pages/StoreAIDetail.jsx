@@ -151,7 +151,7 @@ export default function StoreAIDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://store-ai-prd.onrender.com/"
+                                href="https://storeai-app.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -301,7 +301,7 @@ export default function StoreAIDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://store-ai-prd.onrender.com/"
+                                href="https://storeai-app.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"

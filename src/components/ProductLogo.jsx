@@ -4,6 +4,9 @@ import React from 'react';
 import stewardLogo from '../assets/logos/stocksteward-logo.svg';
 import storeLogo from '../assets/logos/storeai-logo.svg';
 import medflowLogo from '../assets/logos/medflow-logo.svg';
+import eduportalLogo from '../assets/logos/eduportal-logo.svg';
+import cognihrmsLogo from '../assets/logos/cognihrms-logo.svg';
+import hospitalityLogo from '../assets/logos/hospitality-logo.svg';
 
 const ProductLogo = ({ type, className = "", style = {} }) => {
     const commonStyle = {
@@ -16,8 +19,12 @@ const ProductLogo = ({ type, className = "", style = {} }) => {
     const logos = {
         steward: stewardLogo,
         store: storeLogo,
-        medflow: medflowLogo
+        medflow: medflowLogo,
+        eduportal: eduportalLogo,
+        cognihrms: cognihrmsLogo,
+        hospitality: hospitalityLogo
     };
+
 
     const logoSrc = logos[type];
 

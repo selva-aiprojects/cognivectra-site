@@ -14,7 +14,9 @@ import {
   LuBuilding2,
   LuCpu,
   LuDatabase,
-  LuNetwork
+  LuNetwork,
+  LuUsers,
+  LuHotel
 } from "react-icons/lu";
 import {
   SiAmazonwebservices,
@@ -599,7 +601,9 @@ export default function Home() {
               { name: "MedFlow EMR", desc: "AI-powered healthcare platform", icon: <LuActivity size={24} /> },
               { name: "StoreAI", desc: "Enterprise GenAI platform", icon: <LuTrendingUp size={24} /> },
               { name: "EduPortal", desc: "AI-powered education platform", icon: <LuBrain size={24} /> },
-              { name: "StewardPlatform", desc: "Multi-tenant SaaS foundation", icon: <LuShield size={24} /> }
+              { name: "StewardPlatform", desc: "Multi-tenant SaaS foundation", icon: <LuShield size={24} /> },
+              { name: "CogniHRMS", desc: "AI-driven workforce & HR platform", icon: <LuUsers size={24} /> },
+              { name: "Hospitality eHMS", desc: "Smart hotel & resort management", icon: <LuHotel size={24} /> }
             ].map((platform, i) => (
               <motion.div
                 key={i}
@@ -850,6 +854,30 @@ export default function Home() {
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products/stocksteward" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
               <button onClick={() => handleDemoRequest('steward')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
+            </div>
+          </motion.div>
+          <motion.div
+            className="service-modern-card glass-panel"
+            whileHover={{ y: -5 }}
+          >
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Production Ready</span>
+            <h4>CogniHRMS</h4>
+            <p>Next-generation Human Resource Management System powered by AI for automated recruitment, attendance, and employee analytics.</p>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Link to="/products#cognihrms" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <a href="https://cognihr.onrender.com/" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Launch Portal ↗</a>
+            </div>
+          </motion.div>
+          <motion.div
+            className="service-modern-card glass-panel"
+            whileHover={{ y: -5 }}
+          >
+            <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Production Ready</span>
+            <h4>Hospitality Management (eHMS)</h4>
+            <p>Smart hospitality and property management platform engineered for hotels, resort chains, and automated guest concierge intelligence.</p>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+              <Link to="/products#hospitality" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <a href="https://ehms-app.vercel.app/" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Launch Portal ↗</a>
             </div>
           </motion.div>
         </div>

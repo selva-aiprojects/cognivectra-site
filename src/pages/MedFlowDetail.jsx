@@ -159,7 +159,7 @@ export default function MedFlowDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://healthezee-hms.vercel.app"
+                                href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -273,7 +273,7 @@ export default function MedFlowDetail() {
                                 Visit White Kraaft ↗
                             </a>
                             <a
-                                href="https://healthezee-hms.vercel.app"
+                                href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -303,7 +303,7 @@ export default function MedFlowDetail() {
                                 Visit White Kraaft ↗
                             </a>
                             <a
-                                href="https://healthezee-hms.vercel.app"
+                                href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -385,7 +385,7 @@ export default function MedFlowDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://healthezee-hms.vercel.app"
+                                href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"

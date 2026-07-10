@@ -210,7 +210,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://store-ai-prd.onrender.com/"
+                                href="https://storeai-app.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'storeai', location: 'Products Grid' })}
@@ -262,7 +262,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://healthezee-hms.vercel.app"
+                                href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'medflow', location: 'Products Grid' })}
@@ -273,15 +273,6 @@ export default function Products() {
                             <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'medflow' })} className="btn-outline">
                                 View Details
                             </Link>
-                            <a
-                                href="https://www.whitekraaft.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'whitekraaft' })}
-                                className="btn-outline"
-                            >
-                                Visit White Kraaft ↗
-                            </a>
                             <a
                                 href="https://www.whitekraaft.com/"
                                 target="_blank"
@@ -361,6 +352,100 @@ export default function Products() {
                             <Link to="/products/eduportal" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'eduportal' })} className="btn-outline">
                                 View Details
                             </Link>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* FEATURED PRODUCT 5 - CogniHRMS */}
+            <section id="cognihrms" className="services-modern">
+                <div className="hero-modern-inner" style={{ padding: 0 }}>
+                    <motion.div
+                        className="hero-copy"
+                        {...fadeInUp}
+                    >
+                        <span className="hero-badge">Enterprise Workforce AI</span>
+                        <div className="flex items-center gap-4 mb-4">
+                            <ProductLogo type="cognihrms" style={{ marginBottom: '1rem' }} />
+                            <h3>CogniHRMS</h3>
+                        </div>
+                        <p>
+                            A next-generation Human Resource Management System powered by AI intelligence. CogniHRMS streamlines talent acquisition, automated payroll management, performance evaluations, and employee analytics across enterprise workforces.
+                        </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
+                            Best for: Mid-to-large enterprises, remote-first organizations, and multi-national teams.
+                        </p>
+                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
+                            <li>AI-Driven Talent & Resume Screening</li>
+                            <li>Automated Attendance & Leave Tracking</li>
+                            <li>Intelligent Performance & Skill Gap Analysis</li>
+                            <li>Multi-Location Employee Portal & Self-Service</li>
+                        </ul>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'cognihrms')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
+                            </form>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
+                            <a
+                                href="https://cognihr.onrender.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'cognihrms', location: 'Products Grid' })}
+                                className="btn-outline"
+                            >
+                                Launch Platform ↗
+                            </a>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* FEATURED PRODUCT 6 - Hospitality Management (eHMS) */}
+            <section id="hospitality" className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                <div className="hero-modern-inner" style={{ padding: 0 }}>
+                    <motion.div
+                        className="hero-copy"
+                        {...fadeInUp}
+                    >
+                        <span className="hero-badge">Smart Hospitality Platform</span>
+                        <div className="flex items-center gap-4 mb-4">
+                            <ProductLogo type="hospitality" style={{ marginBottom: '1rem' }} />
+                            <h3>Hospitality Management (eHMS)</h3>
+                        </div>
+                        <p>
+                            An all-in-one smart hospitality management platform engineered for hotels, resorts, and multi-property chains. Delivers automated check-in/check-out orchestration, dynamic room pricing, smart housekeeping dispatch, and unified guest intelligence.
+                        </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
+                            Best for: Boutique hotels, luxury resort chains, and commercial hospitality operators.
+                        </p>
+                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
+                            <li>Smart Reservation & Front-Desk Automation</li>
+                            <li>Dynamic Pricing & Occupancy Forecasting</li>
+                            <li>Automated Housekeeping & Maintenance Dispatch</li>
+                            <li>Integrated Guest Concierge & CRM</li>
+                        </ul>
+                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'hospitality')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
+                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
+                            </form>
+                        </div>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
+                            <a
+                                href="https://ehms-app.vercel.app/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackEvent('external_link_click', { product: 'hospitality', location: 'Products Grid' })}
+                                className="btn-outline"
+                            >
+                                Launch Platform ↗
+                            </a>
                         </div>
                     </motion.div>
                 </div>
