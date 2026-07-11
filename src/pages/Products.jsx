@@ -8,6 +8,8 @@ import storeAIImg from "../assets/generated/product-storeai.png";
 import stewardImg from "../assets/generated/product-stocksteward.png";
 import emrImg from "../assets/generated/ind-health-3d.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
+import hrmsImg from "../assets/generated/ind-saas-3d.png";
+import hospitalityImg from "../assets/generated/ind-ecommerce-3d.png";
 import ProductLogo from "../components/ProductLogo";
 import { trackEvent } from "../lib/analytics";
 import { supabase } from "../lib/supabase";
@@ -66,7 +68,7 @@ export default function Products() {
         <main>
             <Helmet>
                 <title>Enterprise AI Platforms | Healthcare, Retail, FinTech & Education</title>
-                <meta name="description" content="Explore CogniVectra's suite of production-ready platforms: MedFlow (Healthcare), StoreAI (Retail), StockSteward (FinTech), and EduPortal (Education)." />
+                <meta name="description" content="Explore CogniVectra's suite of production-ready platforms: Healthezee (Healthcare), StoreAI (Retail), StockSteward (FinTech), and EduPortal (Education)." />
                 <meta name="keywords" content="Enterprise AI Platforms, Healthcare EMR, Retail AI, FinTech Trading, EdTech Solutions, CogniVectra Products" />
                 <meta property="og:title" content="CogniVectra | High-Impact Enterprise Platforms" />
                 <meta property="og:description" content="Deploy internal or customer-facing AI platforms at scale." />
@@ -226,7 +228,7 @@ export default function Products() {
                 </div>
             </section>
 
-            {/* FEATURED PRODUCT 3 - MedFlow EMR */}
+            {/* FEATURED PRODUCT 3 - Healthezee */}
             <section id="emr" className="services-modern">
                 <div className="hero-modern-inner" style={{ padding: 0 }}>
                     <motion.div
@@ -235,12 +237,12 @@ export default function Products() {
                     >
                         <span className="hero-badge">Multi-Tenant Healthcare Platform</span>
                         <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="medflow" style={{ marginBottom: '1rem' }} />
-                            <h3>MedFlow EMR</h3>
+                            <ProductLogo type="healthezee" style={{ marginBottom: '1rem' }} />
+                            <h3>Healthezee</h3>
                         </div>
                         <p>
                             A scalable, multi-tenant Electronic Medical Record (EMR) system built for modern clinics.
-                            Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, MedFlow streamlines clinical workflows
+                            Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, Healthezee streamlines clinical workflows
                             and patient management, with rapid onboarding for new providers starting this week.
                         </p>
                         <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
@@ -254,7 +256,7 @@ export default function Products() {
                         </ul>
                         <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
                             <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'medflow')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <form onSubmit={(e) => handleQuickDemo(e, 'healthezee')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                 <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
                                 <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
@@ -265,19 +267,19 @@ export default function Products() {
                                 href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'medflow', location: 'Products Grid' })}
+                                onClick={() => trackEvent('external_link_click', { product: 'healthezee', location: 'Products Grid' })}
                                 className="btn-outline"
                             >
                                 Launch Platform ↗
                             </a>
-                            <Link to="/products/medflow" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'medflow' })} className="btn-outline">
+                            <Link to="/products/healthezee" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'healthezee' })} className="btn-outline">
                                 View Details
                             </Link>
                             <a
                                 href="https://www.whitekraaft.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'medflow_implementation', location: 'Products Grid', client: 'whitekraaft' })}
+                                onClick={() => trackEvent('external_link_click', { product: 'healthezee_implementation', location: 'Products Grid', client: 'whitekraaft' })}
                                 className="btn-outline"
                             >
                                 Visit White Kraaft ↗
@@ -290,7 +292,7 @@ export default function Products() {
                         {...fadeInUp}
                     >
                         <div className="industry-visual glass-panel">
-                            <img src={emrImg} alt="MedFlow EMR Dashboard" className="w-full h-full object-cover rounded-xl" />
+                            <img src={emrImg} alt="Healthezee Dashboard" className="w-full h-full object-cover rounded-xl" />
                         </div>
                     </motion.div>
                 </div>
@@ -341,7 +343,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://eduportal-new.onrender.com/"
+                                href="https://eduportal-v2.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'eduportal', location: 'Products Grid' })}
@@ -401,12 +403,30 @@ export default function Products() {
                             </a>
                         </div>
                     </motion.div>
+
+                    <motion.div
+                        className="hero-visual"
+                        {...fadeInUp}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={hrmsImg} alt="CogniHRMS Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 
             {/* FEATURED PRODUCT 6 - Hospitality Management (eHMS) */}
             <section id="hospitality" className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
                 <div className="hero-modern-inner" style={{ padding: 0 }}>
+                    <motion.div
+                        className="hero-visual"
+                        {...fadeInUp}
+                    >
+                        <div className="industry-visual glass-panel">
+                            <img src={hospitalityImg} alt="Hospitality Management Dashboard" className="w-full h-full object-cover rounded-xl" />
+                        </div>
+                    </motion.div>
+
                     <motion.div
                         className="hero-copy"
                         {...fadeInUp}
@@ -438,7 +458,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://ehms-app.vercel.app/"
+                                href="https://ehms-app-eta.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'hospitality', location: 'Products Grid' })}

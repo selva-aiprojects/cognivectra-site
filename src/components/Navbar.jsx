@@ -93,7 +93,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
       section: "Platforms",
       image: productsImg,
       items: [
-        { label: "MedFlow EMR", path: "/products#emr", desc: "AI-powered multi-tenant healthcare & EMR platform." },
+        { label: "Healthezee", path: "/products#emr", desc: "AI-powered multi-tenant healthcare & EMR platform." },
         { label: "StoreAI", path: "/products#storeai", desc: "Transformative retail management analytics." },
         { label: "CogniHRMS", path: "/products#cognihrms", desc: "Next-gen AI workforce & HR management." },
         { label: "Hospitality eHMS", path: "/products#hospitality", desc: "Smart hotel, resort & concierge management." },

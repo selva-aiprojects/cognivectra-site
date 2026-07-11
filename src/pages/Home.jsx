@@ -598,7 +598,7 @@ export default function Home() {
             padding: '0 1rem'
           }}>
             {[
-              { name: "MedFlow EMR", desc: "AI-powered healthcare platform", icon: <LuActivity size={24} /> },
+              { name: "Healthezee", desc: "AI-powered healthcare platform", icon: <LuActivity size={24} /> },
               { name: "StoreAI", desc: "Enterprise GenAI platform", icon: <LuTrendingUp size={24} /> },
               { name: "EduPortal", desc: "AI-powered education platform", icon: <LuBrain size={24} /> },
               { name: "StewardPlatform", desc: "Multi-tenant SaaS foundation", icon: <LuShield size={24} /> },
@@ -837,11 +837,11 @@ export default function Home() {
             whileHover={{ y: -5 }}
           >
             <span className="hero-badge" style={{ fontSize: '0.7rem' }}>Live Deployment</span>
-            <h4>MedFlow EMR</h4>
+            <h4>Healthezee</h4>
             <p>Enterprise healthcare EMR platform with GenAI-enabled capabilities for production environments.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-              <Link to="/products/medflow" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <button onClick={() => handleDemoRequest('medflow')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
+              <Link to="/products/healthezee" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
+              <button onClick={() => handleDemoRequest('healthezee')} className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Request Demo</button>
             </div>
           </motion.div>
           <motion.div
@@ -877,7 +877,7 @@ export default function Home() {
             <p>Smart hospitality and property management platform engineered for hotels, resort chains, and automated guest concierge intelligence.</p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
               <Link to="/products#hospitality" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Learn More</Link>
-              <a href="https://ehms-app.vercel.app/" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Launch Portal ↗</a>
+              <a href="https://ehms-app-eta.vercel.app/" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Launch Portal ↗</a>
             </div>
           </motion.div>
         </div>
@@ -993,14 +993,14 @@ export default function Home() {
                 challenge: "Inefficient institution management with heavy manual scheduling overhead.",
                 solution: "Implemented scalable intelligent automation.",
                 impact: "Reduced manual scheduling by 40%.",
-                link: "https://eduportal-new.onrender.com/",
+                link: "https://eduportal-v2.vercel.app/",
                 linkText: "Visit Platform →"
               },
               {
                 img: clientKidzImg,
                 title: "Kidz Clinic",
                 challenge: "Bottlenecks in specialized pediatric patient load and scheduling.",
-                solution: "Deployed MedFlow smart scheduling & EMR system.",
+                solution: "Deployed Healthezee smart scheduling & EMR system.",
                 impact: "Improved patient throughput by 22%.",
                 link: "https://www.whitekraaft.com/",
                 linkText: "Visit Partner"
@@ -1008,7 +1008,7 @@ export default function Home() {
               {
                 title: "drstpushpa.com",
                 challenge: "Balancing busy practice management without losing focus on pediatric care.",
-                solution: "Leveraged custom MedFlow EMR operational tools.",
+                solution: "Leveraged custom Healthezee operational tools.",
                 impact: "Streamlined care for thousands of patients.",
                 link: "https://drstpushpa.com/",
                 linkText: "Visit Site",
@@ -1017,7 +1017,7 @@ export default function Home() {
               {
                 title: "Whitekraft",
                 challenge: "Needed an enterprise-ready healthcare platform partner for scalable digital operations.",
-                solution: "Partnered on MedFlow-powered healthcare workflows and enterprise platform delivery.",
+                solution: "Partnered on Healthezee-powered healthcare workflows and enterprise platform delivery.",
                 impact: "Enabled a stronger foundation for production healthcare operations.",
                 link: "https://www.whitekraaft.com/",
                 linkText: "Visit Partner",

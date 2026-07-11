@@ -40,6 +40,7 @@ const Leadership = lazy(() => import("./pages/Leadership.jsx"));
 const StockStewardDetail = lazy(() => import("./pages/StockStewardDetail.jsx"));
 const StoreAIDetail = lazy(() => import("./pages/StoreAIDetail.jsx"));
 const MedFlowDetail = lazy(() => import("./pages/MedFlowDetail.jsx"));
+const HealthezeeDetail = lazy(() => import("./pages/HealthezeeDetail.jsx"));
 const EduPortalDetail = lazy(() => import("./pages/EduPortalDetail.jsx"));
 
 
@@ -155,6 +156,7 @@ export default function App() {
             <Route path="/products/stocksteward" element={<StockStewardDetail />} />
             <Route path="/products/storeai" element={<StoreAIDetail />} />
             <Route path="/products/medflow" element={<MedFlowDetail />} />
+            <Route path="/products/healthezee" element={<HealthezeeDetail />} />
             <Route path="/products/eduportal" element={<EduPortalDetail />} />
             <Route path="/leadership" element={<Leadership />} />
             <Route path="/admin" element={<AdminLayout />}>

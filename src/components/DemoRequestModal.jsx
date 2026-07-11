@@ -17,7 +17,8 @@ const DemoRequestModal = ({ isOpen, onClose, platform = 'general' }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const platforms = {
-    'medflow': 'MedFlow EMR - Healthcare Platform',
+    'healthezee': 'Healthezee - Healthcare Platform',
+    'medflow': 'Healthezee - Healthcare Platform',
     'storeai': 'StoreAI - Retail Management',
     'cognihrms': 'CogniHRMS - Human Resource Management',
     'hospitality': 'Hospitality Management (eHMS)',

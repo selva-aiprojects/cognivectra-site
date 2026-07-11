@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 import { FaSearch, FaMagic, FaTimes, FaArrowRight, FaClock, FaBolt } from 'react-icons/fa';
 
 const TRENDING = [
-    { label: 'What is MedFlow?', icon: '🏥' },
+    { label: 'What is Healthezee?', icon: '🏥' },
     { label: 'Retail AI solutions', icon: '🛒' },
     { label: 'Cloud Landing Zones', icon: '☁️' },
     { label: 'Healthcare EMR scalability', icon: '📈' },
@@ -45,7 +45,6 @@ const NeuralSearch = ({ isOpen, onClose }) => {
         setIsSearching(true);
         setResult(null);
         trackEvent('neural_search_query', { query: q });
-
         try {
             const { data, error } = await supabase.functions.invoke('ai-search', { body: { query: q } });
             if (error) throw error;
@@ -56,19 +55,20 @@ const NeuralSearch = ({ isOpen, onClose }) => {
             setTimeout(() => {
                 const siteContext = {
                     'techstack': 'Our engineering core uses Vite + React 18, Framer Motion, Supabase, and Advanced AI Orchestration (LangGraph, CrewAI, LangChain).',
-                    'medflow': 'MedFlow EMR: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic and Dr. S.T. Pushpa. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
+                    'healthezee': 'Healthezee: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic and Dr. S.T. Pushpa. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
+                    'medflow': 'Healthezee: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic and Dr. S.T. Pushpa. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
                     'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence with higher fidelity than standard trading bots.',
                     'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring.',
                     'better': 'CogniVectra delivers senior-architected IP that YOU own — production-ready, no technical debt, zero vendor lock-in.',
                     'price': 'Our modular Launch Packs save clients 30–50% on long-term operational costs by building correctly from day one.',
                     'customers': 'We partner with healthcare customers including Kidz Clinic, drstpushpa.com, and Whitekraft, alongside North American EdTech and FinTech startups.',
-                    'products': 'Production-ready platforms: MedFlow (Healthcare), StockSteward (FinTech), StoreAI (Retail), EduPortal (Education).',
+                    'products': 'Production-ready platforms: Healthezee (Healthcare), StockSteward (FinTech), StoreAI (Retail), EduPortal (Education).',
                 };
                 const lowerQ = q.toLowerCase();
                 let answer = "CogniVectra specializes in Production-Ready GenAI, FinTech, and Healthcare platforms. How can I help?";
                 if (lowerQ.includes('compare') || lowerQ.includes('better') || lowerQ.includes('why')) answer = siteContext['better'] + ' ' + siteContext['price'];
                 else if (lowerQ.includes('fintech') || lowerQ.includes('steward') || lowerQ.includes('trading')) answer = siteContext['steward'];
-                else if (lowerQ.includes('health') || lowerQ.includes('medflow') || lowerQ.includes('emr')) answer = siteContext['medflow'];
+                else if (lowerQ.includes('health') || lowerQ.includes('medflow') || lowerQ.includes('healthezee') || lowerQ.includes('emr')) answer = siteContext['healthezee'];
                 else if (lowerQ.includes('edu') || lowerQ.includes('learn')) answer = siteContext['eduportal'];
                 else if (lowerQ.includes('cloud') || lowerQ.includes('infrastructure')) answer = siteContext['techstack'];
                 else for (const [k, v] of Object.entries(siteContext)) { if (lowerQ.includes(k)) { answer = v; break; } }
@@ -192,7 +192,7 @@ const NeuralSearch = ({ isOpen, onClose }) => {
                                 onChange={(e) => setQuery(e.target.value)}
                                 onFocus={() => setIsFocused(true)}
                                 onBlur={() => setIsFocused(false)}
-                                placeholder="Ask anything about CogniVectra, MedFlow, GenAI..."
+                                placeholder="Ask anything about CogniVectra, Healthezee, GenAI..."
                                 style={{
                                     flex: 1,
                                     background: 'none', border: 'none',

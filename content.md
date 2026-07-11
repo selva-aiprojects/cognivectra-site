@@ -93,6 +93,7 @@ Primary public pages:
 - `/products/stocksteward`
 - `/products/storeai`
 - `/products/medflow`
+- `/products/healthezee`
 - `/products/eduportal`
 - `/leadership`
 
@@ -212,6 +213,7 @@ Relevant files:
 - [src/pages/StockStewardDetail.jsx](d:/Training/working/cognivectra-site/src/pages/StockStewardDetail.jsx)
 - [src/pages/StoreAIDetail.jsx](d:/Training/working/cognivectra-site/src/pages/StoreAIDetail.jsx)
 - [src/pages/MedFlowDetail.jsx](d:/Training/working/cognivectra-site/src/pages/MedFlowDetail.jsx)
+- [src/pages/HealthezeeDetail.jsx](d:/Training/working/cognivectra-site/src/pages/HealthezeeDetail.jsx)
 - [src/pages/EduPortalDetail.jsx](d:/Training/working/cognivectra-site/src/pages/EduPortalDetail.jsx)
 
 When updating these pages:
@@ -343,36 +345,40 @@ Key rollout rule:
 Current product set:
 - StockSteward
 - StoreAI
-- MedFlow EMR
+- Healthezee (formerly MedFlow EMR)
+- Hospitality Management (eHMS)
 - EduPortal
 
 Current externally linked URLs found in app pages:
 - StockSteward: `https://steward-platform.onrender.com/`
 - StoreAI: `https://store-ai-prd.onrender.com/`
-- MedFlow product: `https://healthezee-hms.vercel.app`
-- MedFlow partner/client delivery site: `https://www.whitekraaft.com/`
-- EduPortal: `https://eduportal-new.onrender.com/`
+- Healthezee product: `https://healthezee.com/`
+- Healthezee partner/client delivery site: `https://www.whitekraaft.com/`
+- Hospitality Management (eHMS): `https://ehms-app-eta.vercel.app/`
+- EduPortal: `https://eduportal-v2.vercel.app/`
 - drstpushpa reference site: `https://drstpushpa.com/`
 
 Relevant files:
 - [src/pages/Products.jsx](d:/Training/working/cognivectra-site/src/pages/Products.jsx)
 - [src/pages/MedFlowDetail.jsx](d:/Training/working/cognivectra-site/src/pages/MedFlowDetail.jsx)
+- [src/pages/HealthezeeDetail.jsx](d:/Training/working/cognivectra-site/src/pages/HealthezeeDetail.jsx)
 - [src/pages/Home.jsx](d:/Training/working/cognivectra-site/src/pages/Home.jsx)
 
-### MedFlow-specific current business context
+### Healthezee-specific current business context
 
 This was recently updated and should be preserved unless intentionally changed:
-- MedFlow product link points to `https://healthezee-hms.vercel.app`
-- MedFlow partner/client implementation links point to `https://www.whitekraaft.com/`
+- Healthezee product link points to `https://healthezee.com/`
+- Healthezee partner/client implementation links point to `https://www.whitekraaft.com/`
+- Hospitality Management (eHMS) link points to `https://ehms-app-eta.vercel.app/`
 - Home page healthcare customer list includes:
   - `Kidz Clinic`
   - `drstpushpa.com`
   - `Whitekraft`
 - Neural Search fallback customer copy also references those names
 
-If MedFlow/healthcare links change again, update all of:
+If Healthezee/healthcare links change again, update all of:
 - [src/pages/Products.jsx](d:/Training/working/cognivectra-site/src/pages/Products.jsx)
-- [src/pages/MedFlowDetail.jsx](d:/Training/working/cognivectra-site/src/pages/MedFlowDetail.jsx)
+- [src/pages/HealthezeeDetail.jsx](d:/Training/working/cognivectra-site/src/pages/HealthezeeDetail.jsx)
 - [src/pages/Home.jsx](d:/Training/working/cognivectra-site/src/pages/Home.jsx)
 - [src/components/NeuralSearch.jsx](d:/Training/working/cognivectra-site/src/components/NeuralSearch.jsx)
 

@@ -2,9 +2,8 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import eduImg from "../assets/generated/ind-edtech-3d.png";
+import emrImg from "../assets/generated/ind-health-3d.png";
 import ProductLogo from "../components/ProductLogo";
-import DemoRequestModal from "../components/DemoRequestModal";
 import { trackEvent } from "../lib/analytics";
 import { supabase } from "../lib/supabase";
 
@@ -17,57 +16,59 @@ const fadeInUp = {
 
 const pricingPlans = [
     {
-        name: "Standard",
-        price: "$199",
+        name: "Starter",
+        price: "$299",
         period: "month",
-        description: "Ideal for individual training centers and small setups",
+        description: "Perfect for small clinics and individual practitioners",
         features: [
-            "Up to 10 instructors",
-            "Core student management",
-            "Course scheduling",
-            "Digital assessments",
-            "Standard reporting",
+            "Up to 5 practitioners",
+            "Basic patient management",
+            "Appointment scheduling",
+            "Electronic health records",
+            "Basic reporting",
             "Email support"
         ],
         highlighted: false
     },
     {
-        name: "Campus",
-        price: "$499",
+        name: "Professional",
+        price: "$699",
         period: "month",
-        description: "Optimized for colleges and professional institutions",
+        description: "Ideal for medium-sized clinics and healthcare centers",
         features: [
-            "Up to 100 instructors",
-            "Advanced learning analytics",
-            "AI-powered grading assistant",
-            "Video lecture hosting",
-            "Automated certification",
+            "Up to 25 practitioners",
+            "Advanced patient management",
+            "AI-powered diagnostic assistance",
+            "Telemedicine integration",
+            "Billing and insurance processing",
+            "Advanced analytics and reporting",
             "Priority support",
-            "Parent-Student mobile app"
+            "HIPAA compliance tools"
         ],
         highlighted: true
     },
     {
-        name: "Institution",
+        name: "Enterprise",
         price: "Custom",
         period: "",
-        description: "Enterprise solutions for university networks",
+        description: "Tailored solutions for hospitals and large healthcare networks",
         features: [
-            "Unlimited users",
-            "Custom LLM integration",
-            "Full API access",
-            "Dedicated cloud infrastructure",
-            "Whitelabel branding",
-            "24/7 technical lead",
-            "Advanced compliance & security"
+            "Unlimited practitioners",
+            "All Professional features",
+            "Custom workflow automation",
+            "Integration with hospital systems",
+            "Advanced AI diagnostics",
+            "Dedicated infrastructure",
+            "On-premise deployment option",
+            "24/7 dedicated support",
+            "Custom compliance solutions"
         ],
         highlighted: false
     }
 ];
 
-export default function EduPortalDetail() {
+export default function HealthezeeDetail() {
     const { hash } = useLocation();
-    const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleQuickDemo = async (e) => {
@@ -78,7 +79,7 @@ export default function EduPortalDetail() {
 
         trackEvent('lead_generated', {
             type: 'quick_demo_detail',
-            platform: 'eduportal',
+            platform: 'healthezee',
             organization: org
         }, 'CONVERSION');
 
@@ -87,9 +88,9 @@ export default function EduPortalDetail() {
                 user_name: "Quick Demo Lead",
                 user_email: email,
                 company: org,
-                stage: "eduportal",
-                challenge: "(Quick Demo Inquiry from EduPortal Detail Page)",
-                source: "product_eduportal_detail",
+                stage: "healthezee",
+                challenge: "(Quick Demo Inquiry from Healthezee Detail Page)",
+                source: "product_healthezee_detail",
                 lead_score: "hot",
                 updated_at: new Date().toISOString(),
             },
@@ -115,11 +116,10 @@ export default function EduPortalDetail() {
     return (
         <main>
             <Helmet>
-                <title>EduPortal | AI Institution Management</title>
-                <meta name="description" content="Scalable institution management platform with AI-driven analytics, automated scheduling, and multi-tenant administration." />
-                <meta name="keywords" content="education management, AI learning, school automation, EduPortal, edtech AI" />
+                <title>Healthezee | GenAI Healthcare Platform Engineering</title>
+                <meta name="description" content="Production-ready healthcare platform with GenAI diagnostics and HIPAA compliance. Built for clinics and multi-tenant healthcare services." />
+                <meta name="keywords" content="healthcare EMR, GenAI medical, HIPAA compliant platform, Healthezee, clinical AI, cloud EMR India" />
             </Helmet>
-
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">
@@ -129,13 +129,14 @@ export default function EduPortalDetail() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge">AI-Powered Education Platform</span>
+                        <span className="hero-badge">Multi-Tenant Healthcare Platform</span>
                         <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="edu" style={{ marginBottom: '1rem' }} />
-                            <h1>EduPortal System</h1>
+                            <ProductLogo type="healthezee" style={{ marginBottom: '1rem' }} />
+                            <h1>Healthezee Platform</h1>
                         </div>
                         <p>
-                            Next-generation institution management platform. **Reduced manual scheduling time by 15+ hours per week** through intelligent automation and multi-tenant digital administration.
+                            A scalable, multi-tenant Electronic Medical Record (EMR) system built for modern clinics.
+                            Healthezee streamlines clinical workflows, patient management, and rapid onboarding for new providers.
                         </p>
 
                         <div style={{ marginTop: '2.5rem', padding: '2rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1.5rem', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '500px' }}>
@@ -153,11 +154,12 @@ export default function EduPortalDetail() {
                                 ⚡ Deployment-ready instances available today.
                             </p>
                         </div>
-
-                        <div className="hero-cta" style={{ marginTop: '2rem' }}>
-                            <Link to="/contact?product=eduportal" className="btn">Book Strategy Call</Link>
+                        <div className="hero-cta">
+                            <Link to="/contact?product=healthezee" className="btn">
+                                Book Strategy Call
+                            </Link>
                             <a
-                                href="https://eduportal-v2.vercel.app/"
+                                href="https://healthezee.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -174,7 +176,7 @@ export default function EduPortalDetail() {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="industry-visual glass-panel">
-                            <img src={eduImg} alt="EduPortal Dashboard" className="w-full h-full object-cover rounded-xl" />
+                            <img src={emrImg} alt="Healthezee Dashboard" className="w-full h-full object-cover rounded-xl" />
                         </div>
                     </motion.div>
                 </div>
@@ -186,41 +188,41 @@ export default function EduPortalDetail() {
                     className="section-header text-center"
                     {...fadeInUp}
                 >
-                    <span className="hero-badge">Academic Excellence</span>
-                    <h3>Intelligent Institution Orchestration</h3>
+                    <span className="hero-badge">Healthcare Innovation</span>
+                    <h3>Comprehensive Clinical Management</h3>
                 </motion.div>
 
                 <div className="services-modern-grid">
                     {[
                         {
-                            icon: "🎓",
-                            title: "Multi-Tenant Hub",
-                            desc: "Manage multiple branches or departments under one unified secure architecture"
+                            icon: "🏥",
+                            title: "Multi-Tenant Architecture",
+                            desc: "Scalable platform supporting multiple clinics with secure data isolation"
                         },
                         {
                             icon: "🤖",
-                            title: "AI Grading Lead",
-                            desc: "Automate subjective and objective assessments with high-accuracy AI assistance"
+                            title: "AI-Powered Diagnostics",
+                            desc: "Intelligent diagnostic assistance and treatment recommendations"
                         },
                         {
                             icon: "📅",
-                            title: "Smart Timetabling",
-                            desc: "Resolve complex scheduling conflicts automatically across thousands of students"
+                            title: "Smart Scheduling",
+                            desc: "Automated appointment management with patient reminders and optimization"
+                        },
+                        {
+                            icon: "🔒",
+                            title: "HIPAA Compliant",
+                            desc: "Enterprise-grade security and compliance with healthcare regulations"
+                        },
+                        {
+                            icon: "💊",
+                            title: "E-Prescriptions",
+                            desc: "Digital prescription management with pharmacy integration"
                         },
                         {
                             icon: "📊",
-                            title: "Learning Analytics",
-                            desc: "Deep insights into student performance using predictive modeling"
-                        },
-                        {
-                            icon: "📱",
-                            title: "Unified App",
-                            desc: "Real-time communication bridge between faculty, students, and parents"
-                        },
-                        {
-                            icon: "🛡️",
-                            title: "Enterprise Security",
-                            desc: "Cloud-native data protection ensuring student privacy and institutional security"
+                            title: "Clinical Analytics",
+                            desc: "Advanced reporting and insights for improved patient outcomes"
                         }
                     ].map((feature, i) => (
                         <motion.div
@@ -237,6 +239,82 @@ export default function EduPortalDetail() {
                 </div>
             </section>
 
+            {/* LIVE IMPLEMENTATION */}
+            <section className="services-modern" style={{ background: 'rgba(2, 6, 23, 0.5)' }}>
+                <motion.div
+                    className="section-header text-center"
+                    {...fadeInUp}
+                >
+                    <span className="hero-badge">Live Implementation</span>
+                    <h3>Success Story: Kidz-Clinic</h3>
+                    <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
+                        See Healthezee in action with our flagship implementation at Kidz-Clinic.
+                    </p>
+                </motion.div>
+
+                <div className="hero-modern-inner" style={{ padding: '0 1rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                    <motion.div
+                        className="glass-panel"
+                        style={{ padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}
+                        {...fadeInUp}
+                    >
+                        <h4 style={{ marginBottom: '1rem' }}>Kidz-Clinic Implementation</h4>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flex: 1 }}>
+                            A specialized pediatric healthcare platform using Healthezee for digital appointment scheduling,
+                            patient resource management, and comprehensive clinical workflows.
+                        </p>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <a
+                                href="https://www.whitekraaft.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn"
+                            >
+                                Visit White Kraaft ↗
+                            </a>
+                            <a
+                                href="https://healthezee.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-outline"
+                            >
+                                Access EMR Portal ↗
+                            </a>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        className="glass-panel"
+                        style={{ padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}
+                        {...fadeInUp}
+                    >
+                        <h4 style={{ marginBottom: '1rem' }}>Dr. S.T. Pushpa</h4>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flex: 1 }}>
+                            A leading Bangalore-based paediatrician leveraging Healthezee to provide expert care
+                            for child health and development through a streamlined digital platform.
+                        </p>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <a
+                                href="https://www.whitekraaft.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn"
+                            >
+                                Visit White Kraaft ↗
+                            </a>
+                            <a
+                                href="https://healthezee.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-outline"
+                            >
+                                Access EMR Portal ↗
+                            </a>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
             {/* PRICING */}
             <section id="pricing" className="services-modern">
                 <motion.div
@@ -244,7 +322,10 @@ export default function EduPortalDetail() {
                     {...fadeInUp}
                 >
                     <span className="hero-badge">Pricing Plans</span>
-                    <h3>Structured for Educational Growth</h3>
+                    <h3>Choose Your Healthcare Solution</h3>
+                    <p style={{ color: "var(--text-secondary)", maxWidth: "700px", margin: "0 auto" }}>
+                        Flexible pricing designed for healthcare providers of all sizes. HIPAA compliant and secure.
+                    </p>
                 </motion.div>
 
                 <div className="services-modern-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
@@ -252,6 +333,8 @@ export default function EduPortalDetail() {
                         <motion.div
                             key={i}
                             className={`service-modern-card glass-panel ${plan.highlighted ? 'highlighted-plan' : ''}`}
+                            {...fadeInUp}
+                            transition={{ delay: i * 0.1 }}
                             style={{
                                 border: plan.highlighted ? '2px solid var(--accent-primary)' : '1px solid rgba(255,255,255,0.1)',
                                 position: 'relative'
@@ -259,7 +342,7 @@ export default function EduPortalDetail() {
                         >
                             {plan.highlighted && (
                                 <span className="hero-badge" style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)' }}>
-                                    Recommended
+                                    Most Popular
                                 </span>
                             )}
                             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -278,11 +361,11 @@ export default function EduPortalDetail() {
                                 ))}
                             </ul>
                             <Link
-                                to="/contact?product=eduportal"
+                                to={`/contact?product=healthezee&plan=${plan.name.toLowerCase()}`}
                                 className={`btn ${plan.highlighted ? '' : 'btn-outline'}`}
                                 style={{ width: '100%', textAlign: 'center' }}
                             >
-                                {plan.name === 'Institution' ? 'Contact Sales' : 'Get Started'}
+                                {plan.name === 'Enterprise' ? 'Contact Sales' : 'Start Free Trial'}
                             </Link>
                         </motion.div>
                     ))}
@@ -293,27 +376,26 @@ export default function EduPortalDetail() {
             <section className="cta-modern">
                 <div className="container text-center">
                     <motion.div {...fadeInUp}>
-                        <h3>Ready to Modernize Your Learning Environment?</h3>
+                        <h3>Ready to Transform Your Clinic Operations?</h3>
                         <p className="mb-8">
-                            Transform your institution with AI-driven management. Schedule your strategy call today.
+                            Get a personalized demo and see how Healthezee can streamline your clinical workflows.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <Link to="/contact?product=eduportal" className="btn">
+                            <Link to="/contact?product=healthezee" className="btn">
                                 Book Strategy Call
                             </Link>
-                            <Link to="/contact" className="btn-outline">
-                                View Case Studies
-                            </Link>
+                            <a
+                                href="https://healthezee.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-outline"
+                            >
+                                Try Live Platform
+                            </a>
                         </div>
                     </motion.div>
                 </div>
             </section>
-
-            <DemoRequestModal
-                isOpen={isDemoModalOpen}
-                onClose={() => setIsDemoModalOpen(false)}
-                platform="eduportal"
-            />
         </main>
     );
 }

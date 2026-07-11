@@ -20,6 +20,7 @@ const ProductLogo = ({ type, className = "", style = {} }) => {
         steward: stewardLogo,
         store: storeLogo,
         medflow: medflowLogo,
+        healthezee: medflowLogo,
         eduportal: eduportalLogo,
         cognihrms: cognihrmsLogo,
         hospitality: hospitalityLogo
