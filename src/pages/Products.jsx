@@ -142,7 +142,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://steward-platform.onrender.com/"
+                                href="https://stocksteward-ai.vercel.app/login"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'stocksteward', location: 'Products Grid' })}

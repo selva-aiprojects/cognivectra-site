@@ -156,7 +156,7 @@ export default function StockStewardDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://steward-platform.onrender.com/"
+                                href="https://stocksteward-ai.vercel.app/login"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
@@ -306,7 +306,7 @@ export default function StockStewardDetail() {
                                 Book Strategy Call
                             </Link>
                             <a
-                                href="https://steward-platform.onrender.com/"
+                                href="https://stocksteward-ai.vercel.app/login"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
