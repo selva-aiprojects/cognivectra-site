@@ -343,7 +343,7 @@ export default function Products() {
                         </div>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                             <a
-                                href="https://eduportal-v2.vercel.app/"
+                                href="https://cogni-lms.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackEvent('external_link_click', { product: 'eduportal', location: 'Products Grid' })}

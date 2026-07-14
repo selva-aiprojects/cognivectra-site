@@ -355,7 +355,7 @@ Current externally linked URLs found in app pages:
 - Healthezee product: `https://healthezee.com/`
 - Healthezee partner/client delivery site: `https://www.whitekraaft.com/`
 - Hospitality Management (eHMS): `https://ehms-app-eta.vercel.app/`
-- EduPortal: `https://eduportal-v2.vercel.app/`
+- EduPortal: `https://cogni-lms.vercel.app/`
 - drstpushpa reference site: `https://drstpushpa.com/`
 
 Relevant files:

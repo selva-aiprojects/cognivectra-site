@@ -993,7 +993,7 @@ export default function Home() {
                 challenge: "Inefficient institution management with heavy manual scheduling overhead.",
                 solution: "Implemented scalable intelligent automation.",
                 impact: "Reduced manual scheduling by 40%.",
-                link: "https://eduportal-v2.vercel.app/",
+                link: "https://cogni-lms.vercel.app/",
                 linkText: "Visit Platform →"
               },
               {

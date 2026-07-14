@@ -157,7 +157,7 @@ export default function EduPortalDetail() {
                         <div className="hero-cta" style={{ marginTop: '2rem' }}>
                             <Link to="/contact?product=eduportal" className="btn">Book Strategy Call</Link>
                             <a
-                                href="https://eduportal-v2.vercel.app/"
+                                href="https://cogni-lms.vercel.app/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-outline"
