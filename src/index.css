@@ -425,22 +425,57 @@ a {
   display: none;
 }
 
-/* Mobile Menu */
+/* Mobile Menu Toggle (hamburger) */
 .hamburger-menu-toggle {
   display: none;
   flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
+  justify-content: space-between;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 11px 10px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 2px solid var(--accent-primary);
+  border-radius: 10px;
   cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+
+.hamburger-menu-toggle:hover {
+  background: rgba(99, 102, 241, 0.22);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.hamburger-menu-toggle:active {
+  transform: scale(0.94);
 }
 
 .hamburger-menu-toggle span {
   display: block;
-  width: 25px;
-  height: 2px;
-  background: #fff;
-  transition: 0.3s;
+  width: 22px;
+  height: 2.5px;
+  background: var(--accent-primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+}
+
+/* X animation when open */
+.hamburger-menu-toggle.active span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+  background: var(--accent-light);
+}
+
+.hamburger-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-menu-toggle.active span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+  background: var(--accent-light);
 }
 
 .mobile-menu-overlay {
@@ -765,9 +800,8 @@ a {
     display: none;
   }
 
-
   .hamburger-menu-toggle {
-    display: flex;
+    display: flex !important;
   }
 
   .mobile-actions {

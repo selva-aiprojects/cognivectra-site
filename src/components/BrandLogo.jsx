@@ -20,11 +20,11 @@ export default function BrandLogo({ size = 'default', className = '', onClick = 
       dotSize: '10px'
     },
     footer: {
-      imgSize: '72px',
-      titleSize: '2.35rem',
-      subSize: '0.95rem',
-      gap: '16px',
-      dotSize: '9px'
+      imgSize: '44px',
+      titleSize: '1.5rem',
+      subSize: '0.68rem',
+      gap: '12px',
+      dotSize: '6px'
     },
     admin: {
       imgSize: '46px',
