@@ -431,9 +431,9 @@ a {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 11px 10px;
+  width: 52px;
+  height: 52px;
+  padding: 13px 12px;
   background: rgba(99, 102, 241, 0.1);
   border: 2px solid var(--accent-primary);
   border-radius: 10px;
@@ -454,8 +454,8 @@ a {
 
 .hamburger-menu-toggle span {
   display: block;
-  width: 22px;
-  height: 2.5px;
+  width: 26px;
+  height: 3.5px;
   background: var(--accent-primary);
   border-radius: 2px;
   transition: all 0.3s ease;
@@ -464,7 +464,7 @@ a {
 
 /* X animation when open */
 .hamburger-menu-toggle.active span:nth-child(1) {
-  transform: translateY(7.5px) rotate(45deg);
+  transform: translateY(9px) rotate(45deg);
   background: var(--accent-light);
 }
 
@@ -474,7 +474,7 @@ a {
 }
 
 .hamburger-menu-toggle.active span:nth-child(3) {
-  transform: translateY(-7.5px) rotate(-45deg);
+  transform: translateY(-9px) rotate(-45deg);
   background: var(--accent-light);
 }
 

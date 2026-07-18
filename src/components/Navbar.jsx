@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { LuChartBar } from "react-icons/lu";
 import { trackEvent } from "../lib/analytics";
+import "../styles/hamburger.css";
 
 // Images
 import servicesImg from "../assets/generated/hero-services-ultra-8k.png";
