@@ -65,8 +65,8 @@ export default function Contact() {
             name,
             email,
             message: `New Contact Form Submission from ${name}\n\n👤 Name: ${name}\n📧 Reply To: ${email}\n🏁 Stage: ${stage || "Not specified"}\n🎯 Need: ${need || "Not specified"}\n💬 Message: ${msg}`,
-            subject: "CogniVectra New Contact Form",
-            from_name: "CogniVectra Contact Form",
+            subject: "Cognivectra New Contact Form",
+            from_name: "Cognivectra Contact Form",
           }),
         });
       }

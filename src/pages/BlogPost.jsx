@@ -57,14 +57,14 @@ export default function BlogPost() {
   return (
     <main>
       <Helmet>
-        <title>{post.title} | CogniVectra Insights</title>
+        <title>{post.title} | Cognivectra Insights</title>
         <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={`${post.title} | CogniVectra`} />
+        <meta property="og:title" content={`${post.title} | Cognivectra`} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:image" content={post.image_url || 'https://cognivectra.com/hero-automation.png'} />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="article" />
-        <meta property="twitter:title" content={`${post.title} | CogniVectra`} />
+        <meta property="twitter:title" content={`${post.title} | Cognivectra`} />
         <meta property="twitter:description" content={post.excerpt} />
       </Helmet>
 
@@ -118,7 +118,7 @@ export default function BlogPost() {
                 </div>
                 <div>
                   <div style={{ fontWeight: '700', color: '#fff' }}>Technical Architecture Team</div>
-                  <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>CogniVectra Innovations</div>
+                  <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>Cognivectra Innovations</div>
                 </div>
               </div>
 

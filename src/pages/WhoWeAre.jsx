@@ -33,31 +33,30 @@ export default function WhoWeAre() {
             transition={{ duration: 0.8 }}
           >
             <Helmet>
-              <title>Our Team & Culture | CogniVectra Innovations</title>
-              <meta name="description" content="Meet the engineers and platform specialists behind CogniVectra. We specialize in production-ready AI systems and enterprise architecture." />
+              <title>Our Team & Culture | Cognivectra</title>
+              <meta name="description" content="Meet the engineers and platform specialists behind Cognivectra. We specialize in production-ready AI systems, enterprise architecture and multi-tenant product platforms." />
             </Helmet>
-            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> CogniVectra Team</span>
+            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> Cognivectra Team</span>
 
-            <h1>The CogniVectra Team</h1>
+            <h1>The Cognivectra Team</h1>
 
             <p>
-              CogniVectra Innovations is an enterprise AI and healthcare platform
-              engineering partner specializing in production-ready systems,
-              multi-tenant foundations, and GenAI building blocks that enable
-              organizations to deploy at scale without compromising reliability.
+              Cognivectra is an AI-native technology and product engineering company
+              building intelligent products, enterprise platforms and modern technology
+              foundations across healthcare, HR, hospitality, finance, retail and banking.
             </p>
 
             <p style={{ margin: "0 auto 3rem", opacity: 0.8 }}>
-              We operate at the intersection of systems engineering, cloud,
-              data, and applied intelligence — helping enterprises modernize
-              operations and build digital platforms that drive production-ready results.
+              We operate at the intersection of AI, cloud, data and systems engineering —
+              helping enterprises modernize operations and build digital platforms that
+              deliver production-ready results.
             </p>
 
             <div className="hero-cta">
               <Link to="/contact" className="btn">
                 Book Strategy Call
               </Link>
-              <Link to="/#services" className="btn-outline">
+              <Link to="/services" className="btn-outline">
                 View Services
               </Link>
             </div>

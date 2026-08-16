@@ -34,11 +34,11 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <Helmet>
-              <title>About CogniVectra | Enterprise AI Engineering Partners</title>
-              <meta name="description" content="Learn how CogniVectra partners with technical leaders to build reliable, multi-tenant AI and healthcare platforms at scale." />
+              <title>About Cognivectra | AI-Native Technology & Product Engineering</title>
+              <meta name="description" content="Cognivectra is an AI-native technology and product engineering company building intelligent products, enterprise platforms and modern technology foundations across healthcare, HR, hospitality, finance, retail and banking." />
             </Helmet>
-            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> About CogniVectra</span>
-            <h1>About CogniVectra Innovations</h1>
+            <span className="hero-badge"><LuUsers style={{ marginRight: '0.4rem' }} /> About Cognivectra</span>
+            <h1>About Cognivectra Innovations</h1>
 
             <p>
               We are a team of experienced engineers and platform specialists
@@ -67,7 +67,7 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <div className="industry-visual glass-panel">
-              <img src={heroAbout} alt="About CogniVectra" className="w-full h-full object-cover rounded-xl" />
+              <img src={heroAbout} alt="About Cognivectra" className="w-full h-full object-cover rounded-xl" />
             </div>
           </motion.div>
         </div>

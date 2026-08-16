@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaWhatsapp, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
-const logo = "/logo-enterprise.png";
 import { trackEvent } from "../lib/analytics";
 import BrandLogo from "./BrandLogo";
 
@@ -14,24 +13,60 @@ export default function Footer() {
           <Link to="/" className="brand" style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 0, gap: '0.8rem' }}>
             <BrandLogo size="footer" />
             <span className="brand-tagline" style={{ fontSize: '0.7rem', display: 'block', maxWidth: '280px' }}>
-              Transforming Ideas into Intelligent AI Systems
+              AI-Native Technology. Built for Business.
             </span>
           </Link>
           <p className="footer-tagline" style={{ marginTop: '1.25rem', maxWidth: '280px', fontSize: '0.85rem' }}>
-            Enterprise-grade cloud, automation, and platform foundations
-            for startups that need to scale with confidence.
+            Cognivectra is an AI-native technology and product engineering
+            company that designs, builds and evolves software platforms.
           </p>
           <div className="footer-cta">
-            <a
-              href="https://calendly.com/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/contact"
               className="btn"
-              onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Footer' })}
+              onClick={() => trackEvent('cta_click', { cta_name: "Let's Talk", location: 'Footer' })}
             >
-              Book Strategy Call →
-            </a>
+              Let's Talk →
+            </Link>
           </div>
+        </div>
+
+        {/* Capabilities */}
+        <div className="footer-col">
+          <h4>Capabilities</h4>
+          <ul className="footer-links">
+            <li><Link to="/ai-engineering">AI Engineering</Link></li>
+            <li><Link to="/cloud-platform-engineering">Cloud & Platform Engineering</Link></li>
+            <li><Link to="/product-engineering">Product Engineering</Link></li>
+            <li><Link to="/data-integration">Data & Integration</Link></li>
+            <li><Link to="/services">All Capabilities</Link></li>
+          </ul>
+        </div>
+
+        {/* Products */}
+        <div className="footer-col">
+          <h4>Products</h4>
+          <ul className="footer-links">
+            <li><Link to="/products/healthezee">Healthezee</Link></li>
+            <li><Link to="/products/medflow">MediFlow</Link></li>
+            <li><Link to="/products/stocksteward">StockSteward</Link></li>
+            <li><Link to="/products/storeai">StoreAI</Link></li>
+            <li><Link to="/products/eduportal">EduPortal</Link></li>
+            <li><Link to="/products">Full Portfolio</Link></li>
+          </ul>
+        </div>
+
+        {/* Solutions */}
+        <div className="footer-col">
+          <h4>Solutions</h4>
+          <ul className="footer-links">
+            <li><Link to="/industries#healthcare">Healthcare</Link></li>
+            <li><Link to="/industries#hr-talent">HR & Talent</Link></li>
+            <li><Link to="/industries#hospitality">Hospitality</Link></li>
+            <li><Link to="/industries#bfsi-fintech">BFSI & FinTech</Link></li>
+            <li><Link to="/industries#retail-commerce">Retail & Commerce</Link></li>
+            <li><Link to="/industries">All Solutions</Link></li>
+          </ul>
         </div>
 
         {/* Company */}
@@ -40,29 +75,11 @@ export default function Footer() {
           <ul className="footer-links">
             <li><Link to="/who-we-are">Who We Are</Link></li>
             <li><Link to="/leadership">Leadership</Link></li>
-            <li><Link to="/mission">Mission</Link></li>
-            <li><Link to="/results">Results</Link></li>
-            <li>
-              <Link to="/careers" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                Careers <span style={{ fontSize: '0.65rem', color: 'var(--accent-primary)', fontWeight: '700' }}>• 1 Open Role</span>
-              </Link>
-            </li>
+            <li><Link to="/case-studies">Case Studies</Link></li>
+            <li><Link to="/engagements">Engagements</Link></li>
+            <li><Link to="/careers">Careers</Link></li>
             <li><Link to="/blog">Blog</Link></li>
           </ul>
-
-        </div>
-
-        {/* Services */}
-        <div className="footer-col">
-          <h4>Services</h4>
-          <ul className="footer-links">
-            <li><Link to="/services">Services</Link></li>
-            <li><Link to="/products">Platforms</Link></li>
-            <li><Link to="/engagements">Engagements</Link></li>
-            <li><Link to="/industries">Industries</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-          </ul>
-
         </div>
 
         {/* Contact */}
@@ -101,7 +118,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="footer-bottom">
         <div>
-          © {new Date().getFullYear()} CogniVectra Innovations. All rights reserved.
+          © {new Date().getFullYear()} Cognivectra Innovations. All rights reserved.
         </div>
         <div className="footer-legal">
           <Link to="/privacy">Privacy</Link>

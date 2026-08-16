@@ -23,15 +23,15 @@ export default function Leadership() {
                         transition={{ duration: 0.8 }}
                     >
                         <Helmet>
-                            <title>Leadership & Technical Vision | CogniVectra</title>
-                            <meta name="description" content="Meet the leadership team at CogniVectra. Over 25 years of hands-on technical excellence and strategic vision in platform engineering." />
+                            <title>Leadership & Technical Vision | Cognivectra</title>
+                            <meta name="description" content="Meet the leadership team at Cognivectra. Over 25 years of hands-on technical excellence and strategic vision in AI, cloud and platform engineering." />
                         </Helmet>
                         <span className="hero-badge">💼 Leadership</span>
                         <h1>Expertise That <br />Drives Innovation</h1>
                         <p>
                             With over 25 years of deep industry experience, our leadership
                             combines strategic vision with hands-on technical excellence
-                            to guide CogniVectra toward the future of AI.
+                            to guide Cognivectra toward the future of AI.
                         </p>
                         <div className="hero-cta">
                             <Link to="/contact" className="btn">Book Strategy Call</Link>
@@ -46,7 +46,7 @@ export default function Leadership() {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="industry-visual glass-panel">
-                            <img src={heroLeadership} alt="Leadership at CogniVectra" className="w-full h-full object-cover rounded-xl" />
+                            <img src={heroLeadership} alt="Leadership at Cognivectra" className="w-full h-full object-cover rounded-xl" />
                         </div>
                     </motion.div>
                 </div>

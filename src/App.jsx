@@ -42,6 +42,12 @@ const StoreAIDetail = lazy(() => import("./pages/StoreAIDetail.jsx"));
 const MedFlowDetail = lazy(() => import("./pages/MedFlowDetail.jsx"));
 const HealthezeeDetail = lazy(() => import("./pages/HealthezeeDetail.jsx"));
 const EduPortalDetail = lazy(() => import("./pages/EduPortalDetail.jsx"));
+const AIEngineering = lazy(() => import("./pages/AIEngineering.jsx"));
+const CloudPlatformEngineering = lazy(() => import("./pages/CloudPlatformEngineering.jsx"));
+const ProductEngineering = lazy(() => import("./pages/ProductEngineering.jsx"));
+const DataIntegration = lazy(() => import("./pages/DataIntegration.jsx"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies.jsx"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail.jsx"));
 
 
 import chatIcon from "./assets/chat-icon.svg";
@@ -158,6 +164,12 @@ export default function App() {
             <Route path="/products/medflow" element={<MedFlowDetail />} />
             <Route path="/products/healthezee" element={<HealthezeeDetail />} />
             <Route path="/products/eduportal" element={<EduPortalDetail />} />
+            <Route path="/products/:slug" element={<ProductDetail />} />
+            <Route path="/ai-engineering" element={<AIEngineering />} />
+            <Route path="/cloud-platform-engineering" element={<CloudPlatformEngineering />} />
+            <Route path="/product-engineering" element={<ProductEngineering />} />
+            <Route path="/data-integration" element={<DataIntegration />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
             <Route path="/leadership" element={<Leadership />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Admin />} />

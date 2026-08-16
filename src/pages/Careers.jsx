@@ -189,10 +189,10 @@ export default function Careers() {
     return (
         <main>
             <Helmet>
-                <title>Build the Future of Enterprise AI | Careers at CogniVectra</title>
-                <meta name="description" content="Join CogniVectra and work on cutting-edge cloud platforms, AI automation, and SaaS solutions. Remote-first, competitive compensation, and high-impact work." />
-                <meta name="keywords" content="Software Engineering Jobs, AI Jobs, Cloud Architecture Careers, Remote Tech Jobs, CogniVectra Careers" />
-                <meta property="og:title" content="Join Our Technical Vision | CogniVectra Careers" />
+                <title>Build the Future of Enterprise AI | Careers at Cognivectra</title>
+                <meta name="description" content="Join Cognivectra and work on cutting-edge cloud platforms, AI automation, and SaaS solutions. Remote-first, competitive compensation, and high-impact work." />
+                <meta name="keywords" content="Software Engineering Jobs, AI Jobs, Cloud Architecture Careers, Remote Tech Jobs, Cognivectra Careers" />
+                <meta property="og:title" content="Join Our Technical Vision | Cognivectra Careers" />
                 <meta property="og:description" content="Build transformative AI and cloud platforms with our elite engineering team." />
                 <meta property="og:url" content="https://cognivectra.com/careers" />
             </Helmet>
@@ -213,7 +213,7 @@ export default function Careers() {
                         </h1>
 
                         <p>
-                            Join CogniVectra and work on cutting-edge cloud platforms, AI automation,
+                            Join Cognivectra and work on cutting-edge cloud platforms, AI automation,
                             and SaaS solutions that empower enterprises worldwide. We're looking for
                             passionate technologists who thrive in creating scalable, enterprise-grade systems.
                         </p>
@@ -248,7 +248,7 @@ export default function Careers() {
             {/* WHY JOIN US */}
             <section className="why-modern">
                 <div className="why-modern-inner">
-                    <h3>Why Join CogniVectra</h3>
+                    <h3>Why Join Cognivectra</h3>
 
                     <div className="why-modern-grid">
                         <div className="why-pill">Work with cutting-edge technology</div>

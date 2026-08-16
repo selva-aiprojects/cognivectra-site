@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { LuRocket } from "react-icons/lu";
+import { LuArrowRight, LuRocket, LuShield, LuCpu, LuUsers, LuHotel, LuActivity, LuDatabase, LuTrendingUp, LuBookOpen } from "react-icons/lu";
 import heroProducts from "../assets/generated/hero-products-ultra-8k.png";
 import storeAIImg from "../assets/generated/product-storeai.png";
 import stewardImg from "../assets/generated/product-stocksteward.png";
@@ -10,9 +10,8 @@ import emrImg from "../assets/generated/ind-health-3d.png";
 import clientEduImg from "../assets/generated/ind-edtech-3d.png";
 import hrmsImg from "../assets/generated/ind-saas-3d.png";
 import hospitalityImg from "../assets/generated/ind-ecommerce-3d.png";
-import ProductLogo from "../components/ProductLogo";
+import capAiImg from "../assets/generated/cap-ai-3d-8k.png";
 import { trackEvent } from "../lib/analytics";
-import { supabase } from "../lib/supabase";
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -21,8 +20,158 @@ const fadeInUp = {
     transition: { duration: 0.6 }
 };
 
+const industries = [
+    "All",
+    "Healthcare",
+    "Pharmacy",
+    "HR & Talent",
+    "Hospitality",
+    "Finance & FinTech",
+    "Retail",
+    "Education",
+    "AI & Automation"
+];
+
+const products = [
+    {
+        name: "Healthezee",
+        tagline: "Healthcare Management Platform",
+        industry: "Healthcare",
+        status: "Live",
+        desc: "Original Cognivectra healthcare platform covering OPD, inpatient, daycare, pharmacy, billing, laboratory and hospital administration with multi-tenant architecture.",
+        capabilities: ["EMR & Clinical Workflows", "Billing & Insurance", "Multi-tenant Architecture", "Hospital Administration"],
+        to: "/products/healthezee",
+        img: emrImg,
+        icon: <LuActivity />
+    },
+    {
+        name: "MediFlow",
+        tagline: "Pharmacy Management System",
+        industry: "Pharmacy",
+        status: "Live",
+        desc: "Modern pharmacy management platform for medicines, inventory and pharmacy operations.",
+        capabilities: ["Drug / Medicine Master", "Inventory & Batch Management", "Expiry Management", "Purchase & Sales"],
+        to: "/products/medflow",
+        img: emrImg,
+        icon: <LuShield />
+    },
+    {
+        name: "StockSteward",
+        tagline: "AI-Powered Investment Intelligence",
+        industry: "Finance & FinTech",
+        status: "Live",
+        desc: "Sophisticated market intelligence and portfolio platform leveraging advanced LLMs and quantitative models for real-time insights.",
+        capabilities: ["Portfolio Tracking", "Market Sentiment Analysis", "Risk Assessment", "Financial Intelligence Chat"],
+        to: "/products/stocksteward",
+        img: stewardImg,
+        icon: <LuTrendingUp />
+    },
+    {
+        name: "StoreAI",
+        tagline: "Intelligent Inventory & Retail Management",
+        industry: "Retail",
+        status: "Production",
+        desc: "Modern business platform for inventory, sales, purchasing, accounts and workforce operations.",
+        capabilities: ["Inventory", "Product Management", "Purchasing & Sales", "Accounts & HR"],
+        to: "/products/storeai",
+        img: storeAIImg,
+        icon: <LuDatabase />
+    },
+    {
+        name: "EduPortal",
+        tagline: "AI-Powered Education Platform",
+        industry: "Education",
+        status: "Production",
+        desc: "Comprehensive institution management platform that leverages AI to automate complex administrative tasks.",
+        capabilities: ["Resource Scheduling", "Student Progress Tracking", "Enrollment Portals", "Multi-campus Management"],
+        to: "/products/eduportal",
+        img: clientEduImg,
+        icon: <LuBookOpen />
+    },
+    {
+        name: "CogniHRMS",
+        tagline: "Human Resource Management System",
+        industry: "HR & Talent",
+        status: "Production",
+        desc: "Next-generation HR platform powered by AI for recruitment, attendance, payroll and employee analytics.",
+        capabilities: ["Talent & Resume Screening", "Attendance & Leave", "Performance Analytics", "Employee Self-service"],
+        to: "/products#cognihrms",
+        img: hrmsImg,
+        icon: <LuUsers />,
+        external: "https://cognihr.onrender.com/"
+    },
+    {
+        name: "Hospitality Management (eHMS)",
+        tagline: "Smart Hospitality & Property Management",
+        industry: "Hospitality",
+        status: "Live",
+        desc: "Smart hospitality and property management platform engineered for hotels, resort chains and guest concierge intelligence.",
+        capabilities: ["Reservations", "Front Office", "Housekeeping", "Reporting"],
+        to: "/products#hospitality",
+        img: hospitalityImg,
+        icon: <LuHotel />,
+        external: "https://ehms-app-eta.vercel.app/"
+    },
+    {
+        name: "Syntalyst",
+        tagline: "Human Resource Management System",
+        industry: "HR & Talent",
+        status: "Pilot",
+        desc: "Cognivectra HRMS product/platform for employee management, organization structure, attendance, leave and HR operations.",
+        capabilities: ["Employee Management", "Organization Structure", "Attendance & Leave", "HR Analytics"],
+        to: "/products/syntalyst",
+        img: hrmsImg,
+        icon: <LuUsers />
+    },
+    {
+        name: "TalentPulse",
+        tagline: "Talent Management Platform",
+        industry: "HR & Talent",
+        status: "In Development",
+        desc: "Talent management platform for performance, goals, skills, career development and workforce intelligence.",
+        capabilities: ["Performance", "Goals & Skills", "Career Development", "Workforce Intelligence"],
+        to: "/products/talentpulse",
+        img: hrmsImg,
+        icon: <LuUsers />
+    },
+    {
+        name: "SmartBook",
+        tagline: "Accounting & Financial Management",
+        industry: "Finance & FinTech",
+        status: "In Development",
+        desc: "Modern accounting platform designed to simplify financial operations, bookkeeping, business transactions and financial visibility.",
+        capabilities: ["General Ledger", "Invoicing & Expenses", "Financial Reporting", "Tax / GST"],
+        to: "/products/smartbook",
+        img: stewardImg,
+        icon: <LuDatabase />
+    },
+    {
+        name: "SmartPortfolio",
+        tagline: "AI-Powered Investment Intelligence",
+        industry: "Finance & FinTech",
+        status: "Production",
+        desc: "Intelligent portfolio platform to help investors understand portfolio performance, profitability and potential portfolio decisions.",
+        capabilities: ["Portfolio Tracking", "Profit & Loss", "Position Analysis", "AI-powered Insights"],
+        to: "/products/smartportfolio",
+        img: stewardImg,
+        icon: <LuTrendingUp />
+    },
+    {
+        name: "AI IT Operations",
+        tagline: "Intelligent IT Operations Automation",
+        industry: "AI & Automation",
+        status: "Pilot",
+        desc: "AI-powered IT operations workflows designed to reduce repetitive work and improve incident resolution.",
+        capabilities: ["ITSM Automation", "Incident Intelligence", "AI Agents", "Workflow Automation"],
+        to: "/products/ai-it-operations",
+        img: capAiImg,
+        icon: <LuCpu />
+    }
+];
+
 export default function Products() {
     const { hash } = useLocation();
+    const [activeFilter, setActiveFilter] = useState("All");
 
     useEffect(() => {
         if (hash) {
@@ -36,43 +185,19 @@ export default function Products() {
         }
     }, [hash]);
 
-    const handleQuickDemo = async (e, platform) => {
-        e.preventDefault();
-        const email = e.target.email.value;
-        const org = e.target.organization.value;
-
-        trackEvent('lead_generated', {
-            type: 'quick_demo_inline',
-            platform,
-            organization: org
-        }, 'CONVERSION');
-
-        await supabase.from("chat_conversations").upsert([
-            {
-                user_name: "Quick Demo Lead",
-                user_email: email,
-                company: org,
-                stage: platform,
-                challenge: "(Quick Demo Inquiry from Products Page)",
-                source: `product_${platform}_inline`,
-                lead_score: "warm",
-                updated_at: new Date().toISOString(),
-            },
-        ], { onConflict: "user_email" });
-
-        alert("Request received! Our team will contact you shortly.");
-        e.target.reset();
-    };
+    const visibleProducts = activeFilter === "All"
+        ? products
+        : products.filter((p) => p.industry === activeFilter);
 
     return (
         <main>
             <Helmet>
-                <title>Enterprise AI Platforms | Healthcare, Retail, FinTech & Education</title>
-                <meta name="description" content="Explore CogniVectra's suite of production-ready platforms: Healthezee (Healthcare), StoreAI (Retail), StockSteward (FinTech), and EduPortal (Education)." />
-                <meta name="keywords" content="Enterprise AI Platforms, Healthcare EMR, Retail AI, FinTech Trading, EdTech Solutions, CogniVectra Products" />
-                <meta property="og:title" content="CogniVectra | High-Impact Enterprise Platforms" />
-                <meta property="og:description" content="Deploy internal or customer-facing AI platforms at scale." />
+                <title>Products & Platforms | Cognivectra</title>
+                <meta name="description" content="Explore Cognivectra's portfolio of software products and enterprise platforms across healthcare, pharmacy, HR, hospitality, finance, retail and AI." />
+                <meta property="og:title" content="Cognivectra | Products & Platforms" />
+                <meta property="og:description" content="Software products and enterprise platforms built by Cognivectra." />
             </Helmet>
+
             {/* HERO */}
             <section className="hero-modern">
                 <div className="hero-modern-inner">
@@ -82,14 +207,15 @@ export default function Products() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge">AIEngine Platform</span>
-                        <h1>Production-Ready <br />AI Platforms</h1>
+                        <span className="hero-badge">Product Portfolio</span>
+                        <h1>Products We Build</h1>
                         <p>
-                            CogniVectra develops production-ready platforms designed to solve
-                            complex challenges in healthcare, retail, and enterprise AI orchestration.
+                            Cognivectra develops software products and enterprise platforms across
+                            healthcare, pharmacy, HR & talent, hospitality, finance, retail,
+                            education and AI.
                         </p>
                         <div className="hero-cta">
-                            <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Hero' })} className="btn">Book Strategy Call</Link>
+                            <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Talk to Cognivectra', location: 'Products Hero' })} className="btn">Talk to Cognivectra</Link>
                         </div>
                     </motion.div>
 
@@ -100,420 +226,95 @@ export default function Products() {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="industry-visual glass-panel">
-                            <img src={heroProducts} alt="CogniVectra Products" className="w-full h-full object-cover rounded-xl" />
+                            <img src={heroProducts} alt="Cognivectra Products" className="w-full h-full object-cover rounded-xl" />
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* FEATURED PRODUCT 1 - StockSteward AI */}
-            <section id="steward" className="services-modern">
-                <div className="hero-modern-inner" style={{ padding: 0 }}>
+            {/* FILTERS */}
+            <section className="services-modern" style={{ paddingTop: '3rem' }}>
+                <div className="container">
                     <motion.div
-                        className="hero-copy"
+                        className="section-header text-center"
                         {...fadeInUp}
+                        style={{ marginBottom: '2.5rem' }}
                     >
-                        <span className="hero-badge">AIEngine Platform</span>
-                        <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="steward" style={{ marginBottom: '1rem' }} />
-                            <h3>StockSteward AI</h3>
-                        </div>
-                        <p>
-                            A sophisticated algorithmic trading and market intelligence platform.
-                            StockSteward leverages advanced LLMs and quantitative models to provide
-                            real-time insights, automated portfolio management, and predictive market analysis.
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
-                            Best for: Hedge funds, prop trading firms, and fintech startups.
-                        </p>
-                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
-                            <li>Automated Algorithmic Trading</li>
-                            <li>AI-Powered Market Sentiment Analysis</li>
-                            <li>Real-time Portfolio Risk Assessment</li>
-                            <li>Interactive Financial Intelligence Chat</li>
-                        </ul>
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'stocksteward')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
-                            </form>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                            <a
-                                href="https://stocksteward-ai.vercel.app/login"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'stocksteward', location: 'Products Grid' })}
-                                className="btn-outline"
-                            >
-                                Launch Platform ↗
-                            </a>
-                            <Link to="/products/stocksteward" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'stocksteward' })} className="btn-outline">
-                                View Details
-                            </Link>
-                        </div>
+                        <span className="hero-badge">Filter by Industry</span>
+                        <h3>Technology We Build. Products We Own.</h3>
                     </motion.div>
 
-                    <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
-                    >
-                        <div className="industry-visual glass-panel">
-                            <img src={stewardImg} alt="StockSteward Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
-                    </motion.div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', justifyContent: 'center', marginBottom: '3rem' }}>
+                        {industries.map((ind) => (
+                            <button
+                                key={ind}
+                                onClick={() => {
+                                    setActiveFilter(ind);
+                                    trackEvent('products_filter', { filter: ind });
+                                }}
+                                className={activeFilter === ind ? "btn" : "btn-outline"}
+                                style={{ padding: '0.5rem 1.1rem', fontSize: '0.85rem', cursor: 'pointer' }}
+                            >
+                                {ind}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            {/* FEATURED PRODUCT 2 - StoreAI */}
-            <section id="storeai" className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                <div className="hero-modern-inner" style={{ padding: 0 }}>
+            {/* PRODUCT GRID */}
+            <section className="services-modern" style={{ paddingTop: 0 }}>
+                <div className="container">
                     <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
+                        className="services-modern-grid"
+                        style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}
+                        variants={{ animate: { transition: { staggerChildren: 0.06 } } }}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true }}
                     >
-                        <div className="industry-visual glass-panel">
-                            <img src={storeAIImg} alt="StoreAI Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="hero-copy"
-                        {...fadeInUp}
-                    >
-                        <span className="hero-badge">Retail Intelligence</span>
-                        <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="store" style={{ marginBottom: '1rem' }} />
-                            <h3>StoreAI</h3>
-                        </div>
-                        <p>
-                            A revolutionary AI-powered retail management system that transforms how
-                            stores operate. From automated inventory tracking to predictive sales
-                            analytics and customer behavior insights.
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
-                            Best for: Multi-location retail chains and e-commerce enterprises.
-                        </p>
-                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
-                            <li>Real-time Inventory Optimization</li>
-                            <li>AI-Driven Sales Forecasting</li>
-                            <li>Customer Sentiment Analysis</li>
-                            <li>Automated Supply Chain Sync</li>
-                        </ul>
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'storeai')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
-                            </form>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                            <a
-                                href="https://storeai-app.vercel.app/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'storeai', location: 'Products Grid' })}
-                                className="btn-outline"
+                        {visibleProducts.map((product, i) => (
+                            <motion.div
+                                key={product.name}
+                                id={product.name.toLowerCase().replace(/[^a-z0-9]/g, '')}
+                                className="service-modern-card glass-panel"
+                                {...fadeInUp}
+                                transition={{ delay: i * 0.05 }}
+                                whileHover={{ y: -6 }}
+                                style={{ display: 'flex', flexDirection: 'column' }}
                             >
-                                Launch Platform ↗
-                            </a>
-                            <Link to="/products/storeai" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'storeai' })} className="btn-outline">
-                                View Details
-                            </Link>
-                        </div>
+                                <div style={{ height: '150px', overflow: 'hidden', borderRadius: '14px', marginBottom: '1.25rem', background: 'rgba(255,255,255,0.03)' }}>
+                                    <img src={product.img} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                                        <span style={{ color: 'var(--accent-primary)', fontSize: '1.3rem' }}>{product.icon}</span>
+                                        <h4 style={{ margin: 0, fontSize: '1.15rem' }}>{product.name}</h4>
+                                    </div>
+                                    <span className="hero-badge" style={{ fontSize: '0.62rem', margin: 0 }}>{product.status}</span>
+                                </div>
+                                <p style={{ color: 'var(--accent-primary)', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.5rem' }}>{product.tagline}</p>
+                                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', flexGrow: 1 }}>{product.desc}</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', margin: '0.75rem 0 1.25rem' }}>
+                                    {product.capabilities.map((cap, j) => (
+                                        <span key={j} style={{ fontSize: '0.72rem', padding: '0.25rem 0.6rem', borderRadius: '100px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: 'var(--text-secondary)' }}>
+                                            {cap}
+                                        </span>
+                                    ))}
+                                </div>
+                                <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginTop: 'auto' }}>
+                                    <Link to={product.to} onClick={() => trackEvent('cta_click', { cta_name: 'Explore Product', product: product.name })} className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                                        Explore Product <LuArrowRight style={{ marginLeft: '0.3rem', verticalAlign: 'middle' }} />
+                                    </Link>
+                                    {product.external && (
+                                        <a href={product.external} target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                                            Launch Portal ↗
+                                        </a>
+                                    )}
+                                </div>
+                            </motion.div>
+                        ))}
                     </motion.div>
-                </div>
-            </section>
-
-            {/* FEATURED PRODUCT 3 - Healthezee */}
-            <section id="emr" className="services-modern">
-                <div className="hero-modern-inner" style={{ padding: 0 }}>
-                    <motion.div
-                        className="hero-copy"
-                        {...fadeInUp}
-                    >
-                        <span className="hero-badge">Multi-Tenant Healthcare Platform</span>
-                        <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="healthezee" style={{ marginBottom: '1rem' }} />
-                            <h3>Healthezee</h3>
-                        </div>
-                        <p>
-                            A scalable, multi-tenant Electronic Medical Record (EMR) system built for modern clinics.
-                            Currently live with <strong>Kidz-Clinic</strong> and <strong>Dr. S.T. Pushpa</strong>, Healthezee streamlines clinical workflows
-                            and patient management, with rapid onboarding for new providers starting this week.
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
-                            Best for: Multi-specialty clinics, pediatric hospitals, and digital health startups.
-                        </p>
-                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
-                            <li>Multi-Tenant Architecture for Scalability</li>
-                            <li>Live Deployment: Kidz-Clinic</li>
-                            <li>Rapid Provider Onboarding</li>
-                            <li>Comprehensive Clinical Workflow Automation</li>
-                        </ul>
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'healthezee')} className="product-demo-form" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
-                            </form>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                            <a
-                                href="https://healthezee.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'healthezee', location: 'Products Grid' })}
-                                className="btn-outline"
-                            >
-                                Launch Platform ↗
-                            </a>
-                            <Link to="/products/healthezee" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'healthezee' })} className="btn-outline">
-                                View Details
-                            </Link>
-                            <a
-                                href="https://www.whitekraaft.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'healthezee_implementation', location: 'Products Grid', client: 'whitekraaft' })}
-                                className="btn-outline"
-                            >
-                                Visit White Kraaft ↗
-                            </a>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
-                    >
-                        <div className="industry-visual glass-panel">
-                            <img src={emrImg} alt="Healthezee Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* FEATURED PRODUCT 4 - EduPortal */}
-            <section id="eduportal" className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                <div className="hero-modern-inner" style={{ padding: 0 }}>
-                    <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
-                    >
-                        <div className="industry-visual glass-panel">
-                            <img src={clientEduImg} alt="EduPortal Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="hero-copy"
-                        {...fadeInUp}
-                    >
-                        <span className="hero-badge">AI-Powered EdTech</span>
-                        <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="eduportal" style={{ marginBottom: '1rem' }} />
-                            <h3>EduPortal</h3>
-                        </div>
-                        <p>
-                            A comprehensive institution management platform that leverages AI to automate
-                            complex administrative tasks. Designed for enterprise-scale deployment with
-                            robust multi-tenant capabilities.
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
-                            Best for: K-12 schools, higher education institutions, and corporate training providers.
-                        </p>
-                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
-                            <li>Intelligent Resource Scheduling</li>
-                            <li>AI-Driven Student Progress Tracking</li>
-                            <li>Automated Enrollment Portals</li>
-                            <li>Multi-Campus Centralized Management</li>
-                        </ul>
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'eduportal')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
-                            </form>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                            <a
-                                href="https://cogni-lms.vercel.app/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'eduportal', location: 'Products Grid' })}
-                                className="btn-outline"
-                            >
-                                Launch Platform ↗
-                            </a>
-                            <Link to="/products/eduportal" onClick={() => trackEvent('cta_click', { cta_name: 'View Product Details', product: 'eduportal' })} className="btn-outline">
-                                View Details
-                            </Link>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* FEATURED PRODUCT 5 - CogniHRMS */}
-            <section id="cognihrms" className="services-modern">
-                <div className="hero-modern-inner" style={{ padding: 0 }}>
-                    <motion.div
-                        className="hero-copy"
-                        {...fadeInUp}
-                    >
-                        <span className="hero-badge">Enterprise Workforce AI</span>
-                        <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="cognihrms" style={{ marginBottom: '1rem' }} />
-                            <h3>CogniHRMS</h3>
-                        </div>
-                        <p>
-                            A next-generation Human Resource Management System powered by AI intelligence. CogniHRMS streamlines talent acquisition, automated payroll management, performance evaluations, and employee analytics across enterprise workforces.
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
-                            Best for: Mid-to-large enterprises, remote-first organizations, and multi-national teams.
-                        </p>
-                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
-                            <li>AI-Driven Talent & Resume Screening</li>
-                            <li>Automated Attendance & Leave Tracking</li>
-                            <li>Intelligent Performance & Skill Gap Analysis</li>
-                            <li>Multi-Location Employee Portal & Self-Service</li>
-                        </ul>
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'cognihrms')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
-                            </form>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                            <a
-                                href="https://cognihr.onrender.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'cognihrms', location: 'Products Grid' })}
-                                className="btn-outline"
-                            >
-                                Launch Platform ↗
-                            </a>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
-                    >
-                        <div className="industry-visual glass-panel">
-                            <img src={hrmsImg} alt="CogniHRMS Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* FEATURED PRODUCT 6 - Hospitality Management (eHMS) */}
-            <section id="hospitality" className="services-modern" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                <div className="hero-modern-inner" style={{ padding: 0 }}>
-                    <motion.div
-                        className="hero-visual"
-                        {...fadeInUp}
-                    >
-                        <div className="industry-visual glass-panel">
-                            <img src={hospitalityImg} alt="Hospitality Management Dashboard" className="w-full h-full object-cover rounded-xl" />
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="hero-copy"
-                        {...fadeInUp}
-                    >
-                        <span className="hero-badge">Smart Hospitality Platform</span>
-                        <div className="flex items-center gap-4 mb-4">
-                            <ProductLogo type="hospitality" style={{ marginBottom: '1rem' }} />
-                            <h3>Hospitality Management (eHMS)</h3>
-                        </div>
-                        <p>
-                            An all-in-one smart hospitality management platform engineered for hotels, resorts, and multi-property chains. Delivers automated check-in/check-out orchestration, dynamic room pricing, smart housekeeping dispatch, and unified guest intelligence.
-                        </p>
-                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', marginBottom: '1.5rem', fontWeight: '600' }}>
-                            Best for: Boutique hotels, luxury resort chains, and commercial hospitality operators.
-                        </p>
-                        <ul className="service-highlights" style={{ marginBottom: '2rem' }}>
-                            <li>Smart Reservation & Front-Desk Automation</li>
-                            <li>Dynamic Pricing & Occupancy Forecasting</li>
-                            <li>Automated Housekeeping & Maintenance Dispatch</li>
-                            <li>Integrated Guest Concierge & CRM</li>
-                        </ul>
-                        <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '1rem' }}>Get a 15-Min Recorded Demo</h4>
-                            <form onSubmit={(e) => handleQuickDemo(e, 'hospitality')} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <input type="email" name="email" placeholder="Work Email" required style={{ flex: 1, padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <input type="text" name="organization" placeholder="Org" required style={{ width: '100px', padding: '0.6rem', borderRadius: '0.5rem', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }} />
-                                <button type="submit" className="btn" style={{ padding: '0.6rem 1rem' }}>Send</button>
-                            </form>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                            <a
-                                href="https://ehms-app-eta.vercel.app/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackEvent('external_link_click', { product: 'hospitality', location: 'Products Grid' })}
-                                className="btn-outline"
-                            >
-                                Launch Platform ↗
-                            </a>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* COMING SOON / PLACEHOLDERS */}
-            <section className="services-modern py-24" style={{ background: 'rgba(5,7,12,0.4)' }}>
-                <motion.div
-                    className="section-header text-center"
-                    {...fadeInUp}
-                >
-                    <h3>Additional Enterprise Platforms</h3>
-                    <p>We are constantly innovating to bring production-ready AI to more sectors.</p>
-                </motion.div>
-
-                <div className="services-modern-grid">
-                    {[
-                        {
-                            id: "omnicore",
-                            title: "OmniCore",
-                            desc: "Unified enterprise orchestration platform for cross-departmental AI automation and data flow management.",
-                            status: "Beta"
-                        },
-                        {
-                            id: "vectraflow",
-                            title: "VectraFlow",
-                            desc: "Intelligent workflow engine for automated document processing and compliance checking using LLMs.",
-                            status: "Development"
-                        },
-                        {
-                            id: "neuralops",
-                            title: "NeuralOps",
-                            desc: "Machine learning operations (MLOps) toolkit for scaling AI models from prototype to enterprise-wide deployment.",
-                            status: "In Design"
-                        }
-                    ].map((product, i) => (
-                        <motion.div
-                            key={i}
-                            id={product.id}
-                            className="service-modern-card glass-panel"
-                            {...fadeInUp}
-                            transition={{ delay: i * 0.1 }}
-                        >
-                            <span className="hero-badge" style={{ marginBottom: '1rem' }}>{product.status}</span>
-                            <h4>{product.title}</h4>
-                            <p>{product.desc}</p>
-                        </motion.div>
-                    ))}
                 </div>
             </section>
 
@@ -523,15 +324,15 @@ export default function Products() {
                     <motion.div {...fadeInUp}>
                         <h3>Have a platform challenge you want to solve?</h3>
                         <p className="mb-8">
-                            We partner with technical leaders to turn complex requirements into market-leading enterprise platforms.
+                            We partner with technical leaders to turn complex requirements into
+                            production-ready products and enterprise platforms.
                         </p>
-                        <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Products Footer' })} className="btn">
-                            Book Strategy Call
+                        <Link to="/contact" onClick={() => trackEvent('cta_click', { cta_name: 'Talk to Cognivectra', location: 'Products Footer' })} className="btn">
+                            Talk to Cognivectra
                         </Link>
                     </motion.div>
                 </div>
             </section>
-        </main >
+        </main>
     );
 }
-

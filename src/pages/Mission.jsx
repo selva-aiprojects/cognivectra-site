@@ -23,8 +23,8 @@ export default function Mission() {
             transition={{ duration: 0.8 }}
           >
             <Helmet>
-              <title>Mission & Vision | CogniVectra Production-Ready Innovation</title>
-              <meta name="description" content="Discover CogniVectra's mission to empower organizations through high-performance technology and our vision for accessible, production-ready AI orchestration." />
+              <title>Mission & Vision | Cognivectra</title>
+              <meta name="description" content="Discover Cognivectra's mission to empower organizations through high-performance technology and our vision for accessible, production-ready AI and enterprise platforms." />
             </Helmet>
             <span className="hero-badge">🎯 Mission & Vision</span>
             <h1>High-Performance Technology <br />for Modern Enterprises</h1>
@@ -67,7 +67,7 @@ export default function Mission() {
             >
               <img
                 src={missionVision}
-                alt="CogniVectra Mission"
+                alt="Cognivectra Mission"
                 className="w-full h-auto object-contain rounded-xl"
                 style={{
                   filter: 'drop-shadow(0 10px 40px rgba(99, 102, 241, 0.4))',

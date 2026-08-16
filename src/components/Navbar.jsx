@@ -13,7 +13,6 @@ import "../styles/hamburger.css";
 // Images
 import servicesImg from "../assets/generated/hero-services-ultra-8k.png";
 import productsImg from "../assets/generated/hero-products-ultra-8k.png";
-import engagementsImg from "../assets/generated/hero-engagements-8k.png";
 import resultsImg from "../assets/generated/hero-results-8k.png";
 import industriesImg from "../assets/generated/hero-industries-ultra-8k.png";
 import aboutImg from "../assets/generated/hero-whoweare-ultra-8k.png";
@@ -80,66 +79,59 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
   };
 
   const menuData = {
-    services: {
-      section: "Services",
+    capabilities: {
+      section: "Capabilities",
       image: servicesImg,
       items: [
-        { label: "Cloud Foundations", path: "/services#cloud", desc: "Enterprise-ready landing zones & SaaS architecture." },
-        { label: "Intelligent Operations", path: "/services#ops", desc: "Lean workflow orchestration & API automation." },
-        { label: "SaaS & AI Blocks", path: "/services#saas", desc: "Reusable components for rapid AI integration." },
-        { label: "Enterprise Strategy", path: "/services#cto", desc: "Strategic technology leadership & architecture." },
+        { label: "AI Engineering", path: "/ai-engineering", desc: "Generative AI, agentic AI, copilots & RAG." },
+        { label: "Cloud & Platform Engineering", path: "/cloud-platform-engineering", desc: "Cloud transformation, Kubernetes & DevSecOps." },
+        { label: "Product Engineering", path: "/product-engineering", desc: "SaaS, enterprise apps & multi-tenant platforms." },
+        { label: "Data & Integration", path: "/data-integration", desc: "Data platforms, ETL/ELT & vector foundations." },
       ]
     },
     products: {
-      section: "Platforms",
+      section: "Products",
       image: productsImg,
       items: [
-        { label: "Healthezee", path: "/products#emr", desc: "AI-powered multi-tenant healthcare & EMR platform." },
-        { label: "StoreAI", path: "/products#storeai", desc: "Transformative retail management analytics." },
-        { label: "CogniHRMS", path: "/products#cognihrms", desc: "Next-gen AI workforce & HR management." },
-        { label: "Hospitality eHMS", path: "/products#hospitality", desc: "Smart hotel, resort & concierge management." },
-        { label: "EduPortal", path: "/products#eduportal", desc: "AI-powered education & institution portal." },
-        { label: "StockSteward AI", path: "/products#steward", desc: "Algorithmic trading & market intelligence." },
-        { label: "OmniCore (Beta)", path: "/products#omnicore", desc: "Unified enterprise AI orchestration engine." },
-        { label: "VectraFlow", path: "/products#vectraflow", desc: "Intelligent document processing workflows." },
+        { label: "Healthezee", path: "/products/healthezee", desc: "Healthcare management & EMR platform." },
+        { label: "MediFlow", path: "/products/medflow", desc: "Pharmacy management system." },
+        { label: "StockSteward", path: "/products/stocksteward", desc: "AI-powered investment intelligence." },
+        { label: "StoreAI", path: "/products/storeai", desc: "Intelligent inventory & retail management." },
+        { label: "EduPortal", path: "/products/eduportal", desc: "AI-powered education platform." },
+        { label: "CogniHRMS", path: "/products#cognihrms", desc: "AI-driven workforce & HR management." },
+        { label: "SmartPortfolio", path: "/products/smartportfolio", desc: "AI-powered portfolio intelligence." },
+        { label: "Full Portfolio", path: "/products", desc: "Browse all Cognivectra products." },
       ]
     },
-    engagements: {
-      section: "Engagements",
-      image: engagementsImg,
+    solutions: {
+      section: "Solutions",
+      image: industriesImg,
       items: [
-        { label: "Enterprise Launch Pack", path: "/engagements#launch", desc: "Guided 4-6 week cloud & automation setup." },
-        { label: "Monthly Platform Support", path: "/engagements#support", desc: "Ongoing reliability & performance management." },
-        { label: "Flexible Retainer", path: "/engagements#retainer", desc: "Pay-as-you-go expertise for growing teams." },
-        { label: "Strategic Advisory", path: "/engagements#advisory", desc: "Board-level strategic tech guidance." },
+        { label: "Healthcare", path: "/industries#healthcare", desc: "Hospital operations & pharmacy platforms." },
+        { label: "HR & Talent", path: "/industries#hr-talent", desc: "HR management & talent platforms." },
+        { label: "Hospitality", path: "/industries#hospitality", desc: "Hospitality management platforms." },
+        { label: "BFSI & FinTech", path: "/industries#bfsi-fintech", desc: "Banking & portfolio intelligence." },
+        { label: "Retail & Commerce", path: "/industries#retail-commerce", desc: "Inventory & business operations." },
+        { label: "Enterprise", path: "/industries#enterprise", desc: "AI, automation & platform engineering." },
       ]
     },
     results: {
-      section: "Results",
+      section: "Case Studies",
       image: resultsImg,
       items: [
-        { label: "SaaS Case Study", path: "/results#saas", desc: "Release cycles reduced from weeks to days." },
-        { label: "AI Cloud Stability", path: "/results#cloud", desc: "Predictable spend & improved platform stability." },
-        { label: "Ops Automation", path: "/results#ops", desc: "Reduced manual errors & saved founder time." },
-        { label: "Our Impact", path: "/results", desc: "Explore the measurable outcomes we deliver." },
-      ]
-    },
-    industries: {
-      section: "Industries",
-      image: industriesImg,
-      items: [
-        { label: "Fintech", path: "/industries#fintech", desc: "High-scale financial data & trading systems." },
-        { label: "E-commerce", path: "/industries#ecommerce", desc: "Predictive retail automation & inventory sync." },
-        { label: "Healthtech", path: "/industries#healthtech", desc: "Secure data platforms for health providers." },
-        { label: "Logistics", path: "/industries#logistics", desc: "Supply chain optimization & intelligent tracking." },
+        { label: "Healthcare EHR Transformation", path: "/case-studies#healthcare-ehr", desc: "Large-scale healthcare delivery program." },
+        { label: "Cloud Transformation", path: "/case-studies#cloud-transformation", desc: "2,500+ workloads. Zero downtime." },
+        { label: "AI IT Operations", path: "/case-studies#ai-it-operations", desc: "Enterprise AI for IT operations." },
+        { label: "Our Results", path: "/results", desc: "Explore the measurable outcomes we deliver." },
       ]
     },
     about: {
       section: "Company",
       image: aboutImg,
       items: [
-        { label: "Who We Are", path: "/who-we-are", desc: "Discover our mission & enterprise-grade approach." },
+        { label: "Who We Are", path: "/who-we-are", desc: "Discover our mission & engineering approach." },
         { label: "Our Leadership", path: "/leadership", desc: "Meet the experts steering our technical vision." },
+        { label: "Engagements", path: "/engagements", desc: "Flexible engagement & support models." },
         { label: "Insights & Blog", path: "/blog", desc: "Technical deep-dives & industry perspectives.", badge: "New" },
         { label: "Join Our Team", path: "/careers", desc: "Build the future of AI technology with us.", badge: "Hiring" },
       ]
@@ -164,19 +156,19 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
           {/* Desktop Navigation */}
           <nav className="links desktop-links" aria-label="Desktop Navigation">
             <div
-              className={`nav-item-wrapper ${activeMenu === 'services' ? 'mega-menu-active' : ''}`}
-              onMouseEnter={() => handleMouseEnter('services')}
+              className={`nav-item-wrapper ${activeMenu === 'capabilities' ? 'mega-menu-active' : ''}`}
+              onMouseEnter={() => handleMouseEnter('capabilities')}
               onMouseLeave={handleMouseLeave}
             >
-              <NavLink to="/services" className={`nav-link-with-arrow ${activeMenu === 'services' ? 'active-dropdown' : ''}`}>
-                Services
+              <NavLink to="/services" className={`nav-link-with-arrow ${activeMenu === 'capabilities' ? 'active-dropdown' : ''}`}>
+                Capabilities
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
-                isOpen={activeMenu === 'services'}
-                {...menuData.services}
+                isOpen={activeMenu === 'capabilities'}
+                {...menuData.capabilities}
                 onClose={() => setActiveMenu(null)}
               />
             </div>
@@ -187,7 +179,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               onMouseLeave={handleMouseLeave}
             >
               <NavLink to="/products" className={`nav-link-with-arrow ${activeMenu === 'products' ? 'active-dropdown' : ''}`}>
-                Platforms
+                Products
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -200,19 +192,19 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             </div>
 
             <div
-              className={`nav-item-wrapper ${activeMenu === 'engagements' ? 'mega-menu-active' : ''}`}
-              onMouseEnter={() => handleMouseEnter('engagements')}
+              className={`nav-item-wrapper ${activeMenu === 'solutions' ? 'mega-menu-active' : ''}`}
+              onMouseEnter={() => handleMouseEnter('solutions')}
               onMouseLeave={handleMouseLeave}
             >
-              <NavLink to="/engagements" className={`nav-link-with-arrow ${activeMenu === 'engagements' ? 'active-dropdown' : ''}`}>
-                Engagements
+              <NavLink to="/industries" className={`nav-link-with-arrow ${activeMenu === 'solutions' ? 'active-dropdown' : ''}`}>
+                Solutions
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </NavLink>
               <MegaMenu
-                isOpen={activeMenu === 'engagements'}
-                {...menuData.engagements}
+                isOpen={activeMenu === 'solutions'}
+                {...menuData.solutions}
                 onClose={() => setActiveMenu(null)}
               />
             </div>
@@ -222,8 +214,8 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               onMouseEnter={() => handleMouseEnter('results')}
               onMouseLeave={handleMouseLeave}
             >
-              <NavLink to="/results" className={`nav-link-with-arrow ${activeMenu === 'results' ? 'active-dropdown' : ''}`}>
-                Results
+              <NavLink to="/case-studies" className={`nav-link-with-arrow ${activeMenu === 'results' ? 'active-dropdown' : ''}`}>
+                Case Studies
                 <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -231,24 +223,6 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <MegaMenu
                 isOpen={activeMenu === 'results'}
                 {...menuData.results}
-                onClose={() => setActiveMenu(null)}
-              />
-            </div>
-
-            <div
-              className={`nav-item-wrapper ${activeMenu === 'industries' ? 'mega-menu-active' : ''}`}
-              onMouseEnter={() => handleMouseEnter('industries')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <NavLink to="/industries" className={`nav-link-with-arrow ${activeMenu === 'industries' ? 'active-dropdown' : ''}`}>
-                Industries
-                <svg className="nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L5 4.5L9 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </NavLink>
-              <MegaMenu
-                isOpen={activeMenu === 'industries'}
-                {...menuData.industries}
                 onClose={() => setActiveMenu(null)}
               />
             </div>
@@ -278,10 +252,10 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
             {/* Request Demo Button (Primary CTA) */}
             <Link
               to="/contact"
-              onClick={() => trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Navbar' })}
+              onClick={() => trackEvent('cta_click', { cta_name: "Let's Talk", location: 'Navbar' })}
               className="btn nav-cta"
             >
-              Book Strategy Call
+              Let's Talk
             </Link>
 
             {/* AI Assistant */}
@@ -409,7 +383,7 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <div className="search-icon-circle">
                 <FaSearch size={12} />
               </div>
-              <span>Ask CogniVectra AI...</span>
+              <span>Ask Cognivectra AI...</span>
               <div className="ai-badge-tiny">AI</div>
             </button>
           </div>
@@ -419,19 +393,16 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               <FaHome className="mobile-icon" /> Home
             </NavLink>
             <NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>
-              <FaCogs className="mobile-icon" /> Services
+              <FaCogs className="mobile-icon" /> Capabilities
             </NavLink>
             <NavLink to="/products" onClick={() => setMobileMenuOpen(false)}>
-              <FaRocket className="mobile-icon" /> Platforms
+              <FaRocket className="mobile-icon" /> Products
             </NavLink>
-            <NavLink to="/engagements" onClick={() => setMobileMenuOpen(false)}>
-              <FaBriefcase className="mobile-icon" /> Engagements
-            </NavLink>
-            <NavLink to="/results" onClick={() => setMobileMenuOpen(false)}>
-              <LuChartBar className="mobile-icon" /> Results
+            <NavLink to="/case-studies" onClick={() => setMobileMenuOpen(false)}>
+              <LuChartBar className="mobile-icon" /> Case Studies
             </NavLink>
             <NavLink to="/industries" onClick={() => setMobileMenuOpen(false)}>
-              <FaGlobe className="mobile-icon" /> Industries
+              <FaGlobe className="mobile-icon" /> Solutions
             </NavLink>
             <NavLink to="/who-we-are" onClick={() => setMobileMenuOpen(false)}>
               <FaUsers className="mobile-icon" /> About Us
@@ -474,10 +445,10 @@ export default function SimpleNavbar({ setIsChatOpen, setIsDemoModalOpen, setDem
               className="btn mobile-cta"
               onClick={() => {
                 setMobileMenuOpen(false);
-                trackEvent('cta_click', { cta_name: 'Book Strategy Call', location: 'Mobile Nav' });
+                trackEvent('cta_click', { cta_name: "Let's Talk", location: 'Mobile Nav' });
               }}
             >
-              Book Strategy Call
+              Let's Talk
             </NavLink>
           </div>
         </div>

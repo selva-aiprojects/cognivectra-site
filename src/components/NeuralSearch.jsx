@@ -54,21 +54,23 @@ const NeuralSearch = ({ isOpen, onClose }) => {
         } catch {
             setTimeout(() => {
                 const siteContext = {
-                    'techstack': 'Our engineering core uses Vite + React 18, Framer Motion, Supabase, and Advanced AI Orchestration (LangGraph, CrewAI, LangChain).',
-                    'healthezee': 'Healthezee: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic and Dr. S.T. Pushpa. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
-                    'medflow': 'Healthezee: Multi-tenant, HIPAA-ready, and live at Kidz-Clinic and Dr. S.T. Pushpa. Agile, cloud-native, reduces provider onboarding from weeks to hours.',
-                    'steward': 'StockSteward: Elite FinTech platform using Multi-Agent AI (CrewAI) for market intelligence with higher fidelity than standard trading bots.',
-                    'eduportal': 'EduPortal: Scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring.',
-                    'better': 'CogniVectra delivers senior-architected IP that YOU own — production-ready, no technical debt, zero vendor lock-in.',
-                    'price': 'Our modular Launch Packs save clients 30–50% on long-term operational costs by building correctly from day one.',
-                    'customers': 'We partner with healthcare customers including Kidz Clinic, drstpushpa.com, and Whitekraft, alongside North American EdTech and FinTech startups.',
-                    'products': 'Production-ready platforms: Healthezee (Healthcare), StockSteward (FinTech), StoreAI (Retail), EduPortal (Education).',
+                    'techstack': 'Our engineering core uses Vite + React 18, Framer Motion, Supabase, and advanced AI orchestration (LangGraph, CrewAI, LangChain).',
+                    'healthezee': 'Healthezee: AI-native, multi-tenant healthcare management and EMR platform, live in production at clinic deployments. Reduces provider onboarding from weeks to hours.',
+                    'medflow': 'MediFlow: pharmacy management system for medicines, billing, inventory and prescription workflows.',
+                    'stocksteward': 'StockSteward: AI-powered investment and market intelligence platform with personalized portfolio analytics.',
+                    'storeai': 'StoreAI: intelligent inventory, sales and purchasing management for modern retail operations.',
+                    'eduportal': 'EduPortal: scalable EdTech platform handling 10k+ concurrent users with AI-driven tutoring.',
+                    'better': 'Cognivectra delivers senior-architected IP that YOU own — production-ready, no technical debt, zero vendor lock-in.',
+                    'price': 'Our modular engagement models save clients 30–50% on long-term operational costs by building correctly from day one.',
+                    'customers': 'We partner with healthcare, hospitality, retail, education and enterprise clients across India and global markets.',
+                    'products': 'Production-ready platforms: Healthezee (Healthcare), MediFlow (Pharmacy), StockSteward (FinTech), StoreAI (Retail), EduPortal (Education), CogniHRMS (HR), eHMS (Hospitality).',
                 };
                 const lowerQ = q.toLowerCase();
-                let answer = "CogniVectra specializes in Production-Ready GenAI, FinTech, and Healthcare platforms. How can I help?";
+                let answer = "Cognivectra is an AI-native technology and product engineering company building software for healthcare, HR, hospitality, finance, retail and education. How can I help?";
                 if (lowerQ.includes('compare') || lowerQ.includes('better') || lowerQ.includes('why')) answer = siteContext['better'] + ' ' + siteContext['price'];
-                else if (lowerQ.includes('fintech') || lowerQ.includes('steward') || lowerQ.includes('trading')) answer = siteContext['steward'];
-                else if (lowerQ.includes('health') || lowerQ.includes('medflow') || lowerQ.includes('healthezee') || lowerQ.includes('emr')) answer = siteContext['healthezee'];
+                else if (lowerQ.includes('fintech') || lowerQ.includes('stock') || lowerQ.includes('steward') || lowerQ.includes('trading') || lowerQ.includes('portfolio')) answer = siteContext['stocksteward'];
+                else if (lowerQ.includes('health') || lowerQ.includes('medflow') || lowerQ.includes('healthezee') || lowerQ.includes('emr') || lowerQ.includes('pharmacy')) answer = siteContext['healthezee'] + ' ' + siteContext['medflow'];
+                else if (lowerQ.includes('retail') || lowerQ.includes('inventory') || lowerQ.includes('storeai')) answer = siteContext['storeai'];
                 else if (lowerQ.includes('edu') || lowerQ.includes('learn')) answer = siteContext['eduportal'];
                 else if (lowerQ.includes('cloud') || lowerQ.includes('infrastructure')) answer = siteContext['techstack'];
                 else for (const [k, v] of Object.entries(siteContext)) { if (lowerQ.includes(k)) { answer = v; break; } }

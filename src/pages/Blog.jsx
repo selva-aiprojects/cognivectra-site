@@ -29,10 +29,10 @@ export default function Blog() {
   return (
     <main>
       <Helmet>
-        <title>Founder-Friendly Technology Insights | CogniVectra Blog</title>
+        <title>Founder-Friendly Technology Insights | Cognivectra Blog</title>
         <meta name="description" content="Practical articles on cloud setup, automation, SaaS building blocks, and applied AI — written for founders building scalable startups." />
-        <meta name="keywords" content="Cloud Architecture, AI Automation, SaaS Development, Startup Engineering, CogniVectra Insights" />
-        <meta property="og:title" content="Founder-Friendly Technology Insights | CogniVectra Blog" />
+        <meta name="keywords" content="Cloud Architecture, AI Automation, SaaS Development, Startup Engineering, Cognivectra Insights" />
+        <meta property="og:title" content="Founder-Friendly Technology Insights | Cognivectra Blog" />
         <meta property="og:description" content="Technical deep-dives and industry perspectives for startup founders." />
         <meta property="og:url" content="https://cognivectra.com/blog" />
       </Helmet>

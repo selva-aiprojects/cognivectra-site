@@ -89,7 +89,7 @@ export default function Results() {
   return (
     <main>
       <Helmet>
-        <title>Case Studies & Impact | CogniVectra Results</title>
+        <title>Case Studies & Impact | Cognivectra Results</title>
         <meta name="description" content="Explore our success stories in healthcare, fintech, and enterprise AI. Real metrics and architectural deep-dives from our production deployments." />
       </Helmet>
       {/* HERO */}
@@ -128,7 +128,7 @@ export default function Results() {
             transition={{ duration: 0.8 }}
           >
             <div className="industry-visual glass-panel">
-              <img src={resultsHero} alt="CogniVectra Results" className="w-full h-full object-cover rounded-xl" />
+              <img src={resultsHero} alt="Cognivectra Results" className="w-full h-full object-cover rounded-xl" />
             </div>
           </motion.div>
         </div>

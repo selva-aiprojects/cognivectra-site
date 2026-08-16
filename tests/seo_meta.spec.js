@@ -20,7 +20,7 @@ test.describe('SEO & Meta Tags', () => {
     test('Home page has correct title, description, og tags', async ({ page }) => {
         await page.goto('/');
         await page.waitForLoadState('networkidle');
-        await expect(page).toHaveTitle(/CogniVectra/i);
+        await expect(page).toHaveTitle(/Cognivectra/i);
 
         const desc = await getMeta(page, 'description');
         expect(desc).toBeTruthy();
@@ -41,6 +41,21 @@ test.describe('SEO & Meta Tags', () => {
         await page.waitForLoadState('networkidle');
         const h1s = await page.locator('h1').count();
         expect(h1s).toBe(1);
+    });
+
+    test('Case Studies page has H1', async ({ page }) => {
+        await page.goto('/case-studies');
+        await page.waitForLoadState('networkidle');
+        const h1 = page.locator('h1');
+        await expect(h1).toBeVisible();
+    });
+
+    test('Capability pages have H1', async ({ page }) => {
+        for (const path of ['/ai-engineering', '/cloud-platform-engineering', '/product-engineering', '/data-integration']) {
+            await page.goto(path);
+            await page.waitForLoadState('networkidle');
+            await expect(page.locator('h1')).toBeVisible();
+        }
     });
 
     test('MedFlow detail page has H1', async ({ page }) => {
